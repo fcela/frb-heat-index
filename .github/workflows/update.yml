@@ -1,0 +1,84 @@
+# Quarterly incremental data update for the FRB heat-index dataset.
+#
+# Schedule: 06:00 UTC on the 20th of Jan/Apr/Jul/Oct. Each run advances the
+# panel through every *complete* quarter since data/_meta.json's
+# last_built_quarter. The 20th-of-the-month timing sits a few weeks after each
+# quarter's Y-9C filings settle (filers get 40-45 days after quarter-end); the
+# updater additionally requires a quarter to have ended >75 days ago.
+#
+# PARTIAL-QUARTER GUARD (ragged-edge rule): the updater
+# (.github/scripts/update.py) NEVER publishes a partial quarter. A quarter is
+# processed only if (a) it ended >75 days ago, (b) every required FRED
+# daily/monthly series has an observation within 7 days of the quarter's last
+# day (quarterly series: an observation dated inside the quarter), and
+# (c) the quarter's Y-9C bulk file is downloadable. The first quarter failing
+# any check truncates the update; previously built data is kept untouched.
+# (A partial-quarter value treated as a full quarter once produced a 7.6-sigma
+# end-of-sample artifact -- see spike-audit-2026-10-14.md.)
+#
+# Failure policy: any source unreachable -> the run keeps last good data,
+# records staleness flags in data/_meta.json (surfaced as a banner on the
+# site), and exits 0. The run is logged as a GitHub issue either way, with a
+# per-source fetch-status body, so gaps are visible without failing CI.
+#
+# What gets committed: only the rebuilt derived artifacts
+# (data/panel_quarterly.csv, data/components.csv, data/aggregate.csv,
+# data/_meta.json, docs/). Raw fetches land in work/raw/ (the base build's
+# raw dir, git-ignored upstream) during the run; the full Y-9C history is
+# never re-downloaded -- only each new quarter's bulk file.
+
+name: Quarterly data update
+
+on:
+  schedule:
+    - cron: "0 6 20 1,4,7,10 *"
+  workflow_dispatch:
+
+permissions:
+  contents: write   # commit + push the rebuilt data
+  issues: write     # log each run as an issue
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install polars
+        # NOTE: no `requests` -- all downloads go through curl (as in
+        # src/fetch_series.py), which is preinstalled on ubuntu-latest.
+
+      - name: Run quarterly updater
+        id: updater
+        run: |
+          python .github/scripts/update.py \
+            --report "${{ runner.temp }}/update-report.md" \
+            --github-output "$GITHUB_OUTPUT"
+
+      - name: Commit and push data changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/panel_quarterly.csv data/components.csv data/aggregate.csv \
+                  data/proxy_catalog.csv data/_meta.json docs
+          if git diff --cached --quiet; then
+            echo "no data changes to commit"
+          else
+            git commit -m "Quarterly data update ${{ steps.updater.outputs.new_quarters }}"
+            git push
+          fi
+
+      - name: Log run as issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "${{ steps.updater.outputs.update_title }}" \
+            --body-file "${{ runner.temp }}/update-report.md"
