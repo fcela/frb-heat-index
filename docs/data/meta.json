@@ -1,1 +1,7 @@
-{"last_updated_quarter": "2025Q4", "built_at_utc": "2026-10-14T20:59:01Z", "stale_sources": []}
+{
+ "last_built_quarter": "2025Q4",
+ "built_at_utc": "2026-10-14T20:59:01Z",
+ "n_indicators": 43,
+ "n_components": 14,
+ "note": "Extended panel from validated post-spike-audit rebuild; truncated at last full quarter per ragged-edge rule."
+}
