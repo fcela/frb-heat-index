@@ -1,0 +1,26 @@
+{
+  "last_updated_quarter": "2014Q4",
+  "start_quarter": "1990Q1",
+  "n_quarters": 100,
+  "built_at_utc": "2026-10-14T20:49:06Z",
+  "stale_sources": [],
+  "indicators_replicated": 43,
+  "indicators_total": 44,
+  "components": [
+    "Equity markets",
+    "Price volatility",
+    "Business credit",
+    "Commercial real estate",
+    "Residential real estate",
+    "Nonfinancial Business",
+    "Consumer credit",
+    "Home mortgages",
+    "Net saving",
+    "Bank leverage",
+    "Nonbank leverage",
+    "Maturity transformation",
+    "Short-term wholesale funding",
+    "Size/concentration"
+  ],
+  "note": "Public-proxy replication panel of the Fed FEDS Notes 'Mapping Heat in the U.S. Financial System' heat map. Component values are kernel-CDF quantiles on (0,1); higher = hotter (greater vulnerability). See ../paper/fed_heat_map-replication.pdf for methodology and caveats."
+}
