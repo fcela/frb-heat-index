@@ -554,31 +554,58 @@ figure svg { display: block; max-width: 100%; height: auto; }
 
 .comp-card .comp-chart { margin: 0 0 0.5rem; }
 
-details.comp-details { margin-top: 0.25rem; }
-
-details.comp-details summary {
+/* Click-through drill-down: the whole component card is a link. */
+.comp-card.comp-drill {
   cursor: pointer;
-  color: var(--muted);
-  font-size: 0.88rem;
-  padding: 0.35rem 0;
-  list-style: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-
-details.comp-details summary::-webkit-details-marker { display: none; }
-
-details.comp-details summary::before {
-  content: "▸";
+.comp-card.comp-drill:hover {
+  border-color: var(--accent, #1d4ed8);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+.comp-card.comp-drill:focus-visible {
+  outline: 2px solid var(--accent, #1d4ed8);
+  outline-offset: 2px;
+}
+.drill-hint {
   display: inline-block;
-  margin-right: 0.45rem;
-  transition: transform 0.15s ease;
-  color: var(--faint);
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.85rem;
 }
+.comp-card.comp-drill:hover .drill-hint { color: var(--ink); }
 
-details.comp-details[open] summary::before { transform: rotate(90deg); }
-
-details.comp-details summary:hover { color: var(--ink); }
-
-details.comp-details .ind-list { padding-top: 0.6rem; }
+/* Component detail view (drill-down target). */
+.comp-detail .back-link {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+.comp-detail .back-link:hover { color: var(--ink); text-decoration: underline; }
+.comp-detail-head h3 {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.comp-detail-head .kicker {
+  margin: 0 0 0.25rem;
+}
+.comp-detail-head .blurb {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.25rem;
+  max-width: 60em;
+  line-height: 1.55;
+}
+.comp-detail-chart { margin: 0 0 1.75rem; }
+.comp-detail-chart svg { width: 100%; height: auto; display: block; }
 
 .ind-stats {
   display: flex;
