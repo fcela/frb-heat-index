@@ -97,7 +97,7 @@ body {
   border: 1px solid var(--line);
   background: var(--card);
   color: var(--ink);
-  border-radius: 999px;
+  border-radius: 0;
   width: 2.3rem;
   height: 2.3rem;
   display: inline-flex;
@@ -200,7 +200,7 @@ main {
 .card {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 0;
   box-shadow: var(--shadow);
   padding: clamp(1.25rem, 3vw, 2.25rem);
 }
@@ -225,7 +225,7 @@ main {
   font-size: 0.85em;
   background: var(--line-soft);
   padding: 0.1em 0.35em;
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 /* ---------- heatmap ---------- */
@@ -283,7 +283,7 @@ figure svg { display: block; max-width: 100%; height: auto; }
 
 .exp-card {
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 0;
   padding: 1.1rem 1.2rem;
   cursor: pointer;
   transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
@@ -354,7 +354,7 @@ figure svg { display: block; max-width: 100%; height: auto; }
 
 .pulse-card {
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 0;
   padding: 1.1rem 1.2rem;
   margin-bottom: 1rem;
   background: var(--card);
@@ -414,7 +414,7 @@ figure svg { display: block; max-width: 100%; height: auto; }
   color: var(--muted);
   background: var(--missing);
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 0;
   padding: 0.15rem 0.6rem;
   margin-left: 0.5rem;
   vertical-align: middle;
@@ -426,7 +426,7 @@ figure svg { display: block; max-width: 100%; height: auto; }
   font-size: 0.82rem;
   font-weight: 600;
   padding: 0.18rem 0.55rem;
-  border-radius: 999px;
+  border-radius: 0;
   white-space: nowrap;
   flex: none;
 }
@@ -462,7 +462,7 @@ figure svg { display: block; max-width: 100%; height: auto; }
   align-items: center;
   padding: 0.7rem 0.9rem;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 0;
   margin-bottom: 0.6rem;
 }
 
@@ -535,7 +535,7 @@ figure svg { display: block; max-width: 100%; height: auto; }
 
 .comp-card {
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 0;
   padding: 1.1rem 1.2rem 1rem;
   background: var(--card);
 }
@@ -553,17 +553,6 @@ figure svg { display: block; max-width: 100%; height: auto; }
 }
 
 .comp-card .comp-chart { margin: 0 0 0.25rem; }
-
-/* Year range under each sparkline: the shared x-domain, stated once per card
-   instead of 8 tick labels repeated 14 times. */
-.spark-years {
-  display: flex;
-  justify-content: space-between;
-  color: var(--muted);
-  font-size: 0.78rem;
-  padding: 0 0.25rem;
-  margin-bottom: 0.35rem;
-}
 
 /* Click-through drill-down: the whole component card is a link. */
 .comp-card.comp-drill {
@@ -657,7 +646,7 @@ figure svg { display: block; max-width: 100%; height: auto; }
 
 .caveats {
   background: var(--line-soft);
-  border-radius: 10px;
+  border-radius: 0;
   padding: 1.25rem 1.5rem;
 }
 
@@ -708,7 +697,7 @@ figure svg { display: block; max-width: 100%; height: auto; }
   display: none;
   margin-top: 1rem;
   padding: 0.9rem 1.1rem;
-  border-radius: 10px;
+  border-radius: 0;
   background: rgba(178, 24, 43, 0.08);
   border: 1px solid rgba(178, 24, 43, 0.25);
   font-size: 0.9rem;
@@ -746,7 +735,7 @@ a { color: var(--accent-ink); }
   color: #b2182b;
   background: rgba(178, 24, 43, 0.07);
   border: 1px solid rgba(178, 24, 43, 0.25);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 0.9rem 1.1rem;
   font-size: 0.9rem;
 }

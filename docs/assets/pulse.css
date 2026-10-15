@@ -106,7 +106,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-radius: 999px;
+  border-radius: 0;
   padding: 0.14rem 0.6rem;
   margin-left: 0.5rem;
   vertical-align: middle;
@@ -138,7 +138,7 @@
   display: inline-block;
   width: 0.6rem;
   height: 0.6rem;
-  border-radius: 2px;
+  border-radius: 0;
   margin-right: 0.35rem;
   vertical-align: baseline;
 }
@@ -162,7 +162,7 @@
   color: var(--muted);
   text-decoration: none;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 0;
   padding: 0.28rem 0.8rem;
   background: var(--card);
 }

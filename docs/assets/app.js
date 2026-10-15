@@ -62,7 +62,7 @@ async function loadJSON(name) {
 
 let AGG, COMP, IND, HIER, META;
 let quarters = [], qIndex = {};
-let yearTicks = [];
+let yearTicks = [], decadeTicks = [];
 
 function equantile(sortedVals, z) {
   // Empirical quantile of z in its own history (sorted ascending).
@@ -225,20 +225,27 @@ function categorySeries(cat) {
   return out;
 }
 
-/* Sparkline for the 14 component cards: no axes, no grid — the shape of the
-   series is the information. Exact values come from hover tooltips and the
-   click-through detail view. All cards share the same x-domain (quarters)
-   and y-domain (0–1 quantiles), so shapes are directly comparable. */
-function sparkline(series, { w = 640, h = 240, stroke = null } = {}) {
+/* Component card chart: proper small multiples. Shared 0–1 y-domain with grid
+   and labels (cross-component comparable), sparse decade x-labels, area fill,
+   straight polylines. Y-domain padded so peaks never clip the plot edge. */
+function componentChart(series, { w = 640, h = 240, stroke = null } = {}) {
   const s = stroke || T().accent;
   const data = series.map((d, xi) => ({ q: d.q, v: d.v, xi })).filter(d => d.v != null);
   const last = data[data.length - 1];
   return basePlot({
     width: w, height: h,
-    marginTop: 8, marginRight: 8, marginBottom: 8, marginLeft: 8,
-    x: { domain: [-0.5, quarters.length - 0.5], axis: null },
-    y: { domain: [0, 1], axis: null },
+    marginTop: 10, marginRight: 10, marginBottom: 30, marginLeft: 38,
+    x: {
+      domain: [-0.5, quarters.length - 0.5], ticks: decadeTicks,
+      tickFormat: i => quarters[i].slice(0, 4), label: null, tickSize: 0,
+    },
+    y: {
+      domain: [-0.05, 1.05],
+      ticks: [0, 0.5, 1], tickFormat: d => d.toFixed(1),
+      grid: true, label: null,
+    },
     marks: [
+      Plot.areaY(data, { x: "xi", y: "v", fill: s, fillOpacity: 0.08 }),
       Plot.line(data, { x: "xi", y: "v", stroke: s, strokeWidth: 2 }),
       last ? Plot.dot([last], { x: "xi", y: "v", fill: s, stroke: T().card, strokeWidth: 1.5, r: 4 }) : null,
       Plot.tip(data, Plot.pointer({ x: "xi", title: d => `${d.q} — ${d.v.toFixed(2)}` })),
@@ -395,8 +402,6 @@ function renderHierarchy() {
       () => seriesChart(catSeries, { w: 1020, h: 240 }));
 
     const grid = sec.querySelector(".comp-grid");
-    const yr0 = quarters.length ? quarters[0].slice(0, 4) : "";
-    const yr1 = quarters.length ? quarters[quarters.length - 1].slice(0, 4) : "";
     for (const comp of cat.components) {
       const series = COMP[comp.name] || [];
       const heat = lastVal(series);
@@ -408,7 +413,6 @@ function renderHierarchy() {
       card.innerHTML =
         `<h4>${esc(comp.name)} ${heatBadge(heat)}</h4>` +
         `<figure class="comp-chart" role="img" aria-label="${esc(comp.name)} component heat over time"></figure>` +
-        `<div class="spark-years"><span>${esc(yr0)}</span><span>${esc(yr1)}</span></div>` +
         `<span class="drill-hint">${comp.indicators.length} indicators →</span>`;
       const go = () => { location.hash = compHash(comp.name); };
       card.addEventListener("click", go);
@@ -416,7 +420,7 @@ function renderHierarchy() {
         if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); }
       });
       lazyChart(card.querySelector(".comp-chart"),
-        () => sparkline(series, { w: 640, h: 240 }));
+        () => componentChart(series, { w: 640, h: 240 }));
       grid.appendChild(card);
     }
     host.appendChild(sec);
@@ -471,6 +475,7 @@ async function boot() {
   quarters = AGG.map(d => d.q);
   quarters.forEach((q, i) => { qIndex[q] = i; });
   yearTicks = quarters.map((q, i) => i).filter(i => quarters[i].endsWith("Q1") && parseInt(quarters[i]) % 5 === 0);
+  decadeTicks = quarters.map((q, i) => i).filter(i => quarters[i].endsWith("Q1") && parseInt(quarters[i]) % 10 === 0);
   renderMeta();
   renderAll();
   window.__frbBooted = true;
