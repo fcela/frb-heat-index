@@ -91,6 +91,8 @@ SPEC = {
     "Mortage Lending and FICO Scores (Change in Lending Standards)": ("Residential real estate", -1, None),
     "Investor Appetite for Risky Corporate Debt (Change in Bank Lending Standards C&I Loans)": ("Business credit", -1, None),
     "Indicators of Volitility (VIX)": ("Price volatility", -1, "log"),
+    "SRISK (Total capital shortfall relative to total assets)": ("Bank leverage", +1, None),
+    "Granger-causality connections among large financial institutions": ("Size/concentration", +1, None),
 }
 
 COMPONENTS = ["Equity markets", "Price volatility", "Business credit",

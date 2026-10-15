@@ -85,6 +85,8 @@ PANEL_COLUMNS = [
     'Mortage Lending and FICO Scores (Change in Lending Standards)',
     'Investor Appetite for Risky Corporate Debt (Change in Bank Lending Standards C&I Loans)',
     'Indicators of Volitility (VIX)',
+    'SRISK (Total capital shortfall relative to total assets)',
+    'Granger-causality connections among large financial institutions',
 ]
 
 
@@ -215,6 +217,31 @@ def b_ep_spread(raw: Path):
 
 def b_vix(raw: Path):
     return {'Indicators of Volitility (VIX)': fred_qmean(raw, "VIXCLS")}
+
+
+def _systemic_frame(raw: Path, fname: str) -> pl.DataFrame:
+    """Read a prebuilt systemic-risk quarterly CSV (quarter, value).
+
+    The series live in data/systemic/ (committed) and are rebuilt by
+    src/systemic/build_srisk.py / build_granger.py when new quarters arrive.
+    """
+    f = raw.parent.parent / "data" / "systemic" / fname
+    return pl.read_csv(f).select(["quarter", "value"])
+
+
+def b_srisk(raw: Path):
+    # Total SRISK relative to total assets (Acharya/Engle/Richardson 2012).
+    # Built by src/systemic/build_srisk.py from Y-9C + Yahoo + EDGAR.
+    return {'SRISK (Total capital shortfall relative to total assets)':
+            _systemic_frame(raw, "srisk_quarterly.csv")}
+
+
+def b_granger(raw: Path):
+    # Significant Granger-causality connections among large financial
+    # institutions (Billio/Getmansky/Lo/Pelizzon 2012).
+    # Built by src/systemic/build_granger.py from Yahoo monthly returns.
+    return {'Granger-causality connections among large financial institutions':
+            _systemic_frame(raw, "granger_quarterly.csv")}
 
 
 def b_baa_spread(raw: Path):
@@ -686,6 +713,7 @@ BUILDERS = [
     b_sloos_cni, b_house_price_rent, b_sloos_mortgage, b_fico, b_bizdebt,
     b_risky_leverage, b_nipa, b_consumer, b_consumer_risky, b_mortgage,
     b_saving_hh, b_z1, b_bis_cre, b_sloos_cre, b_call_report,
+    b_srisk, b_granger,
 ]
 
 
