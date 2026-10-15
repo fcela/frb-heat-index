@@ -312,6 +312,107 @@ figure svg { display: block; max-width: 100%; height: auto; }
 
 .exp-card .spark svg { width: 100%; height: auto; display: block; }
 
+/* ---------- market pulse ---------- */
+
+.pulse-stamp {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0 0 1.25rem;
+}
+
+.pulse-seg { margin-bottom: 2rem; }
+
+.pulse-seg > h3 {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 0.2rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.pulse-count {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.pulse-seg > .blurb {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
+
+.pulse-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.1rem 1.2rem;
+  margin-bottom: 1rem;
+  background: var(--card);
+}
+
+.pulse-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+}
+
+.pulse-head strong { font-size: 1.02rem; }
+
+.pulse-last {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--accent);
+  margin-left: 0.5rem;
+}
+
+.pulse-date {
+  color: var(--faint);
+  font-size: 0.82rem;
+  margin-left: 0.4rem;
+}
+
+.pulse-src {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.pulse-card .blurb {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+
+.pulse-chart svg { width: 100%; height: auto; display: block; }
+
+.pulse-note {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-style: italic;
+  margin: 0.5rem 0 0;
+}
+
+.pending-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  background: var(--missing);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
 .heat-badge {
   display: inline-block;
   font-family: var(--font-mono);
