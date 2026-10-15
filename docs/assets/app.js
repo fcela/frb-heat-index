@@ -291,12 +291,69 @@ function indicatorRows(comp) {
   return frag;
 }
 
+function findComponent(name) {
+  for (const cat of HIER.categories)
+    for (const comp of cat.components)
+      if (comp.name === name) return { comp, cat };
+  return null;
+}
+
+function compHash(name) {
+  return "#component/" + encodeURIComponent(name);
+}
+
+function renderComponentDetail(name) {
+  const host = document.getElementById("hierarchy");
+  if (!host) return;
+  const found = findComponent(name);
+  host.innerHTML = "";
+  if (!found) {
+    host.innerHTML = `<p class="err">Unknown component: ${esc(name)}.</p>
+      <p><a href="#hierarchy-card" class="back-link">← All components</a></p>`;
+    return;
+  }
+  const { comp, cat } = found;
+  const series = COMP[comp.name] || [];
+  const heat = lastVal(series);
+  const wrap = document.createElement("div");
+  wrap.className = "comp-detail";
+  wrap.innerHTML =
+    `<p><a href="#hierarchy-card" class="back-link">← All components</a></p>` +
+    `<div class="comp-detail-head">` +
+      `<div>` +
+        `<p class="kicker">${esc(cat.name)}</p>` +
+        `<h3>${esc(comp.name)} ${heatBadge(heat)}</h3>` +
+        `<p class="blurb">${comp.indicators.length} indicators. ` +
+        `Each row shows the indicator's history as a heat strip, its latest heat quantile, ` +
+        `and its latest oriented z-score.</p>` +
+      `</div>` +
+    `</div>` +
+    `<figure class="comp-detail-chart" role="img" aria-label="${esc(comp.name)} component heat over time"></figure>` +
+    `<div class="ind-list"></div>`;
+  wrap.querySelector(".ind-list").appendChild(indicatorRows(comp));
+  host.appendChild(wrap);
+  const chartEl = wrap.querySelector(".comp-detail-chart");
+  lazyChart(chartEl, () => seriesChart(series, { w: 1020, h: 320 }));
+  // Render immediately — the user asked for this view.
+  if (chartEl._render && !chartEl._rendered) {
+    if (lazyObserver) lazyObserver.unobserve(chartEl);
+    chartEl.innerHTML = "";
+    chartEl.appendChild(chartEl._render());
+    chartEl._rendered = true;
+  }
+  // Back link uses default anchor behavior: hash -> #hierarchy-card,
+  // which fires hashchange -> routeHash() -> renderHierarchy().
+}
+
+function routeHash() {
+  const m = /^#component\/(.+)$/.exec(location.hash);
+  if (m) renderComponentDetail(decodeURIComponent(m[1]));
+  else renderHierarchy();
+}
+
 function renderHierarchy() {
   const host = document.getElementById("hierarchy");
   if (!host) return;
-  // Preserve open <details> across re-renders (e.g. theme toggle).
-  const open = new Set(
-    [...host.querySelectorAll("details.comp-details[open]")].map(d => d.dataset.comp));
   host.innerHTML = "";
 
   HIER.categories.forEach((cat, ci) => {
@@ -321,18 +378,21 @@ function renderHierarchy() {
       const series = COMP[comp.name] || [];
       const heat = lastVal(series);
       const card = document.createElement("article");
-      card.className = "comp-card";
+      card.className = "comp-card comp-drill";
+      card.tabIndex = 0;
+      card.setAttribute("role", "link");
+      card.setAttribute("aria-label", `${comp.name}: view ${comp.indicators.length} indicators`);
       card.innerHTML =
         `<h4>${esc(comp.name)} ${heatBadge(heat)}</h4>` +
         `<figure class="comp-chart" role="img" aria-label="${esc(comp.name)} component heat over time"></figure>` +
-        `<details class="comp-details" data-comp="${esc(comp.name)}">` +
-          `<summary>${comp.indicators.length} indicators</summary>` +
-          `<div class="ind-list"></div>` +
-        `</details>`;
-      if (open.has(comp.name)) card.querySelector("details").open = true;
+        `<span class="drill-hint">${comp.indicators.length} indicators →</span>`;
+      const go = () => { location.hash = compHash(comp.name); };
+      card.addEventListener("click", go);
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); }
+      });
       lazyChart(card.querySelector(".comp-chart"),
         () => seriesChart(series, { w: 520, h: 190, area: false }));
-      card.querySelector(".ind-list").appendChild(indicatorRows(comp));
       grid.appendChild(card);
     }
     host.appendChild(sec);
@@ -373,7 +433,7 @@ function fail(err) {
 function renderAll() {
   renderHeatmap();
   renderAggregate();
-  renderHierarchy();
+  routeHash();
   document.getElementById("heatmap").dataset.done = "1";
   document.getElementById("aggchart").dataset.done = "1";
 }
@@ -397,6 +457,10 @@ document.getElementById("theme-toggle").addEventListener("click", () => {
   document.documentElement.dataset.theme = themeName;
   try { localStorage.setItem("frb-heat-theme", themeName); } catch (e) {}
   if (window.__frbBooted) renderAll();
+});
+
+window.addEventListener("hashchange", () => {
+  if (window.__frbBooted) routeHash();
 });
 
 boot().catch(fail);
