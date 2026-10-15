@@ -191,6 +191,10 @@
       {
        "name": "Bank Leverage (Total Capital Ratio)",
        "short": "Total capital ratio"
+      },
+      {
+       "name": "SRISK (Total capital shortfall relative to total assets)",
+       "short": "SRISK / total assets"
       }
      ]
     },
@@ -259,6 +263,10 @@
       {
        "name": "Ratio of Total Financial Sector Liabilities to GDP",
        "short": "Financial-sector liabilities / GDP"
+      },
+      {
+       "name": "Granger-causality connections among large financial institutions",
+       "short": "Granger-causality connections"
       }
      ]
     }

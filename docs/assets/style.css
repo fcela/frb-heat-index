@@ -152,6 +152,13 @@ body {
   margin: 0 0 2rem;
 }
 
+.lede-note {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  max-width: 44em;
+  margin: -1.25rem 0 2rem;
+}
+
 .stats {
   display: flex;
   flex-wrap: wrap;

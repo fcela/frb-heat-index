@@ -22,8 +22,8 @@
 # per-source fetch-status body, so gaps are visible without failing CI.
 #
 # What gets committed: only the rebuilt derived artifacts
-# (data/panel_quarterly.csv, data/components.csv, data/aggregate.csv,
-# data/_meta.json, docs/). Raw fetches land in work/raw/ (the base build's
+# (data/panel_quarterly.csv, data/systemic/*.csv, data/components.csv,
+# data/aggregate.csv, data/_meta.json, docs/). Raw fetches land in work/raw/ (the base build's
 # raw dir, git-ignored upstream) during the run; the full Y-9C history is
 # never re-downloaded -- only each new quarter's bulk file.
 
@@ -51,9 +51,11 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install polars
+        run: pip install polars numpy
         # NOTE: no `requests` -- all downloads go through curl (as in
-        # src/fetch_series.py), which is preinstalled on ubuntu-latest.
+        # src/fetch_series.py) or urllib (src/systemic/*), both available
+        # without extra packages. numpy is needed by the Granger-causality
+        # systemic builder (src/systemic/build_granger.py).
 
       - name: Run quarterly updater
         id: updater
@@ -66,8 +68,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/panel_quarterly.csv data/components.csv data/aggregate.csv \
-                  data/proxy_catalog.csv data/_meta.json docs
+          git add data/panel_quarterly.csv data/systemic data/components.csv data/aggregate.csv \
+                  data/indicators_standardized.csv data/proxy_catalog.csv data/_meta.json docs
           if git diff --cached --quiet; then
             echo "no data changes to commit"
           else

@@ -57,8 +57,9 @@ CATEGORIES = [
                     "Size/concentration"]},
 ]
 
-# Short display names for the 44 indicators (full names are the SPEC keys in
-# run_pipeline.py). Drawn from the paper's indicator catalog.
+# Short display names for the indicators (full names are the SPEC keys in
+# run_pipeline.py). Drawn from the paper's indicator catalog, plus the two
+# added in the journal publication (J. Banking & Finance 81, 2017).
 SHORT_NAMES = {
     "Equity Valuations (Ratro minus 10 Yr. Tres. Yeild)": "E/P minus 10-yr Treasury yield",
     "Equity Valuations (Earnings/Price ratio )": "E/P ratio",
@@ -104,6 +105,8 @@ SHORT_NAMES = {
     "Ratio of Total Financial Sector Liabilities to GDP": "Financial-sector liabilities / GDP",
     "Ratio of Total Assets Held by Top 5 Holding Companies to Total Bank Holding Company Assets": "Top-5 BHC asset share",
     "Illiquidity Conventration Indicator": "Illiquidity concentration",
+    "SRISK (Total capital shortfall relative to total assets)": "SRISK / total assets",
+    "Granger-causality connections among large financial institutions": "Granger-causality connections",
 }
 
 
