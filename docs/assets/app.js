@@ -60,7 +60,7 @@ async function loadJSON(name) {
   return r.json();
 }
 
-let AGG, COMP, IND, HIER, META;
+let AGG, COMP, IND, HIER, META, PULSE;
 let quarters = [], qIndex = {};
 let yearTicks = [];
 
@@ -464,16 +464,89 @@ function renderAll() {
   renderHeatmap();
   renderAggregate();
   renderExplorer();
+  renderPulse();
   document.getElementById("heatmap").dataset.done = "1";
   document.getElementById("aggchart").dataset.done = "1";
 }
 
+function pulseLine(series, unit) {
+  // Full-width time series for a pulse indicator, in its own units.
+  const pts = series
+    .map(d => ({ date: new Date(d.date + "T00:00:00"), v: d.value }))
+    .filter(d => d.v != null && Number.isFinite(d.v));
+  if (!pts.length) return null;
+  const last = pts[pts.length - 1];
+  return basePlot({
+    width: 1020, height: 240,
+    marginLeft: 64, marginRight: 20, marginTop: 14, marginBottom: 40,
+    x: { type: "time", label: null, grid: true, tickSize: 0, ticks: 8 },
+    y: { label: unit || null, grid: true, nice: true },
+    marks: [
+      Plot.areaY(pts, { x: "date", y: "v", fill: T().accent, fillOpacity: 0.08, curve: "monotone-x" }),
+      Plot.line(pts, { x: "date", y: "v", stroke: T().accent, strokeWidth: 1.8, curve: "monotone-x" }),
+      Plot.dot([last], { x: "date", y: "v", fill: T().accent, stroke: T().card, strokeWidth: 1.5, r: 4 }),
+      Plot.tip(pts, Plot.pointer({
+        x: "date", y: "v",
+        title: d => `${d.date.toISOString().slice(0, 10)}\n${d.v.toLocaleString("en-US", { maximumFractionDigits: 2 })}${unit ? " " + unit : ""}`,
+      })),
+    ],
+  });
+}
+
+function renderPulse() {
+  const el = document.getElementById("pulse");
+  if (!el || !PULSE) return;
+  el.innerHTML = "";
+  const stamp = PULSE.meta && PULSE.meta.built_at_utc
+    ? `<p class="pulse-stamp">Refreshed ${esc(PULSE.meta.built_at_utc.slice(0, 10))} (UTC) · weekly cadence</p>` : "";
+  el.innerHTML = stamp;
+  for (const seg of PULSE.segments) {
+    const sec = document.createElement("div");
+    sec.className = "pulse-seg";
+    const live = seg.indicators.filter(i => i.status === "live").length;
+    sec.innerHTML = `<h3>${esc(seg.title)} <span class="pulse-count">${live}/${seg.indicators.length} live</span></h3>
+      <p class="blurb">${esc(seg.subtitle)}</p>`;
+    for (const ind of seg.indicators) {
+      const card = document.createElement("div");
+      card.className = "pulse-card";
+      if (ind.status === "live" && ind.series.length) {
+        const last = ind.series[ind.series.length - 1];
+        const lastV = last.value;
+        card.innerHTML = `
+          <div class="pulse-head">
+            <div><strong>${esc(ind.title)}</strong>
+              <span class="pulse-last">${lastV == null ? "n/a" : Number(lastV).toLocaleString("en-US", { maximumFractionDigits: 2 })}${ind.unit ? " " + esc(ind.unit) : ""}</span>
+              <span class="pulse-date">${esc(String(last.date).slice(0, 10))}</span></div>
+            <div class="pulse-src">${esc(ind.source)} · ${esc(ind.frequency)}</div>
+          </div>
+          <p class="blurb">${esc(ind.why)}</p>
+          <div class="pulse-chart"></div>`;
+        const fig = pulseLine(ind.series, ind.unit);
+        if (fig) card.querySelector(".pulse-chart").appendChild(fig);
+      } else {
+        const badge = ind.status === "pending-sourcing" ? "source pending" : "unavailable";
+        card.innerHTML = `
+          <div class="pulse-head">
+            <div><strong>${esc(ind.title)}</strong>
+              <span class="pending-badge">${esc(badge)}</span></div>
+            <div class="pulse-src">${esc(ind.source)} · ${esc(ind.frequency)}</div>
+          </div>
+          <p class="blurb">${esc(ind.why)}</p>
+          ${ind.note ? `<p class="pulse-note">${esc(ind.note)}</p>` : ""}`;
+      }
+      sec.appendChild(card);
+    }
+    el.appendChild(sec);
+  }
+}
+
 async function boot() {
-  const [agg, comp, ind, hier, meta] = await Promise.all([
+  const [agg, comp, ind, hier, meta, pulse] = await Promise.all([
     loadJSON("aggregate.json"), loadJSON("components.json"),
     loadJSON("indicators.json"), loadJSON("hierarchy.json"), loadJSON("meta.json"),
+    loadJSON("pulse.json").catch(() => null),
   ]);
-  AGG = agg; COMP = comp; IND = ind; HIER = hier; META = meta;
+  AGG = agg; COMP = comp; IND = ind; HIER = hier; META = meta; PULSE = pulse;
   quarters = AGG.map(d => d.q);
   quarters.forEach((q, i) => { qIndex[q] = i; });
   yearTicks = quarters.map((q, i) => i).filter(i => quarters[i].endsWith("Q1") && parseInt(quarters[i]) % 5 === 0);

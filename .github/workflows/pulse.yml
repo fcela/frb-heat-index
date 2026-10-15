@@ -1,0 +1,71 @@
+# Weekly refresh of the market-pulse dataset (higher-frequency leading indicators).
+#
+# Schedule: 06:00 UTC every Monday. The pulse indicators are daily/weekly/monthly,
+# so a weekly cadence keeps them fresh without hammering sources. Incremental by
+# design: build_pulse.py --incremental merges new observations into the existing
+# CSVs (dedupe on date, keep-last), so only new data is fetched.
+#
+# Failure policy: a source that fails marks its indicator "error" in _meta.json
+# but does not fail the run; last good data is kept. The run is logged as a
+# GitHub issue either way.
+
+name: Weekly market-pulse update
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  update-pulse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install polars fastexcel
+
+      - name: Refresh pulse data (incremental)
+        run: python3 -m src.pulse.build_pulse --incremental
+
+      - name: Run pulse tests
+        run: python3 tests/test_pulse.py
+
+      - name: Commit and push data changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/pulse/ docs/data/pulse.json
+          if git diff --staged --quiet; then
+            echo "no changes"
+          else
+            git commit -m "Weekly market-pulse update: $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      - name: Log run as issue
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let body = 'Weekly market-pulse refresh completed.';
+            try {
+              const meta = JSON.parse(fs.readFileSync('data/pulse/_meta.json', 'utf8'));
+              const lines = Object.entries(meta.indicators).map(([k, v]) =>
+                `- ${k}: ${v.status}${v.last_observation ? ` (last ${v.last_observation})` : ''}${v.error ? ` — ${v.error}` : ''}`);
+              body = `**${meta.n_live}/${meta.n_indicators} live**, ${meta.n_pending} pending-sourcing.\n\n${lines.join('\n')}`;
+            } catch (e) { body = 'Could not read _meta.json: ' + e.message; }
+            await github.rest.issues.create({
+              owner: context.repo.owner, repo: context.repo.repo,
+              title: `Weekly market-pulse update ${new Date().toISOString().slice(0, 10)}`,
+              body,
+            });
