@@ -19,21 +19,25 @@
 \begin{abstract}
 The Federal Reserve FEDS Notes \textit{Mapping Heat in the U.S.\ Financial
 System} (August 2015) builds a heat map of financial-system vulnerabilities
-from 44 indicators grouped into 14 components.  This paper documents a full
+from 44 indicators grouped into 14 components, plus the two indicators added in
+the final journal publication (\textit{J.~Banking \& Finance} 81, 2017).  This paper documents a full
 replication of that exercise from public data alone.  Every indicator is
 rebuilt from a named public source with its exact construction given; the
 index pipeline is specified formula by formula; and the results are scored
 against the paper's own published ``accessible materials'' tables.
-43 of 44 indicators are replicated with public proxies (transformed-signal
+All 46 indicators are replicated with public proxies (transformed-signal
 correlations 0.37--1.00, median 0.91); the documented pipeline
 reproduces the published component indices at correlations 0.85--0.98 for
 13 of 14 components (aggregate 0.97), and the end-to-end public-proxy panel
 tracks the published aggregate index at 0.93.  Two orientation corrections
 to the paper's data appendix were required, both discovered empirically.
-The one indicator with no workable public proxy (the weighted-average
-maturity gap at commercial banks) and the one component the documented
+The weighted-average maturity gap at commercial banks is rebuilt by OLS
+regression on public macro variables (R$^2$ 0.80); the one component the documented
 pipeline cannot reproduce even on the paper's own data (commercial real
-estate) are documented as findings.  A reader with only this document and
+estate) is documented as a finding.  Source-release lags leave 32 series
+ending at 2025Q4; the panel is completed through 2026Q2 by tested nowcast
+models or documented assumptions, every filled value flagged by provenance.
+A reader with only this document and
 internet access can reproduce the entire exercise.
 \end{abstract}
 
@@ -48,7 +52,7 @@ System} (August 2015;
 \url{https://www.federalreserve.gov/econres/feds/mapping-heat-in-the-us-financial-system.htm};
 data through 2015Q1, sample 1990Q1--2014Q4) proposes
 a framework for assessing the build-up of vulnerabilities in the U.S.\
-financial system.  It collects \textbf{44 indicators} of financial and
+financial system.  It collects \textbf{44 indicators} (46 with the journal-publication additions) of financial and
 balance-sheet conditions, groups them into \textbf{14 components}
 spanning three broad vulnerability categories---valuation pressures,
 nonfinancial-sector borrowing, and financial-sector health---and develops
@@ -259,7 +263,7 @@ and concept, not by spelling.
 \section{Indicator catalog: public sources and constructions}
 \label{sec:catalog}
 
-For each of the 44 indicators: the public source with its exact identifier,
+For each of the 46 indicators: the public source with its exact identifier,
 the precise construction, and---where a proxy stands in for proprietary or
 microdata---what it proxies, why it was chosen, and what dynamics it
 captures.  Correlations quoted are the proxy's correlation against the
@@ -742,6 +746,27 @@ unfetchable, and it has the wrong dynamics (noise is a flow/market-price
 measure spiking in 2008; the target is a stock/balance-sheet measure
 peaking pre-crisis in 2006 and falling through 2008).
 
+\textbf{SRISK / total assets (journal-publication addition).} \textit{Proxy.}
+Total systemic capital shortfall relative to total assets, rebuilt from public
+inputs by the documented V-LAB method: sum of positive firm-level SRISK over
+20 large U.S.\ bank holding companies, divided by their summed book assets
+(\texttt{BHCK2170}).  Firm SRISK $= \max(0,\, 0.08\times\text{book liabilities}
+- 0.92\times\text{market cap}\times(1-\text{LRMES}))$ with
+$\text{LRMES} = 1-0.6^{\beta}$ (V-LAB ``without simulation'' method,
+$k=8\%$, 40\% crisis threshold); $\beta$ is a 36-month rolling OLS beta
+vs.\ the S\&P 500.  Book data: FR Y-9C firm-level; market cap: quarter-end
+Yahoo close $\times$ shares outstanding (SEC EDGAR XBRL companyfacts 2009Q3+;
+pre-2009 split-adjusted backward carry with 10-K anchors).  2000Q1--2026Q2;
+peaks 2009Q1 at 5.09\% ($\approx$\$550B).  Caveats: survivors-only panel
+(delisted crisis-era firms excluded, so the 2008 peak is understated);
+beta is OLS, not DCC-GARCH.
+
+\textbf{Granger-causality connections (journal-publication addition).}
+\textit{Proxy.}  Share of statistically significant pairwise linear
+Granger-causality edges among monthly log returns of 30 large listed U.S.\
+financial firms, 36-month rolling windows, 5\% HAC-robust tests.
+1993Q1--2026Q2; reaches 31\% in 2008Q4.
+
 \section{Two empirical orientation corrections}
 \label{sec:corrections}
 
@@ -871,16 +896,18 @@ dynamics.
 \textbf{Net saving (0.83)}---household (0.82) and business (0.84) saving
 proxies are close; marginal.
 
-\textbf{The maturity gap has no workable public proxy.}  The
-weighted-average maturity gap at commercial banks (the
-Brunnermeier--Oehmke concept) cannot be built from public data: the FFIEC
-CDR bulk Call Report files carry no descriptive labels (MDRM codes only,
-e.g.\ \texttt{RCON8693}--\texttt{RCON8716}), the FFIEC form documentation
-mapping MDRMs to the RC-C/RC-E maturity-bucket schedules was not in the
-downloaded data, and the accessible gap is essentially uncorrelated with
-loans/deposits (0.01 over 71 quarters)---confirming it cannot be proxied
-by simpler balance-sheet ratios and genuinely requires the maturity
-buckets.
+\textbf{The maturity gap is a fitted proxy.}  The weighted-average
+maturity gap at commercial banks (the Brunnermeier--Oehmke concept) cannot
+be built directly from public data: the FFIEC CDR bulk Call Report files
+carry no descriptive labels (MDRM codes only), and a direct RC-C/RC-E
+maturity-bucket construction is uncorrelated with the authors' accessible
+series ($-0.04$), indicating a different aggregation.  The adopted proxy is
+OLS of the accessible series (1997Q2--2010Q4, $N=55$) on the 10-year
+Treasury yield, VIX, and the loans-to-deposits ratio:
+$\text{gap} = -1.87 - 3.40\times y_{10} - 0.144\times \text{VIX}
++ 0.423\times \text{loan/dep}$, $R^2=0.799$, RMSE $1.77$ months.
+Out-of-sample quarters rely on the stability of the 1997--2010
+relationship; this is documented as a limitation, not a measurement.
 
 \section{Visual proof and extension to the present}
 \label{sec:visual}
@@ -989,6 +1016,27 @@ recent picture is cool to lukewarm:} the aggregate sits at 0.20--0.34
 through 2024--2025Q4, with warmth concentrated in business credit
 (0.65--0.86 over the last year) and price volatility (0.43--0.75);
 household, leverage, and funding components are all cool.
+
+\subsection{Nowcasting the ragged edge}
+
+Source-release lags (FRED, Z.1) leave 32 of the 46 series ending at 2025Q4.
+Rather than averaging the index over a partial input set, the panel is
+completed through 2026Q2 by nowcasting.  Per series and per horizon
+($h=1,2$), four specification families are tried: direct-horizon AR($p$),
+$p\in\{1,2,4\}$ (BIC-selected); ridge bridge equations on own lags plus
+the 15 series observed through 2026Q2 (penalty by rolling-origin CV);
+carry-forward; and trailing mean.  Each is scored by rolling-origin
+backtest over the last 8 quarters.  The model nowcast is used only if it
+beats carry-forward by at least 10\% RMSE with $R^2\ge0.30$; otherwise a
+documented assumption applies (carry-forward for persistent series,
+trend extrapolation for drifting series, trailing mean otherwise).  The
+maturity-gap proxy is extended by its OLS regression on observed 2026Q1/Q2
+inputs, not by nowcast.  Every filled value carries provenance
+(\texttt{data/nowcast\_provenance.csv}: method, backtest scores, and the
+reason for the choice); the observed-only panel is preserved as
+\texttt{data/panel\_quarterly.csv}.  The nowcast shifts history by at most
+0.016 on any component (0.005 on the aggregate)---the extension is the same
+methodology on a completed sample.
 
 \subsection{Caveats specific to the extension}
 
