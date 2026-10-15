@@ -1,266 +1,489 @@
-/* FRB Heat Index — all data loaded from data/*.json; nothing hardcoded. */
-(function () {
-  'use strict';
+/* FRB Heat Index — Observable Plot charts + hierarchical explorer.
+   All data from data/*.json; nothing hardcoded. Static, no build step. */
+import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+esm";
 
-  var DATA = 'data/';
-  var charts = [];
+/* ---------------- theme ---------------- */
 
-  function $(id) { return document.getElementById(id); }
+const THEMES = {
+  light: {
+    ink: "#1b1a16", muted: "#75705f", faint: "#a8a294",
+    grid: "#ece7d8", line: "#e9e4d6", missing: "#ece7d9",
+    shade: "rgba(178,24,43,0.07)", accent: "#1d4ed8",
+    card: "#ffffff", tipBg: "#1b1a16", tipFg: "#faf9f6",
+  },
+  dark: {
+    ink: "#ede7d6", muted: "#a2987f", faint: "#6f675a",
+    grid: "#2b261c", line: "#2e2a20", missing: "#2b261c",
+    shade: "rgba(178,24,43,0.18)", accent: "#7aa2f7",
+    card: "#1d1a13", tipBg: "#ede7d6", tipFg: "#14120d",
+  },
+};
 
-  function loadJSON(name) {
-    return fetch(DATA + name).then(function (r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status + ' loading ' + name);
-      return r.json();
+// Paper's blue -> red heat scale (single color story, both themes).
+const HEAT = ["#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#f7f7f7",
+              "#fddbc7", "#f4a582", "#d6604d", "#b2182b"];
+
+let themeName = document.documentElement.dataset.theme || "light";
+const T = () => THEMES[themeName];
+
+function hexRgb(h) {
+  const n = parseInt(h.slice(1), 16);
+  return [n >> 16 & 255, n >> 8 & 255, n & 255];
+}
+function heatColor(v) {
+  const t = Math.max(0, Math.min(1, v)) * (HEAT.length - 1);
+  const i = Math.min(Math.floor(t), HEAT.length - 2), f = t - i;
+  const a = hexRgb(HEAT[i]), b = hexRgb(HEAT[i + 1]);
+  return "#" + a.map((x, k) => Math.round(x + (b[k] - x) * f).toString(16).padStart(2, "0")).join("");
+}
+function luminance(hex) {
+  const [r, g, b] = hexRgb(hex).map(x => { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+function heatBadge(v) {
+  if (v == null || !Number.isFinite(v))
+    return `<span class="heat-badge" style="background:${T().missing};color:${T().muted}">n/a</span>`;
+  const bg = heatColor(v);
+  const fg = luminance(bg) > 0.5 ? "#1b1a16" : "#ffffff";
+  return `<span class="heat-badge" style="background:${bg};color:${fg}">${v.toFixed(2)}</span>`;
+}
+
+/* ---------------- data ---------------- */
+
+const DATA = "data/";
+async function loadJSON(name) {
+  const r = await fetch(DATA + name);
+  if (!r.ok) throw new Error(`HTTP ${r.status} loading ${name}`);
+  return r.json();
+}
+
+let AGG, COMP, IND, HIER, META;
+let quarters = [], qIndex = {};
+let yearTicks = [];
+
+function equantile(sortedVals, z) {
+  // Empirical quantile of z in its own history (sorted ascending).
+  if (!sortedVals.length || z == null || !Number.isFinite(z)) return null;
+  let k = 0;
+  for (const x of sortedVals) { if (x <= z) k++; else break; }
+  return k / sortedVals.length;
+}
+
+/* ---------------- plot helpers ---------------- */
+
+function basePlot(opts) {
+  return Plot.plot(Object.assign({
+    style: {
+      background: "transparent",
+      color: T().ink,
+      fontFamily: "Inter, -apple-system, sans-serif",
+      fontSize: "12px",
+      overflow: "visible",
+    },
+  }, opts));
+}
+
+function sparkline(pts, { w = 150, h = 42, ymin = 0, ymax = 1, stroke = null } = {}) {
+  const s = stroke || T().ink;
+  const data = pts.map((d, i) => ({ xi: i, v: d.v }));
+  return basePlot({
+    width: w, height: h,
+    marginTop: 4, marginRight: 4, marginBottom: 4, marginLeft: 4,
+    x: { axis: null }, y: { axis: null, domain: [ymin, ymax] },
+    marks: [
+      Plot.ruleY([0], { stroke: T().faint, strokeOpacity: 0.6 }),
+      Plot.line(data, { x: "xi", y: "v", stroke: s, strokeWidth: 1.5, curve: "monotone-x" }),
+      Plot.dot(data.slice(-1), { x: "xi", y: "v", fill: s, r: 2.5 }),
+    ],
+  });
+}
+
+function heatStrip(vals, { w = 150, h = 18 } = {}) {
+  // One-row heat strip of 0-1 values (for indicator detail).
+  const data = vals.map((v, i) => ({ xi: i, v }));
+  return basePlot({
+    width: w, height: h,
+    marginTop: 2, marginRight: 2, marginBottom: 2, marginLeft: 2,
+    x: { axis: null }, y: { axis: null },
+    color: { type: "linear", domain: [0, 1], range: HEAT },
+    marks: [
+      Plot.rect(data.filter(d => d.v != null),
+        { x1: d => d.xi - 0.5, x2: d => d.xi + 0.5, y1: 0, y2: 1, fill: "v" }),
+      Plot.rect(data.filter(d => d.v == null),
+        { x1: d => d.xi - 0.5, x2: d => d.xi + 0.5, y1: 0, y2: 1, fill: T().missing }),
+    ],
+  });
+}
+
+/* ---------------- heatmap (hero) ---------------- */
+
+function renderHeatmap() {
+  const el = document.getElementById("heatmap");
+  el.innerHTML = "";
+  const components = META.components;
+  const nQ = quarters.length;
+  const cells = [], missing = [];
+  components.forEach(c => {
+    (COMP[c] || []).forEach((d, xi) => {
+      if (d.v == null) missing.push({ q: d.q, c, xi });
+      else cells.push({ q: d.q, c, v: d.v, xi });
     });
-  }
+  });
+  const fig = basePlot({
+    width: 1020,
+    height: components.length * 34 + 92,
+    marginLeft: 172, marginRight: 16, marginTop: 8, marginBottom: 64,
+    padding: 0,
+    x: {
+      domain: [-0.5, nQ - 0.5], ticks: yearTicks,
+      tickFormat: i => quarters[i].slice(0, 4),
+      label: null, tickSize: 0,
+    },
+    y: { domain: components, label: null, tickSize: 0 },
+    color: {
+      type: "linear", domain: [0, 1], range: HEAT, legend: true,
+      label: "Quantile in own history →", ticks: [0, 0.25, 0.5, 0.75, 1],
+      tickFormat: d => d.toFixed(2),
+    },
+    marks: [
+      Plot.rect(cells, {
+        x1: d => d.xi - 0.48, x2: d => d.xi + 0.48, y: "c", fill: "v",
+        stroke: T().card, strokeWidth: 0.7,
+      }),
+      Plot.rect(missing, {
+        x1: d => d.xi - 0.48, x2: d => d.xi + 0.48, y: "c", fill: T().missing,
+        stroke: T().card, strokeWidth: 0.7,
+      }),
+      Plot.tip(cells, Plot.pointer({
+        x: "xi", y: "c",
+        title: d => `${d.c}\n${d.q} — ${d.v.toFixed(2)}\nHotter than ${Math.round(d.v * 100)}% of its history`,
+      })),
+    ],
+  });
+  el.appendChild(fig);
+}
 
-  function onResize() {
-    charts.forEach(function (c) { try { c.resize(); } catch (e) {} });
-  }
-  window.addEventListener('resize', onResize);
+/* ---------------- aggregate ---------------- */
 
-  var HEAT_COLORS = ['#2166ac', '#4393c3', '#92c5de', '#d1e5f0', '#f7f7f7',
-                     '#fddbc7', '#f4a582', '#d6604d', '#b2182b']; // cool -> hot
+function renderAggregate() {
+  const el = document.getElementById("aggchart");
+  el.innerHTML = "";
+  const pts = AGG.map((d, xi) => ({ ...d, xi })).filter(d => d.v != null);
+  const peak = pts.reduce((a, b) => (b.v > a.v ? b : a), pts[0]);
+  const peakLabel = `${peak.q} peak ${peak.v.toFixed(2)}`;
+  const shades = [
+    { q1: "2007Q1", q2: "2008Q4", label: "2007–08 — crisis buildup" },
+  ].filter(s => qIndex[s.q1] != null);
+  const fig = basePlot({
+    width: 1020, height: 380,
+    marginLeft: 52, marginRight: 20, marginTop: 18, marginBottom: 44,
+    x: {
+      domain: [-0.5, quarters.length - 0.5], ticks: yearTicks,
+      tickFormat: i => quarters[i].slice(0, 4), label: null,
+      grid: true, tickSize: 0,
+    },
+    y: { domain: [0, 1], label: "Index (0–1)", grid: true },
+    marks: [
+      ...shades.map(s => Plot.rect([s], {
+        x1: qIndex[s.q1] - 0.5, x2: qIndex[s.q2] + 0.5,
+        fill: T().shade,
+      })),
+      ...shades.map(s => Plot.text([s], {
+        x: (qIndex[s.q1] + qIndex[s.q2]) / 2, y: 0.06,
+        text: d => d.label, fontSize: 11, fill: T().muted, textAnchor: "middle",
+      })),
+      Plot.areaY(pts, { x: "xi", y: "v", fill: T().accent, fillOpacity: 0.10, curve: "monotone-x" }),
+      Plot.line(pts, { x: "xi", y: "v", stroke: T().accent, strokeWidth: 2.2, curve: "monotone-x" }),
+      Plot.dot([peak], { x: "xi", y: "v", fill: "#b2182b", stroke: T().card, strokeWidth: 1.5, r: 5 }),
+      Plot.text([peak], {
+        x: "xi", y: "v", text: () => peakLabel,
+        dy: -18, dx: 34, fontSize: 11.5, fontWeight: 600, fill: T().ink, textAnchor: "start",
+      }),
+      Plot.tip(pts, Plot.pointer({
+        x: "xi",
+        title: d => `${d.q}\nAggregate index: ${d.v.toFixed(3)}`,
+      })),
+    ],
+  });
+  el.appendChild(fig);
+}
 
-  function renderHeatmap(components, compData) {
-    var el = $('heatmap');
-    var chart = echarts.init(el);
-    charts.push(chart);
+/* ---------------- hierarchical explorer ---------------- */
 
-    // quarters from the first component that has any data
-    var quarters = null;
-    components.forEach(function (c) {
-      if (!quarters && compData[c] && compData[c].length) quarters = compData[c].map(function (d) { return d.q; });
-    });
+const EXP = { level: "index", category: null, component: null, indicator: null };
 
-    var values = [], missing = [];
-    components.forEach(function (c, yi) {
-      (compData[c] || []).forEach(function (d, xi) {
-        if (d.v === null || d.v === undefined) missing.push([xi, yi]);
-        else values.push([xi, yi, d.v]);
-      });
-    });
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
 
-    var yLabels = components.slice().reverse();
-    // ECharts heatmap: y index 0 is at the bottom; reverse so first component is on top.
-    var nY = components.length;
-    function flipY(yi) { return nY - 1 - yi; }
-    var vFlip = values.map(function (t) { return [t[0], flipY(t[1]), t[2]]; });
-    var mFlip = missing.map(function (t) { return [t[0], flipY(t[1]), 1]; });
+function lastVal(series) {
+  for (let i = series.length - 1; i >= 0; i--)
+    if (series[i].v != null && Number.isFinite(series[i].v)) return series[i].v;
+  return null;
+}
 
-    chart.setOption({
-      animation: false,
-      tooltip: {
-        trigger: 'item',
-        formatter: function (p) {
-          if (p.seriesName === 'missing') {
-            var ci0 = nY - 1 - p.value[1];
-            return '<b>' + esc(components[ci0]) + '</b><br/>' +
-                   esc(quarters[p.value[0]]) + ': no data';
-          }
-          var ci = nY - 1 - p.value[1];
-          var v = p.value[2];
-          return '<b>' + esc(components[ci]) + '</b><br/>' +
-                 esc(quarters[p.value[0]]) + ': <b>' + v.toFixed(2) + '</b><br/>' +
-                 '<span style="color:#888">hotter than ' + Math.round(v * 100) + '% of history</span>';
-        }
-      },
-      grid: { left: 150, right: 30, top: 20, bottom: 70 },
-      xAxis: {
-        type: 'category', data: quarters, splitArea: { show: false },
-        axisLabel: { interval: 15, rotate: 0, fontSize: 10, color: '#5b6b7f' },
-        axisTick: { show: false }, axisLine: { show: false }
-      },
-      yAxis: {
-        type: 'category', data: yLabels, inverse: false,
-        axisLabel: { fontSize: 11, color: '#334155' },
-        axisTick: { show: false }, axisLine: { show: false }
-      },
-      visualMap: {
-        seriesIndex: 0,
-        min: 0, max: 1, calculable: true,
-        orient: 'horizontal', left: 'center', bottom: 0,
-        inRange: { color: HEAT_COLORS },
-        text: ['hot — high vulnerability', 'cool — subdued'],
-        textStyle: { color: '#5b6b7f', fontSize: 11 }
-      },
-      series: [
-        {
-          name: 'heat', type: 'heatmap', data: vFlip,
-          itemStyle: { borderColor: '#fff', borderWidth: 0 },
-          emphasis: { itemStyle: { borderColor: '#0f1c2e', borderWidth: 1 } }
-        },
-        {
-          name: 'missing', type: 'heatmap', data: mFlip, silent: true,
-          itemStyle: { color: '#e6ebf1', borderColor: '#fff', borderWidth: 0 }
-        }
-      ]
-    });
-  }
-
-  function esc(s) {
-    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  }
-
-  function renderAggregate(agg) {
-    var el = $('aggchart');
-    var chart = echarts.init(el);
-    charts.push(chart);
-    var qs = agg.map(function (d) { return d.q; });
-    var vs = agg.map(function (d) { return d.v; });
-    var peak = 0, peakQ = '';
-    agg.forEach(function (d) { if (d.v !== null && d.v > peak) { peak = d.v; peakQ = d.q; } });
-
-    chart.setOption({
-      animation: false,
-      tooltip: {
-        trigger: 'axis',
-        formatter: function (ps) {
-          var d = agg[ps[0].dataIndex];
-          return '<b>' + esc(d.q) + '</b><br/>aggregate index: <b>' +
-                 (d.v === null ? 'n/a' : d.v.toFixed(3)) + '</b>';
-        }
-      },
-      grid: { left: 44, right: 24, top: 30, bottom: 40 },
-      xAxis: {
-        type: 'category', data: qs, boundaryGap: false,
-        axisLabel: { interval: 15, fontSize: 10, color: '#5b6b7f' }
-      },
-      yAxis: {
-        type: 'value', min: 0, max: 1,
-        axisLabel: { fontSize: 10, color: '#5b6b7f' },
-        splitLine: { lineStyle: { color: '#eef1f5' } }
-      },
-      series: [{
-        name: 'aggregate', type: 'line', data: vs,
-        showSymbol: false, connectNulls: false,
-        lineStyle: { width: 2, color: '#1d4ed8' },
-        areaStyle: { color: 'rgba(29,78,216,0.08)' },
-        markArea: {
-          silent: true,
-          itemStyle: { color: 'rgba(178,24,43,0.07)' },
-          label: { color: '#7f1d1d', fontSize: 11, position: 'insideTop' },
-          data: [
-            [{ name: '2007 — imbalances build', xAxis: '2007Q1' }, { xAxis: '2007Q4' }],
-            [{ name: '2008 — crisis', xAxis: '2008Q1' }, { xAxis: '2008Q4' }]
-          ]
-        },
-        markPoint: peakQ ? {
-          symbol: 'pin', symbolSize: 44,
-          label: { formatter: 'peak {c}', fontSize: 10, color: '#fff' },
-          itemStyle: { color: '#b2182b' },
-          data: [{ name: 'peak', coord: [peakQ, peak], value: peak.toFixed(2) }]
-        } : undefined
-      }]
-    });
-  }
-
-  function renderMultiples(components, compData) {
-    var grid = $('multiples');
-    components.forEach(function (c) {
-      var card = document.createElement('div');
-      card.className = 'multi';
-      var h = document.createElement('h3');
-      h.textContent = c;
-      card.appendChild(h);
-      var pts = compData[c] || [];
-      var hasData = pts.some(function (d) { return d.v !== null && d.v !== undefined; });
-      if (!hasData) {
-        var nd = document.createElement('div');
-        nd.className = 'nodata';
-        nd.textContent = 'No observations in the current panel.';
-        card.appendChild(nd);
-        grid.appendChild(card);
-        return;
-      }
-      var div = document.createElement('div');
-      div.className = 'mini';
-      card.appendChild(div);
-      grid.appendChild(card);
-
-      var chart = echarts.init(div);
-      charts.push(chart);
-      chart.setOption({
-        animation: false,
-        tooltip: {
-          trigger: 'axis',
-          formatter: function (ps) {
-            var d = pts[ps[0].dataIndex];
-            return '<b>' + esc(d.q) + '</b><br/>' + esc(c) + ': <b>' +
-                   (d.v === null ? 'n/a' : d.v.toFixed(3)) + '</b>';
-          }
-        },
-        grid: { left: 34, right: 10, top: 12, bottom: 22 },
-        xAxis: {
-          type: 'category',
-          data: pts.map(function (d) { return d.q; }),
-          boundaryGap: false,
-          axisLabel: { interval: 39, fontSize: 9, color: '#8fa3bb' },
-          axisTick: { show: false }, axisLine: { lineStyle: { color: '#e2e8f0' } }
-        },
-        yAxis: {
-          type: 'value', min: 0, max: 1,
-          axisLabel: { fontSize: 9, color: '#8fa3bb' },
-          splitLine: { lineStyle: { color: '#f1f4f8' } }
-        },
-        series: [{
-          type: 'line',
-          data: pts.map(function (d) { return d.v; }),
-          showSymbol: false, connectNulls: false,
-          lineStyle: { width: 1.5, color: '#0f1c2e' }
-        }]
-      });
-    });
-  }
-
-  function renderMeta(meta) {
-    var stamp = $('stamp');
-    var q = meta.last_updated_quarter || '?';
-    var first = meta.start_quarter || '?';
-    var n = meta.n_quarters || '?';
-    var built = meta.built_at_utc ? meta.built_at_utc.replace('T', ' ').replace('Z', ' UTC') : 'unknown';
-    stamp.innerHTML = 'Data through <strong>' + esc(q) + '</strong> · ' + esc(n) +
-      ' quarters (' + esc(first) + '–' + esc(q) + ') · panel built ' + esc(built) + '.';
-    $('hero-range').textContent = first + ' – ' + q + ' · ' + n + ' quarters · quarterly refresh';
-
-    var stale = meta.stale_sources || [];
-    if (stale.length) {
-      var b = $('stale-banner');
-      b.classList.add('show');
-      b.innerHTML = '<strong>Data note:</strong> the following source(s) are flagged stale in the current build: ' +
-        stale.map(esc).join(', ') + '. Values that depend on them may lag.';
+function categorySeries(cat) {
+  // Descriptive mean of member components' quantiles (not an official level).
+  const n = quarters.length;
+  const out = [];
+  for (let xi = 0; xi < n; xi++) {
+    let s = 0, k = 0;
+    for (const comp of cat.components) {
+      const d = (COMP[comp.name] || [])[xi];
+      if (d && d.v != null) { s += d.v; k++; }
     }
+    out.push({ q: quarters[xi], v: k ? s / k : null });
   }
+  return out;
+}
 
-  function fail(err) {
-    ['heatmap', 'aggchart'].forEach(function (id) {
-      var el = $(id);
-      if (el && !el.dataset.done) el.innerHTML = '<p class="err">Could not load chart data (' + esc(err.message) + ').</p>';
-    });
-    var m = $('multiples');
-    if (m) m.innerHTML = '<p class="err">Could not load component data (' + esc(err.message) + ').</p>';
-  }
-
-  function boot() {
-    if (typeof echarts === 'undefined') {
-      fail(new Error('chart library (ECharts CDN) did not load'));
-      return;
+function setCrumbs(items) {
+  // items: [{label, go}] — last item is current (disabled).
+  const nav = document.getElementById("crumbs");
+  nav.innerHTML = "";
+  items.forEach((it, i) => {
+    if (i > 0) {
+      const sep = document.createElement("span");
+      sep.className = "sep"; sep.textContent = "›";
+      nav.appendChild(sep);
     }
-    Promise.all([loadJSON('aggregate.json'), loadJSON('components.json'), loadJSON('meta.json')])
-      .then(function (res) {
-        var agg = res[0], compData = res[1], meta = res[2];
-        var components = (meta.components && meta.components.length)
-          ? meta.components
-          : Object.keys(compData);
-        renderMeta(meta);
-        renderHeatmap(components, compData);
-        renderAggregate(agg);
-        renderMultiples(components, compData);
-        ['heatmap', 'aggchart'].forEach(function (id) { $(id).dataset.done = '1'; });
-      })
-      .catch(fail);
-  }
+    const b = document.createElement("button");
+    b.textContent = it.label;
+    if (i === items.length - 1) b.disabled = true;
+    else b.onclick = it.go;
+    nav.appendChild(b);
+  });
+}
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
-  else boot();
-})();
+function mount(node) {
+  const el = document.getElementById("explorer");
+  el.innerHTML = "";
+  el.appendChild(node);
+}
+
+function goIndex() { Object.assign(EXP, { level: "index", category: null, component: null, indicator: null }); renderExplorer(); }
+function goCategory(name) { Object.assign(EXP, { level: "category", category: name, component: null, indicator: null }); renderExplorer(); }
+function goComponent(catName, compName) { Object.assign(EXP, { level: "component", category: catName, component: compName, indicator: null }); renderExplorer(); }
+function goIndicator(catName, compName, indName) { Object.assign(EXP, { level: "indicator", category: catName, component: compName, indicator: indName }); renderExplorer(); }
+
+function renderExplorer() {
+  const { level } = EXP;
+  if (level === "index") return viewIndex();
+  if (level === "category") return viewCategory();
+  if (level === "component") return viewComponent();
+  return viewIndicator();
+}
+
+function viewIndex() {
+  setCrumbs([{ label: "Aggregate index", go: goIndex }]);
+  const wrap = document.createElement("div");
+  wrap.innerHTML = `<p class="exp-note">One headline index, built from three vulnerability
+    categories. Category heat is the mean of its components' quantiles — descriptive,
+    not an official index level (the official aggregate averages all fourteen at once).</p>`;
+  const grid = document.createElement("div");
+  grid.className = "exp-grid";
+  for (const cat of HIER.categories) {
+    const s = categorySeries(cat);
+    const heat = lastVal(s);
+    const card = document.createElement("div");
+    card.className = "exp-card";
+    card.innerHTML = `<h3>${esc(cat.name)} ${heatBadge(heat)}</h3>
+      <p class="blurb">${esc(cat.blurb)}</p><div class="spark"></div>`;
+    card.querySelector(".spark").appendChild(sparkline(s, { w: 320, h: 56 }));
+    card.onclick = () => goCategory(cat.name);
+    grid.appendChild(card);
+  }
+  wrap.appendChild(grid);
+  mount(wrap);
+}
+
+function viewCategory() {
+  const cat = HIER.categories.find(c => c.name === EXP.category);
+  setCrumbs([{ label: "Aggregate index", go: goIndex }, { label: cat.name, go: () => goCategory(cat.name) }]);
+  const s = categorySeries(cat);
+  const heat = lastVal(s);
+  const wrap = document.createElement("div");
+  wrap.innerHTML = `
+    <div class="exp-detail-head"><h3>${esc(cat.name)}</h3>${heatBadge(heat)}</div>
+    <p class="exp-note">${esc(cat.blurb)} ${cat.components.length} components; latest category heat
+    ${heat == null ? "n/a" : heat.toFixed(2)}.</p>`;
+  const grid = document.createElement("div");
+  grid.className = "exp-grid";
+  for (const comp of cat.components) {
+    const series = COMP[comp.name] || [];
+    const h = lastVal(series);
+    const card = document.createElement("div");
+    card.className = "exp-card";
+    card.innerHTML = `<h3>${esc(comp.name)} ${heatBadge(h)}</h3>
+      <p class="blurb">${comp.indicators.length} indicators</p><div class="spark"></div>`;
+    card.querySelector(".spark").appendChild(sparkline(series, { w: 320, h: 56 }));
+    card.onclick = () => goComponent(cat.name, comp.name);
+    grid.appendChild(card);
+  }
+  wrap.appendChild(grid);
+  mount(wrap);
+}
+
+function viewComponent() {
+  const cat = HIER.categories.find(c => c.name === EXP.category);
+  const comp = cat.components.find(c => c.name === EXP.component);
+  setCrumbs([
+    { label: "Aggregate index", go: goIndex },
+    { label: cat.name, go: () => goCategory(cat.name) },
+    { label: comp.name, go: () => goComponent(cat.name, comp.name) },
+  ]);
+  const series = COMP[comp.name] || [];
+  const heat = lastVal(series);
+  const wrap = document.createElement("div");
+  wrap.innerHTML = `
+    <div class="exp-detail-head"><h3>${esc(comp.name)}</h3>${heatBadge(heat)}</div>
+    <p class="exp-note">Component quantile in its own history (official index level).
+    Mean of ${comp.indicators.length} standardized indicators, mapped through the
+    Gaussian kernel CDF. Click an indicator to inspect it.</p>
+    <div class="spark" style="margin-bottom:1.5rem"></div>
+    <h3 style="font-family:var(--font-serif);font-size:1.15rem;margin:0 0 0.75rem">Indicators</h3>`;
+  const big = document.createElement("div");
+  big.appendChild(sparkline(series, { w: 1020, h: 170, stroke: T().accent }));
+  wrap.querySelector(".spark").replaceWith(big);
+
+  for (const ind of comp.indicators) {
+    const zs = (IND[ind.name] || []).map(d => d.z);
+    const sorted = zs.filter(Number.isFinite).sort((a, b) => a - b);
+    const zLast = [...zs].reverse().find(Number.isFinite);
+    const h = equantile(sorted, zLast);
+    const row = document.createElement("div");
+    row.className = "ind-row";
+    row.innerHTML = `
+      <div class="nm">${esc(ind.short)}<small>${esc(ind.name)}</small></div>
+      <div class="spark"></div>
+      <div>${heatBadge(h)}</div>`;
+    const pts = (IND[ind.name] || []).map((d, xi) => ({ xi, v: equantile(sorted, d.z) }));
+    const sp = heatStrip(pts.map(p => p.v), { w: 150, h: 22 });
+    row.querySelector(".spark").appendChild(sp);
+    row.onclick = () => goIndicator(cat.name, comp.name, ind.name);
+    wrap.appendChild(row);
+  }
+  mount(wrap);
+}
+
+function viewIndicator() {
+  const cat = HIER.categories.find(c => c.name === EXP.category);
+  const comp = cat.components.find(c => c.name === EXP.component);
+  const ind = comp.indicators.find(i => i.name === EXP.indicator);
+  setCrumbs([
+    { label: "Aggregate index", go: goIndex },
+    { label: cat.name, go: () => goCategory(cat.name) },
+    { label: comp.name, go: () => goComponent(cat.name, comp.name) },
+    { label: ind.short, go: () => goIndicator(cat.name, comp.name, ind.name) },
+  ]);
+  const rows = IND[ind.name] || [];
+  const zs = rows.map(d => d.z);
+  const sorted = zs.filter(Number.isFinite).sort((a, b) => a - b);
+  const heats = rows.map((d, xi) => ({ ...d, xi, h: equantile(sorted, d.z) }));
+  const zLast = [...zs].reverse().find(Number.isFinite);
+  const hLast = equantile(sorted, zLast);
+  const firstQ = rows.find(d => d.z != null)?.q || "—";
+  const lastQ = [...rows].reverse().find(d => d.z != null)?.q || "—";
+
+  const wrap = document.createElement("div");
+  wrap.innerHTML = `
+    <div class="exp-detail-head"><h3>${esc(ind.short)}</h3>${heatBadge(hLast)}</div>
+    <p class="exp-note">${esc(ind.name)} · ${esc(comp.name)} · ${esc(cat.name)}.<br>
+    Oriented standardized value (higher = more vulnerable) — the actual input to the
+    component mean. Heat is the value's quantile in its own history.</p>
+    <div id="ind-chart"></div>
+    <div id="ind-strip" style="margin-top:0.5rem"></div>
+    <div class="ind-stats">
+      <div><span class="stat-num">${zLast == null ? "n/a" : zLast.toFixed(2)}</span><span class="stat-label">latest z-score (${esc(lastQ)})</span></div>
+      <div><span class="stat-num">${hLast == null ? "n/a" : hLast.toFixed(2)}</span><span class="stat-label">heat (own-history quantile)</span></div>
+      <div><span class="stat-num">${sorted.length}</span><span class="stat-label">quarterly observations (${esc(firstQ)}–${esc(lastQ)})</span></div>
+    </div>`;
+  mount(wrap);
+
+  const finite = rows.map((d, xi) => ({ xi, q: d.q, z: d.z })).filter(d => d.z != null);
+  const zmin = Math.min(0, ...finite.map(d => d.z)), zmax = Math.max(0, ...finite.map(d => d.z));
+  const chart = basePlot({
+    width: 1020, height: 300,
+    marginLeft: 52, marginRight: 20, marginTop: 20, marginBottom: 40,
+    x: { domain: [-0.5, rows.length - 0.5], ticks: yearTicks, tickFormat: i => quarters[i].slice(0, 4), label: null, grid: true, tickSize: 0 },
+    y: { domain: [zmin - 0.3, zmax + 0.3], label: "z-score", grid: true },
+    color: { type: "linear", domain: [0, 1], range: HEAT, legend: true, label: "Heat", ticks: [0, 0.5, 1] },
+    marks: [
+      Plot.ruleY([0], { stroke: T().faint }),
+      Plot.line(finite, { x: "xi", y: "z", stroke: T().accent, strokeWidth: 2, curve: "monotone-x" }),
+      Plot.dot(heats.filter(d => d.z != null), {
+        x: "xi", y: "z", fill: "h", r: 3.5, stroke: T().card, strokeWidth: 1,
+      }),
+      Plot.tip(heats.filter(d => d.z != null), Plot.pointer({
+        x: "xi",
+        title: d => `${d.q}\nz = ${d.z.toFixed(2)} · heat ${d.h.toFixed(2)}`,
+      })),
+    ],
+  });
+  document.getElementById("ind-chart").appendChild(chart);
+  document.getElementById("ind-strip").appendChild(
+    heatStrip(heats.map(d => d.h), { w: 1020, h: 26 }));
+}
+
+/* ---------------- meta / stamp ---------------- */
+
+function renderMeta() {
+  const q = META.last_updated_quarter || "?";
+  const first = META.start_quarter || "?";
+  const n = META.n_quarters || "?";
+  const built = META.built_at_utc ? META.built_at_utc.replace("T", " ").replace("Z", " UTC") : "unknown";
+  document.getElementById("stamp").innerHTML =
+    `Data through <strong>${esc(q)}</strong> · ${esc(n)} quarters (${esc(first)}–${esc(q)}) · panel built ${esc(built)}.`;
+  document.getElementById("stat-quarters").textContent = n;
+  document.getElementById("stat-indicators").textContent = META.n_indicators ?? "–";
+  document.getElementById("stat-components").textContent = META.n_components ?? "–";
+  const stale = META.stale_sources || [];
+  if (stale.length) {
+    const b = document.getElementById("stale-banner");
+    b.classList.add("show");
+    b.innerHTML = `<strong>Data note:</strong> flagged stale in the current build: ${stale.map(esc).join(", ")}. Values that depend on them may lag.`;
+  }
+}
+
+/* ---------------- boot ---------------- */
+
+function fail(err) {
+  const msg = `<p class="err">Could not load chart data (${esc(err.message)}).</p>`;
+  for (const id of ["heatmap", "aggchart"]) {
+    const el = document.getElementById(id);
+    if (el && !el.dataset.done) el.innerHTML = msg;
+  }
+  const m = document.getElementById("explorer");
+  if (m) m.innerHTML = msg;
+}
+
+function renderAll() {
+  renderHeatmap();
+  renderAggregate();
+  renderExplorer();
+  document.getElementById("heatmap").dataset.done = "1";
+  document.getElementById("aggchart").dataset.done = "1";
+}
+
+async function boot() {
+  const [agg, comp, ind, hier, meta] = await Promise.all([
+    loadJSON("aggregate.json"), loadJSON("components.json"),
+    loadJSON("indicators.json"), loadJSON("hierarchy.json"), loadJSON("meta.json"),
+  ]);
+  AGG = agg; COMP = comp; IND = ind; HIER = hier; META = meta;
+  quarters = AGG.map(d => d.q);
+  quarters.forEach((q, i) => { qIndex[q] = i; });
+  yearTicks = quarters.map((q, i) => i).filter(i => quarters[i].endsWith("Q1") && parseInt(quarters[i]) % 5 === 0);
+  renderMeta();
+  renderAll();
+  window.__frbBooted = true;
+}
+
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  themeName = themeName === "light" ? "dark" : "light";
+  document.documentElement.dataset.theme = themeName;
+  try { localStorage.setItem("frb-heat-theme", themeName); } catch (e) {}
+  if (window.__frbBooted) renderAll();
+});
+
+boot().catch(fail);

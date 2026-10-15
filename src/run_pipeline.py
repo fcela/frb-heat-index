@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Run the heat-map index pipeline: data/panel_quarterly.csv -> components + aggregate.
+"""Run the heat-map index pipeline: data/panel_quarterly.csv -> components + aggregate
++ standardized indicators.
 
 Pipeline (exactly the paper's documented construction):
   per indicator: sign orientation -> log | 10y-MA detrend | none
@@ -7,6 +8,10 @@ Pipeline (exactly the paper's documented construction):
   -> component = mean of its standardized indicators
   -> Gaussian-kernel CDF (Silverman bandwidth) to (0,1)
   aggregate = mean of the 14 components -> kernel CDF again.
+
+The oriented standardized indicators are also written out
+(data/indicators_standardized.csv): they are the actual component inputs
+(higher = more vulnerable) and feed the site's hierarchical explorer.
 
 Ragged-edge rule: input quarters beyond the last full calendar quarter are
 dropped before the pipeline runs. Tail validation (from the end-of-sample
@@ -159,8 +164,8 @@ def standardize(mat: np.ndarray) -> np.ndarray:
 
 
 def run_pipeline(panel: pl.DataFrame,
-                 mask: pl.DataFrame | None = None) -> tuple[pl.DataFrame, pl.DataFrame]:
-    """panel: 'quarter' + indicator columns. Returns (components, aggregate)."""
+                 mask: pl.DataFrame | None = None) -> tuple[pl.DataFrame, pl.DataFrame, pl.DataFrame]:
+    """panel: 'quarter' + indicator columns. Returns (components, aggregate, standardized indicators)."""
     quarters = panel["quarter"].to_list()
     cols = [c for c in SPEC if c in panel.columns]
     missing = [c for c in SPEC if c not in panel.columns]
@@ -206,7 +211,13 @@ def run_pipeline(panel: pl.DataFrame,
     agg_raw = np.nanmean(np.column_stack([comp[c] for c in COMPONENTS]), axis=1)
     agg = kernel_cdf(agg_raw)
     agg_df = pl.DataFrame({"quarter": quarters, "Aggregate index": agg})
-    return comp_df, agg_df
+    # Oriented standardized indicators (the actual component inputs):
+    # sign already applied, so higher z = more vulnerable. Saved for the
+    # site's hierarchical explorer (indicator-level heat = empirical
+    # quantile of z in its own history).
+    std_df = pl.DataFrame({"quarter": quarters,
+                           **{c: std[:, j] for j, c in enumerate(cols)}})
+    return comp_df, agg_df, std_df
 
 
 def main() -> int:
@@ -217,6 +228,8 @@ def main() -> int:
     ap.add_argument("--mask-csv", default=None,
                     help="optional accessible raw panel: where it is NaN, the "
                          "proxy is also set to NaN (historical comparison)")
+    ap.add_argument("--indicators", default=str(HERE / "data" / "indicators_standardized.csv"),
+                    help="output CSV for oriented standardized indicators")
     args = ap.parse_args()
 
     panel = pl.read_csv(args.panel)
@@ -226,9 +239,10 @@ def main() -> int:
           f"({panel['quarter'][0]}..{panel['quarter'][-1]}), ragged edge {edge}")
 
     mask = pl.read_csv(args.mask_csv) if args.mask_csv else None
-    comp_df, agg_df = run_pipeline(panel, mask)
+    comp_df, agg_df, std_df = run_pipeline(panel, mask)
 
-    for path, df in ((args.components, comp_df), (args.aggregate, agg_df)):
+    for path, df in ((args.components, comp_df), (args.aggregate, agg_df),
+                     (args.indicators, std_df)):
         p = Path(path)
         p.parent.mkdir(parents=True, exist_ok=True)
         df.write_csv(p)

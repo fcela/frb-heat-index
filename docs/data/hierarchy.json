@@ -1,0 +1,268 @@
+{
+ "categories": [
+  {
+   "name": "Valuation pressures",
+   "blurb": "Asset prices and credit-market pricing. Stretched valuations and complacent pricing read as vulnerability.",
+   "components": [
+    {
+     "name": "Equity markets",
+     "indicators": [
+      {
+       "name": "Equity Valuations (Ratro minus 10 Yr. Tres. Yeild)",
+       "short": "E/P minus 10-yr Treasury yield"
+      },
+      {
+       "name": "Equity Valuations (Earnings/Price ratio )",
+       "short": "E/P ratio"
+      }
+     ]
+    },
+    {
+     "name": "Price volatility",
+     "indicators": [
+      {
+       "name": "Indicators of Volitility (Credit Default Swap premium)",
+       "short": "CDS premium"
+      },
+      {
+       "name": "Indicators of Volitility (VIX)",
+       "short": "VIX"
+      }
+     ]
+    },
+    {
+     "name": "Business credit",
+     "indicators": [
+      {
+       "name": "Spread of Corporate Bonds (over Treasury Securities) (BBB)",
+       "short": "BBB spread"
+      },
+      {
+       "name": "Spread of Corporate Bonds (over Treasury Securities) (High Yield)",
+       "short": "High-yield spread"
+      },
+      {
+       "name": "Investor Appetite for Risky Corporate Debt (Issuance of Junk Bonds and Leverage Loans)",
+       "short": "Junk + leveraged-loan issuance"
+      },
+      {
+       "name": "Investor Appetite for Risky Corporate Debt (Change in Bank Lending Standards C&I Loans)",
+       "short": "C&I lending standards"
+      }
+     ]
+    },
+    {
+     "name": "Commercial real estate",
+     "indicators": [
+      {
+       "name": "Prices for Commercial Real Estate (CRE)",
+       "short": "CRE prices"
+      },
+      {
+       "name": "Change in Lending Standards, CRE Loans",
+       "short": "CRE lending standards"
+      }
+     ]
+    },
+    {
+     "name": "Residential real estate",
+     "indicators": [
+      {
+       "name": "Mortage Lending and FICO Scores (FICO scores)",
+       "short": "FICO scores"
+      },
+      {
+       "name": "National House Prices Relative to Rents",
+       "short": "House prices / rents"
+      },
+      {
+       "name": "Mortage Lending and FICO Scores (Change in Lending Standards)",
+       "short": "Mortgage lending standards"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Nonfinancial-sector borrowing",
+   "blurb": "Debt and saving of households and nonfinancial businesses.",
+   "components": [
+    {
+     "name": "Nonfinancial Business",
+     "indicators": [
+      {
+       "name": "Debt Burden of Nonfinancial Businesses (Debt-to-Income ratio)",
+       "short": "Debt-to-income ratio"
+      },
+      {
+       "name": "Real Debt Growth of Nonfinancial Businesses",
+       "short": "Real debt growth"
+      },
+      {
+       "name": "Debt Burden of Nonfinancial Business (Interest expenses)",
+       "short": "Interest expenses"
+      },
+      {
+       "name": "Risky Debt of Nonfinancial Businesses (Deep junk Issuance Share)",
+       "short": "Deep-junk issuance share"
+      },
+      {
+       "name": "Risky Debt of Nonfinancial Businesses",
+       "short": "Net leverage of risky firms"
+      }
+     ]
+    },
+    {
+     "name": "Consumer credit",
+     "indicators": [
+      {
+       "name": "Comsumer Credit of Riskier Borrowers (Ratio of consumer credit debt owed by riskier borrowers to DPI)",
+       "short": "Riskier-borrower debt / DPI"
+      },
+      {
+       "name": "Consumer Credit (Consumer credit ratio to GDP)",
+       "short": "Consumer credit / GDP"
+      },
+      {
+       "name": "Consumer Credit (Consumer credit debt service ratio to DPI)",
+       "short": "Consumer debt service ratio"
+      },
+      {
+       "name": "Consumer Credit of Riskier Borrowers (Incidence of very rapid consumer borrowing by riskier borrowers)",
+       "short": "Rapid-borrowing incidence"
+      }
+     ]
+    },
+    {
+     "name": "Home mortgages",
+     "indicators": [
+      {
+       "name": "Home Mortage Debt (Ratio of mortgage debt owed by riskier borrowers to DPI)",
+       "short": "Riskier-borrower mortgage debt / DPI"
+      },
+      {
+       "name": "Home Mortage Debt (Ratio of total mortgage debt to GDP)",
+       "short": "Mortgage debt / GDP"
+      },
+      {
+       "name": "Home Mortgage Debt (Total mortgage debt service ratio to DPI)",
+       "short": "Mortgage debt service ratio"
+      },
+      {
+       "name": "Mortgage Borrowing by Riskier Borrowers (Incidence of piggy-back mortgages by riskier borrowers)",
+       "short": "Piggy-back incidence"
+      },
+      {
+       "name": "Mortgage Borrowing by Riskier Borrowers (Incidence of very rapid mortgage borrowing by riskier borrowers)",
+       "short": "Rapid-borrowing incidence"
+      }
+     ]
+    },
+    {
+     "name": "Net saving",
+     "indicators": [
+      {
+       "name": "Ratio of Nonfinancial Business Savings to GDP",
+       "short": "Business saving / GDP"
+      },
+      {
+       "name": "Ratio of Household Savings to GDP",
+       "short": "Household saving / GDP"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Financial-sector health",
+   "blurb": "Leverage, funding, and concentration inside the financial system.",
+   "components": [
+    {
+     "name": "Bank leverage",
+     "indicators": [
+      {
+       "name": "Bank Leverage (Total common equity to total assets)",
+       "short": "Tangible common equity / assets"
+      },
+      {
+       "name": "Bank Leverage (Tier 1 common equity ratio)",
+       "short": "Tier 1 common equity ratio"
+      },
+      {
+       "name": "Bank Leverage (Total Capital Ratio)",
+       "short": "Total capital ratio"
+      }
+     ]
+    },
+    {
+     "name": "Nonbank leverage",
+     "indicators": [
+      {
+       "name": "Broker Dealer Leverage (Dealer financing)",
+       "short": "Broker-dealer financing"
+      },
+      {
+       "name": "Broker Dealer Leverage (Broker dealer leverage ratio)",
+       "short": "Broker-dealer leverage ratio"
+      },
+      {
+       "name": "Ratio of U.S. Non Agency Securitization Issuance to GDP",
+       "short": "Non-agency securitization / GDP"
+      }
+     ]
+    },
+    {
+     "name": "Maturity transformation",
+     "indicators": [
+      {
+       "name": "Maturity Mismatch (Loans as a percent of deposits)",
+       "short": "Loans / deposits"
+      },
+      {
+       "name": "Weighted Average Maturity Gap at Commerical Banks",
+       "short": "Weighted-average maturity gap"
+      },
+      {
+       "name": "Maturity Mismatch (Ratio of net short-term wholesale debt of the financial sector to GDP)",
+       "short": "Net short-term wholesale debt / GDP"
+      }
+     ]
+    },
+    {
+     "name": "Short-term wholesale funding",
+     "indicators": [
+      {
+       "name": "Short Term Wholesale Funding (Ratio of Gross Short-Term Wholesale Debt of the Financial Sector to GDP)",
+       "short": "Gross short-term wholesale debt / GDP"
+      },
+      {
+       "name": "Short-term Wholesale Funding (Ratio of total runnable money -like liabilities to GDP)",
+       "short": "Runnable money-like liabilities / GDP"
+      },
+      {
+       "name": "Short-Term Wholesale Funding (Short-term money as a share of assets at BHCs)",
+       "short": "Short-term money / BHC assets"
+      }
+     ]
+    },
+    {
+     "name": "Size/concentration",
+     "indicators": [
+      {
+       "name": "Ratio of Total Assets Held by Top 5 Holding Companies to Total Bank Holding Company Assets",
+       "short": "Top-5 BHC asset share"
+      },
+      {
+       "name": "Illiquidity Conventration Indicator",
+       "short": "Illiquidity concentration"
+      },
+      {
+       "name": "Ratio of Total Financial Sector Liabilities to GDP",
+       "short": "Financial-sector liabilities / GDP"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
