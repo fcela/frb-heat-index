@@ -1,7 +1,27 @@
 {
- "last_built_quarter": "2025Q4",
- "built_at_utc": "2026-10-14T20:59:01Z",
+ "last_built_quarter": "2026Q2",
+ "built_at_utc": "2026-10-15T00:00:00Z",
  "n_indicators": 43,
  "n_components": 14,
- "note": "Extended panel from validated post-spike-audit rebuild; truncated at last full quarter per ragged-edge rule."
+ "note": "Structural fixes: Tier 1 CET1 splice across Basel III 2014 break; total capital ratio rebuilt from Y-9C; SLOOS mortgage standards spliced to successor (SUBLPDHMSGLGNQ); 8 dead Z.1 FRED codes replaced via Z.1 bulk extraction. All fixable series through 2026Q2.",
+ "components": [
+  "Equity markets",
+  "Price volatility",
+  "Business credit",
+  "Commercial real estate",
+  "Residential real estate",
+  "Nonfinancial Business",
+  "Consumer credit",
+  "Home mortgages",
+  "Net saving",
+  "Bank leverage",
+  "Nonbank leverage",
+  "Maturity transformation",
+  "Short-term wholesale funding",
+  "Size/concentration"
+ ],
+ "last_updated_quarter": "2026Q2",
+ "start_quarter": "1990Q1",
+ "n_quarters": 146,
+ "stale_sources": []
 }
