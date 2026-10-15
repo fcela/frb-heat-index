@@ -225,6 +225,27 @@ function categorySeries(cat) {
   return out;
 }
 
+/* Sparkline for the 14 component cards: no axes, no grid — the shape of the
+   series is the information. Exact values come from hover tooltips and the
+   click-through detail view. All cards share the same x-domain (quarters)
+   and y-domain (0–1 quantiles), so shapes are directly comparable. */
+function sparkline(series, { w = 640, h = 240, stroke = null } = {}) {
+  const s = stroke || T().accent;
+  const data = series.map((d, xi) => ({ q: d.q, v: d.v, xi })).filter(d => d.v != null);
+  const last = data[data.length - 1];
+  return basePlot({
+    width: w, height: h,
+    marginTop: 8, marginRight: 8, marginBottom: 8, marginLeft: 8,
+    x: { domain: [-0.5, quarters.length - 0.5], axis: null },
+    y: { domain: [0, 1], axis: null },
+    marks: [
+      Plot.line(data, { x: "xi", y: "v", stroke: s, strokeWidth: 2 }),
+      last ? Plot.dot([last], { x: "xi", y: "v", fill: s, stroke: T().card, strokeWidth: 1.5, r: 4 }) : null,
+      Plot.tip(data, Plot.pointer({ x: "xi", title: d => `${d.q} — ${d.v.toFixed(2)}` })),
+    ].filter(Boolean),
+  });
+}
+
 /* Straight polyline time-series chart (no smoothing — splines distort the series). */
 function seriesChart(pts, { w = 1020, h = 300, stroke = null, area = true, yLabel = null } = {}) {
   const s = stroke || T().accent;
@@ -374,6 +395,8 @@ function renderHierarchy() {
       () => seriesChart(catSeries, { w: 1020, h: 240 }));
 
     const grid = sec.querySelector(".comp-grid");
+    const yr0 = quarters.length ? quarters[0].slice(0, 4) : "";
+    const yr1 = quarters.length ? quarters[quarters.length - 1].slice(0, 4) : "";
     for (const comp of cat.components) {
       const series = COMP[comp.name] || [];
       const heat = lastVal(series);
@@ -385,6 +408,7 @@ function renderHierarchy() {
       card.innerHTML =
         `<h4>${esc(comp.name)} ${heatBadge(heat)}</h4>` +
         `<figure class="comp-chart" role="img" aria-label="${esc(comp.name)} component heat over time"></figure>` +
+        `<div class="spark-years"><span>${esc(yr0)}</span><span>${esc(yr1)}</span></div>` +
         `<span class="drill-hint">${comp.indicators.length} indicators →</span>`;
       const go = () => { location.hash = compHash(comp.name); };
       card.addEventListener("click", go);
@@ -392,7 +416,7 @@ function renderHierarchy() {
         if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); }
       });
       lazyChart(card.querySelector(".comp-chart"),
-        () => seriesChart(series, { w: 520, h: 190, area: false }));
+        () => sparkline(series, { w: 640, h: 240 }));
       grid.appendChild(card);
     }
     host.appendChild(sec);

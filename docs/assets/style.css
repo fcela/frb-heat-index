@@ -529,8 +529,8 @@ figure svg { display: block; max-width: 100%; height: auto; }
 
 .comp-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 1.1rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
 }
 
 .comp-card {
@@ -552,7 +552,18 @@ figure svg { display: block; max-width: 100%; height: auto; }
   gap: 0.75rem;
 }
 
-.comp-card .comp-chart { margin: 0 0 0.5rem; }
+.comp-card .comp-chart { margin: 0 0 0.25rem; }
+
+/* Year range under each sparkline: the shared x-domain, stated once per card
+   instead of 8 tick labels repeated 14 times. */
+.spark-years {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 0.78rem;
+  padding: 0 0.25rem;
+  margin-bottom: 0.35rem;
+}
 
 /* Click-through drill-down: the whole component card is a link. */
 .comp-card.comp-drill {
@@ -765,4 +776,8 @@ a { color: var(--accent-ink); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   * { transition: none !important; }
+}
+
+@media (min-width: 721px) and (max-width: 1020px) {
+  .comp-grid { grid-template-columns: 1fr; }
 }
