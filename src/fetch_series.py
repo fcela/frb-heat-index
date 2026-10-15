@@ -86,6 +86,7 @@ FRED_IDS = [
     "BOGZ1FL794035005Q",  # financial sectors, total loan assets
     "BOGZ1FL794090005Q",  # financial sectors, total financial assets
     "BOGZ1FL104090103Q",  # nonfinancial corporate business, total assets
+    "BOGZ1FL893065125Q",  # all sectors, home equity loans (closed-end junior liens), asset level ($M)
 ]
 
 SOURCES: list[tuple[str, str, str]] = (
@@ -103,11 +104,10 @@ SOURCES: list[tuple[str, str, str]] = (
          "https://apps.bea.gov/national/Release/TXT/NipaDataQ.txt",
          "auto"),
         # Fed-posted monthly excess-bond-premium / GZ credit-spread file
-        # (1973+). The original build used the copy posted on federalreserve.gov;
-        # if the URL below has moved, place the file manually as ebp_raw.csv.
+        # (1973+). Permanent URL (verified 2026-10-15); if it moves again,
+        # place the file manually as ebp_raw.csv.
         ("ebp_raw.csv",
-         "https://www.federalreserve.gov/econres/notes/feds-notes/"
-         "the-excess-bond-premium-20161006/ebp_csv.csv",
+         "https://www.federalreserve.gov/econres/notes/feds-notes/ebp_csv.csv",
          "manual"),
         # BIS commercial property price statistics, US, quarterly
         # (series Q:US:0:A:0:2:6:0). Download the CSV from the BIS portal.
