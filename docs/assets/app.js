@@ -86,20 +86,30 @@ function basePlot(opts) {
   }, opts));
 }
 
-function heatStrip(vals, { w = 150, h = 18 } = {}) {
-  // One-row heat strip of 0-1 values (for indicator detail).
-  const data = vals.map((v, i) => ({ xi: i, v }));
+/* Indicator line chart for the component detail view: the indicator's history
+   as a heat quantile (0-1) plotted as a straight polyline. Mirrors componentChart. */
+function indicatorChart(pts, { w = 720, h = 170 } = {}) {
+  const s = T().accent;
+  const data = pts.filter(d => d.v != null);
+  const last = data[data.length - 1];
   return basePlot({
     width: w, height: h,
-    marginTop: 2, marginRight: 2, marginBottom: 2, marginLeft: 2,
-    x: { axis: null }, y: { axis: null },
-    color: { type: "linear", domain: [0, 1], range: HEAT },
+    marginTop: 10, marginRight: 10, marginBottom: 28, marginLeft: 36,
+    x: {
+      domain: [-0.5, quarters.length - 0.5], ticks: decadeTicks,
+      tickFormat: i => quarters[i].slice(0, 4), label: null, tickSize: 0,
+    },
+    y: {
+      domain: [-0.05, 1.05],
+      ticks: [0, 0.5, 1], tickFormat: d => d.toFixed(1),
+      grid: true, label: null,
+    },
     marks: [
-      Plot.rect(data.filter(d => d.v != null),
-        { x1: d => d.xi - 0.5, x2: d => d.xi + 0.5, y1: 0, y2: 1, fill: "v" }),
-      Plot.rect(data.filter(d => d.v == null),
-        { x1: d => d.xi - 0.5, x2: d => d.xi + 0.5, y1: 0, y2: 1, fill: T().missing }),
-    ],
+      Plot.areaY(data, { x: "xi", y: "v", fill: s, fillOpacity: 0.08 }),
+      Plot.line(data, { x: "xi", y: "v", stroke: s, strokeWidth: 1.5 }),
+      last ? Plot.dot([last], { x: "xi", y: "v", fill: s, stroke: T().card, strokeWidth: 1.5, r: 3.5 }) : null,
+      Plot.tip(data, Plot.pointer({ x: "xi", title: d => `${d.q} — ${d.v.toFixed(2)}` })),
+    ].filter(Boolean),
   });
 }
 
@@ -309,11 +319,13 @@ function indicatorRows(comp) {
     const row = document.createElement("div");
     row.className = "ind-row";
     row.innerHTML =
-      `<div class="nm">${esc(ind.short)}<small>${esc(ind.name)}</small></div>` +
-      `<div class="spark"></div>` +
-      `<div class="ind-meta">${heatBadge(h)}<span class="zval" title="Latest oriented z-score">z ${zLast == null ? "n/a" : zLast.toFixed(2)}</span></div>`;
-    const pts = (IND[ind.name] || []).map((d, xi) => ({ xi, v: equantile(sorted, d.z) }));
-    row.querySelector(".spark").appendChild(heatStrip(pts.map(p => p.v), { w: 150, h: 22 }));
+      `<div class="ind-head">` +
+        `<div class="nm">${esc(ind.short)}<small>${esc(ind.name)}</small></div>` +
+        `<div class="ind-meta">${heatBadge(h)}<span class="zval" title="Latest oriented z-score">z ${zLast == null ? "n/a" : zLast.toFixed(2)}</span></div>` +
+      `</div>` +
+      `<figure class="ind-chart" role="img" aria-label="${esc(ind.short)} history as heat quantile"></figure>`;
+    const pts = (IND[ind.name] || []).map((d, xi) => ({ q: d.q, xi, v: equantile(sorted, d.z) }));
+    lazyChart(row.querySelector(".ind-chart"), () => indicatorChart(pts));
     frag.appendChild(row);
   }
   return frag;
@@ -352,8 +364,8 @@ function renderComponentDetail(name) {
         `<p class="kicker">${esc(cat.name)}</p>` +
         `<h3>${esc(comp.name)} ${heatBadge(heat)}</h3>` +
         `<p class="blurb">${comp.indicators.length} indicators. ` +
-        `Each row shows the indicator's history as a heat strip, its latest heat quantile, ` +
-        `and its latest oriented z-score.</p>` +
+        `Each row shows the indicator's history as a line chart of its heat quantile, ` +
+        `its latest heat quantile, and its latest oriented z-score.</p>` +
       `</div>` +
     `</div>` +
     `<figure class="comp-detail-chart" role="img" aria-label="${esc(comp.name)} component heat over time"></figure>` +
