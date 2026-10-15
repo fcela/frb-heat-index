@@ -578,11 +578,11 @@
   },
   {
    "q": "2026Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "2026Q2",
-   "v": NaN
+   "v": null
   }
  ],
  "Price volatility": [
@@ -1164,11 +1164,11 @@
   },
   {
    "q": "2026Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "2026Q2",
-   "v": NaN
+   "v": null
   }
  ],
  "Business credit": [
@@ -1750,17 +1750,17 @@
   },
   {
    "q": "2026Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "2026Q2",
-   "v": NaN
+   "v": null
   }
  ],
  "Commercial real estate": [
   {
    "q": "1990Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1990Q2",
@@ -2336,89 +2336,89 @@
   },
   {
    "q": "2026Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "2026Q2",
-   "v": NaN
+   "v": null
   }
  ],
  "Residential real estate": [
   {
    "q": "1990Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1990Q2",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1990Q3",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1990Q4",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1991Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1991Q2",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1991Q3",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1991Q4",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1992Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1992Q2",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1992Q3",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1992Q4",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1993Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1993Q2",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1993Q3",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1993Q4",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1994Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1994Q2",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1994Q3",
-   "v": NaN
+   "v": null
   },
   {
    "q": "1994Q4",
@@ -4094,11 +4094,11 @@
   },
   {
    "q": "2026Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "2026Q2",
-   "v": NaN
+   "v": null
   }
  ],
  "Home mortgages": [
@@ -4680,11 +4680,11 @@
   },
   {
    "q": "2026Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "2026Q2",
-   "v": NaN
+   "v": null
   }
  ],
  "Net saving": [
@@ -5266,11 +5266,11 @@
   },
   {
    "q": "2026Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "2026Q2",
-   "v": NaN
+   "v": null
   }
  ],
  "Bank leverage": [
@@ -5816,7 +5816,7 @@
   },
   {
    "q": "2023Q4",
-   "v": NaN
+   "v": null
   },
   {
    "q": "2024Q1",
@@ -6438,11 +6438,11 @@
   },
   {
    "q": "2026Q1",
-   "v": NaN
+   "v": null
   },
   {
    "q": "2026Q2",
-   "v": NaN
+   "v": null
   }
  ],
  "Maturity transformation": [
