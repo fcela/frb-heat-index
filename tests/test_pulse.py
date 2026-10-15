@@ -10,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.pulse.build_pulse import sanitize_records, strict_json
-from src.pulse.segments import SEGMENTS, all_indicators
+from src.pulse.segments import SEGMENTS, FETCHABLE_STATUSES, all_indicators
 
 
 def test_sanitize_nan_inf():
@@ -48,13 +48,13 @@ def test_segments_complete():
     for seg_key, ind_key, ind in all_indicators():
         for f in ("title", "why", "source", "frequency", "status"):
             assert f in ind, f"{seg_key}/{ind_key} missing {f}"
-        assert ind["status"] in ("live", "pending-sourcing"), ind_key
+        assert ind["status"] in FETCHABLE_STATUSES + ("pending-sourcing",), ind_key
         n += 1
-    assert n == 20, f"expected 20 indicators, got {n}"
-    assert len(SEGMENTS) == 5
-    live = sum(1 for _, _, i in all_indicators() if i["status"] == "live")
-    assert live == 7, f"expected 7 live, got {live}"
-    print(f"ok test_segments_complete ({n} indicators, {live} live)")
+    assert n == 34, f"expected 34 indicators, got {n}"
+    assert len(SEGMENTS) == 9
+    fetchable = sum(1 for _, _, i in all_indicators() if i["status"] in FETCHABLE_STATUSES)
+    assert fetchable == 21, f"expected 21 fetchable, got {fetchable}"
+    print(f"ok test_segments_complete ({n} indicators, {fetchable} fetchable)")
 
 
 def test_site_json_parses_strictly():
@@ -63,9 +63,16 @@ def test_site_json_parses_strictly():
     raw = p.read_text()
     assert "NaN" not in raw, "bare NaN literal in site JSON"
     d = json.loads(raw)
-    assert "segments" in d and len(d["segments"]) == 5
+    assert "segments" in d and len(d["segments"]) == 9
     total = sum(len(s["indicators"]) for s in d["segments"])
-    assert total == 20, total
+    assert total == 34, total
+    # Multi-series indicators carry their group column and subseries labels.
+    for s in d["segments"]:
+        for ind in s["indicators"]:
+            if ind.get("subseries"):
+                gcol = ind["group_by"]
+                assert ind["series"], f"{ind['key']} has subseries but no data"
+                assert all(gcol in r for r in ind["series"]), ind["key"]
     print("ok test_site_json_parses_strictly")
 
 
