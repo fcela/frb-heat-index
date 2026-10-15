@@ -42,11 +42,14 @@ function luminance(hex) {
 }
 function heatBadge(v) {
   if (v == null || !Number.isFinite(v))
-    return `<span class="heat-badge" style="background:${T().missing};color:${T().muted}">n/a</span>`;
+    return `<span class="heat-badge" title="${HEAT_TIP}" style="background:${T().missing};color:${T().muted}">n/a</span>`;
   const bg = heatColor(v);
   const fg = luminance(bg) > 0.5 ? "#1b1a16" : "#ffffff";
-  return `<span class="heat-badge" style="background:${bg};color:${fg}">${v.toFixed(2)}</span>`;
+  return `<span class="heat-badge" title="${HEAT_TIP}" style="background:${bg};color:${fg}">${v.toFixed(2)}</span>`;
 }
+
+// One-line meaning of a heat value, reused as hover text wherever heat appears.
+const HEAT_TIP = "Heat = the value's quantile in its own history: 0.00 is the lowest vulnerability on record, 1.00 the highest. Gray n/a = no observation, not zero.";
 
 /* ---------------- data ---------------- */
 
@@ -395,7 +398,7 @@ function viewIndicator() {
     <div id="ind-strip" style="margin-top:0.5rem"></div>
     <div class="ind-stats">
       <div><span class="stat-num">${zLast == null ? "n/a" : zLast.toFixed(2)}</span><span class="stat-label">latest z-score (${esc(lastQ)})</span></div>
-      <div><span class="stat-num">${hLast == null ? "n/a" : hLast.toFixed(2)}</span><span class="stat-label">heat (own-history quantile)</span></div>
+      <div><span class="stat-num" title="${HEAT_TIP}">${hLast == null ? "n/a" : hLast.toFixed(2)}</span><span class="stat-label">heat (own-history quantile)</span></div>
       <div><span class="stat-num">${sorted.length}</span><span class="stat-label">quarterly observations (${esc(firstQ)}–${esc(lastQ)})</span></div>
     </div>`;
   mount(wrap);
