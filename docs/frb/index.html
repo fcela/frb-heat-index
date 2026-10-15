@@ -29,9 +29,9 @@
   <div class="nav-inner">
     <a class="brand" href="../" style="color:inherit;text-decoration:none">FRB Heat Index <span class="dot">●</span></a>
     <div class="nav-links">
-      <a href="#heatmap-card">Heat map</a>
       <a href="#aggregate-card">Aggregate</a>
-      <a href="#explorer-card">Explorer</a>
+      <a href="#hierarchy-card">Hierarchy</a>
+      <a href="#heatmap-card">Heat map</a>
       <a href="../">Home</a>
       <a href="../pulse/">Market Pulse</a>
       <a href="#methodology">Methodology</a>
@@ -63,6 +63,22 @@
 </header>
 
 <main>
+  <section class="card" id="aggregate-card">
+    <h2>Aggregate vulnerability index</h2>
+    <p class="sub">The mean of the fourteen component quantiles, passed through a kernel CDF once
+      more, so the index lives on 0–1. The 2007–2008 episodes are shaded for reference.</p>
+    <figure id="aggchart" role="img" aria-label="Aggregate financial vulnerability index time series"></figure>
+  </section>
+
+  <section class="card" id="hierarchy-card">
+    <h2>The full picture, top down</h2>
+    <p class="sub">One aggregate ← three vulnerability categories ← fourteen components.
+      Read downward: each category chart is the mean of its components' quantiles
+      (descriptive — the official aggregate averages all fourteen at once). Expand any
+      component for its indicators.</p>
+    <div id="hierarchy"></div>
+  </section>
+
   <section class="card" id="heatmap-card">
     <h2>The heat map</h2>
     <p class="sub">Fourteen components × quarters. Colors are quantiles of each component's own
@@ -73,22 +89,6 @@
       vulnerability reading on record for that component (deep blue); 1.00 is the highest
       (deep red). Low values are information, not errors — gray cells are the ones with
       no observation.</p>
-  </section>
-
-  <section class="card" id="aggregate-card">
-    <h2>Aggregate vulnerability index</h2>
-    <p class="sub">The mean of the fourteen component quantiles, passed through a kernel CDF once
-      more, so the index lives on 0–1. The 2007–2008 episodes are shaded for reference.</p>
-    <figure id="aggchart" role="img" aria-label="Aggregate financial vulnerability index time series"></figure>
-  </section>
-
-  <section class="card" id="explorer-card">
-    <h2>Drill down</h2>
-    <p class="sub">Follow the index the way it is built: one aggregate ← three vulnerability
-      categories ← fourteen components ← forty-four indicators. Heat is shown at every level —
-      click through to see where the temperature is coming from.</p>
-    <nav class="crumbs" id="crumbs" aria-label="Hierarchy breadcrumb"></nav>
-    <div id="explorer"></div>
   </section>
 
   <section class="card" id="methodology">

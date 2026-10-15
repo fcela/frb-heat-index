@@ -1,4 +1,4 @@
-/* FRB Heat Index — Observable Plot charts + hierarchical explorer.
+/* FRB Heat Index — Observable Plot charts, single hierarchical page.
    All data from data/*.json; nothing hardcoded. Static, no build step. */
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+esm";
 
@@ -84,21 +84,6 @@ function basePlot(opts) {
       overflow: "visible",
     },
   }, opts));
-}
-
-function sparkline(pts, { w = 150, h = 42, ymin = 0, ymax = 1, stroke = null } = {}) {
-  const s = stroke || T().ink;
-  const data = pts.map((d, i) => ({ xi: i, v: d.v }));
-  return basePlot({
-    width: w, height: h,
-    marginTop: 4, marginRight: 4, marginBottom: 4, marginLeft: 4,
-    x: { axis: null }, y: { axis: null, domain: [ymin, ymax] },
-    marks: [
-      Plot.ruleY([0], { stroke: T().faint, strokeOpacity: 0.6 }),
-      Plot.line(data, { x: "xi", y: "v", stroke: s, strokeWidth: 1.5, curve: "monotone-x" }),
-      Plot.dot(data.slice(-1), { x: "xi", y: "v", fill: s, r: 2.5 }),
-    ],
-  });
 }
 
 function heatStrip(vals, { w = 150, h = 18 } = {}) {
@@ -195,8 +180,8 @@ function renderAggregate() {
         x: (qIndex[s.q1] + qIndex[s.q2]) / 2, y: 0.06,
         text: d => d.label, fontSize: 11, fill: T().muted, textAnchor: "middle",
       })),
-      Plot.areaY(pts, { x: "xi", y: "v", fill: T().accent, fillOpacity: 0.10, curve: "monotone-x" }),
-      Plot.line(pts, { x: "xi", y: "v", stroke: T().accent, strokeWidth: 2.2, curve: "monotone-x" }),
+      Plot.areaY(pts, { x: "xi", y: "v", fill: T().accent, fillOpacity: 0.10 }),
+      Plot.line(pts, { x: "xi", y: "v", stroke: T().accent, strokeWidth: 2.2 }),
       Plot.dot([peak], { x: "xi", y: "v", fill: "#b2182b", stroke: T().card, strokeWidth: 1.5, r: 5 }),
       Plot.text([peak], {
         x: "xi", y: "v", text: () => peakLabel,
@@ -211,9 +196,9 @@ function renderAggregate() {
   el.appendChild(fig);
 }
 
-/* ---------------- hierarchical explorer ---------------- */
-
-const EXP = { level: "index", category: null, component: null, indicator: null };
+/* ---------------- single-page hierarchy ---------------- */
+/* Aggregate -> 3 categories -> 14 components, all on one scrolling page.
+   Charts below the fold render lazily via IntersectionObserver. */
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -240,115 +225,54 @@ function categorySeries(cat) {
   return out;
 }
 
-function setCrumbs(items) {
-  // items: [{label, go}] — last item is current (disabled).
-  const nav = document.getElementById("crumbs");
-  nav.innerHTML = "";
-  items.forEach((it, i) => {
-    if (i > 0) {
-      const sep = document.createElement("span");
-      sep.className = "sep"; sep.textContent = "›";
-      nav.appendChild(sep);
-    }
-    const b = document.createElement("button");
-    b.textContent = it.label;
-    if (i === items.length - 1) b.disabled = true;
-    else b.onclick = it.go;
-    nav.appendChild(b);
+/* Straight polyline time-series chart (no smoothing — splines distort the series). */
+function seriesChart(pts, { w = 1020, h = 300, stroke = null, area = true, yLabel = null } = {}) {
+  const s = stroke || T().accent;
+  const data = pts.map((d, xi) => ({ q: d.q, v: d.v, xi })).filter(d => d.v != null);
+  const last = data[data.length - 1];
+  return basePlot({
+    width: w, height: h,
+    marginLeft: 46, marginRight: 14, marginTop: 12, marginBottom: 36,
+    x: {
+      domain: [-0.5, quarters.length - 0.5], ticks: yearTicks,
+      tickFormat: i => quarters[i].slice(0, 4), label: null, grid: true, tickSize: 0,
+    },
+    y: { domain: [0, 1], label: yLabel, grid: true, ticks: [0, 0.5, 1], tickFormat: d => d.toFixed(1) },
+    marks: [
+      area ? Plot.areaY(data, { x: "xi", y: "v", fill: s, fillOpacity: 0.08 }) : null,
+      Plot.line(data, { x: "xi", y: "v", stroke: s, strokeWidth: 2 }),
+      last ? Plot.dot([last], { x: "xi", y: "v", fill: s, stroke: T().card, strokeWidth: 1.5, r: 4 }) : null,
+      Plot.tip(data, Plot.pointer({ x: "xi", title: d => `${d.q} — ${d.v.toFixed(2)}` })),
+    ].filter(Boolean),
   });
 }
 
-function mount(node) {
-  const el = document.getElementById("explorer");
-  el.innerHTML = "";
-  el.appendChild(node);
+/* Lazy rendering: charts render when near the viewport, never as stuck spinners. */
+const lazyObserver = ("IntersectionObserver" in window)
+  ? new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        const el = e.target;
+        lazyObserver.unobserve(el);
+        if (el._render && !el._rendered) {
+          el.innerHTML = "";
+          try { el.appendChild(el._render()); } catch (err) { /* fail() covers page-level errors */ }
+          el._rendered = true;
+        }
+      }
+    }, { rootMargin: "800px 0px" })
+  : null;
+
+function lazyChart(el, renderFn) {
+  el.classList.add("lazy-chart");
+  el._render = renderFn;
+  el._rendered = false;
+  if (lazyObserver) lazyObserver.observe(el);
+  else { el.appendChild(renderFn()); el._rendered = true; }
 }
 
-function goIndex() { Object.assign(EXP, { level: "index", category: null, component: null, indicator: null }); renderExplorer(); }
-function goCategory(name) { Object.assign(EXP, { level: "category", category: name, component: null, indicator: null }); renderExplorer(); }
-function goComponent(catName, compName) { Object.assign(EXP, { level: "component", category: catName, component: compName, indicator: null }); renderExplorer(); }
-function goIndicator(catName, compName, indName) { Object.assign(EXP, { level: "indicator", category: catName, component: compName, indicator: indName }); renderExplorer(); }
-
-function renderExplorer() {
-  const { level } = EXP;
-  if (level === "index") return viewIndex();
-  if (level === "category") return viewCategory();
-  if (level === "component") return viewComponent();
-  return viewIndicator();
-}
-
-function viewIndex() {
-  setCrumbs([{ label: "Aggregate index", go: goIndex }]);
-  const wrap = document.createElement("div");
-  wrap.innerHTML = `<p class="exp-note">One headline index, built from three vulnerability
-    categories. Category heat is the mean of its components' quantiles — descriptive,
-    not an official index level (the official aggregate averages all fourteen at once).</p>`;
-  const grid = document.createElement("div");
-  grid.className = "exp-grid";
-  for (const cat of HIER.categories) {
-    const s = categorySeries(cat);
-    const heat = lastVal(s);
-    const card = document.createElement("div");
-    card.className = "exp-card";
-    card.innerHTML = `<h3>${esc(cat.name)} ${heatBadge(heat)}</h3>
-      <p class="blurb">${esc(cat.blurb)}</p><div class="spark"></div>`;
-    card.querySelector(".spark").appendChild(sparkline(s, { w: 320, h: 56 }));
-    card.onclick = () => goCategory(cat.name);
-    grid.appendChild(card);
-  }
-  wrap.appendChild(grid);
-  mount(wrap);
-}
-
-function viewCategory() {
-  const cat = HIER.categories.find(c => c.name === EXP.category);
-  setCrumbs([{ label: "Aggregate index", go: goIndex }, { label: cat.name, go: () => goCategory(cat.name) }]);
-  const s = categorySeries(cat);
-  const heat = lastVal(s);
-  const wrap = document.createElement("div");
-  wrap.innerHTML = `
-    <div class="exp-detail-head"><h3>${esc(cat.name)}</h3>${heatBadge(heat)}</div>
-    <p class="exp-note">${esc(cat.blurb)} ${cat.components.length} components; latest category heat
-    ${heat == null ? "n/a" : heat.toFixed(2)}.</p>`;
-  const grid = document.createElement("div");
-  grid.className = "exp-grid";
-  for (const comp of cat.components) {
-    const series = COMP[comp.name] || [];
-    const h = lastVal(series);
-    const card = document.createElement("div");
-    card.className = "exp-card";
-    card.innerHTML = `<h3>${esc(comp.name)} ${heatBadge(h)}</h3>
-      <p class="blurb">${comp.indicators.length} indicators</p><div class="spark"></div>`;
-    card.querySelector(".spark").appendChild(sparkline(series, { w: 320, h: 56 }));
-    card.onclick = () => goComponent(cat.name, comp.name);
-    grid.appendChild(card);
-  }
-  wrap.appendChild(grid);
-  mount(wrap);
-}
-
-function viewComponent() {
-  const cat = HIER.categories.find(c => c.name === EXP.category);
-  const comp = cat.components.find(c => c.name === EXP.component);
-  setCrumbs([
-    { label: "Aggregate index", go: goIndex },
-    { label: cat.name, go: () => goCategory(cat.name) },
-    { label: comp.name, go: () => goComponent(cat.name, comp.name) },
-  ]);
-  const series = COMP[comp.name] || [];
-  const heat = lastVal(series);
-  const wrap = document.createElement("div");
-  wrap.innerHTML = `
-    <div class="exp-detail-head"><h3>${esc(comp.name)}</h3>${heatBadge(heat)}</div>
-    <p class="exp-note">Component quantile in its own history (official index level).
-    Mean of ${comp.indicators.length} standardized indicators, mapped through the
-    Gaussian kernel CDF. Click an indicator to inspect it.</p>
-    <div class="spark" style="margin-bottom:1.5rem"></div>
-    <h3 style="font-family:var(--font-serif);font-size:1.15rem;margin:0 0 0.75rem">Indicators</h3>`;
-  const big = document.createElement("div");
-  big.appendChild(sparkline(series, { w: 1020, h: 170, stroke: T().accent }));
-  wrap.querySelector(".spark").replaceWith(big);
-
+function indicatorRows(comp) {
+  const frag = document.createDocumentFragment();
   for (const ind of comp.indicators) {
     const zs = (IND[ind.name] || []).map(d => d.z);
     const sorted = zs.filter(Number.isFinite).sort((a, b) => a - b);
@@ -356,78 +280,64 @@ function viewComponent() {
     const h = equantile(sorted, zLast);
     const row = document.createElement("div");
     row.className = "ind-row";
-    row.innerHTML = `
-      <div class="nm">${esc(ind.short)}<small>${esc(ind.name)}</small></div>
-      <div class="spark"></div>
-      <div>${heatBadge(h)}</div>`;
+    row.innerHTML =
+      `<div class="nm">${esc(ind.short)}<small>${esc(ind.name)}</small></div>` +
+      `<div class="spark"></div>` +
+      `<div class="ind-meta">${heatBadge(h)}<span class="zval" title="Latest oriented z-score">z ${zLast == null ? "n/a" : zLast.toFixed(2)}</span></div>`;
     const pts = (IND[ind.name] || []).map((d, xi) => ({ xi, v: equantile(sorted, d.z) }));
-    const sp = heatStrip(pts.map(p => p.v), { w: 150, h: 22 });
-    row.querySelector(".spark").appendChild(sp);
-    row.onclick = () => goIndicator(cat.name, comp.name, ind.name);
-    wrap.appendChild(row);
+    row.querySelector(".spark").appendChild(heatStrip(pts.map(p => p.v), { w: 150, h: 22 }));
+    frag.appendChild(row);
   }
-  mount(wrap);
+  return frag;
 }
 
-function viewIndicator() {
-  const cat = HIER.categories.find(c => c.name === EXP.category);
-  const comp = cat.components.find(c => c.name === EXP.component);
-  const ind = comp.indicators.find(i => i.name === EXP.indicator);
-  setCrumbs([
-    { label: "Aggregate index", go: goIndex },
-    { label: cat.name, go: () => goCategory(cat.name) },
-    { label: comp.name, go: () => goComponent(cat.name, comp.name) },
-    { label: ind.short, go: () => goIndicator(cat.name, comp.name, ind.name) },
-  ]);
-  const rows = IND[ind.name] || [];
-  const zs = rows.map(d => d.z);
-  const sorted = zs.filter(Number.isFinite).sort((a, b) => a - b);
-  const heats = rows.map((d, xi) => ({ ...d, xi, h: equantile(sorted, d.z) }));
-  const zLast = [...zs].reverse().find(Number.isFinite);
-  const hLast = equantile(sorted, zLast);
-  const firstQ = rows.find(d => d.z != null)?.q || "—";
-  const lastQ = [...rows].reverse().find(d => d.z != null)?.q || "—";
+function renderHierarchy() {
+  const host = document.getElementById("hierarchy");
+  if (!host) return;
+  // Preserve open <details> across re-renders (e.g. theme toggle).
+  const open = new Set(
+    [...host.querySelectorAll("details.comp-details[open]")].map(d => d.dataset.comp));
+  host.innerHTML = "";
 
-  const wrap = document.createElement("div");
-  wrap.innerHTML = `
-    <div class="exp-detail-head"><h3>${esc(ind.short)}</h3>${heatBadge(hLast)}</div>
-    <p class="exp-note">${esc(ind.name)} · ${esc(comp.name)} · ${esc(cat.name)}.<br>
-    Oriented standardized value (higher = more vulnerable) — the actual input to the
-    component mean. Heat is the value's quantile in its own history.</p>
-    <div id="ind-chart"></div>
-    <div id="ind-strip" style="margin-top:0.5rem"></div>
-    <div class="ind-stats">
-      <div><span class="stat-num">${zLast == null ? "n/a" : zLast.toFixed(2)}</span><span class="stat-label">latest z-score (${esc(lastQ)})</span></div>
-      <div><span class="stat-num" title="${HEAT_TIP}">${hLast == null ? "n/a" : hLast.toFixed(2)}</span><span class="stat-label">heat (own-history quantile)</span></div>
-      <div><span class="stat-num">${sorted.length}</span><span class="stat-label">quarterly observations (${esc(firstQ)}–${esc(lastQ)})</span></div>
-    </div>`;
-  mount(wrap);
+  HIER.categories.forEach((cat, ci) => {
+    const sec = document.createElement("section");
+    sec.className = "hier-cat";
+    sec.id = `hier-cat-${ci}`;
+    const catSeries = categorySeries(cat);
+    const catHeat = lastVal(catSeries);
+    sec.innerHTML =
+      `<div class="hier-cat-head">` +
+        `<h3>${esc(cat.name)} ${heatBadge(catHeat)}</h3>` +
+        `<p class="blurb">${esc(cat.blurb || "")} ${cat.components.length} components; ` +
+        `category heat is the mean of its components' quantiles (descriptive).</p>` +
+      `</div>` +
+      `<figure class="hier-cat-chart" role="img" aria-label="${esc(cat.name)} category heat over time"></figure>` +
+      `<div class="comp-grid"></div>`;
+    lazyChart(sec.querySelector(".hier-cat-chart"),
+      () => seriesChart(catSeries, { w: 1020, h: 240 }));
 
-  const finite = rows.map((d, xi) => ({ xi, q: d.q, z: d.z })).filter(d => d.z != null);
-  const zmin = Math.min(0, ...finite.map(d => d.z)), zmax = Math.max(0, ...finite.map(d => d.z));
-  const chart = basePlot({
-    width: 1020, height: 300,
-    marginLeft: 52, marginRight: 20, marginTop: 20, marginBottom: 40,
-    x: { domain: [-0.5, rows.length - 0.5], ticks: yearTicks, tickFormat: i => quarters[i].slice(0, 4), label: null, grid: true, tickSize: 0 },
-    y: { domain: [zmin - 0.3, zmax + 0.3], label: "z-score", grid: true },
-    color: { type: "linear", domain: [0, 1], range: HEAT, legend: true, label: "Heat", ticks: [0, 0.5, 1] },
-    marks: [
-      Plot.ruleY([0], { stroke: T().faint }),
-      Plot.line(finite, { x: "xi", y: "z", stroke: T().accent, strokeWidth: 2, curve: "monotone-x" }),
-      Plot.dot(heats.filter(d => d.z != null), {
-        x: "xi", y: "z", fill: "h", r: 3.5, stroke: T().card, strokeWidth: 1,
-      }),
-      Plot.tip(heats.filter(d => d.z != null), Plot.pointer({
-        x: "xi",
-        title: d => `${d.q}\nz = ${d.z.toFixed(2)} · heat ${d.h.toFixed(2)}`,
-      })),
-    ],
+    const grid = sec.querySelector(".comp-grid");
+    for (const comp of cat.components) {
+      const series = COMP[comp.name] || [];
+      const heat = lastVal(series);
+      const card = document.createElement("article");
+      card.className = "comp-card";
+      card.innerHTML =
+        `<h4>${esc(comp.name)} ${heatBadge(heat)}</h4>` +
+        `<figure class="comp-chart" role="img" aria-label="${esc(comp.name)} component heat over time"></figure>` +
+        `<details class="comp-details" data-comp="${esc(comp.name)}">` +
+          `<summary>${comp.indicators.length} indicators</summary>` +
+          `<div class="ind-list"></div>` +
+        `</details>`;
+      if (open.has(comp.name)) card.querySelector("details").open = true;
+      lazyChart(card.querySelector(".comp-chart"),
+        () => seriesChart(series, { w: 520, h: 190, area: false }));
+      card.querySelector(".ind-list").appendChild(indicatorRows(comp));
+      grid.appendChild(card);
+    }
+    host.appendChild(sec);
   });
-  document.getElementById("ind-chart").appendChild(chart);
-  document.getElementById("ind-strip").appendChild(
-    heatStrip(heats.map(d => d.h), { w: 1020, h: 26 }));
 }
-
 /* ---------------- meta / stamp ---------------- */
 
 function renderMeta() {
@@ -456,14 +366,14 @@ function fail(err) {
     const el = document.getElementById(id);
     if (el && !el.dataset.done) el.innerHTML = msg;
   }
-  const m = document.getElementById("explorer");
+  const m = document.getElementById("hierarchy");
   if (m) m.innerHTML = msg;
 }
 
 function renderAll() {
   renderHeatmap();
   renderAggregate();
-  renderExplorer();
+  renderHierarchy();
   document.getElementById("heatmap").dataset.done = "1";
   document.getElementById("aggchart").dataset.done = "1";
 }
