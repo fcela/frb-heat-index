@@ -378,6 +378,46 @@ def _call_main(mod, argv: list[str]):
         sys.argv = saved
 
 
+def refresh_systemic(repo: Path, raw: Path, dry_run: bool, log: list[str]) -> None:
+    """Rebuild the two journal-publication systemic series (SRISK, Granger)
+    from public inputs, then publish them to data/systemic/.
+
+    build_panel reads the committed data/systemic/*.csv (via _systemic_frame),
+    so without this refresh any new quarter would join to nulls. Fail-soft:
+    on any error the previously committed series are kept and the new
+    quarter simply has nulls for these two indicators (honest missingness,
+    never fabricated values).
+    """
+    if dry_run:
+        log.append("DRY-RUN: would rebuild data/systemic/*.csv "
+                   "(src/systemic/build_srisk.py, build_granger.py)")
+        return
+    sys.path.insert(0, str(repo / "src"))
+    import shutil
+    try:
+        import importlib
+        srisk_mod = importlib.import_module("systemic.build_srisk")
+        granger_mod = importlib.import_module("systemic.build_granger")
+        log.append("rebuilding systemic series (SRISK, Granger) ...")
+        _call_main(srisk_mod, ["build_srisk.py"])
+        _call_main(granger_mod, ["build_granger.py"])
+        staged = raw / "systemic"
+        dest = repo / "data" / "systemic"
+        dest.mkdir(parents=True, exist_ok=True)
+        for name in ("srisk_quarterly.csv", "granger_quarterly.csv"):
+            src = staged / name
+            if src.exists():
+                shutil.copy2(src, dest / name)
+                log.append(f"published {dest / name}")
+            else:
+                log.append(f"WARNING: systemic builder did not stage {src}; "
+                           f"keeping previously committed {dest / name}")
+    except Exception as e:  # noqa: BLE001 - fail-soft per workflow policy
+        log.append(f"WARNING: systemic refresh failed ({type(e).__name__}: {e}); "
+                   "keeping previously committed data/systemic/*.csv")
+
+
+
 def rebuild(repo: Path, raw: Path, start: str, end: str,
             dry_run: bool, log: list[str]) -> pl.DataFrame:
     """Build the new-quarter fragment and append it to the panel."""
@@ -594,6 +634,7 @@ def main(argv: list[str] | None = None) -> int:
                     f"DRY-RUN: would fetch for {', '.join(completed)}: "
                     f"{len(fred_ids)} FRED series + {len(auto_sources)} other auto "
                     f"sources + Y-9C bulk files -> work/raw/")
+            refresh_systemic(repo, raw, args.dry_run, actions)
             new_rows = rebuild(repo, raw, completed[0], completed[-1],
                                args.dry_run, actions)
             if not args.dry_run:

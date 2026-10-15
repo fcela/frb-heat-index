@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FRB Heat Index — U.S. Financial System Vulnerabilities, Replicated from Public Data</title>
-<meta name="description" content="A public-data replication of the Federal Reserve's heat map of U.S. financial-system vulnerabilities: 44 indicators, 14 components, quarterly, from 1990.">
+<meta name="description" content="A public-data replication of the Federal Reserve's heat map of U.S. financial-system vulnerabilities: 46 indicators, 14 components, quarterly, from 1990.">
 <meta property="og:title" content="FRB Heat Index">
-<meta property="og:description" content="Replicating the Fed's financial-system heat map from public data — 44 indicators, 14 components, quarterly, 1990 to present.">
+<meta property="og:description" content="Replicating the Fed's financial-system heat map from public data — 46 indicators, 14 components, quarterly, 1990 to present.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='6' height='28' fill='%232166ac'/%3E%3Crect x='10' y='10' width='6' height='20' fill='%23f4a582'/%3E%3Crect x='18' y='6' width='6' height='24' fill='%23d6604d'/%3E%3Crect x='26' y='14' width='4' height='16' fill='%23b2182b'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,9 +46,13 @@
     <p class="kicker">Federal Reserve FEDS Notes · replicated from public data</p>
     <h1>Mapping <span class="hot">Heat</span> in the U.S. Financial System</h1>
     <p class="lede">A replication of the Federal Reserve's heat map of financial-system
-      vulnerabilities, rebuilt indicator-by-indicator from public data. Forty-four indicators
+      vulnerabilities, rebuilt indicator-by-indicator from public data. Forty-six indicators
       feed fourteen components across three vulnerability categories — every cell below is a
       quantile in its own history. Blue is subdued, red is acute.</p>
+    <p class="lede-note">Beyond the 44 indicators in the FEDS Notes version, this implementation
+      includes the two additional indicators from the final journal publication
+      (<em>J.&nbsp;Banking &amp; Finance</em> 81, 2017): total SRISK relative to total assets
+      and significant Granger-causality connections among large financial institutions.</p>
     <ul class="stats" id="hero-stats">
       <li><span class="stat-num" id="stat-quarters">–</span><span class="stat-label">quarters</span></li>
       <li><span class="stat-num" id="stat-indicators">–</span><span class="stat-label">indicators</span></li>
@@ -126,8 +130,10 @@
           and the kernel-CDF bandwidth are all computed over the full available sample, so values for
           early quarters shift as new quarters are added. The extended map is the same methodology on a
           longer sample — not point-for-point comparable with the paper's 2015 map.</li>
-        <li><strong>Coverage: 43 of 44 indicators</strong> replicated from named public sources; the
-          end-to-end public-proxy panel tracks the paper's published aggregate index at correlation 0.93.</li>
+        <li><strong>Coverage: 45 of 46 indicators</strong> replicated from named public sources —
+          43 of the 44 FEDS Notes indicators plus both journal-publication additions (SRISK and
+          Granger-causality connectedness); the end-to-end public-proxy panel tracks the paper's
+          published aggregate index at correlation 0.93.</li>
       </ul>
     </div>
   </section>
@@ -167,7 +173,9 @@
     <p>This site is a replication of the Federal Reserve FEDS Notes
       <a href="https://www.federalreserve.gov/econres/feds/mapping-heat-in-the-us-financial-system.htm">“Mapping Heat in the U.S. Financial System”</a>
       (August 2015), rebuilt from public data sources alone.</p>
-    <p>43 of 44 indicators are replicated with public proxies; the results are scored against the
+    <p>45 of 46 indicators are replicated with public proxies — 43 of the 44 FEDS Notes indicators
+      plus the two added in the journal publication (<em>J.&nbsp;Banking &amp; Finance</em> 81, 2017);
+      the results are scored against the
       paper's own published tables. See the <a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/paper/fed_heat_map-replication.pdf">replication paper</a>
       for the per-indicator specifications, fidelity scores, and limitations.</p>
     <p>Charts: Observable Plot via CDN. This page reads all data from <code>data/*.json</code>; it is
