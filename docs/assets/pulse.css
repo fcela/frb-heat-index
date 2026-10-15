@@ -1,0 +1,180 @@
+/* Market Pulse — standalone page. Reuses the site's tokens (fonts, theme,
+   cards) from style.css; this sheet adds the pulse page's own identity:
+   a trading-desk "tape" header band, status badges, and mono numerals. */
+
+:root {
+  --tape-bg: #11151b;
+  --tape-ink: #f2f4f8;
+  --tape-muted: #9aa3b2;
+  --tape-line: #232a34;
+  --live: #15803d;
+  --proxy: #b45309;
+  --experimental: #7c3aed;
+  --err: #b91c1c;
+}
+
+[data-theme="dark"] {
+  --live: #4ade80;
+  --proxy: #fbbf24;
+  --experimental: #c4b5fd;
+  --err: #f87171;
+}
+
+/* ---------- tape band (distinct pulse identity, both themes) ---------- */
+
+.tape-band {
+  background: var(--tape-bg);
+  color: var(--tape-ink);
+  border-bottom: 1px solid var(--tape-line);
+}
+
+.tape-band .nav {
+  background: transparent;
+  border-bottom: 1px solid var(--tape-line);
+}
+
+.tape-band .nav-links a { color: var(--tape-muted); }
+.tape-band .nav-links a:hover { color: var(--tape-ink); }
+.tape-band .brand { color: var(--tape-ink); }
+.tape-band .theme-toggle {
+  background: transparent;
+  border-color: var(--tape-line);
+  color: var(--tape-ink);
+}
+
+.pulse-hero {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2.75rem 1.25rem 2rem;
+}
+
+.pulse-hero .kicker {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tape-muted);
+  margin: 0 0 0.75rem;
+}
+
+.pulse-hero h1 {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.75rem;
+}
+
+.pulse-hero h1 .tick { color: #4ade80; }
+
+.pulse-hero .lede {
+  color: var(--tape-muted);
+  max-width: 62ch;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* ---------- tape (latest prints strip) ---------- */
+
+.tape {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 1.25rem 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0;
+}
+
+.tape-item {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--tape-muted);
+  padding: 0.25rem 0.7rem;
+  border-left: 1px solid var(--tape-line);
+  white-space: nowrap;
+}
+
+.tape-item b { color: var(--tape-ink); font-weight: 600; }
+.tape-item .up { color: #4ade80; }
+.tape-item .dn { color: #f87171; }
+
+/* ---------- status badges ---------- */
+
+.status-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 999px;
+  padding: 0.14rem 0.6rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  border: 1px solid;
+}
+
+.status-live { color: var(--live); border-color: var(--live); }
+.status-live-proxy { color: var(--proxy); border-color: var(--proxy); }
+.status-live-experimental { color: var(--experimental); border-color: var(--experimental); }
+.status-pending-sourcing { color: var(--muted); border-color: var(--line); }
+.status-error { color: var(--err); border-color: var(--err); }
+
+/* ---------- multi-series readouts ---------- */
+
+.pulse-multi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+  margin: 0.15rem 0 0.2rem;
+}
+
+.pulse-multi .m {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.pulse-multi .m .sw {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 2px;
+  margin-right: 0.35rem;
+  vertical-align: baseline;
+}
+
+.pulse-multi .m b { font-weight: 600; }
+.pulse-multi .m .md { color: var(--faint); font-size: 0.75rem; margin-left: 0.3rem; }
+
+/* ---------- segment anchors ---------- */
+
+.pulse-toc {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pulse-toc a {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.28rem 0.8rem;
+  background: var(--card);
+}
+
+.pulse-toc a:hover { color: var(--ink); border-color: var(--faint); }
+
+.pulse-foot {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 3rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.pulse-foot a { color: var(--accent-ink); }

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market Pulse — frb-heat-index</title>
+<meta name="description" content="Higher-frequency leading indicators for U.S. financial-system vulnerabilities: funding plumbing, positioning, filings, and cross-market signals, refreshed weekly from public data.">
+<meta property="og:title" content="Market Pulse — frb-heat-index">
+<meta property="og:description" content="Daily/weekly/monthly leading indicators between quarterly heat-map updates — funding plumbing, positioning, filings, cross-market.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='6' height='28' fill='%232166ac'%3E%3Crect x='10' y='10' width='6' height='20' fill='%23f4a582'%3E%3Crect x='18' y='6' width='6' height='24' fill='%23d6604d'%3E%3Crect x='26' y='14' width='4' height='16' fill='%23b2182b'%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/pulse.css">
+<script>
+  // Set theme before first paint to avoid a flash.
+  try {
+    var t = localStorage.getItem("frb-heat-theme");
+    if (t === "dark" || (t === null && matchMedia("(prefers-color-scheme: dark)").matches))
+      document.documentElement.dataset.theme = "dark";
+  } catch (e) {}
+</script>
+<script type="module" src="app.js"></script>
+</head>
+<body>
+
+<div class="tape-band">
+  <nav class="nav" aria-label="Sections">
+    <div class="nav-inner">
+      <span class="brand"><a href="../" style="color:inherit;text-decoration:none">← FRB Heat Index</a> <span class="dot">●</span></span>
+      <div class="nav-links">
+        <a href="./" aria-current="page">Market Pulse</a>
+        <a href="../#heatmap-card">Heat map</a>
+        <a href="../#methodology">Methodology</a>
+        <a href="../#data">Data</a>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">◐</button>
+    </div>
+  </nav>
+
+  <header class="pulse-hero">
+    <p class="kicker">Market Pulse · daily / weekly market feed</p>
+    <h1>Reading the tape <span class="tick">▮</span> between quarters</h1>
+    <p class="lede">Higher-frequency leading indicators that take the pulse of financial markets
+      between quarterly heat-map updates. These are raw market series in their own units — not
+      heat quantiles — drawn from public sources and refreshed by the weekly pipeline.
+      Proxies are labeled as proxies; indicators without a confirmed public source are marked
+      honestly rather than charted.</p>
+  </header>
+
+  <div class="tape" id="tape" aria-label="Latest prints"></div>
+</div>
+
+<main>
+  <nav class="pulse-toc" id="pulse-toc" aria-label="Pulse segments"></nav>
+  <div id="pulse" style="max-width:1180px;margin:0 auto;padding:0 1.25rem"><p class="pulse-stamp">loading data…</p></div>
+  <div class="pulse-foot">
+    <p>Market Pulse is the higher-frequency companion to the
+      <a href="../">FRB Heat Index replication</a> — a public-data rebuild of the Federal
+      Reserve's heat map of U.S. financial-system vulnerabilities. The pulse is organized the way
+      a large investment bank looks at the world: deal flow, trading desks, equities, asset
+      management, firm-wide funding — plus funding plumbing, positioning, filings, and
+      cross-market signals. Data: <code>../data/pulse.json</code>, refreshed weekly by the
+      <code>pulse.yml</code> pipeline; per-indicator CSVs under <code>data/pulse/</code>.</p>
+  </div>
+</main>
+
+</body>
+</html>

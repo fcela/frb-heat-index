@@ -31,7 +31,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install polars fastexcel
+        run: pip install polars fastexcel pypdf
 
       - name: Refresh pulse data (incremental)
         run: python3 -m src.pulse.build_pulse --incremental
