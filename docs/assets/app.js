@@ -53,7 +53,7 @@ const HEAT_TIP = "Heat = the value's quantile in its own history: 0.00 is the lo
 
 /* ---------------- data ---------------- */
 
-const DATA = "data/";
+const DATA = "../data/";
 async function loadJSON(name) {
   const r = await fetch(DATA + name);
   if (!r.ok) throw new Error(`HTTP ${r.status} loading ${name}`);

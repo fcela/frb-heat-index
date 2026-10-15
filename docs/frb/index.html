@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FRB Heat Index — U.S. Financial System Vulnerabilities, Replicated from Public Data</title>
+<meta name="description" content="A public-data replication of the Federal Reserve's heat map of U.S. financial-system vulnerabilities: 44 indicators, 14 components, quarterly, from 1990.">
+<meta property="og:title" content="FRB Heat Index">
+<meta property="og:description" content="Replicating the Fed's financial-system heat map from public data — 44 indicators, 14 components, quarterly, 1990 to present.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='6' height='28' fill='%232166ac'/%3E%3Crect x='10' y='10' width='6' height='20' fill='%23f4a582'/%3E%3Crect x='18' y='6' width='6' height='24' fill='%23d6604d'/%3E%3Crect x='26' y='14' width='4' height='16' fill='%23b2182b'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script>
+  // Set theme before first paint to avoid a flash.
+  try {
+    var t = localStorage.getItem("frb-heat-theme");
+    if (t === "dark" || (t === null && matchMedia("(prefers-color-scheme: dark)").matches))
+      document.documentElement.dataset.theme = "dark";
+  } catch (e) {}
+</script>
+<script type="module" src="../assets/app.js"></script>
+</head>
+<body>
+
+<nav class="nav" aria-label="Sections">
+  <div class="nav-inner">
+    <a class="brand" href="../" style="color:inherit;text-decoration:none">FRB Heat Index <span class="dot">●</span></a>
+    <div class="nav-links">
+      <a href="#heatmap-card">Heat map</a>
+      <a href="#aggregate-card">Aggregate</a>
+      <a href="#explorer-card">Explorer</a>
+      <a href="../">Home</a>
+      <a href="../pulse/">Market Pulse</a>
+      <a href="#methodology">Methodology</a>
+      <a href="#data">Data</a>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">◐</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="kicker">Federal Reserve FEDS Notes · replicated from public data</p>
+    <h1>Mapping <span class="hot">Heat</span> in the U.S. Financial System</h1>
+    <p class="lede">A replication of the Federal Reserve's heat map of financial-system
+      vulnerabilities, rebuilt indicator-by-indicator from public data. Forty-four indicators
+      feed fourteen components across three vulnerability categories — every cell below is a
+      quantile in its own history. Blue is subdued, red is acute.</p>
+    <ul class="stats" id="hero-stats">
+      <li><span class="stat-num" id="stat-quarters">–</span><span class="stat-label">quarters</span></li>
+      <li><span class="stat-num" id="stat-indicators">–</span><span class="stat-label">indicators</span></li>
+      <li><span class="stat-num" id="stat-components">–</span><span class="stat-label">components</span></li>
+      <li><span class="stat-num">0.93</span><span class="stat-label">correlation vs the paper's index</span></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+  <section class="card" id="heatmap-card">
+    <h2>The heat map</h2>
+    <p class="sub">Fourteen components × quarters. Colors are quantiles of each component's own
+      historical distribution — a red cell means "hotter than most of this component's history,"
+      not an absolute level. Hover any cell for the exact value.</p>
+    <div class="heatmap-scroll"><figure id="heatmap" role="img" aria-label="Heat map of 14 vulnerability components over time"></figure></div>
+    <p class="legend-note"><strong>Reading the scale:</strong> 0.00 is the lowest
+      vulnerability reading on record for that component (deep blue); 1.00 is the highest
+      (deep red). Low values are information, not errors — gray cells are the ones with
+      no observation.</p>
+  </section>
+
+  <section class="card" id="aggregate-card">
+    <h2>Aggregate vulnerability index</h2>
+    <p class="sub">The mean of the fourteen component quantiles, passed through a kernel CDF once
+      more, so the index lives on 0–1. The 2007–2008 episodes are shaded for reference.</p>
+    <figure id="aggchart" role="img" aria-label="Aggregate financial vulnerability index time series"></figure>
+  </section>
+
+  <section class="card" id="explorer-card">
+    <h2>Drill down</h2>
+    <p class="sub">Follow the index the way it is built: one aggregate ← three vulnerability
+      categories ← fourteen components ← forty-four indicators. Heat is shown at every level —
+      click through to see where the temperature is coming from.</p>
+    <nav class="crumbs" id="crumbs" aria-label="Hierarchy breadcrumb"></nav>
+    <div id="explorer"></div>
+  </section>
+
+  <section class="card" id="methodology">
+    <h2>Methodology</h2>
+    <p class="sub">Every indicator passes through the same six-step pipeline, documented
+      formula-by-formula in the replication paper
+      (<a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/paper/fed_heat_map-replication.pdf">fed_heat_map-replication.pdf</a>).</p>
+    <ol class="steps">
+      <li><div class="step-body"><strong>Sign orientation.</strong>
+        <p>Each series is flipped as needed so that higher values always mean greater vulnerability.
+          Compressed credit spreads and low volatility read as <em>complacency</em>; high capital ratios,
+          high saving rates, and tightening lending standards read as safer.</p></div></li>
+      <li><div class="step-body"><strong>Transform.</strong>
+        <p>Natural log for strictly positive, right-skewed series (spreads, volatility, issuance);
+          a 10-year trailing moving-average detrending for trending ratio-to-GDP series, so the index
+          reacts to the <em>cyclical</em> component; no transform otherwise.</p></div></li>
+      <li><div class="step-body"><strong>Standardize.</strong>
+        <p>Z-scores using each indicator's full-sample mean and standard deviation.</p></div></li>
+      <li><div class="step-body"><strong>Component index.</strong>
+        <p>Simple average of the standardized indicators within each component.</p></div></li>
+      <li><div class="step-body"><strong>Heat CDF.</strong>
+        <p>Each component is mapped to (0, 1) through a Gaussian kernel CDF with Silverman bandwidth,
+          evaluated at each observation. This is what makes every heat-map cell a historical quantile —
+          colors are relative to history, never absolute levels.</p></div></li>
+      <li><div class="step-body"><strong>Aggregate index.</strong>
+        <p>The mean of the 14 component quantiles, mapped through its own kernel CDF again → the
+          0–1 headline index.</p></div></li>
+    </ol>
+    <div class="caveats">
+      <h3>Honest caveats (from the replication paper)</h3>
+      <ul>
+        <li><strong>Commercial real estate is a pipeline discrepancy, not a data gap.</strong>
+          The documented pipeline cannot reproduce the paper's CRE component even on the paper's own
+          data — a finding about the paper itself.</li>
+        <li><strong>The maturity gap has no public proxy.</strong> The weighted-average maturity gap at
+          commercial banks cannot be rebuilt from public sources; the maturity-transformation component
+          is built from the remaining indicators.</li>
+        <li><strong>Extending the sample moves history.</strong> Standardization, the 10-year detrending,
+          and the kernel-CDF bandwidth are all computed over the full available sample, so values for
+          early quarters shift as new quarters are added. The extended map is the same methodology on a
+          longer sample — not point-for-point comparable with the paper's 2015 map.</li>
+        <li><strong>Coverage: 43 of 44 indicators</strong> replicated from named public sources; the
+          end-to-end public-proxy panel tracks the paper's published aggregate index at correlation 0.93.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card" id="data">
+    <h2>Data downloads</h2>
+    <p class="sub">The full quarterly panel, the component indices, the aggregate index, and the
+      source catalog. Every chart on this page is drawn from <code>data/*.json</code>,
+      regenerated by the quarterly update pipeline — no values are hardcoded.</p>
+    <ul class="dl-list">
+      <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/panel_quarterly.csv">
+        <span class="fname">panel_quarterly.csv</span>
+        <span class="fdesc">quarter × 43 public-proxy indicators</span></a></li>
+      <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/components.csv">
+        <span class="fname">components.csv</span>
+        <span class="fdesc">quarter × 14 component indices (0–1 quantiles)</span></a></li>
+      <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/aggregate.csv">
+        <span class="fname">aggregate.csv</span>
+        <span class="fdesc">quarter × aggregate vulnerability index (0–1)</span></a></li>
+      <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/indicators_standardized.csv">
+        <span class="fname">indicators_standardized.csv</span>
+        <span class="fdesc">quarter × 44 oriented standardized indicators (z-scores)</span></a></li>
+      <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/proxy_catalog.csv">
+        <span class="fname">proxy_catalog.csv</span>
+        <span class="fdesc">per-indicator source, construction, and fidelity notes</span></a></li>
+      <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/paper/fed_heat_map-replication.pdf">
+        <span class="fname">fed_heat_map-replication.pdf</span>
+        <span class="fdesc">the full replication paper</span></a></li>
+    </ul>
+    <p class="stamp" id="stamp">loading data…</p>
+    <div class="stale-banner" id="stale-banner" role="alert"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <p>This site is a replication of the Federal Reserve FEDS Notes
+      <a href="https://www.federalreserve.gov/econres/feds/mapping-heat-in-the-us-financial-system.htm">“Mapping Heat in the U.S. Financial System”</a>
+      (August 2015), rebuilt from public data sources alone.</p>
+    <p>43 of 44 indicators are replicated with public proxies; the results are scored against the
+      paper's own published tables. See the <a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/paper/fed_heat_map-replication.pdf">replication paper</a>
+      for the per-indicator specifications, fidelity scores, and limitations.</p>
+    <p>Charts: Observable Plot via CDN. This page reads all data from <code>data/*.json</code>; it is
+      refreshed by the quarterly update pipeline — no values are hardcoded.</p>
+  </div>
+</footer>
+
+</body>
+</html>
