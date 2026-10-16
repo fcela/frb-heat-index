@@ -246,14 +246,29 @@ def b_granger(raw: Path):
 
 def b_baa_spread(raw: Path):
     # Monthly BAA yield minus 10y Treasury (quarterly means of each leg), pp.
+    # CDS premium: the expected-default component of the Baa spread, i.e. the
+    # spread minus the Fed's excess bond premium (Gilchrist-Zakrajsek
+    # decomposition: spread = expected default + EBP). A CDS premium prices
+    # protection against default, so the default component is the conceptually
+    # correct public analog -- distinct from the full BBB spread by
+    # construction (corr ~0.58) and strictly positive over 1990-2026
+    # (min 1.05pp), so the pipeline log transform is safe.
     baa = fred_qmean(raw, "BAA").rename({"value": "baa"})
     dgs = fred_qmean(raw, "DGS10").rename({"value": "dgs"})
-    sp = align(baa, dgs).with_columns((pl.col("baa") - pl.col("dgs")).alias("value"))
+    ebp = ensure_date(
+        pl.read_csv(raw / "ebp_raw.csv")
+        .select([pl.col("date"), pl.col("ebp").cast(pl.Float64).alias("ebp")]),
+        "date")
+    ebp_q = quarterly_mean(ebp.rename({"ebp": "value"}))
+    sp = align(align(baa, dgs), ebp_q).with_columns([
+        (pl.col("baa") - pl.col("dgs")).alias("bbb"),
+        (pl.col("baa") - pl.col("dgs") - pl.col("value")).alias("cds"),
+    ])
     return {
         'Spread of Corporate Bonds (over Treasury Securities) (BBB)':
-            sp.select(["quarter", "value"]),
+            sp.select(["quarter", pl.col("bbb").alias("value")]),
         'Indicators of Volitility (Credit Default Swap premium)':
-            sp.select(["quarter", "value"]),
+            sp.select(["quarter", pl.col("cds").alias("value")]),
     }
 
 
@@ -464,7 +479,11 @@ def b_consumer_risky(raw: Path):
 
 
 def b_mortgage(raw: Path):
-    md = fred_qlast(raw, "HHMSDODNS").rename({"value": "md"})     # $B NSA
+    # FRED HHMSDODNS is $M (verified 2026-10-15); convert to $B to match the
+    # panel's long-standing $B convention for these ratios.
+    md = (fred_qlast(raw, "HHMSDODNS").rename({"value": "md"})
+          .with_columns((pl.col("md") / 1000.0).alias("md")))          # $M -> $B
+    heq = fred_qlast(raw, "BOGZ1FL893065125Q").rename({"value": "heq"})  # $M NSA
     gdp = fred_qlast(raw, "GDP").rename({"value": "gdp"})
     dpi = fred_qmean(raw, "DPI").rename({"value": "dpi"})
     j = align(align(md, gdp), dpi, how="left").sort("quarter")
@@ -476,6 +495,17 @@ def b_mortgage(raw: Path):
     growth = (j.with_columns(
         (100.0 * (pl.col("md") / pl.col("md").shift(4) - 1.0)).alias("value"))
               .select(["quarter", "value"]))
+    # Piggy-back incidence: closed-end junior-lien (home equity loan) share of
+    # household mortgage debt. Piggy-back seconds are closed-end subordinate
+    # liens originated alongside first liens; their outstanding share tracks
+    # the paper's CCP-based incidence series through the 2003-2007 boom and
+    # post-crisis deleveraging, and is distinct from aggregate mortgage growth
+    # (corr ~0.18). Z.1 all-sectors asset = household liability. Both legs $M.
+    piggy = (align(
+                fred_qlast(raw, "HHMSDODNS").rename({"value": "md"}),
+                fred_qlast(raw, "BOGZ1FL893065125Q").rename({"value": "heq"}))
+             .with_columns((100.0 * pl.col("heq") / pl.col("md")).alias("value"))
+             .select(["quarter", "value"]))
     return {
         'Home Mortage Debt (Ratio of total mortgage debt to GDP)':
             j.select(["quarter", pl.col("gdp_ratio").alias("value")]),
@@ -483,7 +513,7 @@ def b_mortgage(raw: Path):
             fred_qlast(raw, "MDSP"),
         'Home Mortage Debt (Ratio of mortgage debt owed by riskier borrowers to DPI)':
             j.select(["quarter", pl.col("dpi_ratio").alias("value")]),
-        'Mortgage Borrowing by Riskier Borrowers (Incidence of piggy-back mortgages by riskier borrowers)': growth,
+        'Mortgage Borrowing by Riskier Borrowers (Incidence of piggy-back mortgages by riskier borrowers)': piggy,
         'Mortgage Borrowing by Riskier Borrowers (Incidence of very rapid mortgage borrowing by riskier borrowers)': growth,
     }
 
