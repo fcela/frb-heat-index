@@ -175,7 +175,8 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
     "MS": [
         TableSpec(
             description="Institutional Securities income statement",
-            anchors=[r"institutional securities"],
+            anchors=[r"institutional securities",
+                     r"income statement information"],
             rows=[
                 # Advisory/underwriting is XBRL-covered (R189) -- skipped.
                 # "Equity"/"Fixed income" label BOTH the underwriting and
@@ -296,8 +297,9 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
 }
 
 # JPMorgan's Fixed Income / Equities split is expected in the XBRL R-files
-# (taxonomy: direct). JPM is therefore not in FIRM_SPECS; the build script
-# verifies the R-file coverage and only then skips the MD&A layer.
+# (issue #23 taxonomy: direct). JPM is therefore not in FIRM_SPECS; if the
+# XBRL layer finds the split missing, a JPM MD&A spec can be added -- the
+# MD&A narrative pattern "Fixed Income Markets revenue was $X" exists.
 
 
 # ---------------------------------------------------------------------------
@@ -485,7 +487,7 @@ def _nearby_text(table, chars: int = 1500) -> str:
     """Text of preceding siblings/headings, for anchor + unit detection."""
     parts = []
     node = table
-    for _ in range(6):
+    for _ in range(10):
         node = node.find_previous_sibling()
         if node is None:
             break
@@ -493,7 +495,7 @@ def _nearby_text(table, chars: int = 1500) -> str:
             parts.append(node.get_text(" ", strip=True))
     # Also walk up: section headings often sit above the table's parent.
     parent = table.parent
-    for _ in range(2):
+    for _ in range(4):
         if parent is None:
             break
         sib = parent.find_previous_sibling()
