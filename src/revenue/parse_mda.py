@@ -814,6 +814,16 @@ def extract_spec_rows(table, spec: TableSpec,
                         spec.description, rs.line, len(slots), len(years),
                         years)
             continue
+        # Wide tables may repeat a column group per year (e.g. Jefferies'
+        # FY2023 disaggregation: [IB&CM, Asset Mgmt, Total] x 3 years).
+        # When slots are an integer multiple of years, take the first
+        # sub-column of each year's group.
+        if len(slots) > len(years) and len(slots) % len(years) == 0:
+            k = len(slots) // len(years)
+            log.info("table '%s': row '%s' has %d slots for %d years; "
+                     "taking every %d-th (first sub-column per year)",
+                     spec.description, rs.line, len(slots), len(years), k)
+            slots = slots[::k]
         # MD&A layout convention: year values come first, % change /
         # variance columns trail. Take the first len(years) slots.
         for year, val in zip(years, slots[:len(years)]):
