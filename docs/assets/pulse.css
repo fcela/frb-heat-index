@@ -178,3 +178,25 @@
 }
 
 .pulse-foot a { color: var(--accent-ink); }
+
+/* ---- Revenue tracker ---- */
+.rev-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin: 0.5rem 0 0.75rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.rev-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+.rev-swatch {
+  display: inline-block;
+  width: 1.1rem;
+  height: 0.2rem;
+}
+.rev-card { margin-bottom: 1.5rem; }

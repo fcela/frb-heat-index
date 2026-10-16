@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bank Revenue Tracker — frb-heat-index</title>
+<meta name="description" content="Annual revenues by business line for major banks and independent advisors — advisory, ECM, DCM, FICC, equities, asset & wealth management — from public SEC filings.">
+<meta property="og:title" content="Bank Revenue Tracker — frb-heat-index">
+<meta property="og:description" content="Where the banks make their money: annual segment revenues by business line, 2010 to present, from 10-K filings.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='6' height='28' fill='%232166ac'%3E%3Crect x='10' y='10' width='6' height='20' fill='%23f4a582'%3E%3Crect x='18' y='6' width='6' height='24' fill='%23d6604d'%3E%3Crect x='26' y='14' width='4' height='16' fill='%23b2182b'%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/pulse.css">
+<script>
+  // Set theme before first paint to avoid a flash.
+  try {
+    var t = localStorage.getItem("frb-heat-theme");
+    if (t === "dark" || (t === null && matchMedia("(prefers-color-scheme: dark)").matches))
+      document.documentElement.dataset.theme = "dark";
+  } catch (e) {}
+</script>
+<script type="module" src="app.js"></script>
+</head>
+<body>
+
+<div class="tape-band">
+  <nav class="nav" aria-label="Sections">
+    <div class="nav-inner">
+      <span class="brand"><a href="../" style="color:inherit;text-decoration:none">frb-heat-index</a> <span class="dot">●</span></span>
+      <div class="nav-links">
+        <a href="./" aria-current="page">Revenue Tracker</a>
+        <a href="../frb/">FRB Heat Index</a>
+        <a href="../pulse/">Market Pulse</a>
+        <a href="../frb/#methodology">Methodology</a>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">◐</button>
+    </div>
+  </nav>
+
+  <header class="pulse-hero">
+    <p class="kicker">Bank revenue tracker · annual · from 10-K filings</p>
+    <h1>Where the banks <span class="tick">▮</span> make their money</h1>
+    <p class="lede">Annual net revenues by business line for six bulge-bracket banks and six
+      independent advisors — advisory, ECM, DCM, FICC, equities, asset &amp; wealth management,
+      private banking, and more. Every figure comes from the firms' own SEC filings (XBRL
+      segment data plus MD&amp;A tables). Cells a firm doesn't disclose are left blank, never
+      estimated. Vertical markers show segment reorganization breaks: values are never
+      spliced across them.</p>
+  </header>
+</div>
+
+<main>
+  <nav class="pulse-toc" id="revenue-toc" aria-label="Business lines"></nav>
+  <div id="revenue" style="max-width:1180px;margin:0 auto;padding:0 1.25rem"><p class="pulse-stamp">loading data…</p></div>
+  <div class="pulse-foot">
+    <p>The revenue tracker is the third leg of
+      <a href="../">frb-heat-index</a> alongside the
+      <a href="../frb/">FRB Heat Index replication</a> and
+      <a href="../pulse/">Market Pulse</a>. Data: <code>../data/revenue.json</code>,
+      built from 10-K XBRL filings via the revenue pipeline
+      (<code>src/revenue/</code>); raw filings preserved under
+      <code>data/revenue/raw/</code>. See
+      <a href="https://github.com/fcela/frb-heat-index/issues/23">issue #23</a>
+      for the sourcing research and the honest mapping of each firm's segments
+      onto the taxonomy.</p>
+  </div>
+</main>
+
+</body>
+</html>
