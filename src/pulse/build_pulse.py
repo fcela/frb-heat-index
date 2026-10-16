@@ -39,6 +39,17 @@ from src.pulse import (
     earnings_calls,  # noqa: F401  (scoring framework; see _earnings_calls_seed)
     cds_bond_basis,
     xccy_basis,
+    ipo_pipeline,
+    hy_issuance,
+    move_index,
+    put_call,
+    cape_zscore,
+    equity_issuance,
+    factor_rotation,
+    fund_flows,
+    cp_ois,
+    fra_ois,
+    dealer_cds,
 )
 from src.pulse.segments import SEGMENTS, FETCHABLE_STATUSES, all_indicators
 
@@ -156,6 +167,44 @@ def fetch_indicator(ind_key: str, ind: dict) -> pl.DataFrame:
         return _earnings_calls_seed()
     if ind_key == "wti_calendar_spread":
         return wti_calendar_spread.fetch_wti_calendar_spread()
+    if ind_key == "ipo_pipeline":
+        # Full backfill on first run (quarters_back=None); cheap 4-quarter
+        # refresh once a CSV exists. Default quarters_back=4 would truncate
+        # history on a fresh build.
+        old = load_existing("ib", "ipo_pipeline")
+        if old is None or old.height == 0:
+            return ipo_pipeline.fetch_ipo_pipeline(quarters_back=None)
+        return ipo_pipeline.fetch_ipo_pipeline()
+    if ind_key == "hy_issuance":
+        # Same pattern: full PDF history on first run, 8-quarter walk-back
+        # on refresh.
+        old = load_existing("ib", "hy_issuance")
+        if old is None or old.height == 0:
+            return hy_issuance.fetch_hy_issuance_history()
+        return hy_issuance.fetch_hy_issuance()
+    if ind_key == "move_index":
+        return move_index.fetch_move_index_proxy()
+    if ind_key == "put_call":
+        # Incremental scrape: the frozen CSV covers 2006->2019, so only
+        # scrape daily pages after the last committed date (~17 min for a
+        # full backfill; seconds for a refresh).
+        old = load_existing("equities", "put_call")
+        since = old["date"].max() if old is not None and old.height else None
+        return put_call.fetch_put_call(scrape_since=since)
+    if ind_key == "cape_zscore":
+        return cape_zscore.fetch_cape_zscore()
+    if ind_key == "equity_issuance":
+        return equity_issuance.fetch_equity_issuance()
+    if ind_key == "factor_rotation":
+        return factor_rotation.fetch_factor_rotation()
+    if ind_key == "fund_flows":
+        return fund_flows.fetch_fund_flows()
+    if ind_key == "cp_ois":
+        return cp_ois.fetch_cp_ois()
+    if ind_key == "fra_ois":
+        return fra_ois.fetch_fra_ois()
+    if ind_key == "dealer_cds":
+        return dealer_cds.fetch_dealer_cds()
     raise RuntimeError(f"no fetcher for {ind_key}")
 
 
