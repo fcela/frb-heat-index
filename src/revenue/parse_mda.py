@@ -130,6 +130,11 @@ class TableSpec:
     # matches ANY anchor (tried in order; first hit wins).
     anchors: list[str]
     rows: list[RowSpec]
+    # When True, extract from EVERY matching table (Jefferies repeats its
+    # disaggregation once per year). Otherwise only the first match is
+    # used, avoiding false positives from unrelated tables that happen to
+    # share row labels.
+    multi: bool = False
 
 
 # ---------------------------------------------------------------------------
@@ -234,6 +239,9 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
             description="Investment Banking and Capital Markets "
                         "revenues by source",
             anchors=[r"investment banking"],
+            # Jefferies repeats the disaggregation once per fiscal year;
+            # extract from every matching table.
+            multi=True,
             rows=[
                 RowSpec("advisory",
                         [r"investment banking\s*[–—-]\s*advisory"]),
@@ -495,6 +503,8 @@ def normalize_label(text: str) -> str:
     # Strip stray trailing digits left by superscript footnotes, e.g.
     # "FICC 1" (but keep meaningful numbers inside labels).
     t = re.sub(r"\s+\d$", "", t)
+    # Strip dot/dash leaders ("Advisory ........").
+    t = re.sub(r"[\s.·…\-–—]{2,}$", "", t).strip()
     return t
 
 
@@ -533,38 +543,46 @@ def _row_labels(table) -> list[str]:
     return labels
 
 
-def locate_table(soup: BeautifulSoup, spec: TableSpec,
-                 firm: str, accession: str):
-    """Find the MD&A table matching a spec's anchors.
+def locate_tables(soup: BeautifulSoup, spec: TableSpec,
+                  firm: str, accession: str) -> list:
+    """Find ALL MD&A tables matching a spec's anchors + required rows.
 
-    A table qualifies only if (a) its own text or nearby heading text
-    matches one of the anchors AND (b) it contains every required row
-    label. This avoids latching onto the first table that merely mentions
-    the anchor (e.g. a firmwide summary) while the detailed table sits
-    further down.
-
-    Raises TableNotFoundError with a diagnostic message when nothing
-    matches -- never returns a guessed table.
+    Most specs resolve to one table; some filers (Jefferies) repeat the
+    table once per year, in which case every matching table is returned.
+    Raises TableNotFoundError when nothing matches -- never guesses.
     """
+    found = []
     n_tables = len(soup.find_all("table"))
     anchor_hits = 0
     for anchor in spec.anchors:
         rx = re.compile(anchor, re.IGNORECASE)
         for table in soup.find_all("table"):
+            if table in found:
+                continue
             hay = _table_text(table) + " || " + _nearby_text(table)
             if not rx.search(hay):
                 continue
             anchor_hits += 1
             labels = _row_labels(table)
             if all(any(rs.matches(lb) for lb in labels) for rs in spec.rows):
-                return table
-    raise TableNotFoundError(
-        f"{firm} {accession}: MD&A table '{spec.description}' not found. "
-        f"{anchor_hits} table(s) matched the anchors "
-        f"{spec.anchors} but none contained all required rows "
-        f"{[rs.line for rs in spec.rows]} (checked {n_tables} tables: "
-        f"table text + nearby headings). The filing's MD&A layout likely "
-        f"changed; update FIRM_SPECS anchors/rows rather than guessing.")
+                found.append(table)
+        if found:
+            break
+    if not found:
+        raise TableNotFoundError(
+            f"{firm} {accession}: MD&A table '{spec.description}' not found. "
+            f"{anchor_hits} table(s) matched the anchors "
+            f"{spec.anchors} but none contained all required rows "
+            f"{[rs.line for rs in spec.rows]} (checked {n_tables} tables: "
+            f"table text + nearby headings). The filing's MD&A layout likely "
+            f"changed; update FIRM_SPECS anchors/rows rather than guessing.")
+    return found
+
+
+def locate_table(soup: BeautifulSoup, spec: TableSpec,
+                 firm: str, accession: str):
+    """Find the MD&A table matching a spec (first of locate_tables)."""
+    return locate_tables(soup, spec, firm, accession)[0]
 
 
 _YEAR = re.compile(r"\b(19|20)\d{2}\b")
@@ -811,20 +829,25 @@ def parse_filing(firm: str, cik: str, accession: str,
     soup = BeautifulSoup(html_path.read_bytes(), "lxml")
     records = []
     for spec in FIRM_SPECS[firm]:
-        table = locate_table(soup, spec, firm, accession)
-        try:
-            years = detect_years(table)
-        except YearColumnError:
-            years = []  # year-band layout (Jefferies); resolved in extract
-        unit_mult = detect_unit_multiplier(table)
-        rows = extract_spec_rows(table, spec, years, unit_mult)
-        source = f"mda:{spec.description}"
-        for r in rows:
-            records.append({"firm": firm, "cik": cik, **r,
-                            "source": source, "accession": accession})
-        log.info("%s %s: '%s' -> %d cells (%s)",
-                 firm, accession, spec.description, len(rows),
-                 sorted({r['year'] for r in rows}))
+        tables = locate_tables(soup, spec, firm, accession)
+        if not spec.multi and len(tables) > 1:
+            log.info("%s %s: '%s' matched %d tables; using the first",
+                     firm, accession, spec.description, len(tables))
+            tables = tables[:1]
+        for table in tables:
+            try:
+                years = detect_years(table)
+            except YearColumnError:
+                years = []  # year-band layout; resolved in extract
+            unit_mult = detect_unit_multiplier(table)
+            rows = extract_spec_rows(table, spec, years, unit_mult)
+            source = f"mda:{spec.description}"
+            for r in rows:
+                records.append({"firm": firm, "cik": cik, **r,
+                                "source": source, "accession": accession})
+            log.info("%s %s: '%s' -> %d cells (%s)",
+                     firm, accession, spec.description, len(rows),
+                     sorted({r['year'] for r in rows}))
     return records
 
 
