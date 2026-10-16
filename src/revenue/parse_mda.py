@@ -265,10 +265,14 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
     ],
     "LAZ": [
         TableSpec(
-            description="Revenue disaggregation - Financial Advisory",
-            anchors=[r"financial advisory"],
+            # Lazard's Financial Advisory segment adjusted operating
+            # results (GAAP net revenue row, $ in thousands). No
+            # underwriting/ECM/DCM split is disclosed.
+            description="Financial Advisory adjusted operating results",
+            anchors=[r"financial advisory segment"],
             rows=[
-                RowSpec("advisory", [r"financial advisory"]),
+                RowSpec("advisory",
+                        [r"net revenue\s*[-–—]\s*u\.?s\.?\s*gaap basis"]),
             ],
         ),
     ],
