@@ -1,0 +1,336 @@
+firm,taxonomy_line,year,net_revenue_m,map_quality,layer,regime,source,accession
+Bank of America,awm,2010,15383.0,D,xbrl,r0,XBRL R-file,0000070858-13-000097
+Bank of America,awm,2011,16495.0,D,xbrl,r0,XBRL R-file,0000070858-13-000097
+Bank of America,awm,2012,16517.0,D,xbrl,r1,XBRL R-file,0000070858-13-000097
+Bank of America,awm,2016,17650.0,D,xbrl,r3,XBRL R-file,0000070858-19-000012
+Bank of America,awm,2017,18599.0,D,xbrl,r3,XBRL R-file,0000070858-20-000011
+Bank of America,awm,2018,19453.0,D,xbrl,r3,XBRL R-file,0000070858-21-000023
+Bank of America,awm,2019,19538.0,D,xbrl,r3,XBRL R-file,0000070858-22-000062
+Bank of America,awm,2020,18584.0,D,xbrl,r3,XBRL R-file,0000070858-23-000092
+Bank of America,awm,2021,20748.0,D,xbrl,r3,XBRL R-file,0000070858-24-000122
+Bank of America,awm,2022,21748.0,D,xbrl,r3,XBRL R-file,0000070858-25-000139
+Bank of America,awm,2023,21105.0,D,xbrl,r3,XBRL R-file,0000070858-26-000157
+Bank of America,awm,2024,22929.0,D,xbrl,r3,XBRL R-file,0000070858-26-000157
+Bank of America,awm,2025,24883.0,D,xbrl,r3,XBRL R-file,0000070858-26-000157
+Bank of America,equities,2024,7436.0,D,mda,r3,mda:Global Markets sales and trading revenue,0000070858-26-000157
+Bank of America,equities,2025,8604.0,D,mda,r3,mda:Global Markets sales and trading revenue,0000070858-26-000157
+Bank of America,ficc,2024,11371.0,D,mda,r3,mda:Global Markets sales and trading revenue,0000070858-26-000157
+Bank of America,ficc,2025,12267.0,D,mda,r3,mda:Global Markets sales and trading revenue,0000070858-26-000157
+Citigroup,advisory,2012,39105.0,A,xbrl,r1,XBRL R-file,0000831001-15-000043
+Citigroup,advisory,2013,36305.0,A,xbrl,r1,XBRL R-file,0000831001-16-000235
+Citigroup,advisory,2014,34296.0,A,xbrl,r1,XBRL R-file,0000831001-17-000038
+Citigroup,advisory,2015,32251.0,A,xbrl,r1,XBRL R-file,0000831001-18-000040
+Citigroup,advisory,2016,31624.0,A,xbrl,r1,XBRL R-file,0000831001-19-000027
+Citigroup,advisory,2017,31445.0,A,xbrl,r2,XBRL R-file,0000831001-20-000031
+Citigroup,advisory,2018,32339.0,A,xbrl,r2,XBRL R-file,0000831001-21-000042
+Citigroup,advisory,2019,33221.0,A,xbrl,r2,XBRL R-file,0000831001-22-000036
+Citigroup,advisory,2020,25140.0,A,xbrl,r2,XBRL R-file,0000831001-23-000037
+Citigroup,advisory,2021,1785.0,D,mda,r2,mda:Banking business metrics - investment banking fees,0000831001-24-000033
+Citigroup,advisory,2022,5527.0,A,xbrl,r3,XBRL R-file,0000831001-25-000067
+Citigroup,advisory,2023,4715.0,A,xbrl,r4,XBRL R-file,0000831001-26-000011
+Citigroup,advisory,2024,6201.0,A,xbrl,r4,XBRL R-file,0000831001-26-000011
+Citigroup,advisory,2025,8215.0,A,xbrl,r4,XBRL R-file,0000831001-26-000011
+Citigroup,awm,2021,7542.0,D,xbrl,r2,XBRL R-file,0000831001-24-000033
+Citigroup,awm,2022,7355.0,D,xbrl,r3,XBRL R-file,0000831001-25-000067
+Citigroup,awm,2023,6997.0,D,xbrl,r4,XBRL R-file,0000831001-26-000011
+Citigroup,awm,2024,7483.0,D,xbrl,r4,XBRL R-file,0000831001-26-000011
+Citigroup,awm,2025,8559.0,D,xbrl,r4,XBRL R-file,0000831001-26-000011
+Citigroup,dcm,2021,2081.0,D,mda,r2,mda:Banking business metrics - investment banking fees,0000831001-24-000033
+Citigroup,dcm,2022,1100.0,D,mda,r3,mda:Banking business metrics - investment banking fees,0000831001-24-000033
+Citigroup,dcm,2023,1196.0,D,mda,r4,mda:Banking business metrics - investment banking fees,0000831001-24-000033
+Citigroup,ecm,2021,2152.0,D,mda,r2,mda:Banking business metrics - investment banking fees,0000831001-24-000033
+Citigroup,ecm,2022,621.0,D,mda,r3,mda:Banking business metrics - investment banking fees,0000831001-24-000033
+Citigroup,ecm,2023,500.0,D,mda,r4,mda:Banking business metrics - investment banking fees,0000831001-24-000033
+Citigroup,equities,2021,5054.0,D,mda,r2,mda:Markets revenue by component,0000831001-24-000033
+Citigroup,equities,2022,4451.0,D,mda,r3,mda:Markets revenue by component,0000831001-24-000033
+Citigroup,equities,2023,4037.0,D,mda,r4,mda:Markets revenue by component,0000831001-24-000033
+Citigroup,ficc,2021,14345.0,D,mda,r2,mda:Markets revenue by component,0000831001-24-000033
+Citigroup,ficc,2022,15710.0,D,mda,r3,mda:Markets revenue by component,0000831001-24-000033
+Citigroup,ficc,2023,14820.0,D,mda,r4,mda:Markets revenue by component,0000831001-24-000033
+Evercore,advisory,2010,301.847,D,xbrl,r0,XBRL R-file,0001193125-12-143058
+Evercore,advisory,2011,428.124,D,xbrl,r0,XBRL R-file,0001360901-14-000008
+Evercore,advisory,2012,565.219,D,xbrl,r0,XBRL R-file,0001360901-15-000004
+Evercore,advisory,2013,670.785,D,xbrl,r0,XBRL R-file,0001360901-16-000017
+Evercore,advisory,2014,819.6370000000001,D,xbrl,r0,XBRL R-file,0001360901-17-000007
+Evercore,advisory,2015,1130.915,D,xbrl,r0,XBRL R-file,0001360901-18-000006
+Evercore,advisory,2016,1363.859,D,xbrl,r0,XBRL R-file,0001360901-19-000006
+Evercore,advisory,2017,1634.268,D,xbrl,r0,XBRL R-file,0001360901-20-000006
+Evercore,advisory,2018,2012.0230000000001,D,xbrl,r0,XBRL R-file,0001360901-21-000005
+Evercore,advisory,2019,1951.795,D,xbrl,r0,XBRL R-file,0001360901-22-000005
+Evercore,advisory,2020,2217.386,D,xbrl,r0,XBRL R-file,0001360901-23-000005
+Evercore,advisory,2021,3223.889,D,xbrl,r0,XBRL R-file,0001360901-24-000007
+Evercore,advisory,2022,2696.125,D,xbrl,r0,XBRL R-file,0001360901-25-000005
+Evercore,advisory,2023,1963.857,D,mda,r0,mda:Investment Banking & Equities revenues,0001628280-26-010273
+Evercore,advisory,2024,2440.605,D,mda,r0,mda:Investment Banking & Equities revenues,0001628280-26-010273
+Evercore,advisory,2025,3267.087,D,mda,r0,mda:Investment Banking & Equities revenues,0001628280-26-010273
+Evercore,awm,2010,74.058,D,xbrl,r0,XBRL R-file,0001193125-12-143058
+Evercore,awm,2011,96.14,D,xbrl,r0,XBRL R-file,0001360901-14-000008
+Evercore,awm,2012,77.154,D,xbrl,r0,XBRL R-file,0001360901-15-000004
+Evercore,awm,2013,94.643,D,xbrl,r0,XBRL R-file,0001360901-16-000017
+Evercore,awm,2014,96.221,D,xbrl,r0,XBRL R-file,0001360901-17-000007
+Evercore,awm,2015,92.358,D,xbrl,r0,XBRL R-file,0001360901-18-000006
+Evercore,awm,2016,76.193,D,xbrl,r0,XBRL R-file,0001360901-19-000006
+Evercore,awm,2017,70.081,D,xbrl,r0,XBRL R-file,0001360901-20-000006
+Evercore,awm,2018,52.682,D,xbrl,r0,XBRL R-file,0001360901-21-000005
+Evercore,awm,2019,56.903,D,xbrl,r0,XBRL R-file,0001360901-22-000005
+Evercore,awm,2020,46.519,D,xbrl,r0,XBRL R-file,0001360901-23-000005
+Evercore,awm,2021,65.61,D,xbrl,r0,XBRL R-file,0001360901-24-000007
+Evercore,awm,2022,65.923,D,xbrl,r0,XBRL R-file,0001360901-25-000005
+Evercore,awm,2023,70.006,D,xbrl,r0,XBRL R-file,0001628280-26-010273
+Evercore,awm,2024,81.104,D,xbrl,r0,XBRL R-file,0001628280-26-010273
+Evercore,awm,2025,88.165,D,xbrl,r0,XBRL R-file,0001628280-26-010273
+Evercore,ecm_dcm_combined,2023,111.016,D,mda,r0,mda:Investment Banking & Equities revenues,0001628280-26-010273
+Evercore,ecm_dcm_combined,2024,157.067,D,mda,r0,mda:Investment Banking & Equities revenues,0001628280-26-010273
+Evercore,ecm_dcm_combined,2025,179.647,D,mda,r0,mda:Investment Banking & Equities revenues,0001628280-26-010273
+Goldman Sachs,advisory,2011,1987.0,D,xbrl,r0,XBRL R-file,0001193125-14-073792
+Goldman Sachs,advisory,2012,1975.0,D,xbrl,r0,XBRL R-file,0001193125-15-056785
+Goldman Sachs,advisory,2013,1978.0,D,xbrl,r0,XBRL R-file,0001193125-16-488753
+Goldman Sachs,advisory,2014,2474.0,D,xbrl,r0,XBRL R-file,0001193125-17-056804
+Goldman Sachs,advisory,2015,3470.0,D,xbrl,r0,XBRL R-file,0001193125-18-056383
+Goldman Sachs,advisory,2016,2932.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,advisory,2017,3188.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,advisory,2018,3507.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,advisory,2021,5654.0,D,mda,r1,mda:Investment banking fees,0000886982-24-000006
+Goldman Sachs,advisory,2022,4704.0,D,mda,r2,mda:Investment banking fees,0000886982-24-000006
+Goldman Sachs,advisory,2023,3299.0,D,mda,r2,mda:Investment banking fees,0000886982-24-000006
+Goldman Sachs,awm,2011,4188.0,D,xbrl,r0,XBRL R-file,0001193125-14-073792
+Goldman Sachs,awm,2012,416.0,A,xbrl,r0,XBRL R-file,0001193125-15-056785
+Goldman Sachs,awm,2013,4386.0,D,xbrl,r0,XBRL R-file,0001193125-16-488753
+Goldman Sachs,awm,2014,4800.0,D,xbrl,r0,XBRL R-file,0001193125-17-056804
+Goldman Sachs,awm,2015,4887.0,D,xbrl,r0,XBRL R-file,0001193125-18-056383
+Goldman Sachs,awm,2016,569.0,A,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,awm,2017,8530.0,D,xbrl,r0,XBRL R-file,0001193125-20-043853
+Goldman Sachs,awm,2018,8835.0,D,xbrl,r0,XBRL R-file,0001193125-21-049380
+Goldman Sachs,awm,2019,8965.0,D,xbrl,r0,XBRL R-file,0001193125-22-052682
+Goldman Sachs,awm,2020,7984.0,D,xbrl,r1,XBRL R-file,0001193125-22-052682
+Goldman Sachs,awm,2021,14916.0,D,xbrl,r1,XBRL R-file,0001193125-22-052682
+Goldman Sachs,awm,2022,13376.0,D,xbrl,r2,XBRL R-file,0000886982-25-000005
+Goldman Sachs,awm,2023,14202.0,D,xbrl,r2,XBRL R-file,0000886982-26-000091
+Goldman Sachs,awm,2024,16316.0,D,xbrl,r2,XBRL R-file,0000886982-26-000091
+Goldman Sachs,awm,2025,16679.0,D,xbrl,r3,XBRL R-file,0000886982-26-000091
+Goldman Sachs,awm_incentive_fees,2011,323.0,D,xbrl,r0,XBRL R-file,0001193125-14-073792
+Goldman Sachs,awm_incentive_fees,2012,701.0,D,xbrl,r0,XBRL R-file,0001193125-15-056785
+Goldman Sachs,awm_incentive_fees,2013,662.0,D,xbrl,r0,XBRL R-file,0001193125-16-488753
+Goldman Sachs,awm_incentive_fees,2014,776.0,D,xbrl,r0,XBRL R-file,0001193125-17-056804
+Goldman Sachs,awm_incentive_fees,2015,780.0,D,xbrl,r0,XBRL R-file,0001193125-18-056383
+Goldman Sachs,awm_incentive_fees,2016,421.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,awm_incentive_fees,2017,417.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,awm_incentive_fees,2018,830.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,awm_investments,2010,7541.0,D,xbrl,r0,XBRL R-file,0001193125-13-085474
+Goldman Sachs,awm_investments,2011,603.0,D,xbrl,r0,XBRL R-file,0001193125-14-073792
+Goldman Sachs,awm_investments,2012,2800.0,D,xbrl,r0,XBRL R-file,0001193125-15-056785
+Goldman Sachs,awm_investments,2013,4974.0,D,xbrl,r0,XBRL R-file,0001193125-16-488753
+Goldman Sachs,awm_investments,2014,4579.0,D,xbrl,r0,XBRL R-file,0001193125-17-056804
+Goldman Sachs,awm_investments,2015,3781.0,D,xbrl,r0,XBRL R-file,0001193125-18-056383
+Goldman Sachs,awm_investments,2016,2573.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,awm_investments,2017,2660.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,awm_investments,2018,8250.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,dcm,2011,1283.0,D,xbrl,r0,XBRL R-file,0001193125-14-073792
+Goldman Sachs,dcm,2012,1964.0,D,xbrl,r0,XBRL R-file,0001193125-15-056785
+Goldman Sachs,dcm,2013,2367.0,D,xbrl,r0,XBRL R-file,0001193125-16-488753
+Goldman Sachs,dcm,2014,2240.0,D,xbrl,r0,XBRL R-file,0001193125-17-056804
+Goldman Sachs,dcm,2015,2011.0,D,xbrl,r0,XBRL R-file,0001193125-18-056383
+Goldman Sachs,dcm,2016,2450.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,dcm,2017,2940.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,dcm,2018,2709.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,dcm,2021,3497.0,D,mda,r1,mda:Investment banking fees,0000886982-24-000006
+Goldman Sachs,dcm,2022,1808.0,D,mda,r2,mda:Investment banking fees,0000886982-24-000006
+Goldman Sachs,dcm,2023,1764.0,D,mda,r2,mda:Investment banking fees,0000886982-24-000006
+Goldman Sachs,ecm,2011,1085.0,D,xbrl,r0,XBRL R-file,0001193125-14-073792
+Goldman Sachs,ecm,2012,987.0,D,xbrl,r0,XBRL R-file,0001193125-15-056785
+Goldman Sachs,ecm,2013,1659.0,D,xbrl,r0,XBRL R-file,0001193125-16-488753
+Goldman Sachs,ecm,2014,1750.0,D,xbrl,r0,XBRL R-file,0001193125-17-056804
+Goldman Sachs,ecm,2015,1546.0,D,xbrl,r0,XBRL R-file,0001193125-18-056383
+Goldman Sachs,ecm,2016,891.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,ecm,2017,1243.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,ecm,2018,1646.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,ecm,2021,4985.0,D,mda,r1,mda:Investment banking fees,0000886982-24-000006
+Goldman Sachs,ecm,2022,848.0,D,mda,r2,mda:Investment banking fees,0000886982-24-000006
+Goldman Sachs,ecm,2023,1153.0,D,mda,r2,mda:Investment banking fees,0000886982-24-000006
+Goldman Sachs,ecm_dcm_combined,2011,2368.0,D,xbrl,r0,XBRL R-file,0001193125-14-073792
+Goldman Sachs,ecm_dcm_combined,2012,2951.0,D,xbrl,r0,XBRL R-file,0001193125-15-056785
+Goldman Sachs,ecm_dcm_combined,2013,4026.0,D,xbrl,r0,XBRL R-file,0001193125-16-488753
+Goldman Sachs,ecm_dcm_combined,2014,3990.0,D,xbrl,r0,XBRL R-file,0001193125-17-056804
+Goldman Sachs,ecm_dcm_combined,2015,3557.0,D,xbrl,r0,XBRL R-file,0001193125-18-056383
+Goldman Sachs,ecm_dcm_combined,2016,3341.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,ecm_dcm_combined,2017,4183.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,ecm_dcm_combined,2018,4355.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,equities,2011,3633.0,A,xbrl,r0,XBRL R-file,0001193125-14-073792
+Goldman Sachs,equities,2012,3171.0,D,xbrl,r0,XBRL R-file,0001193125-15-056785
+Goldman Sachs,equities,2013,3103.0,A,xbrl,r0,XBRL R-file,0001193125-16-488753
+Goldman Sachs,equities,2014,3153.0,A,xbrl,r0,XBRL R-file,0001193125-17-056804
+Goldman Sachs,equities,2015,3028.0,D,xbrl,r0,XBRL R-file,0001193125-18-056383
+Goldman Sachs,equities,2016,6911.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,equities,2017,6603.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,equities,2018,7600.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,equities,2021,11722.0,D,mda,r1,mda:Global Banking & Markets net revenues,0000886982-24-000006
+Goldman Sachs,equities,2022,10988.0,D,mda,r2,mda:Global Banking & Markets net revenues,0000886982-24-000006
+Goldman Sachs,equities,2023,11549.0,D,mda,r2,mda:Global Banking & Markets net revenues,0000886982-24-000006
+Goldman Sachs,ficc,2011,9018.0,D,xbrl,r0,XBRL R-file,0001193125-14-073792
+Goldman Sachs,ficc,2012,9914.0,D,xbrl,r0,XBRL R-file,0001193125-15-056785
+Goldman Sachs,ficc,2013,8651.0,D,xbrl,r0,XBRL R-file,0001193125-16-488753
+Goldman Sachs,ficc,2014,8461.0,D,xbrl,r0,XBRL R-file,0001193125-17-056804
+Goldman Sachs,ficc,2015,7322.0,D,xbrl,r0,XBRL R-file,0001193125-18-056383
+Goldman Sachs,ficc,2016,7556.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,ficc,2017,5299.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,ficc,2018,5882.0,D,xbrl,r0,XBRL R-file,0001193125-19-050198
+Goldman Sachs,ficc,2021,10611.0,D,mda,r1,mda:Global Banking & Markets net revenues,0000886982-24-000006
+Goldman Sachs,ficc,2022,14676.0,D,mda,r2,mda:Global Banking & Markets net revenues,0000886982-24-000006
+Goldman Sachs,ficc,2023,12060.0,D,mda,r2,mda:Global Banking & Markets net revenues,0000886982-24-000006
+Goldman Sachs,private_banking,2017,4446.0,A,xbrl,r0,XBRL R-file,0001193125-20-043853
+Goldman Sachs,private_banking,2018,5165.0,A,xbrl,r0,XBRL R-file,0001193125-21-049380
+Goldman Sachs,private_banking,2019,5203.0,A,xbrl,r0,XBRL R-file,0001193125-22-052682
+Goldman Sachs,private_banking,2020,5996.0,A,xbrl,r1,XBRL R-file,0001193125-22-052682
+Goldman Sachs,private_banking,2021,7470.0,A,xbrl,r1,XBRL R-file,0001193125-22-052682
+Houlihan Lokey,advisory,2014,230.062,D,xbrl,r0,XBRL R-file,0001302215-16-000050
+Houlihan Lokey,advisory,2015,105.331,A,xbrl,r0,XBRL R-file,0001302215-17-000027
+Houlihan Lokey,advisory,2016,119.632,A,xbrl,r0,XBRL R-file,0001302215-18-000015
+Houlihan Lokey,advisory,2017,434.558,A,xbrl,r0,XBRL R-file,0001302215-19-000044
+Houlihan Lokey,advisory,2018,528.643,A,xbrl,r0,XBRL R-file,0001302215-20-000074
+Houlihan Lokey,advisory,2019,159.278,D,xbrl,r0,XBRL R-file,0001302215-21-000027
+Houlihan Lokey,advisory,2020,352.517,D,xbrl,r0,XBRL R-file,0001302215-22-000029
+Houlihan Lokey,advisory,2021,187.852,D,xbrl,r0,XBRL R-file,0001302215-23-000031
+Houlihan Lokey,advisory,2022,284.057,D,xbrl,r0,XBRL R-file,0001302215-24-000028
+Houlihan Lokey,advisory,2023,286.588,D,xbrl,r0,XBRL R-file,0001302215-25-000024
+Houlihan Lokey,advisory,2024,285.594,D,xbrl,r0,XBRL R-file,0001302215-26-000053
+Houlihan Lokey,advisory,2025,1526.756,D,mda,r0,mda:Revenues by segment,0001302215-26-000053
+Houlihan Lokey,advisory,2026,528.655,D,xbrl,r0,XBRL R-file,0001302215-26-000053
+JPMorgan,awm,2010,8984.0,D,xbrl,r0,XBRL R-file,0000950123-11-019773
+JPMorgan,awm,2011,9543.0,D,xbrl,r0,XBRL R-file,0000019617-14-000289
+JPMorgan,awm,2012,10010.0,D,xbrl,r1,XBRL R-file,0000019617-15-000272
+JPMorgan,awm,2013,11405.0,D,xbrl,r1,XBRL R-file,0000019617-16-000902
+JPMorgan,awm,2014,12028.0,D,xbrl,r1,XBRL R-file,0000019617-17-000314
+JPMorgan,awm,2015,12119.0,D,xbrl,r1,XBRL R-file,0000019617-18-000057
+JPMorgan,awm,2016,12822.0,D,xbrl,r1,XBRL R-file,0000019617-19-000054
+JPMorgan,awm,2017,13835.0,D,xbrl,r1,XBRL R-file,0000019617-20-000257
+JPMorgan,awm,2018,13427.0,D,xbrl,r1,XBRL R-file,0000019617-21-000236
+JPMorgan,awm,2019,13591.0,D,xbrl,r1,XBRL R-file,0000019617-22-000272
+JPMorgan,awm,2020,14240.0,D,xbrl,r1,XBRL R-file,0000019617-23-000231
+JPMorgan,awm,2021,16957.0,D,xbrl,r1,XBRL R-file,0000019617-24-000225
+JPMorgan,awm,2022,17748.0,D,xbrl,r1,XBRL R-file,0000019617-25-000270
+JPMorgan,awm,2023,19827.0,D,xbrl,r1,XBRL R-file,0001628280-26-008131
+JPMorgan,awm,2024,21578.0,D,xbrl,r2,XBRL R-file,0001628280-26-008131
+JPMorgan,awm,2025,24073.0,D,xbrl,r2,XBRL R-file,0001628280-26-008131
+JPMorgan,awm_investments,2010,7422.0,A,xbrl,r0,XBRL R-file,0000950123-11-019773
+JPMorgan,awm_investments,2011,4203.0,A,xbrl,r0,XBRL R-file,0000019617-14-000289
+JPMorgan,awm_investments,2012,-1091.0,A,xbrl,r1,XBRL R-file,0000019617-14-000289
+JPMorgan,awm_investments,2013,1254.0,A,xbrl,r1,XBRL R-file,0000019617-14-000289
+Jefferies,advisory,2013,2134.002,A,xbrl,r0,XBRL R-file,0000096223-14-000006
+Jefferies,advisory,2017,3198.109,A,xbrl,r0,XBRL R-file,0000096223-20-000008
+Jefferies,advisory,2018,3183.376,A,xbrl,r0,XBRL R-file,0000096223-20-000008
+Jefferies,advisory,2019,3112.53,A,xbrl,r1,XBRL R-file,0000096223-20-000008
+Jefferies,advisory,2020,5029.5,A,xbrl,r1,XBRL R-file,0000096223-23-000009
+Jefferies,advisory,2021,1873.56,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-24-000006
+Jefferies,advisory,2022,4741.3,A,xbrl,r1,XBRL R-file,0001628280-25-002833
+Jefferies,advisory,2023,4504.400000000001,A,xbrl,r1,XBRL R-file,0001628280-25-002833
+Jefferies,advisory,2024,6204.3,A,xbrl,r1,XBRL R-file,0001628280-25-002833
+Jefferies,advisory,2025,9791.2,A,xbrl,r1,XBRL R-file,0000096223-26-000009
+Jefferies,awm,2017,49.6,A,xbrl,r0,XBRL R-file,0000096223-20-000008
+Jefferies,awm,2018,6.7,A,xbrl,r0,XBRL R-file,0000096223-20-000008
+Jefferies,awm,2020,814.6,A,xbrl,r1,XBRL R-file,0000096223-23-000009
+Jefferies,awm,2021,1084.8,A,xbrl,r1,XBRL R-file,0000096223-24-000006
+Jefferies,awm,2022,1243.5,A,xbrl,r1,XBRL R-file,0001628280-25-002833
+Jefferies,awm,2023,188.3,A,xbrl,r1,XBRL R-file,0001628280-25-002833
+Jefferies,awm,2024,803.7,A,xbrl,r1,XBRL R-file,0001628280-25-002833
+Jefferies,awm,2025,1006.9,A,xbrl,r1,XBRL R-file,0000096223-26-000009
+Jefferies,ecm_dcm_combined,2021,2492.139,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-24-000006
+Jefferies,ecm_dcm_combined,2022,1029.819,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-24-000006
+Jefferies,ecm_dcm_combined,2023,970.451,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
+Jefferies,ecm_dcm_combined,2024,1491.03,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
+Jefferies,ecm_dcm_combined,2025,1641.897,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
+Jefferies,equities,2021,881.66,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-24-000006
+Jefferies,equities,2022,910.254,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-24-000006
+Jefferies,equities,2023,894.602,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
+Jefferies,equities,2024,1074.666,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
+Jefferies,equities,2025,1293.944,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
+Jefferies,ficc,2021,14.355,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-24-000006
+Jefferies,ficc,2022,15.24,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-24-000006
+Jefferies,ficc,2023,10.577,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
+Jefferies,ficc,2024,8.859,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
+Jefferies,ficc,2025,7.005,D,mda,r1,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
+Lazard,advisory,2010,1119.867,D,xbrl,r0,XBRL R-file,0001193125-13-084745
+Lazard,advisory,2011,992.107,D,xbrl,r0,XBRL R-file,0001193125-13-084745
+Lazard,advisory,2012,1049.09,D,xbrl,r0,XBRL R-file,0001193125-13-084745
+Lazard,advisory,2013,980.577,D,xbrl,r0,XBRL R-file,0001193125-16-478536
+Lazard,advisory,2014,1206.734,D,xbrl,r0,XBRL R-file,0001564590-17-002432
+Lazard,advisory,2015,1279.628,D,xbrl,r0,XBRL R-file,0001564590-18-003288
+Lazard,advisory,2016,1301.044,D,xbrl,r0,XBRL R-file,0001564590-19-004164
+Lazard,advisory,2017,1387.682,D,xbrl,r0,XBRL R-file,0001564590-20-006094
+Lazard,advisory,2018,1555.526,D,xbrl,r0,XBRL R-file,0001564590-21-009197
+Lazard,advisory,2019,1374.036,D,xbrl,r0,XBRL R-file,0001564590-22-007675
+Lazard,advisory,2020,1420.501,D,xbrl,r0,XBRL R-file,0001564590-23-002334
+Lazard,advisory,2021,1764.509,D,xbrl,r0,XBRL R-file,0001628280-24-006659
+Lazard,advisory,2022,1666.156,D,xbrl,r0,XBRL R-file,0001628280-25-007441
+Lazard,advisory,2023,1385.357,D,xbrl,r0,XBRL R-file,0001628280-25-007441
+Lazard,advisory,2024,1756.183,D,xbrl,r0,XBRL R-file,0001628280-25-007441
+Lazard,advisory,2025,1834.303,D,xbrl,r0,XBRL R-file,0001311370-26-000008
+Lazard,awm,2010,849.662,D,xbrl,r0,XBRL R-file,0001193125-13-084745
+Lazard,awm,2011,897.4010000000001,D,xbrl,r0,XBRL R-file,0001193125-13-084745
+Lazard,awm,2012,896.26,D,xbrl,r0,XBRL R-file,0001193125-13-084745
+Lazard,awm,2013,1039.13,D,xbrl,r0,XBRL R-file,0001193125-16-478536
+Lazard,awm,2014,1134.595,D,xbrl,r0,XBRL R-file,0001564590-17-002432
+Lazard,awm,2015,1111.105,D,xbrl,r0,XBRL R-file,0001564590-18-003288
+Lazard,awm,2016,1051.316,D,xbrl,r0,XBRL R-file,0001564590-19-004164
+Lazard,awm,2017,1255.82,D,xbrl,r0,XBRL R-file,0001564590-20-006094
+Lazard,awm,2018,1331.801,D,xbrl,r0,XBRL R-file,0001564590-21-009197
+Lazard,awm,2019,1237.39,D,xbrl,r0,XBRL R-file,0001564590-22-007675
+Lazard,awm,2020,1167.4660000000001,D,xbrl,r0,XBRL R-file,0001564590-23-002334
+Lazard,awm,2021,1424.9850000000001,D,xbrl,r0,XBRL R-file,0001628280-24-006659
+Lazard,awm,2022,1204.9270000000001,D,xbrl,r0,XBRL R-file,0001628280-25-007441
+Lazard,awm,2023,1151.496,D,xbrl,r0,XBRL R-file,0001628280-25-007441
+Lazard,awm,2024,1186.977,D,xbrl,r0,XBRL R-file,0001628280-25-007441
+Lazard,awm,2025,1274.726,D,xbrl,r0,XBRL R-file,0001311370-26-000008
+Moelis,advisory,2023,854.748,D,mda,r0,mda:Consolidated results of operations - revenues,0001193125-26-076747
+Moelis,advisory,2024,1194.545,D,mda,r0,mda:Consolidated results of operations - revenues,0001193125-26-076747
+Moelis,advisory,2025,1516.796,D,mda,r0,mda:Consolidated results of operations - revenues,0001193125-26-076747
+Morgan Stanley,awm,2012,2306.0,A,xbrl,r0,XBRL R-file,0001193125-15-071980
+Morgan Stanley,awm,2013,14143.0,A,xbrl,r0,XBRL R-file,0001193125-16-473553
+Morgan Stanley,awm,2014,14888.0,A,xbrl,r0,XBRL R-file,0001193125-17-059212
+Morgan Stanley,awm,2015,15100.0,A,xbrl,r0,XBRL R-file,0001193125-18-060831
+Morgan Stanley,awm,2016,15350.0,A,xbrl,r0,XBRL R-file,0001193125-19-051943
+Morgan Stanley,awm,2017,16836.0,A,xbrl,r0,XBRL R-file,0001193125-19-051943
+Morgan Stanley,awm,2018,2746.0,A,xbrl,r0,XBRL R-file,0001193125-19-051943
+Morgan Stanley,awm,2019,3763.0,A,xbrl,r0,XBRL R-file,0000895421-22-000400
+Morgan Stanley,awm,2020,3734.0,A,xbrl,r0,XBRL R-file,0000895421-23-000284
+Morgan Stanley,awm,2021,24243.0,A,xbrl,r0,XBRL R-file,0000895421-24-000300
+Morgan Stanley,awm,2022,24417.0,A,xbrl,r0,XBRL R-file,0000895421-25-000304
+Morgan Stanley,awm,2023,5370.0,A,xbrl,r0,XBRL R-file,0000895421-26-000086
+Morgan Stanley,awm,2024,5861.0,A,xbrl,r0,XBRL R-file,0000895421-26-000086
+Morgan Stanley,awm,2025,31754.0,A,xbrl,r0,XBRL R-file,0000895421-26-000086
+Morgan Stanley,equities,2023,9986.0,D,mda,r0,mda:Institutional Securities income statement,0000895421-26-000086
+Morgan Stanley,equities,2024,12230.0,D,mda,r0,mda:Institutional Securities income statement,0000895421-26-000086
+Morgan Stanley,equities,2025,15631.0,D,mda,r0,mda:Institutional Securities income statement,0000895421-26-000086
+Morgan Stanley,ficc,2023,7673.0,D,mda,r0,mda:Institutional Securities income statement,0000895421-26-000086
+Morgan Stanley,ficc,2024,8418.0,D,mda,r0,mda:Institutional Securities income statement,0000895421-26-000086
+Morgan Stanley,ficc,2025,8716.0,D,mda,r0,mda:Institutional Securities income statement,0000895421-26-000086
+PJT Partners,advisory,2017,386.26300000000003,D,xbrl,r0,XBRL R-file,0001564590-20-007455
+PJT Partners,advisory,2018,451.553,D,xbrl,r0,XBRL R-file,0001564590-21-009465
+PJT Partners,advisory,2019,571.771,D,xbrl,r0,XBRL R-file,0001564590-22-007189
+PJT Partners,advisory,2020,872.2860000000001,D,xbrl,r0,XBRL R-file,0001564590-23-002439
+PJT Partners,advisory,2021,762.7230000000001,D,xbrl,r0,XBRL R-file,0001564590-23-002439
+PJT Partners,advisory,2022,823.496,D,xbrl,r0,XBRL R-file,0001564590-23-002439
+PJT Partners,advisory,2023,1026.646,D,xbrl,r0,XBRL R-file,0001193125-26-076969
+PJT Partners,advisory,2024,1314.003,D,xbrl,r0,XBRL R-file,0001193125-26-076969
+PJT Partners,advisory,2025,1500.376,D,xbrl,r0,XBRL R-file,0001193125-26-076969
+PJT Partners,placement_fees,2017,102.785,D,xbrl,r0,XBRL R-file,0001564590-20-007455
+PJT Partners,placement_fees,2018,111.035,D,xbrl,r0,XBRL R-file,0001564590-21-009465
+PJT Partners,placement_fees,2019,11.8,D,xbrl,r0,XBRL R-file,0001564590-22-007189
+PJT Partners,placement_fees,2020,10.485,D,xbrl,r0,XBRL R-file,0001564590-23-002439
+PJT Partners,placement_fees,2021,7.001,D,xbrl,r0,XBRL R-file,0001564590-23-002439
+PJT Partners,placement_fees,2022,10.173,D,xbrl,r0,XBRL R-file,0001564590-23-002439
+PJT Partners,placement_fees,2023,17.019000000000002,D,xbrl,r0,XBRL R-file,0001193125-26-076969
+PJT Partners,placement_fees,2024,146.258,D,mda,r0,mda:Consolidated results of operations - revenues,0001193125-26-076969
+PJT Partners,placement_fees,2025,181.561,D,xbrl,r0,XBRL R-file,0001193125-26-076969
+Wells Fargo,awm,2013,14330.0,A,xbrl,r0,XBRL R-file,0000072971-16-001045
+Wells Fargo,awm,2014,15269.0,A,xbrl,r0,XBRL R-file,0000072971-17-000278
+Wells Fargo,awm,2015,15777.0,A,xbrl,r0,XBRL R-file,0000072971-18-000272
+Wells Fargo,awm,2016,16278.0,A,xbrl,r0,XBRL R-file,0000072971-19-000227
+Wells Fargo,awm,2017,4641.0,A,xbrl,r0,XBRL R-file,0000072971-20-000217
+Wells Fargo,awm,2018,15869.0,A,xbrl,r0,XBRL R-file,0000072971-21-000197
+Wells Fargo,awm,2019,14412.0,A,xbrl,r0,XBRL R-file,0000072971-22-000096
+Wells Fargo,awm,2020,13213.0,A,xbrl,r1,XBRL R-file,0000072971-23-000071
+Wells Fargo,awm,2021,14346.0,A,xbrl,r1,XBRL R-file,0000072971-24-000064
+Wells Fargo,awm,2022,14822.0,A,xbrl,r1,XBRL R-file,0000072971-25-000066
+Wells Fargo,awm,2023,14691.0,A,xbrl,r1,XBRL R-file,0000072971-26-000133
+Wells Fargo,awm,2024,15436.0,A,xbrl,r1,XBRL R-file,0000072971-26-000133
+Wells Fargo,awm,2025,16328.0,A,xbrl,r1,XBRL R-file,0000072971-26-000133

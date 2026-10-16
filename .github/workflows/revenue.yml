@@ -1,0 +1,74 @@
+# Annual refresh of the bank revenue tracker (third report section).
+#
+# Schedule: 06:00 UTC on the first Monday of March (after 10-K season).
+# Incremental by design: download.py skips already-fetched filings;
+# build_revenue.py dedupes overlapping years preferring restated values.
+#
+# Failure policy: a firm that fails to parse is logged and skipped;
+# last good panel is kept. The run is logged as a GitHub issue either way.
+
+name: Annual bank-revenue update
+
+on:
+  schedule:
+    - cron: "0 6 1-7 3 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  update-revenue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install polars
+
+      - name: Refresh revenue panel (incremental)
+        run: |
+          python3 -m src.revenue.download
+          python3 -m src.revenue.parse_xbrl
+          python3 -m src.revenue.parse_mda
+          python3 -m src.revenue.build_revenue
+
+      - name: Run revenue tests
+        run: |
+          python3 tests/test_revenue_xbrl.py
+          python3 tests/test_revenue_mda.py
+          python3 tests/test_revenue_panel.py
+
+      - name: Commit and push data changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/revenue/segments_annual.csv data/revenue/subsplits_annual.csv data/revenue/panel_annual.csv data/revenue/_meta.json docs/data/revenue.json
+          if git diff --staged --quiet; then
+            echo "no changes"
+          else
+            git commit -m "Annual bank-revenue update: $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      - name: Log run as issue
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let body = 'Annual bank-revenue refresh completed.';
+            try {
+              const meta = JSON.parse(fs.readFileSync('data/revenue/_meta.json', 'utf8'));
+              body = `**${meta.n_cells} cells**, ${meta.n_firms} firms x ${meta.n_lines} lines, ${meta.year_min}-${meta.year_max}.\n\nUnmapped segments: ${meta.unmapped_segments.length}`;
+            } catch (e) { body = 'Could not read _meta.json: ' + e.message; }
+            await github.rest.issues.create({
+              owner: context.repo.owner, repo: context.repo.repo,
+              title: `Annual bank-revenue update ${new Date().toISOString().slice(0, 10)}`,
+              body,
+            });
