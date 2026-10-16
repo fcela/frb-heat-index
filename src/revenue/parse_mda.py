@@ -213,8 +213,12 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
             description="Global Markets sales and trading revenue",
             anchors=[r"sales and trading"],
             rows=[
+                # Label is hyphenated: "Fixed-income, currencies and
+                # commodities". The first (GAAP, incl. net DVA) block is
+                # taken; the "excluding net DVA" non-GAAP block is skipped.
                 RowSpec("ficc",
-                        [r"fixed income,?\s+currencies( and|,)?\s+commodities",
+                        [r"fixed[- ]income,?\s+currencies( and|,)?\s+"
+                         r"commodities",
                          r"ficc"]),
                 RowSpec("equities", [r"equities"]),
             ],
@@ -396,6 +400,7 @@ def fetch_filing(cik: str, accession: str,
         url = f"https://web.archive.org/web/{ts}id_/{orig}"
         log.info("fetch archived document: %s", url)
         dest.write_bytes(_maybe_decompress(_http_get(url, limiter)))
+        _sanity_check(dest, cik, accession)
         return dest
     index_url, dir_url = _filing_urls(cik, accession, base)
     log.info("fetch index: %s", index_url)
@@ -408,6 +413,7 @@ def fetch_filing(cik: str, accession: str,
     doc_url = f"{dir_url}/{doc_name}"
     log.info("fetch document: %s", doc_url)
     dest.write_bytes(_http_get(doc_url, limiter))
+    _sanity_check(dest, cik, accession)
     return dest
 
 
@@ -420,6 +426,19 @@ def _maybe_decompress(data: bytes) -> bytes:
         import gzip
         return gzip.decompress(data)
     return data
+
+
+def _sanity_check(path: Path, cik: str, accession: str) -> None:
+    """Reject obviously-bad downloads (rate-limit pages, truncations)."""
+    size = path.stat().st_size
+    head = path.read_bytes()[:400].lower()
+    bad_markers = (b"rate limit", b"too many requests",
+                   b"undeclared automated tool")
+    if size < 20_000 or any(m in head for m in bad_markers):
+        path.unlink(missing_ok=True)
+        raise RuntimeError(
+            f"{cik}/{accession}: downloaded document failed sanity check "
+            f"({size} bytes); removed, will retry later")
 
 
 def _archive_main_doc(cik: str, accession: str,
