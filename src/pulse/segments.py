@@ -13,10 +13,11 @@ SEGMENTS = {
             "ma_announced": {
                 "title": "Announced M&A deal value",
                 "why": "Deals are announced months before close, locking in advisory and financing fees well ahead of reported revenue.",
-                "source": "LSEG Deals Intelligence monthly M&A review",
-                "frequency": "Monthly",
-                "status": "pending-sourcing",
-                "note": "No public announced-deal-value series found: IMAA is annual and login-gated, LSEG reviews are proprietary press summaries, FRED carries no announced-deal concept. Kept pending honestly.",
+                "source": "PitchBook Global M&A Reports (free PDFs)",
+                "frequency": "Annual",
+                "status": "live",
+                "unit": "$B",
+                "note": "Annual announced global M&A deal values extracted from PitchBook's free Global M&A Report PDFs (annual chart data labels). 2014 from Q3 2024 report; 2015-2025 from 2025 Annual (latest vintage on restatement). Includes PitchBook estimates for late-reporting/nondisclosed deals. Quarterly values not extractable (chart vectors lack text labels); Dealogic free PDFs probed as alternative - only 2 usable observations.",
             },
             "ipo_pipeline": {
                 "title": "IPO pipeline — S-1 filing counts",
