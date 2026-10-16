@@ -50,6 +50,7 @@ from src.pulse import (
     cp_ois,
     fra_ois,
     dealer_cds,
+    ma_announced,
 )
 from src.pulse.segments import SEGMENTS, FETCHABLE_STATUSES, all_indicators
 
@@ -205,6 +206,8 @@ def fetch_indicator(ind_key: str, ind: dict) -> pl.DataFrame:
         return fra_ois.fetch_fra_ois()
     if ind_key == "dealer_cds":
         return dealer_cds.fetch_dealer_cds()
+    if ind_key == "ma_announced":
+        return ma_announced.fetch_ma_announced()
     raise RuntimeError(f"no fetcher for {ind_key}")
 
 

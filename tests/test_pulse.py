@@ -53,7 +53,7 @@ def test_segments_complete():
     assert n == 34, f"expected 34 indicators, got {n}"
     assert len(SEGMENTS) == 9
     fetchable = sum(1 for _, _, i in all_indicators() if i["status"] in FETCHABLE_STATUSES)
-    assert fetchable == 32, f"expected 32 fetchable, got {fetchable}"
+    assert fetchable == 33, f"expected 33 fetchable, got {fetchable}"
     print(f"ok test_segments_complete ({n} indicators, {fetchable} fetchable)")
 
 
