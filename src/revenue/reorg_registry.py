@@ -74,6 +74,26 @@ def regime_for(firm, year):
     return f"r{idx}"
 
 
+def regime_for_quarter(firm, year, quarter):
+    """Regime label for a fiscal quarter.
+
+    Reorgs land in specific quarters (e.g. JPM 2024-04-01 -> Q2 2024 is
+    the first quarter of the new regime); values are never spliced
+    across the break. The quarter's end date decides the regime.
+    """
+    month_end = {1: "03-31", 2: "06-30", 3: "09-30", 4: "12-31"}[int(quarter)]
+    q_end = f"{int(year)}-{month_end}"
+    breaks = _breaks_for(firm)
+    idx = sum(1 for b in breaks if b["effective"] <= q_end)
+    return f"r{idx}"
+
+
 def is_break(firm, year_a, year_b):
     """True if a reorg break falls between two fiscal years."""
     return regime_for(firm, year_a) != regime_for(firm, year_b)
+
+
+def is_break_q(firm, year_a, q_a, year_b, q_b):
+    """True if a reorg break falls between two fiscal quarters."""
+    return regime_for_quarter(firm, year_a, q_a) != regime_for_quarter(
+        firm, year_b, q_b)

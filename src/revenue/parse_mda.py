@@ -23,8 +23,11 @@ Output: ``data/revenue/subsplits_annual.csv`` with columns
 Scope notes
 -----------
 Firms/lines already covered by the XBRL layer are deliberately NOT scraped
-here (MS advisory/underwriting, JPM IB fees by type, BofA IB fees by
-segment, WFC IB fees by segment). Lines a firm does not disclose are
+here (WFC IB fees by segment). Division-reporters whose business-line
+splits live only in MD&A tables (JPM CIB, MS Institutional Securities,
+BofA Global Banking / Global Markets) ARE scraped here -- the XBRL layer
+captures their division totals, and a reconciliation step checks the MD&A
+splits against those totals. Lines a firm does not disclose are
 emitted as nothing -- never estimated, never fabricated.
 
 Run:  python3 -m src.revenue.parse_mda --help
@@ -56,8 +59,8 @@ EDGAR_ARCHIVES = "https://www.sec.gov/Archives/edgar/data"
 # unreachable (the Internet Archive's copy of the exact same filing).
 ARCHIVE_BASE = "https://web.archive.org/web/2026id_/https://www.sec.gov/Archives/edgar/data"
 
-USER_AGENT = ("frb-heat-index/1.0 (public research; "
-              "contact: https://github.com/fcela/frb-heat-index)")
+USER_AGENT = ("frb-heat-index/1.0 (bank revenue tracker research; "
+              "contact frb-heat-index@example.com)")
 
 # EDGAR fair-access guidance: at most 10 requests/second.
 MIN_REQUEST_INTERVAL = 0.15
@@ -135,6 +138,41 @@ class TableSpec:
     # used, avoiding false positives from unrelated tables that happen to
     # share row labels.
     multi: bool = False
+    # Wide-table column layout. "year_major" (default): a row's slots form
+    # one group per year (e.g. Jefferies' [IB&CM, Asset Mgmt, Total] x 3
+    # years); the first sub-column of each year's group is taken.
+    # "segment_major": a row's slots form one group per segment, each
+    # group holding all year columns (e.g. BofA's "Noninterest Income by
+    # Business Segment": [Total Corp, Consumer, GWIM, ...] x 3 years);
+    # the FIRST segment group's year columns are taken, so the table
+    # must lead with the consolidated total (see require_text).
+    column_layout: str = "year_major"
+    # Regexes that must ALL match the table text + nearby headings
+    # (in addition to the anchor). Used to pin the segment-major first
+    # block to the consolidated total.
+    require_text: list[str] = field(default_factory=list)
+    # Fiscal-year window this spec applies to (inclusive), e.g. (2010,
+    # 2022) for a table that only exists in pre-reorg filings. None =
+    # all years. parse_filing skips specs outside the filing's fiscal
+    # year (logs it); specs that apply but find no table still raise.
+    fiscal_years: tuple[int, int] | None = None
+    # When True and the table carries no year headers (some filers omit
+    # them), fall back to the filing's fiscal-year triple [FY, FY-1,
+    # FY-2] in column order. Only for tables whose columns are known to
+    # be the three most recent fiscal years.
+    implied_years: bool = False
+    # Derived lines: {target_line: [component_line, ...]}. After the
+    # listed rows are extracted, the target is set to the sum of the
+    # components (per year). The components must themselves be in
+    # `rows` (they are emitted too, then dropped if not in the
+    # taxonomy). Used e.g. for BofA pre-2016 where ECM+DCM are separate
+    # "Debt issuance"/"Equity issuance" rows.
+    derived: dict[str, list[str]] = field(default_factory=dict)
+    # For segment_major tables: which segment block to take (0-indexed).
+    # Default 0 (first block). BofA pre-2016 "Investment Banking Fees"
+    # leads with Global Banking; the firmwide Total Corporation block
+    # is second (segment_block=1).
+    segment_block: int = 0
 
 
 # ---------------------------------------------------------------------------
@@ -182,8 +220,10 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
             description="Institutional Securities income statement",
             anchors=[r"institutional securities",
                      r"income statement information"],
+            # Validated 2015+; the 2010-2014 10-Ks split S&T and IB into
+            # separate tables (see pre-2015 specs below).
+            fiscal_years=(2015, 2100),
             rows=[
-                # Advisory/underwriting is XBRL-covered (R189) -- skipped.
                 # "Equity"/"Fixed income" label BOTH the underwriting and
                 # the sales & trading rows; the sales & trading rows come
                 # last, hence occurrence="last".
@@ -193,11 +233,60 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
                         occurrence="last"),
             ],
         ),
+        TableSpec(
+            # The same IS income statement table: the FIRST "Equity" /
+            # "Fixed income" rows are the underwriting splits (the
+            # investment-banking section precedes sales & trading), and
+            # "Advisory" appears once. Validated 2015-2025; older filings
+            # use the pre-2015 specs below.
+            description="Institutional Securities investment banking",
+            anchors=[r"institutional securities",
+                     r"income statement information"],
+            fiscal_years=(2015, 2100),
+            rows=[
+                RowSpec("advisory", [r"advisory"]),
+                RowSpec("ecm", [r"equity"], occurrence="first"),
+                RowSpec("dcm", [r"fixed income"], occurrence="first"),
+            ],
+        ),
+        TableSpec(
+            # Pre-2015 era (FY2010-FY2014 filings): Sales & Trading net
+            # revenues are in a standalone table titled e.g. "Sales and
+            # Trading Net Revenues" with rows "Equity" and "Fixed income
+            # and commodities". Validated on FY2012 10-K.
+            description="Institutional Securities sales and trading (pre-2015)",
+            anchors=[r"sales and trading net revenues"],
+            fiscal_years=(2010, 2014),
+            rows=[
+                RowSpec("ficc", [r"fixed income and commodities"]),
+                RowSpec("equities", [r"^equity$"]),
+            ],
+        ),
+        TableSpec(
+            # Pre-2015 era: Investment banking revenues in a standalone
+            # table with "Advisory revenues", "Equity underwriting
+            # revenues", "Fixed income underwriting revenues".
+            # Validated on FY2012 10-K.
+            description="Institutional Securities investment banking (pre-2015)",
+            anchors=[r"investment banking.*revenues",
+                     r"advisory revenues"],
+            fiscal_years=(2010, 2014),
+            rows=[
+                RowSpec("advisory", [r"advisory revenues"]),
+                RowSpec("ecm", [r"equity underwriting revenues"]),
+                RowSpec("dcm", [r"fixed income underwriting revenues"]),
+            ],
+        ),
     ],
     "C": [
         TableSpec(
             description="Banking business metrics - investment banking fees",
-            anchors=[r"business metrics"],
+            # "Business metrics" phrasing is FY2021-2023; the FY2024+
+            # five-segment 10-Ks title the table "Investment banking fees"
+            # and omit year headers (columns are FY, FY-1, FY-2).
+            anchors=[r"business metrics", r"investment banking fees"],
+            fiscal_years=(2023, 2100),
+            implied_years=True,
             rows=[
                 RowSpec("advisory", [r"advisory"]),
                 RowSpec("ecm", [r"equity underwriting"]),
@@ -206,10 +295,33 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
         ),
         TableSpec(
             description="Markets revenue by component",
-            anchors=[r"revenue by component"],
+            # FY2021-2023: "Revenue by component"; FY2024+: "Revenue by
+            # line of business" (same Fixed income / Equity markets rows).
+            anchors=[r"revenue by component",
+                     r"revenue by line of business"],
+            fiscal_years=(2023, 2100),
             rows=[
                 RowSpec("ficc", [r"fixed income markets?"]),
                 RowSpec("equities", [r"equity markets?"]),
+            ],
+        ),
+        TableSpec(
+            # ICG era (FY2010-FY2022 filings): "ICG Revenue Details" carries
+            # both the investment-banking split and the headline
+            # ex-CVA/DVA Fixed income / Equity markets rows. The markets
+            # rows repeat (CVA/DVA adjustments, then detail breakdowns);
+            # the FIRST occurrence is the headline business measure.
+            description="ICG revenue details",
+            anchors=[r"icg revenue details"],
+            fiscal_years=(2010, 2022),
+            rows=[
+                RowSpec("advisory", [r"advisory"]),
+                RowSpec("ecm", [r"equity underwriting"]),
+                RowSpec("dcm", [r"debt underwriting"]),
+                RowSpec("ficc", [r"fixed income markets"],
+                        occurrence="first"),
+                RowSpec("equities", [r"equity markets"],
+                        occurrence="first"),
             ],
         ),
     ],
@@ -217,6 +329,9 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
         TableSpec(
             description="Global Markets sales and trading revenue",
             anchors=[r"sales and trading"],
+            # Validated 2010+; the "Fixed income, currencies and
+            # commodities"/"Equities" labels are stable across eras.
+            fiscal_years=(2010, 2100),
             rows=[
                 # Label is hyphenated: "Fixed-income, currencies and
                 # commodities". The first (GAAP, incl. net DVA) block is
@@ -227,6 +342,46 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
                          r"ficc"]),
                 RowSpec("equities", [r"equities"]),
             ],
+        ),
+        TableSpec(
+            # "Noninterest Income by Business Segment": segment-major wide
+            # table ([Total Corp, Consumer, GWIM, ...] x year columns).
+            # The FIRST block is the consolidated total (require_text pins
+            # it); "Financial advisory services" is the firmwide advisory
+            # line and "Underwriting income" the combined ECM+DCM line
+            # (BofA does not split underwriting further). Validated 2016+.
+            description="Noninterest income by business segment",
+            anchors=[r"noninterest income by business segment"],
+            require_text=[r"total corporation"],
+            column_layout="segment_major",
+            fiscal_years=(2016, 2100),
+            rows=[
+                RowSpec("advisory", [r"financial advisory services"]),
+                RowSpec("ecm_dcm_combined", [r"underwriting income"]),
+            ],
+        ),
+        TableSpec(
+            # Pre-2016 era (FY2010-FY2015 filings): "Investment Banking
+            # Fees" table with "Advisory", "Debt issuance", "Equity
+            # issuance" rows; columns are [Global Banking, Total
+            # Corporation] x [FY, FY-1]. The Total Corporation block is
+            # SECOND (segment_block=1); it is the firmwide measure.
+            # ECM+DCM are separate rows, summed via `derived`. Validated
+            # on FY2012.
+            description="Investment banking fees (pre-2016)",
+            anchors=[r"investment banking fees"],
+            require_text=[r"total corporation"],
+            column_layout="segment_major",
+            segment_block=1,
+            fiscal_years=(2010, 2015),
+            rows=[
+                RowSpec("advisory", [r"^advisory$"]),
+                # Temporary component lines, summed into ecm_dcm_combined.
+                RowSpec("_debt_issuance", [r"debt issuance"]),
+                RowSpec("_equity_issuance", [r"equity issuance"]),
+            ],
+            derived={"ecm_dcm_combined": ["_debt_issuance",
+                                           "_equity_issuance"]},
         ),
     ],
     "JEF": [
@@ -310,12 +465,34 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
             ],
         ),
     ],
+    "JPM": [
+        TableSpec(
+            # CIB "Selected income statement data": revenue by business.
+            # Fixed Income Markets / Equity Markets rows are the FICC /
+            # Equities splits; the division label changed at the 2012 and
+            # 2024 reorgs but the table/row wording did not.
+            description="CIB revenue by business",
+            anchors=[r"revenue by business"],
+            rows=[
+                RowSpec("ficc", [r"fixed income markets"]),
+                RowSpec("equities", [r"equity markets"]),
+            ],
+        ),
+        TableSpec(
+            # CIB "Investment banking fees": advisory / equity / debt
+            # underwriting. The notes-to-financial-statements table with
+            # the same anchor phrases its rows as bare "Equity"/"Debt"
+            # and is excluded by the row requirement (never force-fit).
+            description="Investment banking fees",
+            anchors=[r"investment banking fees"],
+            rows=[
+                RowSpec("advisory", [r"advisory"]),
+                RowSpec("ecm", [r"equity underwriting"]),
+                RowSpec("dcm", [r"debt underwriting"]),
+            ],
+        ),
+    ],
 }
-
-# JPMorgan's Fixed Income / Equities split is expected in the XBRL R-files
-# (issue #23 taxonomy: direct). JPM is therefore not in FIRM_SPECS; if the
-# XBRL layer finds the split missing, a JPM MD&A spec can be added -- the
-# MD&A narrative pattern "Fixed Income Markets revenue was $X" exists.
 
 
 # ---------------------------------------------------------------------------
@@ -334,43 +511,82 @@ class RateLimiter:
         self._last = time.monotonic()
 
 
-def _http_get(url: str, limiter: RateLimiter) -> bytes:
-    import urllib.request
-    limiter.wait()
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            return resp.read()
-    except Exception as e:  # noqa: BLE001 -- surfaced with context below
-        raise RuntimeError(f"GET failed for {url}: {e}") from e
+def _http_get(url: str, limiter: RateLimiter, retries: int = 6) -> bytes:
+    import requests
+    # requests (not urllib): EDGAR's WAF 403s urllib's fingerprint on
+    # some paths (verified 2026-10-17). Headers mirror download.py.
+    headers = {"User-Agent": USER_AGENT, "Accept-Encoding": "gzip",
+               "Host": "www.sec.gov" if "www.sec.gov" in url
+                       else "web.archive.org"}
+    for attempt in range(retries):
+        limiter.wait()
+        try:
+            r = requests.get(url, headers=headers, timeout=60)
+            if r.status_code == 200:
+                return r.content
+            # EDGAR answers 403 both for bad requests and for throttling;
+            # treat it like download.py's sec_get: back off and retry.
+            if r.status_code in (403, 429, 500, 502, 503, 504) \
+                    and attempt < retries - 1:
+                wait = 60 * (attempt + 1)
+                log.warning("GET %s -> HTTP %s; backing off %ds "
+                            "(attempt %d/%d)",
+                            url, r.status_code, wait, attempt + 1, retries)
+                time.sleep(wait)
+                continue
+            raise RuntimeError(f"GET failed for {url}: HTTP {r.status_code}")
+        except requests.RequestException as e:
+            raise RuntimeError(f"GET failed for {url}: {e}") from e
+    raise RuntimeError(f"GET failed for {url}: retries exhausted")
 
 
 def _filing_urls(cik: str, accession: str, base: str = EDGAR_ARCHIVES
                  ) -> tuple[str, str]:
-    """Return (index_json_url, directory_url) for a filing."""
+    """Return (directory_url, directory_url) for a filing.
+
+    EDGAR's per-filing index.html intermittently 403s (verified
+    2026-10-17); the directory listing itself returns 200 and carries
+    the same [filename, size, date] table, so we parse that instead.
+    """
     cik_num = str(int(cik))  # EDGAR paths drop leading zeros
     nodash = accession.replace("-", "")
     dir_url = f"{base}/{cik_num}/{nodash}"
-    return f"{dir_url}/{accession}-index.json", dir_url
+    return dir_url, dir_url
 
 
-def _primary_document(index: dict) -> str:
-    """Pick the 10-K main HTML document from a filing index listing."""
-    items = index.get("directory", {}).get("item", [])
-    candidates = [i["name"] for i in items
-                  if i["name"].lower().endswith((".htm", ".html"))]
-    # Prefer an explicit 10-K form tag when present.
-    for it in index.get("items", []):
-        name = it.get("fileName", "")
-        if it.get("form") in ("10-K", "10-K/A") and name.lower().endswith(
-                (".htm", ".html")):
-            return name
-    # Fallback: largest .htm that is not the filing index itself.
-    docs = [c for c in candidates if "index" not in c.lower()]
-    if not docs:
+def _primary_document(dir_html: str) -> str:
+    """Pick the 10-K main HTML document from a filing directory listing.
+
+    The listing table rows are [filename, size, date]. The main document
+    is the largest .htm/.html that is not the filing index, an exhibit,
+    or an XBRL R-file (Citi names its instance *.htm, excluded below).
+    """
+    best = None
+    best_size = -1
+    for m in re.finditer(r"<tr[^>]*>(.*?)</tr>", dir_html, re.S):
+        cells = re.findall(r"<td[^>]*>(.*?)</td>", m.group(1), re.S)
+        if len(cells) < 2:
+            continue
+        name = re.sub(r"<[^>]+>", "", cells[0]).strip()
+        if not name.lower().endswith((".htm", ".html")):
+            continue
+        low = name.lower()
+        if "index" in low or "exhibit" in low or low.startswith("ex-"):
+            continue
+        if re.match(r"^r\d+\.html?$", low):
+            continue
+        # Citi's XBRL instance is named like c-20231231.htm; the main
+        # 10-K doc is far larger. Use size to disambiguate.
+        try:
+            size = int(re.sub(r"[^\d]", "", cells[1]))
+        except ValueError:
+            size = 0
+        if size > best_size:
+            best, best_size = name, size
+    if best is None:
         raise TableNotFoundError(
-            "no HTML document found in filing index listing")
-    return docs[0]
+            "no 10-K main document found in filing directory listing")
+    return best
 
 
 def _main_docs_present(dest_dir: Path) -> list[Path]:
@@ -415,10 +631,9 @@ def fetch_filing(cik: str, accession: str,
         _sanity_check(dest, cik, accession)
         return dest
     index_url, dir_url = _filing_urls(cik, accession, base)
-    log.info("fetch index: %s", index_url)
-    index = json.loads(_http_get(index_url, limiter).decode("utf-8",
-                                                            "replace"))
-    doc_name = _primary_document(index)
+    log.info("fetch directory listing: %s", index_url)
+    dir_html = _http_get(index_url, limiter).decode("utf-8", "replace")
+    doc_name = _primary_document(dir_html)
     dest = dest_dir / doc_name
     if dest.exists():
         return dest
@@ -429,7 +644,8 @@ def fetch_filing(cik: str, accession: str,
     return dest
 
 
-_ARCHIVE_DOC_EXCLUDE = re.compile(r"index\.htm|exhibit|formxof", re.I)
+_ARCHIVE_DOC_EXCLUDE = re.compile(
+    r"index\.htm|exhibit|formxof|[_-]exh\d", re.I)
 
 
 def _maybe_decompress(data: bytes) -> bytes:
@@ -455,21 +671,51 @@ def _sanity_check(path: Path, cik: str, accession: str) -> None:
 
 def _archive_main_doc(cik: str, accession: str,
                       limiter: RateLimiter) -> tuple[str, str, str]:
-    """Locate a filing's main 10-K document via the Wayback CDX API.
+    """Locate a filing's main 10-K document via the Wayback Machine.
 
-    Returns (timestamp, original_url, doc_name). The main document is the
-    largest HTML file in the filing directory that is not the filing
-    index or an exhibit.
+    Returns (timestamp, original_url, doc_name). First tries the filing's
+    archived index.html (same document choice as the EDGAR path); falls
+    back to the largest archived HTML that is not an exhibit or the XBRL
+    instance (Citi names its instance *.htm).
     """
     import urllib.parse
     cik_num = str(int(cik))
     nodash = accession.replace("-", "")
+    # The directory listing (not the index.html, which EDGAR's WAF
+    # intermittently 403s) carries the [filename, size, date] table.
+    dir_orig = (f"https://www.sec.gov/Archives/edgar/data/{cik_num}/"
+                f"{nodash}/")
+    q = ("https://web.archive.org/cdx/search/cdx?url="
+         + urllib.parse.quote(dir_orig, safe="")
+         + "&output=text&fl=timestamp,original&limit=5")
+    try:
+        lines = _http_get(q, limiter).decode("utf-8",
+                                             "replace").splitlines()
+    except RuntimeError:
+        lines = []
+    for line in lines:
+        parts = line.split(" ")
+        if len(parts) < 2:
+            continue
+        ts, orig = parts[0], parts[1]
+        try:
+            dir_html = _maybe_decompress(
+                _http_get(f"https://web.archive.org/web/{ts}id_/{orig}",
+                          limiter)).decode("utf-8", "replace")
+            doc_name = _primary_document(dir_html)
+            doc_orig = (f"https://www.sec.gov/Archives/edgar/data/"
+                        f"{cik_num}/{nodash}/{doc_name}")
+            return ts, doc_orig, doc_name
+        except Exception:  # noqa: BLE001 -- fall through to CDX heuristic
+            continue
+    # Fallback: largest archived HTML in the filing directory.
     q = ("https://web.archive.org/cdx/search/cdx?url="
          + urllib.parse.quote(f"sec.gov/Archives/edgar/data/{cik_num}/"
                               f"{nodash}/*", safe="")
          + "&output=text&fl=timestamp,original,length"
            "&collapse=urlkey&limit=400")
     best = None
+    best_10k = None
     for line in _http_get(q, limiter).decode("utf-8", "replace").splitlines():
         parts = line.split(" ")
         if len(parts) < 3:
@@ -484,8 +730,15 @@ def _archive_main_doc(cik: str, accession: str,
             length = int(length)
         except ValueError:
             length = 0
+        cand = (ts, orig, name, length)
         if best is None or length > best[3]:
-            best = (ts, orig, name, length)
+            best = cand
+        # The 10-K main document usually carries "10k" in its name;
+        # prefer such candidates over exhibits with generic names.
+        if "10k" in name.lower() and (
+                best_10k is None or length > best_10k[3]):
+            best_10k = cand
+    best = best_10k or best
     if best is None:
         raise RuntimeError(
             f"archive: no main document found for {cik}/{accession}")
@@ -558,6 +811,8 @@ def locate_tables(soup: BeautifulSoup, spec: TableSpec,
     found = []
     n_tables = len(soup.find_all("table"))
     anchor_hits = 0
+    require_rx = [re.compile(rx, re.IGNORECASE)
+                  for rx in spec.require_text]
     for anchor in spec.anchors:
         rx = re.compile(anchor, re.IGNORECASE)
         for table in soup.find_all("table"):
@@ -565,6 +820,8 @@ def locate_tables(soup: BeautifulSoup, spec: TableSpec,
                 continue
             hay = _table_text(table) + " || " + _nearby_text(table)
             if not rx.search(hay):
+                continue
+            if any(not r.search(hay) for r in require_rx):
                 continue
             anchor_hits += 1
             labels = _row_labels(table)
@@ -578,8 +835,11 @@ def locate_tables(soup: BeautifulSoup, spec: TableSpec,
             f"{anchor_hits} table(s) matched the anchors "
             f"{spec.anchors} but none contained all required rows "
             f"{[rs.line for rs in spec.rows]} (checked {n_tables} tables: "
-            f"table text + nearby headings). The filing's MD&A layout likely "
-            f"changed; update FIRM_SPECS anchors/rows rather than guessing.")
+            f"table text + nearby headings). "
+            + (f"require_text={spec.require_text} filtered some matches. "
+               if spec.require_text else "")
+            + "The filing's MD&A layout likely "
+            "changed; update FIRM_SPECS anchors/rows rather than guessing.")
     return found
 
 
@@ -602,7 +862,7 @@ def detect_years(table) -> list[int]:
     """
     years: list[int] = []
     rows = table.find_all("tr")
-    for tr in rows[:6]:
+    for tr in rows[:10]:
         for cell in tr.find_all(["th", "td"]):
             for m in _YEAR.finditer(cell.get_text(" ", strip=True)):
                 year = int(m.group(0))
@@ -641,18 +901,71 @@ _UNIT_RES = [
 ]
 
 
+def _preceding_text(table, chars=3000):
+    """Text before the table in document order (up to `chars`)."""
+    from bs4 import NavigableString
+    parts = []
+    total = 0
+    for el in table.previous_elements:
+        if total >= chars:
+            break
+        if isinstance(el, NavigableString):
+            t = el.strip()
+            if t:
+                parts.append(t)
+                total += len(t) + 1
+    return " ".join(reversed(parts))  # document order
+
+
+def _nearest_unit(hay: str) -> float | None:
+    """Multiplier of the unit marker nearest the end of `hay`.
+
+    `hay` is ordered so its end is nearest the table (head text, nearby
+    tail, preceding document text).
+    """
+    best = None  # (position, multiplier)
+    for rx, mult in _UNIT_RES:
+        for m in rx.finditer(hay):
+            if best is None or m.start() > best[0]:
+                best = (m.start(), mult)
+    return best[1] if best else None
+
+
 def detect_unit_multiplier(table) -> float:
     """USD-millions multiplier from the table's stated units.
 
-    Markers inside the table text win over nearby headings (a neighboring
-    section may use different units, e.g. "in billions" for balance-sheet
-    data next to an "in millions" revenue table).
+    Only markers BEFORE the first data row count: a table may contain
+    later sections with different units (e.g. Citi's "Key drivers (in
+    billions of dollars)" after an unstated-millions revenue split).
+    Search order: table head, nearby headings, preceding document text
+    (the section's declared unit, e.g. a segment income statement's "In
+    millions of dollars" heading a sub-table). Within each tier the
+    marker nearest the table wins.
     """
-    nearby = _nearby_text(table, 800)
-    for hay in (_table_text(table)[:4000], nearby):
-        for rx, mult in _UNIT_RES:
-            if rx.search(hay):
-                return mult
+    text = _table_text(table)
+    # Cut the table text at the first data row (first tr with a parseable
+    # money value past the label cell). Bare 4-digit years don't count --
+    # header rows like "2023 2022 2021" must not trigger the cut.
+    _YEAR_CELL = re.compile(r"^(19|20)\d{2}$")
+    cut = len(text)
+    for tr in table.find_all("tr"):
+        cells = tr.find_all(["th", "td"])
+        if len(cells) >= 2 and any(
+                parse_money(c.get_text(" ", strip=True)) is not None
+                and not _YEAR_CELL.match(c.get_text(" ", strip=True))
+                for c in cells[1:]):
+            row_head = " ".join(c.get_text(" ", strip=True)
+                                for c in cells[:2])[:60]
+            i = text.find(row_head[:40])
+            if i >= 0:
+                cut = i
+            break
+    head = text[:cut]
+    for hay in (head[:4000], _nearby_text(table, 3000),
+                _preceding_text(table, 3000)):
+        mult = _nearest_unit(hay)
+        if mult is not None:
+            return mult
     raise UnitAmbiguousError(
         "dollar units not stated near MD&A table (looked for "
         "'in millions/thousands/billions' in table text and nearby "
@@ -816,14 +1129,28 @@ def extract_spec_rows(table, spec: TableSpec,
             continue
         # Wide tables may repeat a column group per year (e.g. Jefferies'
         # FY2023 disaggregation: [IB&CM, Asset Mgmt, Total] x 3 years).
-        # When slots are an integer multiple of years, take the first
-        # sub-column of each year's group.
+        # When slots are an integer multiple of years, the layout decides
+        # which columns are the wanted years:
+        #   year_major (default): groups are years -> first sub-column of
+        #       each year's group (slots[::k]).
+        #   segment_major: groups are segments, each holding all year
+        #       columns -> the first segment group's columns (slots[:n]).
         if len(slots) > len(years) and len(slots) % len(years) == 0:
             k = len(slots) // len(years)
-            log.info("table '%s': row '%s' has %d slots for %d years; "
-                     "taking every %d-th (first sub-column per year)",
-                     spec.description, rs.line, len(slots), len(years), k)
-            slots = slots[::k]
+            if spec.column_layout == "segment_major":
+                b = spec.segment_block
+                start = b * len(years)
+                log.info("table '%s': row '%s' has %d slots for %d years; "
+                         "taking segment block %d's %d columns",
+                         spec.description, rs.line, len(slots), len(years),
+                         b, len(years))
+                slots = slots[start:start + len(years)]
+            else:
+                log.info("table '%s': row '%s' has %d slots for %d years; "
+                         "taking every %d-th (first sub-column per year)",
+                         spec.description, rs.line, len(slots), len(years),
+                         k)
+                slots = slots[::k]
         # MD&A layout convention: year values come first, % change /
         # variance columns trail. Take the first len(years) slots.
         for year, val in zip(years, slots[:len(years)]):
@@ -834,6 +1161,48 @@ def extract_spec_rows(table, spec: TableSpec,
     return out
 
 
+_FY_RE = re.compile(
+    r"for the fiscal year ended\s+[a-z]+\s+\d{1,2},?\s+(\d{4})"
+    r"|for the year ended\s+[a-z]+\s+\d{1,2},?\s+(\d{4})", re.I)
+
+
+def _instance_fiscal_year(cik: str, accession: str) -> int | None:
+    """Fiscal year from the accession's XBRL instance filename.
+
+    e.g. "c-20251231_htm.xml" -> 2025. R-files and FilingSummary.xml
+    carry no date and are skipped.
+    """
+    d = RAW_ROOT / cik / accession
+    if not d.is_dir():
+        return None
+    for p in sorted(d.iterdir()):
+        if p.name.startswith("R") or p.name == "FilingSummary.xml":
+            continue
+        if p.suffix.lower() not in (".xbrl", ".xml"):
+            continue
+        m = re.search(r"(\d{4})(\d{2})(\d{2})", p.name)
+        if m:
+            return int(m.group(1))
+    return None
+
+
+def filing_fiscal_year(soup: BeautifulSoup, cik: str = "",
+                       accession: str = "") -> int | None:
+    """The 10-K's fiscal year.
+
+    From the cover ("For the fiscal year ended December 31, 2025"),
+    falling back to the accession's XBRL instance filename. Returns None
+    when neither yields a year.
+    """
+    text = soup.get_text(" ", strip=True)[:6000]
+    m = _FY_RE.search(text)
+    if m:
+        return int(m.group(1) or m.group(2))
+    if cik and accession:
+        return _instance_fiscal_year(cik, accession)
+    return None
+
+
 def parse_filing(firm: str, cik: str, accession: str,
                  html_path: Path) -> list[dict]:
     """Scrape all spec'd MD&A tables from one saved 10-K document."""
@@ -841,8 +1210,20 @@ def parse_filing(firm: str, cik: str, accession: str,
     from bs4 import XMLParsedAsHTMLWarning
     warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
     soup = BeautifulSoup(html_path.read_bytes(), "lxml")
+    fiscal_year = filing_fiscal_year(soup, cik, accession)
     records = []
     for spec in FIRM_SPECS[firm]:
+        if spec.fiscal_years is not None:
+            if fiscal_year is None:
+                log.warning("%s %s: cannot determine fiscal year; "
+                            "applying '%s' anyway", firm, accession,
+                            spec.description)
+            elif not (spec.fiscal_years[0] <= fiscal_year
+                      <= spec.fiscal_years[1]):
+                log.info("%s %s: skipping '%s' (fiscal %d outside %s)",
+                         firm, accession, spec.description, fiscal_year,
+                         spec.fiscal_years)
+                continue
         tables = locate_tables(soup, spec, firm, accession)
         if not spec.multi and len(tables) > 1:
             log.info("%s %s: '%s' matched %d tables; using the first",
@@ -852,9 +1233,47 @@ def parse_filing(firm: str, cik: str, accession: str,
             try:
                 years = detect_years(table)
             except YearColumnError:
-                years = []  # year-band layout; resolved in extract
+                if spec.implied_years and fiscal_year is not None:
+                    years = [fiscal_year, fiscal_year - 1, fiscal_year - 2]
+                    log.info("%s %s: '%s' has no year headers; using "
+                             "implied fiscal years %s", firm, accession,
+                             spec.description, years)
+                else:
+                    years = []  # year-band layout; resolved in extract
             unit_mult = detect_unit_multiplier(table)
             rows = extract_spec_rows(table, spec, years, unit_mult)
+            # Sanity: no business-line revenue exceeds $300B. A "billions"
+            # marker picked up from a neighboring section (e.g. a balance-
+            # sheet block) blows values past it; in that case the marker
+            # did not apply to this table, so retry as millions -- loudly.
+            if rows and unit_mult == 1000.0 and max(
+                    abs(r["net_revenue_m"]) for r in rows) > 300_000:
+                log.warning(
+                    "%s %s: '%s': 'billions' unit gives absurd values "
+                    "(max $%.0fM); retrying as millions",
+                    firm, accession, spec.description,
+                    max(abs(r["net_revenue_m"]) for r in rows))
+                rows = extract_spec_rows(table, spec, years, 1.0)
+            # Derived lines: sum components per year (e.g. BofA pre-2016
+            # "Debt issuance" + "Equity issuance" -> ecm_dcm_combined).
+            if spec.derived and rows:
+                by_year: dict[int, dict[str, float]] = {}
+                for r in rows:
+                    by_year.setdefault(r["year"], {})[r["taxonomy_line"]] = \
+                        r["net_revenue_m"]
+                for target, comps in spec.derived.items():
+                    for yr, vals in by_year.items():
+                        if all(c in vals for c in comps):
+                            rows.append({
+                                "taxonomy_line": target,
+                                "year": yr,
+                                "net_revenue_m": sum(vals[c] for c in comps),
+                            })
+                # Drop the temporary component lines (underscore-prefixed).
+                comp_lines = {c for comps in spec.derived.values()
+                              for c in comps}
+                rows = [r for r in rows
+                        if r["taxonomy_line"] not in comp_lines]
             source = f"mda:{spec.description}"
             for r in rows:
                 records.append({"firm": firm, "cik": cik, **r,
