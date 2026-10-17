@@ -58,20 +58,18 @@ Bank of America,ficc,2021,8761.0,D,mda,r3,mda:Global Markets sales and trading r
 Bank of America,ficc,2022,9917.0,D,mda,r3,mda:Global Markets sales and trading revenue,0000070858-24-000122
 Bank of America,ficc,2023,10896.0,D,mda,r3,mda:Global Markets sales and trading revenue,0000070858-25-000139
 Bank of America,ficc,2024,11371.0,D,mda,r3,mda:Global Markets sales and trading revenue,0000070858-25-000139
-Citigroup,advisory,2012,39105.0,A,xbrl,r1,XBRL R-file,0000831001-15-000043
 Citigroup,advisory,2013,851.0,D,mda,r1,mda:ICG revenue details,0000831001-16-000235
 Citigroup,advisory,2014,949.0,D,mda,r1,mda:ICG revenue details,0000831001-16-000235
 Citigroup,advisory,2015,1093.0,D,mda,r1,mda:ICG revenue details,0000831001-18-000040
 Citigroup,advisory,2016,1013.0,D,mda,r1,mda:ICG revenue details,0000831001-19-000027
 Citigroup,advisory,2017,1123.0,D,mda,r2,mda:ICG revenue details,0000831001-19-000027
 Citigroup,advisory,2018,1301.0,D,mda,r2,mda:ICG revenue details,0000831001-19-000027
-Citigroup,advisory,2019,33221.0,A,xbrl,r2,XBRL R-file,0000831001-22-000036
-Citigroup,advisory,2020,25140.0,A,xbrl,r2,XBRL R-file,0000831001-23-000037
 Citigroup,advisory,2021,7783.0,A,xbrl,r2,XBRL R-file,0000831001-24-000033
 Citigroup,advisory,2022,1332.0,D,mda,r3,mda:Banking business metrics - investment banking fees,0000831001-25-000067
 Citigroup,advisory,2023,1017.0,D,mda,r4,mda:Banking business metrics - investment banking fees,0000831001-25-000067
 Citigroup,advisory,2024,1245.0,D,mda,r4,mda:Banking business metrics - investment banking fees,0000831001-25-000067
 Citigroup,advisory,2025,8215.0,A,xbrl,r4,XBRL R-file,0000831001-26-000011
+Citigroup,awm,2020,25140.0,D,xbrl,r2,XBRL R-file,0000831001-23-000037
 Citigroup,awm,2021,7542.0,D,xbrl,r2,XBRL R-file,0000831001-24-000033
 Citigroup,awm,2022,7355.0,D,xbrl,r3,XBRL R-file,0000831001-25-000067
 Citigroup,awm,2023,6997.0,D,xbrl,r4,XBRL R-file,0000831001-26-000011
@@ -127,7 +125,7 @@ Evercore,advisory,2020,2217.386,D,xbrl,r0,XBRL R-file,0001360901-23-000005
 Evercore,advisory,2021,3223.889,D,xbrl,r0,XBRL R-file,0001360901-24-000007
 Evercore,advisory,2022,2696.125,D,xbrl,r0,XBRL R-file,0001360901-25-000005
 Evercore,advisory,2023,2355.943,D,xbrl,r0,XBRL R-file,0001628280-26-010273
-Evercore,advisory,2024,2440.605,D,mda,r0,mda:Investment Banking & Equities revenues,0001628280-26-010273
+Evercore,advisory,2024,2898.489,D,xbrl,r0,XBRL R-file,0001628280-26-010273
 Evercore,advisory,2025,3267.087,D,mda,r0,mda:Investment Banking & Equities revenues,0001628280-26-010273
 Evercore,awm,2010,74.058,D,xbrl,r0,XBRL R-file,0001193125-12-143058
 Evercore,awm,2011,96.14,D,xbrl,r0,XBRL R-file,0001360901-14-000008

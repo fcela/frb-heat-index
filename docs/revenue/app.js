@@ -140,18 +140,149 @@ function legendHTML(firms) {
   ).join("") + `</div>`;
 }
 
+/* ---------------- pool & share ---------------- */
+
+/* Aggregate one business line into per-period industry pool (sum over
+   disclosing firms) and per-firm shares of that pool. Regime breaks are
+   collected wherever any firm's reporting regime changes; coverage breaks
+   where the set of disclosing firms changes between consecutive periods.
+   Both break comparability of the pool across the vertical. */
+function aggregateLine(line, freq) {
+  const colors = {};
+  line.firms.forEach((f, i) => { colors[f.firm] = FIRM_COLORS[i % FIRM_COLORS.length]; });
+  const xOf = d => (d.t != null ? d.t : d.year);
+  const step = freq === "q" ? 0.125 : 0.5;
+  const perX = new Map(); // x -> Map(firm -> value)
+  const metaX = new Map(); // x -> Map(firm -> {year, quarter, q})
+  const breaks = new Set();
+  for (const f of line.firms) {
+    let prevRegime = null;
+    for (const d of f.series) {
+      if (d.value == null || !Number.isFinite(d.value)) { prevRegime = d.regime; continue; }
+      const x = xOf(d);
+      if (prevRegime !== null && d.regime !== prevRegime) breaks.add(x - step);
+      if (!perX.has(x)) { perX.set(x, new Map()); metaX.set(x, new Map()); }
+      perX.get(x).set(f.firm, d.value);
+      metaX.get(x).set(f.firm, { year: d.year, quarter: d.quarter, q: d.map_quality });
+      prevRegime = d.regime;
+    }
+  }
+  const xs = [...perX.keys()].sort((a, b) => a - b);
+  // Coverage breaks: the disclosing set changed vs the previous period.
+  let prevFirms = null;
+  for (const x of xs) {
+    const firms = [...perX.get(x).keys()].sort().join("|");
+    if (prevFirms !== null && firms !== prevFirms) breaks.add(x - step);
+    prevFirms = firms;
+  }
+  const poolPts = xs.map(x => {
+    const m = perX.get(x);
+    return { x, v: [...m.values()].reduce((a, b) => a + b, 0), n: m.size };
+  });
+  const shareSeries = line.firms.map(f => {
+    const sp = [];
+    for (const x of xs) {
+      const m = perX.get(x);
+      const tot = [...m.values()].reduce((a, b) => a + b, 0);
+      const v = m.get(f.firm);
+      if (v == null || tot <= 0) continue;
+      const meta = metaX.get(x).get(f.firm) || {};
+      sp.push({ x, sh: v / tot, g: f.firm, year: meta.year, quarter: meta.quarter, q: meta.q });
+    }
+    return { firm: f.firm, sp };
+  });
+  return { colors, poolPts, shareSeries, breaks: [...breaks].sort((a, b) => a - b) };
+}
+
+function breakMarks(breaks) {
+  return breaks.map(b =>
+    Plot.ruleX([b], { stroke: T().brk, strokeDasharray: "4,3", strokeWidth: 1 })
+  );
+}
+
+/* Industry pool: total disclosed revenue per period. Straight line. */
+function poolChart(agg, unit, freq) {
+  if (!agg.poolPts.length) return null;
+  const marks = [
+    ...breakMarks(agg.breaks),
+    Plot.line(agg.poolPts, { x: "x", y: "v", stroke: T().accent, strokeWidth: 2 }),
+  ];
+  marks.push(Plot.tip(agg.poolPts, Plot.pointer({
+    x: "x", y: "v",
+    title: d => {
+      const t = freq === "q" ? `${d.x.toFixed(2)}` : `${d.x}`;
+      return `Industry pool · ${t}\n$${fmtM(d.v)} across ${d.n} disclosing firms`;
+    },
+  })));
+  return basePlot({
+    width: 1020, height: 200,
+    marginLeft: 64, marginRight: 20, marginTop: 14, marginBottom: 40,
+    x: { label: null, grid: true, tickSize: 0 },
+    y: { label: unit || null, grid: true, nice: true, tickFormat: d => "$" + fmtM(d) },
+    marks,
+    caption: "Sum across disclosing firms only — the pool moves when coverage changes. " +
+      "Dashed verticals: reorg breaks or coverage changes; values not spliced across them.",
+  });
+}
+
+/* Market share: per-firm share of the disclosed pool, 0–1 axis, straight
+   lines. Small firms that vanish on the absolute chart get their own line. */
+function shareChart(line, agg, freq) {
+  const pts = agg.shareSeries.flatMap(s => s.sp);
+  if (!pts.length) return null;
+  const marks = [...breakMarks(agg.breaks)];
+  for (const s of agg.shareSeries) {
+    if (!s.sp.length) continue;
+    marks.push(Plot.line(s.sp, {
+      x: "x", y: "sh", stroke: agg.colors[s.firm], strokeWidth: 1.8,
+    }));
+  }
+  marks.push(Plot.tip(pts, Plot.pointer({
+    x: "x", y: "sh",
+    title: d => {
+      const per = d.quarter != null ? `${d.year}Q${d.quarter}` : `FY${d.year}`;
+      return `${d.g} · ${per}\n${(d.sh * 100).toFixed(1)}% of disclosed pool` +
+        `${d.q && d.q !== "D" ? ` (${QUALITY_NOTE[d.q] || d.q})` : ""}`;
+    },
+  })));
+  return basePlot({
+    width: 1020, height: 260,
+    marginLeft: 64, marginRight: 20, marginTop: 14, marginBottom: 40,
+    x: { label: null, grid: true, tickSize: 0 },
+    y: { label: "share of disclosed pool", grid: true, domain: [0, 1],
+         tickFormat: d => `${Math.round(d * 100)}%` },
+    marks,
+    caption: "Each firm's share of the disclosed industry pool. " +
+      "Dashed verticals: reorg breaks or coverage changes.",
+  });
+}
+
 function lineSection(line, unit, freq) {
   const id = "line-" + line.line.replace(/_/g, "-");
   const chart = lineChart(line, unit, freq);
+  const agg = aggregateLine(line, freq);
+  const pool = poolChart(agg, unit, freq);
+  const share = shareChart(line, agg, freq);
   const label = LINE_LABELS[line.line] || line.line;
   const per = freq === "q" ? "quarterly" : "annual";
-  return `<section class="card rev-card" id="${id}">
+  const sub = (title, c) =>
+    `<h3 class="rev-subhead">${title}</h3><div class="chart" role="img" aria-label="${esc(label)} ${per} ${esc(title.toLowerCase())}">${c ? "" : "<p class='pulse-stamp'>no data</p>"}</div>`;
+  const tmp = document.createElement("div");
+  tmp.innerHTML = `<section class="card rev-card" id="${id}">
     <h2>${esc(label)}</h2>
     <p class="sub">${line.firms.length} firm${line.firms.length === 1 ? "" : "s"} disclose this line.
     Firms that don't disclose it are omitted, not estimated.</p>
     ${legendHTML(line.firms)}
-    <div class="chart" role="img" aria-label="${esc(label)} ${per} revenue by firm">${chart ? "" : "<p class='pulse-stamp'>no data</p>"}</div>
+    ${sub("Industry pool", pool)}
+    ${sub("Market share", share)}
+    ${sub("Revenue by firm", chart)}
   </section>`;
+  const sec = tmp.firstChild;
+  const charts = sec.querySelectorAll(".chart");
+  if (pool) charts[0].appendChild(pool);
+  if (share) charts[1].appendChild(share);
+  if (chart) charts[2].appendChild(chart);
+  return sec;
 }
 
 /* ---------------- page ---------------- */
@@ -171,13 +302,7 @@ async function main() {
     const bundle = await loadJSON(BUNDLE_FOR[freq]);
     const unit = bundle.meta.unit || "USD millions";
     document.getElementById("revenue-toc").innerHTML = tocHTML(bundle.lines);
-    const sections = bundle.lines.map(l => {
-      const tmp = document.createElement("div");
-      tmp.innerHTML = lineSection(l, unit, freq);
-      const chart = lineChart(l, unit, freq);
-      if (chart) tmp.querySelector(".chart").appendChild(chart);
-      return tmp.firstChild;
-    });
+    const sections = bundle.lines.map(l => lineSection(l, unit, freq));
     el.innerHTML = "";
     for (const s of sections) el.appendChild(s);
   } catch (err) {
