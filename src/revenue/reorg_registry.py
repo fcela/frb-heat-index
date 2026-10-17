@@ -59,6 +59,31 @@ REORGS = [
 # Firms expected to have zero registry entries (asserted in tests).
 NO_REORG_FIRMS = ["Lazard", "Moelis", "PJT Partners"]
 
+# Label-only renames: (firm, old_substring, new_substring, effective_date).
+# A rename is not a break; the two labels denote the same economic segment
+# and must be canonicalized before series are keyed, or parallel series
+# collide on the taxonomy line.
+RENAMES = [
+    ("JPMorgan", "Asset Management", "Asset & Wealth Management", "2016-01-01"),
+]
+
+
+def canonical_segment(firm, segment_native):
+    """Map a pre-rename segment label to its post-rename label.
+
+    Label-only renames denote the same economic segment; canonicalizing
+    lets quarterly and annual builders key series consistently across the
+    rename date.
+    """
+    seg = segment_native or ""
+    for f, old, new, _ in RENAMES:
+        if f == firm and old.lower() in seg.lower():
+            # Replace the old label with the new one, preserving the rest.
+            idx = seg.lower().find(old.lower())
+            seg = seg[:idx] + new + seg[idx + len(old):]
+            break
+    return seg
+
 
 def _breaks_for(firm):
     return sorted(

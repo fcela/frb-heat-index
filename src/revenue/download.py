@@ -169,20 +169,29 @@ def _save(dest, url, host_header):
 
 
 def _instance_from_index(cik, acc_nodash, base):
-    """Find the main XBRL instance via the filing's index.json.
+    """Find the main XBRL instance via the filing's directory listing.
 
+    EDGAR's per-filing index.json now 404s (verified 2026-10-17); the
+    directory listing itself returns 200 and carries the same file table.
     Modern filings use {prefix}-{yyyymmdd}.xbrl; pre-2013 filings use
     {prefix}-{yyyymmdd}.xml. Linkbases (*_cal/_def/_lab/_pre) and R-files
     are excluded.
     """
     try:
-        index = json.loads(sec_get(base + "index.json", ARCH_HEADERS))
+        html = sec_get(base, ARCH_HEADERS)
     except RuntimeError:
         return None
+    names = []
+    for m in re.finditer(r"<tr[^>]*>(.*?)</tr>", html, re.S):
+        cells = re.findall(r"<td[^>]*>(.*?)</td>", m.group(1), re.S)
+        if not cells:
+            continue
+        n = re.sub(r"<[^>]+>", "", cells[0]).strip()
+        if n:
+            names.append(n)
     cands = []
     htm_xml = []
-    for it in index["directory"]["item"]:
-        n = it["name"]
+    for n in names:
         if "_htm" in n:
             # Inline-XBRL filings have no standalone instance; the
             # extracted XBRL (_htm.xml) is the closest equivalent.

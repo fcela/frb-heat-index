@@ -153,12 +153,49 @@ def test_reconcile_quarterly():
     print("test_reconcile_quarterly: OK")
 
 
+def test_period_column_date_alignment():
+    # Date row shorter than duration row (missing label cell): align right.
+    # Regression test for JPM 2011-Q2 10-Q where 6M was read as 3M.
+    from src.revenue.parse_xbrl_q import _period_columns
+    table = [
+        [("Business Segments", None), ("3 Months Ended", None),
+         ("3 Months Ended", None), ("6 Months Ended", None),
+         ("6 Months Ended", None)],
+        [("Jun. 30, 2011", None), ("Jun. 30, 2010", None),
+         ("Jun. 30, 2011", None), ("Jun. 30, 2010", None)],
+        [("Noninterest revenue", None), ("$ 14,943", None),
+         ("$ 12,414", None), ("$ 28,259", None), ("$ 26,375", None)],
+    ]
+    cols = _period_columns(table)
+    # Drop the label column (None, None); data cols pair correctly.
+    assert cols[0] == (3, "2011-06-30"), cols
+    assert cols[1] == (3, "2010-06-30"), cols
+    assert cols[2] == (6, "2011-06-30"), cols
+    assert cols[3] == (6, "2010-06-30"), cols
+    print("test_period_column_date_alignment: OK")
+
+
+def test_segment_rename_canonicalization():
+    from src.revenue.reorg_registry import canonical_segment
+    assert canonical_segment(
+        "JPMorgan", "Asset Management") == "Asset & Wealth Management"
+    assert canonical_segment(
+        "JPMorgan", "Asset & Wealth Management") == \
+        "Asset & Wealth Management"
+    # Other firms unaffected.
+    assert canonical_segment("Lazard", "Asset Management") == \
+        "Asset Management"
+    print("test_segment_rename_canonicalization: OK")
+
+
 def main():
     test_period_parsing()
     test_quarter_regimes()
     test_ytd_derivation()
     test_derivation_validation_flags()
     test_reconcile_quarterly()
+    test_period_column_date_alignment()
+    test_segment_rename_canonicalization()
     print("ALL REVENUE-QUARTERLY TESTS PASS")
 
 

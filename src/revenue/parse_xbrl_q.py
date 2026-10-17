@@ -95,6 +95,12 @@ def _period_columns(table):
         return None
     durs = [_parse_duration(c[0]) for c in table[dur_row]]
     dates = [_parse_end_date(c[0]) for c in table[date_row]]
+    # The date row often lacks the label-column cell the duration row has;
+    # align from the right so durations and dates pair correctly.
+    if len(dates) < len(durs):
+        dates = [None] * (len(durs) - len(dates)) + dates
+    elif len(durs) < len(dates):
+        durs = [None] * (len(dates) - len(durs)) + durs
     # Forward-fill: duration/date cells often span merged columns; the
     # parser expands colspans, but some filers leave blanks.
     cols = []
@@ -350,6 +356,19 @@ def build_segments_quarterly_csv(raw_root=RAW_ROOT, out_path=OUT_CSV,
                     "net_revenue_m": pl.Float64, "accession": pl.String,
                     "r_file": pl.String, "source": pl.String})
     df = df.filter(pl.col("period_end") >= since)
+    # Canonicalize label-only renames (e.g. JPM "Asset Management" ->
+    # "Asset & Wealth Management") BEFORE dedup, so restated series
+    # collide on the canonical name and the later filing wins.
+    try:
+        from src.revenue.reorg_registry import canonical_segment
+        df = df.with_columns(
+            pl.struct(["firm", "segment_native"]).map_elements(
+                lambda r: canonical_segment(r["firm"], r["segment_native"]),
+                return_dtype=pl.String,
+            ).alias("segment_native")
+        )
+    except ImportError:
+        pass
     df = df.sort(["firm", "segment_native", "duration_months", "period_end",
                   "accession"])
     df = df.unique(

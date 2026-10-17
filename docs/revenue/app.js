@@ -84,19 +84,22 @@ function basePlot(opts) {
 /* ---------------- charts ---------------- */
 
 /* Multi-firm straight-line chart for one business line. Regime breaks are
-   drawn as vertical rules (never spliced across). */
-function lineChart(line, unit) {
+   drawn as vertical rules (never spliced across). Quarterly series carry
+   t = year + (quarter-1)/4; annual series use year. */
+function lineChart(line, unit, freq) {
   const colors = {};
   line.firms.forEach((f, i) => { colors[f.firm] = FIRM_COLORS[i % FIRM_COLORS.length]; });
   const pts = [];
   const breaks = new Set();
+  const xOf = d => (d.t != null ? d.t : d.year);
   for (const f of line.firms) {
     let prevRegime = null;
     for (const d of f.series) {
       if (d.value == null || !Number.isFinite(d.value)) { prevRegime = d.regime; continue; }
-      // A regime change between consecutive years -> visual break.
-      if (prevRegime !== null && d.regime !== prevRegime) breaks.add(d.year - 0.5);
-      pts.push({ year: d.year, v: d.value, g: f.firm, q: d.map_quality });
+      // A regime change between consecutive periods -> visual break.
+      if (prevRegime !== null && d.regime !== prevRegime) breaks.add(xOf(d) - (freq === "q" ? 0.125 : 0.5));
+      pts.push({ x: xOf(d), v: d.value, g: f.firm, q: d.map_quality,
+                 year: d.year, quarter: d.quarter, regime: d.regime });
       prevRegime = d.regime;
     }
   }
@@ -108,13 +111,16 @@ function lineChart(line, unit) {
     const sp = pts.filter(d => d.g === f.firm);
     if (!sp.length) continue;
     marks.push(Plot.line(sp, {
-      x: "year", y: "v", stroke: colors[f.firm], strokeWidth: 1.8,
+      x: "x", y: "v", stroke: colors[f.firm], strokeWidth: 1.8,
       // straight segments: no curve option
     }));
   }
   marks.push(Plot.tip(pts, Plot.pointer({
-    x: "year", y: "v",
-    title: d => `${d.g} · FY${d.year}\n$${fmtM(d.v)}${d.q && d.q !== "D" ? ` (${QUALITY_NOTE[d.q] || d.q})` : ""}`,
+    x: "x", y: "v",
+    title: d => {
+      const per = d.quarter != null ? `${d.year}Q${d.quarter}` : `FY${d.year}`;
+      return `${d.g} · ${per}\n$${fmtM(d.v)}${d.q && d.q !== "D" ? ` (${QUALITY_NOTE[d.q] || d.q})` : ""}`;
+    },
   })));
   return basePlot({
     width: 1020, height: 260,
@@ -134,20 +140,24 @@ function legendHTML(firms) {
   ).join("") + `</div>`;
 }
 
-function lineSection(line, unit) {
+function lineSection(line, unit, freq) {
   const id = "line-" + line.line.replace(/_/g, "-");
-  const chart = lineChart(line, unit);
+  const chart = lineChart(line, unit, freq);
   const label = LINE_LABELS[line.line] || line.line;
+  const per = freq === "q" ? "quarterly" : "annual";
   return `<section class="card rev-card" id="${id}">
     <h2>${esc(label)}</h2>
     <p class="sub">${line.firms.length} firm${line.firms.length === 1 ? "" : "s"} disclose this line.
     Firms that don't disclose it are omitted, not estimated.</p>
     ${legendHTML(line.firms)}
-    <div class="chart" role="img" aria-label="${esc(label)} annual revenue by firm">${chart ? "" : "<p class='pulse-stamp'>no data</p>"}</div>
+    <div class="chart" role="img" aria-label="${esc(label)} ${per} revenue by firm">${chart ? "" : "<p class='pulse-stamp'>no data</p>"}</div>
   </section>`;
 }
 
 /* ---------------- page ---------------- */
+
+let freq = "a"; // "a" = annual, "q" = quarterly
+const BUNDLE_FOR = { a: "revenue.json", q: "revenue_quarterly.json" };
 
 function tocHTML(lines) {
   return lines.map(l =>
@@ -158,13 +168,13 @@ function tocHTML(lines) {
 async function main() {
   const el = document.getElementById("revenue");
   try {
-    const bundle = await loadJSON("revenue.json");
+    const bundle = await loadJSON(BUNDLE_FOR[freq]);
     const unit = bundle.meta.unit || "USD millions";
     document.getElementById("revenue-toc").innerHTML = tocHTML(bundle.lines);
     const sections = bundle.lines.map(l => {
       const tmp = document.createElement("div");
-      tmp.innerHTML = lineSection(l, unit);
-      const chart = lineChart(l, unit);
+      tmp.innerHTML = lineSection(l, unit, freq);
+      const chart = lineChart(l, unit, freq);
       if (chart) tmp.querySelector(".chart").appendChild(chart);
       return tmp.firstChild;
     });
@@ -174,6 +184,21 @@ async function main() {
     el.innerHTML = `<p class="pulse-stamp">failed to load revenue data: ${esc(err.message)}</p>`;
   }
 }
+
+function setFreq(next) {
+  if (next === freq) return;
+  freq = next;
+  for (const [id, f] of [["freq-annual", "a"], ["freq-quarterly", "q"]]) {
+    const b = document.getElementById(id);
+    const on = f === freq;
+    b.classList.toggle("freq-active", on);
+    b.setAttribute("aria-pressed", String(on));
+  }
+  main();
+}
+
+document.getElementById("freq-annual").addEventListener("click", () => setFreq("a"));
+document.getElementById("freq-quarterly").addEventListener("click", () => setFreq("q"));
 
 document.getElementById("theme-toggle").addEventListener("click", () => {
   themeName = themeName === "light" ? "dark" : "light";

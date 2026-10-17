@@ -60,7 +60,7 @@ _MAPPINGS = {
         ("Global Wealth", "awm", "D", "GWIM"),
     ],
     "Citigroup": [
-        ("Banking", "advisory", "A", "advisory+underwriting; splits from MD&A"),
+        ("=Banking", "advisory", "A", "advisory+underwriting; splits from MD&A"),
         ("Markets", None, "U", "FI/Equities from MD&A"),
         ("Wealth", "awm", "D", ""),
         ("Services", None, "U", "not in taxonomy"),
@@ -132,10 +132,23 @@ _MAPPINGS = {
 
 
 def map_quality(firm, segment_native):
-    """Return (taxonomy_line or None, quality, note) for a native segment."""
+    """Return (taxonomy_line or None, quality, note) for a native segment.
+
+    Rules are substring matches, except a rule starting with "=" which
+    requires an exact (case-insensitive) match. Use "=" when the substring
+    would over-match (e.g. Citi "Banking" vs "Global Consumer Banking").
+    """
+    seg = (segment_native or "")
+    # Geographic splits (" | Asia", " | EMEA", ...) are not business lines;
+    # never map them, even if the prefix substring-matches a rule.
+    if " | " in seg:
+        return None, "U", f"geographic split, not a business line: '{segment_native}'"
+    seg_low = seg.lower()
     rules = _MAPPINGS.get(firm, [])
-    seg = (segment_native or "").lower()
     for substr, line, quality, note in rules:
-        if substr.lower() in seg:
+        if substr.startswith("="):
+            if seg_low == substr[1:].lower():
+                return line, quality, note
+        elif substr.lower() in seg_low:
             return line, quality, note
     return None, "U", f"no mapping rule for segment '{segment_native}'"

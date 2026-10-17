@@ -200,3 +200,26 @@
   height: 0.2rem;
 }
 .rev-card { margin-bottom: 1.5rem; }
+
+/* Revenue tracker frequency toggle (Annual | Quarterly). */
+.freq-toggle {
+  display: inline-flex;
+  gap: 0;
+  margin-top: 1rem;
+  border: 1px solid var(--tape-line);
+  border-radius: 0; /* square corners, per chart rules */
+}
+.freq-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--tape-ink);
+  font: inherit;
+  padding: 0.45rem 1.1rem;
+  cursor: pointer;
+}
+.freq-btn + .freq-btn { border-left: 1px solid var(--tape-line); }
+.freq-btn.freq-active {
+  background: var(--tape-ink);
+  color: var(--tape-bg);
+}

@@ -35,7 +35,7 @@ import polars as pl
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from src.revenue.taxonomy import (  # noqa: E402
     TAXONOMY_LINES, map_quality, canonical_firm)
-from src.revenue.reorg_registry import regime_for_quarter  # noqa: E402
+from src.revenue.reorg_registry import regime_for_quarter, canonical_segment  # noqa: E402
 from src.revenue.build_revenue import sanitize_records  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[2]
@@ -62,7 +62,10 @@ def build_quarterly(seg_q, seg_a):
     acc_of = {}
     for r in seg_q.iter_rows(named=True):
         firm = canonical_firm(r["firm"])
-        key = (firm, r["segment_native"])
+        # Canonicalize label-only renames (e.g. JPM "Asset Management" ->
+        # "Asset & Wealth Management") so parallel series don't collide.
+        seg = canonical_segment(firm, r["segment_native"])
+        key = (firm, seg)
         y, q = quarter_of(r["period_end"])
         v = r["net_revenue_m"]
         acc_of[(key, y, q, r["duration_months"])] = r["accession"]
@@ -78,8 +81,10 @@ def build_quarterly(seg_q, seg_a):
     for r in seg_a.iter_rows(named=True):
         firm = canonical_firm(r["firm"])
         # segment names must match the quarterly ones; both come from the
-        # same XBRL parser family, so native names align.
-        annual[(firm, r["segment_native"], r["year"])] = r["net_revenue_m"]
+        # same XBRL parser family, so native names align (after rename
+        # canonicalization).
+        seg = canonical_segment(firm, r["segment_native"])
+        annual[(firm, seg, r["year"])] = r["net_revenue_m"]
 
     log = []
     rows = []
@@ -195,8 +200,11 @@ def build_quarterly(seg_q, seg_a):
         df = df.with_columns(
             pl.col("derivation").replace_strict(rank, default=3)
             .alias("_drank"))
+        # Best derivation wins; among ties the later filing wins
+        # (restatements). Accession sorts chronologically.
         df = df.sort(["firm", "taxonomy_line", "year", "quarter",
-                      "_drank", "accession"])
+                      "_drank", "accession"],
+                     descending=[False, False, False, False, False, True])
         df = df.unique(subset=["firm", "taxonomy_line", "year", "quarter"],
                        keep="first").drop("_drank")
         df = df.sort(["firm", "taxonomy_line", "year", "quarter"])

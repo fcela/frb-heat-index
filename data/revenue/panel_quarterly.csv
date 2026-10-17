@@ -1,0 +1,875 @@
+firm,segment_native,taxonomy_line,map_quality,layer,year,quarter,net_revenue_m,derivation,regime,source,accession
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2010,2,4189.0,qtd,r0,XBRL R-file (10-Q),0000950123-11-072937
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2010,3,3898.0,qtd,r0,XBRL R-file (10-Q),0000070858-11-000140
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2011,1,4496.0,qtd,r0,XBRL R-file (10-Q),0000070858-12-000191
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2011,2,4490.0,qtd,r0,XBRL R-file (10-Q),0000950123-11-072937
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2011,3,4238.0,qtd,r0,XBRL R-file (10-Q),0000070858-12-000362
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2012,1,4147.0,qtd,r1,XBRL R-file (10-Q),0000070858-13-000147
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2012,2,4317.0,qtd,r1,XBRL R-file (10-Q),0000070858-12-000308
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2012,3,4278.0,qtd,r1,XBRL R-file (10-Q),0000070858-12-000362
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2013,1,4421.0,qtd,r1,XBRL R-file (10-Q),0000070858-13-000147
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2018,1,4856.0,qtd,r3,XBRL R-file (10-Q),0000070858-19-000026
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2018,2,4742.0,qtd,r3,XBRL R-file (10-Q),0000070858-19-000042
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2018,3,4817.0,qtd,r3,XBRL R-file (10-Q),0000070858-19-000057
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2018,4,5039.0,annual_derived_q4,r3,"XBRL R-file (10-Q, annual_derived_q4)",0000070858-19-000057
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2019,1,4820.0,qtd,r3,XBRL R-file (10-Q),0000070858-20-000023
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2019,2,4900.0,qtd,r3,XBRL R-file (10-Q),0000070858-20-000040
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2019,3,4904.0,qtd,r3,XBRL R-file (10-Q),0000070858-20-000071
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2019,4,4913.0,annual_derived_q4,r3,"XBRL R-file (10-Q, annual_derived_q4)",0000070858-20-000071
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2020,1,4936.0,qtd,r3,XBRL R-file (10-Q),0000070858-21-000063
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2020,2,4425.0,qtd,r3,XBRL R-file (10-Q),0000070858-21-000084
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2020,3,4546.0,qtd,r3,XBRL R-file (10-Q),0000070858-21-000107
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2020,4,4677.0,annual_derived_q4,r3,"XBRL R-file (10-Q, annual_derived_q4)",0000070858-21-000107
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2021,1,4971.0,qtd,r3,XBRL R-file (10-Q),0000070858-22-000088
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2021,2,5065.0,qtd,r3,XBRL R-file (10-Q),0000070858-22-000112
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2021,3,5310.0,qtd,r3,XBRL R-file (10-Q),0000070858-22-000131
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2021,4,5402.0,annual_derived_q4,r3,"XBRL R-file (10-Q, annual_derived_q4)",0000070858-22-000131
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2022,1,5476.0,qtd,r3,XBRL R-file (10-Q),0000070858-23-000142
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2022,2,5433.0,qtd,r3,XBRL R-file (10-Q),0000070858-23-000176
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2022,3,5429.0,qtd,r3,XBRL R-file (10-Q),0000070858-23-000272
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2022,4,5410.0,annual_derived_q4,r3,"XBRL R-file (10-Q, annual_derived_q4)",0000070858-23-000272
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2023,1,5315.0,qtd,r3,XBRL R-file (10-Q),0000070858-24-000156
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2023,2,5242.0,qtd,r3,XBRL R-file (10-Q),0000070858-24-000208
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2023,3,5321.0,qtd,r3,XBRL R-file (10-Q),0000070858-24-000280
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2023,4,5227.0,annual_derived_q4,r3,"XBRL R-file (10-Q, annual_derived_q4)",0000070858-24-000280
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2024,1,5591.0,qtd,r3,XBRL R-file (10-Q),0000070858-24-000156
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2024,2,5574.0,qtd,r3,XBRL R-file (10-Q),0000070858-24-000208
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2024,3,5762.0,qtd,r3,XBRL R-file (10-Q),0000070858-24-000280
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2024,4,6002.0,annual_derived_q4,r3,"XBRL R-file (10-Q, annual_derived_q4)",0000070858-24-000280
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2025,1,6016.0,qtd,r3,XBRL R-file (10-Q),0000070858-26-000249
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2025,2,5937.0,qtd,r3,XBRL R-file (10-Q),0000070858-26-000394
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2026,1,6712.0,qtd,r3,XBRL R-file (10-Q),0000070858-26-000249
+Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2026,2,6871.0,qtd,r3,XBRL R-file (10-Q),0000070858-26-000394
+Citigroup,Banking,advisory,A,xbrl_q,2023,1,1179.0,qtd,r3,XBRL R-file (10-Q),0000831001-24-000100
+Citigroup,Banking,advisory,A,xbrl_q,2023,2,2184.0,ytd_derived_q2,r3,"XBRL R-file (10-Q, ytd_derived_q2)",0000831001-24-000100
+Citigroup,Banking,advisory,A,xbrl_q,2023,3,1597.0,qtd,r3,XBRL R-file (10-Q),0000831001-24-000134
+Citigroup,Banking,advisory,A,xbrl_q,2024,1,1952.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000086
+Citigroup,Banking,advisory,A,xbrl_q,2024,2,1921.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000131
+Citigroup,Banking,advisory,A,xbrl_q,2024,3,2132.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000154
+Citigroup,Banking,advisory,A,xbrl_q,2024,4,196.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
+Citigroup,Banking,advisory,A,xbrl_q,2025,1,1530.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000019
+Citigroup,Banking,advisory,A,xbrl_q,2025,2,1434.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000045
+Citigroup,Banking,advisory,A,xbrl_q,2025,4,6618.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
+Citigroup,Banking,advisory,A,xbrl_q,2026,1,1767.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000019
+Citigroup,Banking,advisory,A,xbrl_q,2026,2,1922.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000045
+Citigroup,Wealth,awm,D,xbrl_q,2023,1,1776.0,qtd,r3,XBRL R-file (10-Q),0000831001-24-000100
+Citigroup,Wealth,awm,D,xbrl_q,2023,2,1731.0,ytd_derived_q2,r3,"XBRL R-file (10-Q, ytd_derived_q2)",0000831001-24-000100
+Citigroup,Wealth,awm,D,xbrl_q,2023,3,2002.0,qtd,r3,XBRL R-file (10-Q),0000831001-24-000134
+Citigroup,Wealth,awm,D,xbrl_q,2023,4,1488.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-24-000134
+Citigroup,Wealth,awm,D,xbrl_q,2024,1,2096.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000086
+Citigroup,Wealth,awm,D,xbrl_q,2024,2,2166.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000131
+Citigroup,Wealth,awm,D,xbrl_q,2024,3,2164.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000154
+Citigroup,Wealth,awm,D,xbrl_q,2024,4,1057.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
+Citigroup,Wealth,awm,D,xbrl_q,2025,1,2757.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000019
+Citigroup,Wealth,awm,D,xbrl_q,2025,2,2814.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000045
+Citigroup,Wealth,awm,D,xbrl_q,2025,4,6564.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
+Citigroup,Wealth,awm,D,xbrl_q,2026,1,3065.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000019
+Citigroup,Wealth,awm,D,xbrl_q,2026,2,3177.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000045
+Evercore,Investment Banking,advisory,D,xbrl_q,2011,1,82.379,qtd,r0,XBRL R-file (10-Q),0001193125-12-220423
+Evercore,Investment Banking,advisory,D,xbrl_q,2011,2,113.976,qtd,r0,XBRL R-file (10-Q),0001193125-12-342677
+Evercore,Investment Banking,advisory,D,xbrl_q,2011,3,139.166,qtd,r0,XBRL R-file (10-Q),0001193125-12-457575
+Evercore,Investment Banking,advisory,D,xbrl_q,2011,4,92.60300000000001,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-12-457575
+Evercore,Investment Banking,advisory,D,xbrl_q,2012,1,83.785,qtd,r0,XBRL R-file (10-Q),0001193125-12-220423
+Evercore,Investment Banking,advisory,D,xbrl_q,2012,2,153.16400000000002,qtd,r0,XBRL R-file (10-Q),0001445305-13-001960
+Evercore,Investment Banking,advisory,D,xbrl_q,2012,3,133.415,qtd,r0,XBRL R-file (10-Q),0001360901-13-000003
+Evercore,Investment Banking,advisory,D,xbrl_q,2012,4,194.85500000000002,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-13-000003
+Evercore,Investment Banking,advisory,D,xbrl_q,2013,1,131.596,qtd,r0,XBRL R-file (10-Q),0001360901-14-000012
+Evercore,Investment Banking,advisory,D,xbrl_q,2013,2,182.605,qtd,r0,XBRL R-file (10-Q),0001445305-13-001960
+Evercore,Investment Banking,advisory,D,xbrl_q,2013,3,163.645,qtd,r0,XBRL R-file (10-Q),0001360901-14-000019
+Evercore,Investment Banking,advisory,D,xbrl_q,2013,4,192.93899999999996,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-14-000019
+Evercore,Investment Banking,advisory,D,xbrl_q,2014,1,127.851,qtd,r0,XBRL R-file (10-Q),0001360901-15-000007
+Evercore,Investment Banking,advisory,D,xbrl_q,2014,2,244.377,qtd,r0,XBRL R-file (10-Q),0001360901-15-000010
+Evercore,Investment Banking,advisory,D,xbrl_q,2014,3,285.918,qtd,r0,XBRL R-file (10-Q),0001360901-15-000014
+Evercore,Investment Banking,advisory,D,xbrl_q,2014,4,72.76200000000006,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-15-000014
+Evercore,Investment Banking,advisory,D,xbrl_q,2015,1,216.58,qtd,r0,XBRL R-file (10-Q),0001360901-16-000020
+Evercore,Investment Banking,advisory,D,xbrl_q,2015,2,244.377,qtd,r0,XBRL R-file (10-Q),0001360901-16-000023
+Evercore,Investment Banking,advisory,D,xbrl_q,2015,3,285.918,qtd,r0,XBRL R-file (10-Q),0001360901-16-000026
+Evercore,Investment Banking,advisory,D,xbrl_q,2015,4,384.03999999999996,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-16-000026
+Evercore,Investment Banking,advisory,D,xbrl_q,2016,1,239.713,qtd,r0,XBRL R-file (10-Q),0001360901-17-000014
+Evercore,Investment Banking,advisory,D,xbrl_q,2016,2,328.157,qtd,r0,XBRL R-file (10-Q),0001360901-17-000020
+Evercore,Investment Banking,advisory,D,xbrl_q,2016,3,368.634,qtd,r0,XBRL R-file (10-Q),0001360901-17-000031
+Evercore,Investment Banking,advisory,D,xbrl_q,2016,4,427.3549999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-17-000031
+Evercore,Investment Banking,advisory,D,xbrl_q,2017,1,370.77,qtd,r0,XBRL R-file (10-Q),0001360901-18-000012
+Evercore,Investment Banking,advisory,D,xbrl_q,2017,2,356.409,qtd,r0,XBRL R-file (10-Q),0001360901-18-000017
+Evercore,Investment Banking,advisory,D,xbrl_q,2017,3,388.29900000000004,qtd,r0,XBRL R-file (10-Q),0001360901-18-000023
+Evercore,Investment Banking,advisory,D,xbrl_q,2017,4,518.79,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-18-000023
+Evercore,Investment Banking,advisory,D,xbrl_q,2018,1,450.2,qtd,r0,XBRL R-file (10-Q),0001360901-19-000011
+Evercore,Investment Banking,advisory,D,xbrl_q,2018,2,435.675,qtd,r0,XBRL R-file (10-Q),0001360901-19-000017
+Evercore,Investment Banking,advisory,D,xbrl_q,2018,3,366.834,qtd,r0,XBRL R-file (10-Q),0001360901-19-000022
+Evercore,Investment Banking,advisory,D,xbrl_q,2018,4,759.3140000000001,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-19-000022
+Evercore,Investment Banking,advisory,D,xbrl_q,2019,1,401.188,qtd,r0,XBRL R-file (10-Q),0001360901-20-000011
+Evercore,Investment Banking,advisory,D,xbrl_q,2019,2,516.386,qtd,r0,XBRL R-file (10-Q),0001360901-20-000016
+Evercore,Investment Banking,advisory,D,xbrl_q,2019,3,388.012,qtd,r0,XBRL R-file (10-Q),0001360901-20-000021
+Evercore,Investment Banking,advisory,D,xbrl_q,2019,4,646.2090000000001,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-20-000021
+Evercore,Investment Banking,advisory,D,xbrl_q,2020,1,413.656,qtd,r0,XBRL R-file (10-Q),0001360901-21-000010
+Evercore,Investment Banking,advisory,D,xbrl_q,2020,2,495.374,qtd,r0,XBRL R-file (10-Q),0001360901-21-000015
+Evercore,Investment Banking,advisory,D,xbrl_q,2020,3,385.463,qtd,r0,XBRL R-file (10-Q),0001360901-21-000020
+Evercore,Investment Banking,advisory,D,xbrl_q,2020,4,922.893,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-21-000020
+Evercore,Investment Banking,advisory,D,xbrl_q,2021,1,647.285,qtd,r0,XBRL R-file (10-Q),0001360901-22-000009
+Evercore,Investment Banking,advisory,D,xbrl_q,2021,2,670.82,qtd,r0,XBRL R-file (10-Q),0001360901-22-000014
+Evercore,Investment Banking,advisory,D,xbrl_q,2021,3,806.918,qtd,r0,XBRL R-file (10-Q),0001360901-22-000019
+Evercore,Investment Banking,advisory,D,xbrl_q,2021,4,1098.866,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-22-000019
+Evercore,Investment Banking and Equities,advisory,D,xbrl_q,2022,1,704.301,qtd,r0,XBRL R-file (10-Q),0001360901-23-000013
+Evercore,Investment Banking and Equities,advisory,D,xbrl_q,2022,2,615.25,qtd,r0,XBRL R-file (10-Q),0001360901-23-000018
+Evercore,Investment Banking and Equities,advisory,D,xbrl_q,2022,3,560.518,qtd,r0,XBRL R-file (10-Q),0001360901-23-000024
+Evercore,Investment Banking and Equities,advisory,D,xbrl_q,2022,4,816.056,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-23-000024
+Evercore,Investment Banking and Equities,advisory,D,xbrl_q,2023,1,554.811,qtd,r0,XBRL R-file (10-Q),0001360901-24-000013
+Evercore,Investment Banking and Equities,advisory,D,xbrl_q,2023,2,482.24600000000004,qtd,r0,XBRL R-file (10-Q),0001360901-24-000018
+Evercore,Investment Banking and Equities,advisory,D,xbrl_q,2023,3,552.641,qtd,r0,XBRL R-file (10-Q),0001360901-24-000024
+Evercore,Investment Banking and Equities,advisory,D,xbrl_q,2023,4,766.2450000000001,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-24-000024
+Evercore,Investment Banking & Equities,advisory,D,xbrl_q,2024,1,561.7280000000001,qtd,r0,XBRL R-file (10-Q),0001360901-25-000010
+Evercore,Investment Banking & Equities,advisory,D,xbrl_q,2024,2,670.01,qtd,r0,XBRL R-file (10-Q),0001360901-25-000018
+Evercore,Investment Banking & Equities,advisory,D,xbrl_q,2024,3,712.775,qtd,r0,XBRL R-file (10-Q),0001360901-25-000025
+Evercore,Investment Banking & Equities,advisory,D,xbrl_q,2024,4,953.9759999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-25-000025
+Evercore,Investment Banking & Equities,advisory,D,xbrl_q,2025,1,674.532,qtd,r0,XBRL R-file (10-Q),0001628280-26-031242
+Evercore,Investment Banking & Equities,advisory,D,xbrl_q,2025,2,812.171,qtd,r0,XBRL R-file (10-Q),0001628280-26-053320
+Evercore,Investment Banking & Equities,advisory,D,xbrl_q,2025,3,1016.192,qtd,r0,XBRL R-file (10-Q),0001360901-25-000025
+Evercore,Investment Banking & Equities,advisory,D,xbrl_q,2025,4,1264.7600000000002,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-25-000025
+Evercore,Investment Banking & Equities,advisory,D,xbrl_q,2026,1,1368.75,qtd,r0,XBRL R-file (10-Q),0001628280-26-031242
+Evercore,Investment Banking & Equities,advisory,D,xbrl_q,2026,2,966.8770000000001,qtd,r0,XBRL R-file (10-Q),0001628280-26-053320
+Evercore,Investment Management,awm,D,xbrl_q,2011,1,24.719,qtd,r0,XBRL R-file (10-Q),0001193125-12-220423
+Evercore,Investment Management,awm,D,xbrl_q,2011,2,27.228,qtd,r0,XBRL R-file (10-Q),0001193125-12-342677
+Evercore,Investment Management,awm,D,xbrl_q,2011,3,24.015,qtd,r0,XBRL R-file (10-Q),0001193125-12-457575
+Evercore,Investment Management,awm,D,xbrl_q,2011,4,20.177999999999997,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-12-457575
+Evercore,Investment Management,awm,D,xbrl_q,2012,1,19.013,qtd,r0,XBRL R-file (10-Q),0001193125-12-220423
+Evercore,Investment Management,awm,D,xbrl_q,2012,2,19.333000000000002,qtd,r0,XBRL R-file (10-Q),0001445305-13-001960
+Evercore,Investment Management,awm,D,xbrl_q,2012,3,19.614,qtd,r0,XBRL R-file (10-Q),0001360901-13-000003
+Evercore,Investment Management,awm,D,xbrl_q,2012,4,19.193999999999996,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-13-000003
+Evercore,Investment Management,awm,D,xbrl_q,2013,1,21.035,qtd,r0,XBRL R-file (10-Q),0001360901-14-000012
+Evercore,Investment Management,awm,D,xbrl_q,2013,2,24.841,qtd,r0,XBRL R-file (10-Q),0001445305-13-001960
+Evercore,Investment Management,awm,D,xbrl_q,2013,3,23.683,qtd,r0,XBRL R-file (10-Q),0001360901-14-000019
+Evercore,Investment Management,awm,D,xbrl_q,2013,4,25.733000000000004,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-14-000019
+Evercore,Investment Management,awm,D,xbrl_q,2014,1,21.262,qtd,r0,XBRL R-file (10-Q),0001360901-15-000007
+Evercore,Investment Management,awm,D,xbrl_q,2014,2,23.719,qtd,r0,XBRL R-file (10-Q),0001360901-15-000010
+Evercore,Investment Management,awm,D,xbrl_q,2014,3,23.033,qtd,r0,XBRL R-file (10-Q),0001360901-15-000014
+Evercore,Investment Management,awm,D,xbrl_q,2014,4,28.066000000000003,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-15-000014
+Evercore,Investment Management,awm,D,xbrl_q,2015,1,21.403,qtd,r0,XBRL R-file (10-Q),0001360901-16-000020
+Evercore,Investment Management,awm,D,xbrl_q,2015,2,23.719,qtd,r0,XBRL R-file (10-Q),0001360901-16-000023
+Evercore,Investment Management,awm,D,xbrl_q,2015,3,23.033,qtd,r0,XBRL R-file (10-Q),0001360901-16-000026
+Evercore,Investment Management,awm,D,xbrl_q,2015,4,24.203000000000003,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-16-000026
+Evercore,Investment Management,awm,D,xbrl_q,2016,1,18.0,qtd,r0,XBRL R-file (10-Q),0001360901-17-000014
+Evercore,Investment Management,awm,D,xbrl_q,2016,2,22.499,qtd,r0,XBRL R-file (10-Q),0001360901-17-000020
+Evercore,Investment Management,awm,D,xbrl_q,2016,3,17.68,qtd,r0,XBRL R-file (10-Q),0001360901-17-000031
+Evercore,Investment Management,awm,D,xbrl_q,2016,4,18.013999999999996,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-17-000031
+Evercore,Investment Management,awm,D,xbrl_q,2017,1,16.477,qtd,r0,XBRL R-file (10-Q),0001360901-18-000012
+Evercore,Investment Management,awm,D,xbrl_q,2017,2,14.061,qtd,r0,XBRL R-file (10-Q),0001360901-18-000017
+Evercore,Investment Management,awm,D,xbrl_q,2017,3,18.302,qtd,r0,XBRL R-file (10-Q),0001360901-18-000023
+Evercore,Investment Management,awm,D,xbrl_q,2017,4,21.241,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-18-000023
+Evercore,Investment Management,awm,D,xbrl_q,2018,1,13.363,qtd,r0,XBRL R-file (10-Q),0001360901-19-000011
+Evercore,Investment Management,awm,D,xbrl_q,2018,2,12.802,qtd,r0,XBRL R-file (10-Q),0001360901-19-000017
+Evercore,Investment Management,awm,D,xbrl_q,2018,3,14.425,qtd,r0,XBRL R-file (10-Q),0001360901-19-000022
+Evercore,Investment Management,awm,D,xbrl_q,2018,4,12.091999999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-19-000022
+Evercore,Investment Management,awm,D,xbrl_q,2019,1,14.139000000000001,qtd,r0,XBRL R-file (10-Q),0001360901-20-000011
+Evercore,Investment Management,awm,D,xbrl_q,2019,2,14.66,qtd,r0,XBRL R-file (10-Q),0001360901-20-000016
+Evercore,Investment Management,awm,D,xbrl_q,2019,3,14.186,qtd,r0,XBRL R-file (10-Q),0001360901-20-000021
+Evercore,Investment Management,awm,D,xbrl_q,2019,4,13.918,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-20-000021
+Evercore,Investment Management,awm,D,xbrl_q,2020,1,13.351,qtd,r0,XBRL R-file (10-Q),0001360901-21-000010
+Evercore,Investment Management,awm,D,xbrl_q,2020,2,11.701,qtd,r0,XBRL R-file (10-Q),0001360901-21-000015
+Evercore,Investment Management,awm,D,xbrl_q,2020,3,17.052,qtd,r0,XBRL R-file (10-Q),0001360901-21-000020
+Evercore,Investment Management,awm,D,xbrl_q,2020,4,4.414999999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-21-000020
+Evercore,Investment Management,awm,D,xbrl_q,2021,1,15.025,qtd,r0,XBRL R-file (10-Q),0001360901-22-000009
+Evercore,Investment Management,awm,D,xbrl_q,2021,2,17.045,qtd,r0,XBRL R-file (10-Q),0001360901-22-000014
+Evercore,Investment Management,awm,D,xbrl_q,2021,3,16.637,qtd,r0,XBRL R-file (10-Q),0001360901-22-000019
+Evercore,Investment Management,awm,D,xbrl_q,2021,4,16.903,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-22-000019
+Evercore,Investment Management,awm,D,xbrl_q,2022,1,18.553,qtd,r0,XBRL R-file (10-Q),0001360901-23-000013
+Evercore,Investment Management,awm,D,xbrl_q,2022,2,15.667,qtd,r0,XBRL R-file (10-Q),0001360901-23-000018
+Evercore,Investment Management,awm,D,xbrl_q,2022,3,16.419,qtd,r0,XBRL R-file (10-Q),0001360901-23-000024
+Evercore,Investment Management,awm,D,xbrl_q,2022,4,15.283999999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-23-000024
+Evercore,Investment Management,awm,D,xbrl_q,2023,1,17.332,qtd,r0,XBRL R-file (10-Q),0001360901-24-000013
+Evercore,Investment Management,awm,D,xbrl_q,2023,2,17.173000000000002,qtd,r0,XBRL R-file (10-Q),0001360901-24-000018
+Evercore,Investment Management,awm,D,xbrl_q,2023,3,17.579,qtd,r0,XBRL R-file (10-Q),0001360901-24-000024
+Evercore,Investment Management,awm,D,xbrl_q,2023,4,17.921999999999997,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-24-000024
+Evercore,Investment Management,awm,D,xbrl_q,2024,1,19.087,qtd,r0,XBRL R-file (10-Q),0001360901-25-000010
+Evercore,Investment Management,awm,D,xbrl_q,2024,2,19.214,qtd,r0,XBRL R-file (10-Q),0001360901-25-000018
+Evercore,Investment Management,awm,D,xbrl_q,2024,3,21.447,qtd,r0,XBRL R-file (10-Q),0001360901-25-000025
+Evercore,Investment Management,awm,D,xbrl_q,2024,4,21.355999999999995,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-25-000025
+Evercore,Investment Management,awm,D,xbrl_q,2025,1,20.297,qtd,r0,XBRL R-file (10-Q),0001628280-26-031242
+Evercore,Investment Management,awm,D,xbrl_q,2025,2,21.659,qtd,r0,XBRL R-file (10-Q),0001628280-26-053320
+Evercore,Investment Management,awm,D,xbrl_q,2025,3,22.692,qtd,r0,XBRL R-file (10-Q),0001360901-25-000025
+Evercore,Investment Management,awm,D,xbrl_q,2025,4,23.51700000000001,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-25-000025
+Evercore,Investment Management,awm,D,xbrl_q,2026,1,22.828,qtd,r0,XBRL R-file (10-Q),0001628280-26-031242
+Evercore,Investment Management,awm,D,xbrl_q,2026,2,23.322,qtd,r0,XBRL R-file (10-Q),0001628280-26-053320
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2012,3,509.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2012,4,508.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2013,1,484.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2013,2,486.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2013,3,423.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2013,4,585.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2014,1,682.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2014,2,506.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2014,3,594.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-362853
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2014,4,692.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-362853
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2015,1,961.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2015,2,821.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670394
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2015,3,809.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2015,4,879.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757421
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2016,1,771.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2016,2,794.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2016,3,658.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-331475
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2016,4,709.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-17-331475
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2017,1,756.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-151188
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2017,2,749.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2017,3,911.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2017,4,772.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2018,1,586.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2018,2,804.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2018,3,916.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2018,4,1201.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2019,1,887.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2012,3,1016.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2012,4,105.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2013,1,115.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2013,2,116.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2013,3,1085.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2013,4,122.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2014,1,118.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2014,2,100.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2014,3,1214.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-362853
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2014,4,1231.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-362853
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2015,1,1194.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2015,2,140.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670394
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2015,3,1212.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2015,4,1236.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757421
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2016,1,1165.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2016,2,1181.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2016,3,1225.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-331475
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2016,4,1227.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-17-331475
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2017,1,160.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-151188
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2017,2,165.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2017,3,168.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2017,4,165.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2018,1,212.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2018,2,1345.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2018,3,1382.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2018,4,1365.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2019,1,165.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Asset Management,awm,D,xbrl_q,2021,3,2279.0,qtd,r1,XBRL R-file (10-Q),0000886982-22-000002
+Goldman Sachs,Asset Management,awm,D,xbrl_q,2021,4,2891.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000886982-22-000002
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2022,1,2603.0,qtd,r1,XBRL R-file (10-Q),0000886982-23-000005
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2022,2,3179.0,qtd,r1,XBRL R-file (10-Q),0000886982-23-000008
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2022,3,4033.0,qtd,r1,XBRL R-file (10-Q),0000886982-23-000011
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2022,4,3561.0,annual_derived_q4,r2,"XBRL R-file (10-Q, annual_derived_q4)",0000886982-23-000011
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2023,1,3216.0,qtd,r2,XBRL R-file (10-Q),0000886982-24-000016
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2023,2,3047.0,qtd,r2,XBRL R-file (10-Q),0000886982-24-000022
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2023,3,3230.0,qtd,r2,XBRL R-file (10-Q),0000886982-24-000025
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2023,4,4709.0,annual_derived_q4,r2,"XBRL R-file (10-Q, annual_derived_q4)",0000886982-24-000025
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2024,1,3789.0,qtd,r2,XBRL R-file (10-Q),0000886982-25-000009
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2024,2,3878.0,qtd,r2,XBRL R-file (10-Q),0000886982-25-000022
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2024,3,3754.0,qtd,r2,XBRL R-file (10-Q),0000886982-25-001411
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2024,4,4895.0,annual_derived_q4,r2,"XBRL R-file (10-Q, annual_derived_q4)",0000886982-25-001411
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2025,1,3711.0,qtd,r2,XBRL R-file (10-Q),0000886982-26-000118
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2025,2,3831.0,qtd,r2,XBRL R-file (10-Q),0000886982-26-000297
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2025,3,4399.0,qtd,r2,XBRL R-file (10-Q),0000886982-25-001411
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2025,4,4823.0,annual_derived_q4,r3,"XBRL R-file (10-Q, annual_derived_q4)",0000886982-25-001411
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2026,1,4078.0,qtd,r3,XBRL R-file (10-Q),0000886982-26-000118
+Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2026,2,4597.0,qtd,r3,XBRL R-file (10-Q),0000886982-26-000297
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2012,3,82.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2012,4,344.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2013,1,140.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2013,2,118.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2013,3,71.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2013,4,333.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2014,1,304.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2014,2,139.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2014,3,133.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-362853
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2014,4,200.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-362853
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2015,1,254.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2015,2,263.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670394
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2015,3,73.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2015,4,190.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757421
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2016,1,46.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2016,2,37.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2016,3,114.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-331475
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2016,4,224.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-17-331475
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2017,1,121.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-151188
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2017,2,81.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2017,3,86.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2017,4,129.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2018,1,213.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2018,2,316.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2018,3,148.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2018,4,153.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investment Management - Incentive Fees,awm_incentive_fees,D,xbrl_q,2019,1,58.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2010,2,1786.0,qtd,r0,XBRL R-file (10-Q),0000950123-11-074589
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2010,3,1797.0,qtd,r0,XBRL R-file (10-Q),0000950123-11-096618
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2010,4,1988.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000950123-11-096618
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2011,1,2705.0,qtd,r0,XBRL R-file (10-Q),0001193125-12-222707
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2011,2,1044.0,qtd,r0,XBRL R-file (10-Q),0001193125-12-344636
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2011,3,-2479.0,qtd,r0,XBRL R-file (10-Q),0001193125-12-458820
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2011,4,872.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-12-458820
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2012,1,1911.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-208066
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2012,2,203.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-324664
+Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2012,3,558.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2012,4,1123.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
+Goldman Sachs,Investing and Lending - Other,awm_investments,D,xbrl_q,2013,1,375.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
+Goldman Sachs,Investing and Lending - Other,awm_investments,D,xbrl_q,2013,2,295.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
+Goldman Sachs,Investing and Lending - Other,awm_investments,D,xbrl_q,2013,3,237.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2013,4,2447.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2014,1,907.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2014,2,1447.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2014,3,1058.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-362853
+Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2014,4,365.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-362853
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2015,1,1160.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2015,2,1801.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670394
+Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2015,3,300.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
+Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2015,4,299.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757421
+Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2016,1,87.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
+Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2016,2,485.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2016,3,920.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-331475
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2016,4,1027.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-17-331475
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2017,1,798.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-151188
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2017,2,1180.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2017,3,1391.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2017,4,2315.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2018,1,1069.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2018,2,1944.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2018,3,1861.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2018,4,2358.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2019,1,990.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2012,3,466.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2012,4,593.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2013,1,694.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2013,2,695.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2013,3,467.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2013,4,511.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2014,1,660.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2014,2,730.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2014,3,444.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-362853
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2014,4,406.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-362853
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2015,1,411.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2015,2,603.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670394
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2015,3,557.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2015,4,440.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757421
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2016,1,509.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2016,2,724.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2016,3,652.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-331475
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2016,4,565.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-17-331475
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2017,1,636.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-151188
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2017,2,721.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2017,3,674.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2017,4,909.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2018,1,797.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2018,2,752.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2018,3,632.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2018,4,528.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2019,1,652.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2012,3,189.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2012,4,304.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2013,1,390.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2013,2,371.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2013,3,276.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2013,4,622.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2014,1,437.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2014,2,545.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2014,3,426.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-362853
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2014,4,342.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-362853
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2015,1,533.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2015,2,595.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670394
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2015,3,190.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2015,4,228.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757421
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2016,1,183.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2016,2,269.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2016,3,227.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-331475
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2016,4,212.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-17-331475
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2017,1,311.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-151188
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2017,2,260.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2017,3,212.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2017,4,460.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2018,1,410.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2018,2,489.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2018,3,432.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2018,4,315.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investment Banking - Equity Underwriting,ecm,D,xbrl_q,2019,1,271.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2012,3,655.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2012,4,897.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2013,1,1084.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2013,2,1066.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2013,3,743.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2013,4,1133.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2014,1,1097.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2014,2,1275.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2014,3,870.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-362853
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2014,4,748.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-362853
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2015,1,944.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2015,2,1198.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670394
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2015,3,747.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2015,4,668.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757421
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2016,1,692.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2016,2,993.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2016,3,879.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-331475
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2016,4,777.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-17-331475
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2017,1,947.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-151188
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2017,2,981.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2017,3,886.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2017,4,1369.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2018,1,1207.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2018,2,1241.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2018,3,1064.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2018,4,843.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2019,1,923.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2012,3,847.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2012,4,2304.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2013,1,793.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2013,2,836.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2013,3,1616.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2013,4,1682.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
+Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2014,1,416.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
+Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2014,2,483.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
+Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2014,3,429.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-362853
+Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2014,4,751.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-362853
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2015,1,808.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2015,2,767.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670394
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2015,3,818.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
+Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2015,4,562.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757421
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2016,1,1780.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2016,2,1754.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2016,3,1784.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-331475
+Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2016,4,459.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-17-331475
+Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2017,1,552.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-151188
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2017,2,1892.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2017,3,1668.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2017,4,737.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2018,1,817.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2018,2,1891.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2018,3,1794.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2018,4,1604.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2019,1,714.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2012,3,2224.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2012,4,2038.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2013,1,3217.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2013,2,2463.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2013,3,1247.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2013,4,1724.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2014,1,2850.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2014,2,2223.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2014,3,2170.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-362853
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2014,4,1218.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-362853
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2015,1,3134.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2015,2,1604.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670394
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2015,3,1461.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2015,4,1123.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757421
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2016,1,1663.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2016,2,1927.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2016,3,1964.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-331475
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2016,4,2002.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-17-331475
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2017,1,1685.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-151188
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2017,2,1159.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2017,3,1452.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2017,4,1003.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2018,1,2074.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2018,2,1679.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2018,3,1307.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2018,4,822.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2019,1,1839.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Consumer & Wealth Management,private_banking,A,xbrl_q,2021,3,2018.0,qtd,r1,XBRL R-file (10-Q),0000886982-22-000002
+Goldman Sachs,Consumer & Wealth Management,private_banking,A,xbrl_q,2021,4,1967.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000886982-22-000002
+Goldman Sachs,Consumer & Wealth Management,private_banking,A,xbrl_q,2022,3,2377.0,qtd,r1,XBRL R-file (10-Q),0000886982-22-000002
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2014,3,92.549,qtd,r0,XBRL R-file (10-Q),0001302215-15-000014
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2015,2,28.408,qtd,r0,XBRL R-file (10-Q),0001302215-16-000063
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2015,3,100.20700000000001,qtd,r0,XBRL R-file (10-Q),0001302215-16-000079
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2016,1,38.993,qtd,r0,XBRL R-file (10-Q),0001302215-16-000063
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2016,2,34.463,qtd,r0,XBRL R-file (10-Q),0001302215-17-000044
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2016,3,33.082,qtd,r0,XBRL R-file (10-Q),0001302215-17-000052
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2017,1,96.036,qtd,r0,XBRL R-file (10-Q),0001302215-17-000044
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2017,2,34.463,qtd,r0,XBRL R-file (10-Q),0001302215-18-000032
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2017,3,63.281,qtd,r0,XBRL R-file (10-Q),0001302215-18-000038
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2018,2,132.871,qtd,r0,XBRL R-file (10-Q),0001302215-19-000054
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2018,3,146.05700000000002,qtd,r0,XBRL R-file (10-Q),0001302215-18-000038
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2019,2,133.589,qtd,r0,XBRL R-file (10-Q),0001302215-19-000054
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2019,3,155.981,qtd,r0,XBRL R-file (10-Q),0001302215-20-000135
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2020,2,34.545,qtd,r0,XBRL R-file (10-Q),0001302215-21-000078
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2020,3,125.391,qtd,r0,XBRL R-file (10-Q),0001302215-21-000087
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2021,2,98.775,qtd,r0,XBRL R-file (10-Q),0001302215-22-000067
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2021,3,83.184,qtd,r0,XBRL R-file (10-Q),0001302215-22-000076
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2022,2,78.83800000000001,qtd,r0,XBRL R-file (10-Q),0001302215-23-000079
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2022,3,97.694,qtd,r0,XBRL R-file (10-Q),0001302215-23-000089
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2023,2,123.36800000000001,qtd,r0,XBRL R-file (10-Q),0001302215-24-000090
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2023,3,281.684,qtd,r0,XBRL R-file (10-Q),0001302215-24-000110
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2024,2,328.41700000000003,qtd,r0,XBRL R-file (10-Q),0001302215-25-000092
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2024,3,364.028,qtd,r0,XBRL R-file (10-Q),0001302215-25-000111
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2025,2,79.0,qtd,r0,XBRL R-file (10-Q),0001302215-26-000067
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2025,3,86.988,qtd,r0,XBRL R-file (10-Q),0001302215-25-000111
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2026,2,89.0,qtd,r0,XBRL R-file (10-Q),0001302215-26-000067
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2010,2,2068.0,qtd,r0,XBRL R-file (10-Q),0001193125-11-212045
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2010,3,2172.0,qtd,r0,XBRL R-file (10-Q),0000019617-11-000264
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2010,4,2613.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-11-000264
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2011,1,2406.0,qtd,r0,XBRL R-file (10-Q),0000019617-12-000262
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2011,2,2537.0,qtd,r0,XBRL R-file (10-Q),0001193125-11-212045
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2011,3,2316.0,qtd,r0,XBRL R-file (10-Q),0000019617-12-000308
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2011,4,2284.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-12-000308
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2012,1,2370.0,qtd,r1,XBRL R-file (10-Q),0000019617-12-000262
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2012,2,2364.0,qtd,r1,XBRL R-file (10-Q),0000019617-12-000264
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2012,3,2459.0,qtd,r1,XBRL R-file (10-Q),0000019617-12-000308
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2012,4,2817.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-12-000308
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2014,1,2800.0,qtd,r1,XBRL R-file (10-Q),0000019617-15-000318
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2014,2,2982.0,qtd,r1,XBRL R-file (10-Q),0000019617-15-000367
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2014,3,3046.0,qtd,r1,XBRL R-file (10-Q),0000019617-15-000464
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2014,4,3200.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-15-000464
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2015,1,3005.0,qtd,r1,XBRL R-file (10-Q),0000019617-16-000960
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2015,2,3175.0,qtd,r1,XBRL R-file (10-Q),0000019617-16-001056
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2015,3,2894.0,qtd,r1,XBRL R-file (10-Q),0000019617-16-001150
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2015,4,3045.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-16-001150
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2016,1,2972.0,qtd,r1,XBRL R-file (10-Q),0000019617-17-000364
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2016,2,2939.0,qtd,r1,XBRL R-file (10-Q),0000019617-17-000486
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2016,3,3047.0,qtd,r1,XBRL R-file (10-Q),0000019617-17-000552
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2016,4,3864.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-17-000552
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2017,1,3288.0,qtd,r1,XBRL R-file (10-Q),0000019617-18-000092
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2017,2,3437.0,qtd,r1,XBRL R-file (10-Q),0000019617-18-000151
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2017,3,3245.0,qtd,r1,XBRL R-file (10-Q),0000019617-17-000552
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2017,4,4291.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-17-000552
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2018,1,3506.0,qtd,r1,XBRL R-file (10-Q),0000019617-18-000092
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2018,2,3572.0,qtd,r1,XBRL R-file (10-Q),0000019617-18-000151
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2019,3,3568.0,qtd,r1,XBRL R-file (10-Q),0000019617-20-000438
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2019,4,2975.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-20-000438
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2020,3,3737.0,qtd,r1,XBRL R-file (10-Q),0000019617-20-000438
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2020,4,3287.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-20-000438
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2021,1,4077.0,qtd,r1,XBRL R-file (10-Q),0000019617-22-000319
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2021,2,4107.0,qtd,r1,XBRL R-file (10-Q),0000019617-22-000422
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2021,3,4300.0,qtd,r1,XBRL R-file (10-Q),0000019617-22-000492
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2021,4,4473.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-22-000492
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2022,1,4315.0,qtd,r1,XBRL R-file (10-Q),0000019617-23-000310
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2022,2,4306.0,qtd,r1,XBRL R-file (10-Q),0000019617-23-000432
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2022,3,4539.0,qtd,r1,XBRL R-file (10-Q),0000019617-23-000524
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2022,4,4588.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-23-000524
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2023,1,4784.0,qtd,r1,XBRL R-file (10-Q),0000019617-24-000326
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2023,2,4943.0,qtd,r1,XBRL R-file (10-Q),0000019617-24-000453
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2023,3,5005.0,qtd,r1,XBRL R-file (10-Q),0000019617-24-000611
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2023,4,5095.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-24-000611
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2024,1,5109.0,qtd,r1,XBRL R-file (10-Q),0000019617-25-000421
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2024,2,5252.0,qtd,r2,XBRL R-file (10-Q),0000019617-25-000615
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2024,3,5439.0,qtd,r2,XBRL R-file (10-Q),0001628280-25-048859
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2024,4,5778.0,annual_derived_q4,r2,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-25-048859
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2025,1,5731.0,qtd,r2,XBRL R-file (10-Q),0001628280-26-029344
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2025,2,5760.0,qtd,r2,XBRL R-file (10-Q),0001628280-26-054343
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2025,3,6066.0,qtd,r2,XBRL R-file (10-Q),0001628280-25-048859
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2025,4,6516.0,annual_derived_q4,r2,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-25-048859
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2026,1,6374.0,qtd,r2,XBRL R-file (10-Q),0001628280-26-029344
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2026,2,6851.0,qtd,r2,XBRL R-file (10-Q),0001628280-26-054343
+Jefferies,Investment Banking & Capital Markets,advisory,A,xbrl_q,2013,2,651.509,qtd,r0,XBRL R-file (10-Q),0000096223-14-000030
+Jefferies,Investment Banking & Capital Markets,advisory,A,xbrl_q,2013,3,502.766,qtd,r0,XBRL R-file (10-Q),0000096223-14-000036
+Jefferies,Investment Banking & Capital Markets,advisory,A,xbrl_q,2013,4,979.7269999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000096223-14-000036
+Jefferies,Investment Banking & Capital Markets,advisory,A,xbrl_q,2014,1,930.5120000000001,qtd,r0,XBRL R-file (10-Q),0000096223-14-000016
+Jefferies,Investment Banking & Capital Markets,advisory,A,xbrl_q,2014,2,689.303,qtd,r0,XBRL R-file (10-Q),0000096223-14-000030
+Jefferies,Investment Banking & Capital Markets,advisory,A,xbrl_q,2014,3,840.35,qtd,r0,XBRL R-file (10-Q),0000096223-14-000036
+Jefferies,Investment Banking and Capital Markets,advisory,A,xbrl_q,2019,2,859.275,qtd,r0,XBRL R-file (10-Q),0000096223-20-000041
+Jefferies,Investment Banking and Capital Markets,advisory,A,xbrl_q,2019,3,1274.115,qtd,r0,XBRL R-file (10-Q),0000096223-20-000050
+Jefferies,Investment Banking and Capital Markets,advisory,A,xbrl_q,2020,2,1028.832,qtd,r1,XBRL R-file (10-Q),0000096223-20-000041
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2022,1,1462.4,qtd,r1,XBRL R-file (10-Q),0000096223-23-000017
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2022,2,1105.2,qtd,r1,XBRL R-file (10-Q),0000096223-23-000026
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2022,3,1116.0,qtd,r1,XBRL R-file (10-Q),0000096223-23-000033
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2022,4,1052.6,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000096223-23-000033
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2023,1,1217.1000000000001,qtd,r1,XBRL R-file (10-Q),0000096223-24-000015
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2023,2,1061.0,qtd,r1,XBRL R-file (10-Q),0000096223-24-000024
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2023,3,1168.2,qtd,r1,XBRL R-file (10-Q),0001628280-24-042612
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2023,4,1058.0000000000005,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-24-042612
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2024,1,1451.3,qtd,r1,XBRL R-file (10-Q),0001628280-25-017192
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2024,2,1494.4,qtd,r1,XBRL R-file (10-Q),0000096223-25-000007
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2024,3,1620.1000000000001,qtd,r1,XBRL R-file (10-Q),0001628280-24-042612
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2024,4,1638.5,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-24-042612
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2025,1,1399.0,qtd,r1,XBRL R-file (10-Q),0001628280-25-017192
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2025,2,1470.4,qtd,r1,XBRL R-file (10-Q),0000096223-26-000025
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2025,3,2645.0,qtd,r1,XBRL R-file (10-Q),0000096223-26-000033
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2025,4,2683.2000000000007,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000096223-26-000033
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2026,1,1796.0,qtd,r1,XBRL R-file (10-Q),0000096223-26-000017
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2026,2,2006.1000000000001,qtd,r1,XBRL R-file (10-Q),0000096223-26-000025
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2026,3,2133.0,qtd,r1,XBRL R-file (10-Q),0000096223-26-000033
+Jefferies,Asset Management,awm,A,xbrl_q,2019,2,44.362,qtd,r0,XBRL R-file (10-Q),0000096223-20-000041
+Jefferies,Asset Management,awm,A,xbrl_q,2019,3,118.558,qtd,r0,XBRL R-file (10-Q),0000096223-20-000050
+Jefferies,Asset Management,awm,A,xbrl_q,2020,2,7.391,qtd,r1,XBRL R-file (10-Q),0000096223-20-000041
+Jefferies,Asset Management,awm,A,xbrl_q,2020,4,794.259,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000096223-20-000050
+Jefferies,Asset Management,awm,A,xbrl_q,2022,1,226.8,qtd,r1,XBRL R-file (10-Q),0000096223-23-000017
+Jefferies,Asset Management,awm,A,xbrl_q,2022,2,234.0,qtd,r1,XBRL R-file (10-Q),0000096223-23-000026
+Jefferies,Asset Management,awm,A,xbrl_q,2022,3,398.3,qtd,r1,XBRL R-file (10-Q),0000096223-23-000033
+Jefferies,Asset Management,awm,A,xbrl_q,2022,4,389.1,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000096223-23-000033
+Jefferies,Asset Management,awm,A,xbrl_q,2023,1,68.5,qtd,r1,XBRL R-file (10-Q),0000096223-24-000015
+Jefferies,Asset Management,awm,A,xbrl_q,2023,2,-30.900000000000002,qtd,r1,XBRL R-file (10-Q),0000096223-24-000024
+Jefferies,Asset Management,awm,A,xbrl_q,2023,3,10.1,qtd,r1,XBRL R-file (10-Q),0001628280-24-042612
+Jefferies,Asset Management,awm,A,xbrl_q,2023,4,140.60000000000002,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-24-042612
+Jefferies,Asset Management,awm,A,xbrl_q,2024,1,273.40000000000003,qtd,r1,XBRL R-file (10-Q),0001628280-25-017192
+Jefferies,Asset Management,awm,A,xbrl_q,2024,2,156.5,qtd,r1,XBRL R-file (10-Q),0000096223-25-000007
+Jefferies,Asset Management,awm,A,xbrl_q,2024,3,59.0,qtd,r1,XBRL R-file (10-Q),0001628280-24-042612
+Jefferies,Asset Management,awm,A,xbrl_q,2024,4,314.8,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-24-042612
+Jefferies,Asset Management,awm,A,xbrl_q,2025,1,191.70000000000002,qtd,r1,XBRL R-file (10-Q),0001628280-25-017192
+Jefferies,Asset Management,awm,A,xbrl_q,2025,2,228.5,qtd,r1,XBRL R-file (10-Q),0000096223-26-000025
+Jefferies,Asset Management,awm,A,xbrl_q,2025,3,177.0,qtd,r1,XBRL R-file (10-Q),0000096223-26-000033
+Jefferies,Asset Management,awm,A,xbrl_q,2025,4,483.9,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000096223-26-000033
+Jefferies,Asset Management,awm,A,xbrl_q,2026,1,220.3,qtd,r1,XBRL R-file (10-Q),0000096223-26-000017
+Jefferies,Asset Management,awm,A,xbrl_q,2026,2,187.70000000000002,qtd,r1,XBRL R-file (10-Q),0000096223-26-000025
+Jefferies,Asset Management,awm,A,xbrl_q,2026,3,86.0,qtd,r1,XBRL R-file (10-Q),0000096223-26-000033
+Lazard,Financial Advisory,advisory,D,xbrl_q,2010,2,245.973,qtd,r0,XBRL R-file (10-Q),0001193125-11-210332
+Lazard,Financial Advisory,advisory,D,xbrl_q,2010,3,254.012,qtd,r0,XBRL R-file (10-Q),0001193125-11-291318
+Lazard,Financial Advisory,advisory,D,xbrl_q,2010,4,351.38599999999997,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-11-291318
+Lazard,Financial Advisory,advisory,D,xbrl_q,2011,1,228.845,qtd,r0,XBRL R-file (10-Q),0001193125-12-205397
+Lazard,Financial Advisory,advisory,D,xbrl_q,2011,2,249.191,qtd,r0,XBRL R-file (10-Q),0001193125-12-326517
+Lazard,Financial Advisory,advisory,D,xbrl_q,2011,3,253.585,qtd,r0,XBRL R-file (10-Q),0001193125-12-445015
+Lazard,Financial Advisory,advisory,D,xbrl_q,2011,4,260.486,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-12-445015
+Lazard,Financial Advisory,advisory,D,xbrl_q,2012,1,277.196,qtd,r0,XBRL R-file (10-Q),0001193125-13-188120
+Lazard,Financial Advisory,advisory,D,xbrl_q,2012,2,242.624,qtd,r0,XBRL R-file (10-Q),0001193125-12-326517
+Lazard,Financial Advisory,advisory,D,xbrl_q,2012,3,219.973,qtd,r0,XBRL R-file (10-Q),0001193125-12-445015
+Lazard,Financial Advisory,advisory,D,xbrl_q,2012,4,309.2969999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-12-445015
+Lazard,Financial Advisory,advisory,D,xbrl_q,2013,1,168.46200000000002,qtd,r0,XBRL R-file (10-Q),0001193125-13-188120
+Lazard,Financial Advisory,advisory,D,xbrl_q,2014,2,280.769,qtd,r0,XBRL R-file (10-Q),0001193125-15-264166
+Lazard,Financial Advisory,advisory,D,xbrl_q,2014,3,291.089,qtd,r0,XBRL R-file (10-Q),0001193125-15-355042
+Lazard,Financial Advisory,advisory,D,xbrl_q,2014,4,359.3799999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-355042
+Lazard,Financial Advisory,advisory,D,xbrl_q,2015,1,301.519,qtd,r0,XBRL R-file (10-Q),0001193125-16-556959
+Lazard,Financial Advisory,advisory,D,xbrl_q,2015,2,316.384,qtd,r0,XBRL R-file (10-Q),0001193125-16-666848
+Lazard,Financial Advisory,advisory,D,xbrl_q,2015,3,330.832,qtd,r0,XBRL R-file (10-Q),0001564590-16-026505
+Lazard,Financial Advisory,advisory,D,xbrl_q,2015,4,330.8929999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-16-026505
+Lazard,Financial Advisory,advisory,D,xbrl_q,2016,1,266.014,qtd,r0,XBRL R-file (10-Q),0001564590-17-007974
+Lazard,Financial Advisory,advisory,D,xbrl_q,2016,2,286.96500000000003,qtd,r0,XBRL R-file (10-Q),0001564590-17-014651
+Lazard,Financial Advisory,advisory,D,xbrl_q,2016,3,343.488,qtd,r0,XBRL R-file (10-Q),0001564590-17-020405
+Lazard,Financial Advisory,advisory,D,xbrl_q,2016,4,404.5770000000001,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-17-020405
+Lazard,Financial Advisory,advisory,D,xbrl_q,2017,1,335.812,qtd,r0,XBRL R-file (10-Q),0001564590-18-009879
+Lazard,Financial Advisory,advisory,D,xbrl_q,2017,2,410.882,qtd,r0,XBRL R-file (10-Q),0001564590-18-017927
+Lazard,Financial Advisory,advisory,D,xbrl_q,2017,3,305.89,qtd,r0,XBRL R-file (10-Q),0001564590-18-025419
+Lazard,Financial Advisory,advisory,D,xbrl_q,2017,4,335.09799999999996,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-18-025419
+Lazard,Financial Advisory,advisory,D,xbrl_q,2018,1,409.121,qtd,r0,XBRL R-file (10-Q),0001564590-19-013924
+Lazard,Financial Advisory,advisory,D,xbrl_q,2018,2,422.089,qtd,r0,XBRL R-file (10-Q),0001564590-19-026610
+Lazard,Financial Advisory,advisory,D,xbrl_q,2018,3,310.418,qtd,r0,XBRL R-file (10-Q),0001564590-19-039979
+Lazard,Financial Advisory,advisory,D,xbrl_q,2018,4,413.89800000000014,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-19-039979
+Lazard,Financial Advisory,advisory,D,xbrl_q,2019,1,338.37,qtd,r0,XBRL R-file (10-Q),0001564590-20-020870
+Lazard,Financial Advisory,advisory,D,xbrl_q,2019,2,329.612,qtd,r0,XBRL R-file (10-Q),0001564590-20-036141
+Lazard,Financial Advisory,advisory,D,xbrl_q,2019,3,305.982,qtd,r0,XBRL R-file (10-Q),0001564590-20-049671
+Lazard,Financial Advisory,advisory,D,xbrl_q,2019,4,400.072,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-20-049671
+Lazard,Financial Advisory,advisory,D,xbrl_q,2020,1,298.966,qtd,r0,XBRL R-file (10-Q),0001564590-21-022899
+Lazard,Financial Advisory,advisory,D,xbrl_q,2020,2,304.806,qtd,r0,XBRL R-file (10-Q),0001564590-21-039851
+Lazard,Financial Advisory,advisory,D,xbrl_q,2020,3,305.473,qtd,r0,XBRL R-file (10-Q),0001564590-21-053194
+Lazard,Financial Advisory,advisory,D,xbrl_q,2020,4,511.256,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-21-053194
+Lazard,Financial Advisory,advisory,D,xbrl_q,2021,1,318.41200000000003,qtd,r0,XBRL R-file (10-Q),0001564590-22-017059
+Lazard,Financial Advisory,advisory,D,xbrl_q,2021,2,451.94,qtd,r0,XBRL R-file (10-Q),0001564590-22-027267
+Lazard,Financial Advisory,advisory,D,xbrl_q,2021,3,384.976,qtd,r0,XBRL R-file (10-Q),0001564590-22-035901
+Lazard,Financial Advisory,advisory,D,xbrl_q,2021,4,609.181,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-22-035901
+Lazard,Financial Advisory,advisory,D,xbrl_q,2022,1,390.21500000000003,qtd,r0,XBRL R-file (10-Q),0001564590-23-006915
+Lazard,Financial Advisory,advisory,D,xbrl_q,2022,2,407.885,qtd,r0,XBRL R-file (10-Q),0001628280-23-026250
+Lazard,Financial Advisory,advisory,D,xbrl_q,2022,3,456.521,qtd,r0,XBRL R-file (10-Q),0001628280-23-035416
+Lazard,Financial Advisory,advisory,D,xbrl_q,2022,4,411.53499999999985,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-23-035416
+Lazard,Financial Advisory,advisory,D,xbrl_q,2023,1,277.574,qtd,r0,XBRL R-file (10-Q),0001628280-24-018661
+Lazard,Financial Advisory,advisory,D,xbrl_q,2023,2,352.47700000000003,qtd,r0,XBRL R-file (10-Q),0001628280-24-033170
+Lazard,Financial Advisory,advisory,D,xbrl_q,2023,3,266.048,qtd,r0,XBRL R-file (10-Q),0001628280-24-044770
+Lazard,Financial Advisory,advisory,D,xbrl_q,2023,4,489.2579999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-24-044770
+Lazard,Financial Advisory,advisory,D,xbrl_q,2024,1,453.507,qtd,r0,XBRL R-file (10-Q),0001628280-25-021162
+Lazard,Financial Advisory,advisory,D,xbrl_q,2024,2,411.308,qtd,r0,XBRL R-file (10-Q),0001628280-24-033170
+Lazard,Financial Advisory,advisory,D,xbrl_q,2024,3,370.91700000000003,qtd,r0,XBRL R-file (10-Q),0001628280-24-044770
+Lazard,Financial Advisory,advisory,D,xbrl_q,2024,4,520.451,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-24-044770
+Lazard,Financial Advisory,advisory,D,xbrl_q,2025,1,367.359,qtd,r0,XBRL R-file (10-Q),0001628280-25-021162
+Lazard,Financial Advisory,advisory,D,xbrl_q,2025,2,497.306,qtd,r0,XBRL R-file (10-Q),0001311370-26-000022
+Lazard,Financial Advisory,advisory,D,xbrl_q,2025,3,427.33500000000004,qtd,r0,XBRL R-file (10-Q),0001311370-25-000052
+Lazard,Financial Advisory,advisory,D,xbrl_q,2025,4,542.3030000000001,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001311370-25-000052
+Lazard,Financial Advisory,advisory,D,xbrl_q,2026,1,358.169,qtd,r0,XBRL R-file (10-Q),0001311370-26-000015
+Lazard,Financial Advisory,advisory,D,xbrl_q,2026,2,448.923,qtd,r0,XBRL R-file (10-Q),0001311370-26-000022
+Lazard,Asset Management,awm,D,xbrl_q,2010,2,189.41400000000002,qtd,r0,XBRL R-file (10-Q),0001193125-11-210332
+Lazard,Asset Management,awm,D,xbrl_q,2010,3,210.132,qtd,r0,XBRL R-file (10-Q),0001193125-11-291318
+Lazard,Asset Management,awm,D,xbrl_q,2010,4,262.36300000000006,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-11-291318
+Lazard,Asset Management,awm,D,xbrl_q,2011,1,226.853,qtd,r0,XBRL R-file (10-Q),0001193125-12-205397
+Lazard,Asset Management,awm,D,xbrl_q,2011,2,244.85500000000002,qtd,r0,XBRL R-file (10-Q),0001193125-12-326517
+Lazard,Asset Management,awm,D,xbrl_q,2011,3,219.077,qtd,r0,XBRL R-file (10-Q),0001193125-12-445015
+Lazard,Asset Management,awm,D,xbrl_q,2011,4,206.6160000000001,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-12-445015
+Lazard,Asset Management,awm,D,xbrl_q,2012,1,214.52700000000002,qtd,r0,XBRL R-file (10-Q),0001193125-13-188120
+Lazard,Asset Management,awm,D,xbrl_q,2012,2,211.053,qtd,r0,XBRL R-file (10-Q),0001193125-12-326517
+Lazard,Asset Management,awm,D,xbrl_q,2012,3,221.516,qtd,r0,XBRL R-file (10-Q),0001193125-12-445015
+Lazard,Asset Management,awm,D,xbrl_q,2012,4,249.164,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-12-445015
+Lazard,Asset Management,awm,D,xbrl_q,2013,1,244.025,qtd,r0,XBRL R-file (10-Q),0001193125-13-188120
+Lazard,Asset Management,awm,D,xbrl_q,2014,2,288.164,qtd,r0,XBRL R-file (10-Q),0001193125-15-264166
+Lazard,Asset Management,awm,D,xbrl_q,2014,3,291.967,qtd,r0,XBRL R-file (10-Q),0001193125-15-355042
+Lazard,Asset Management,awm,D,xbrl_q,2014,4,285.9,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-355042
+Lazard,Asset Management,awm,D,xbrl_q,2015,1,279.807,qtd,r0,XBRL R-file (10-Q),0001193125-16-556959
+Lazard,Asset Management,awm,D,xbrl_q,2015,2,305.838,qtd,r0,XBRL R-file (10-Q),0001193125-16-666848
+Lazard,Asset Management,awm,D,xbrl_q,2015,3,264.581,qtd,r0,XBRL R-file (10-Q),0001564590-16-026505
+Lazard,Asset Management,awm,D,xbrl_q,2015,4,260.879,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-16-026505
+Lazard,Asset Management,awm,D,xbrl_q,2016,1,245.75900000000001,qtd,r0,XBRL R-file (10-Q),0001564590-17-007974
+Lazard,Asset Management,awm,D,xbrl_q,2016,2,254.126,qtd,r0,XBRL R-file (10-Q),0001564590-17-014651
+Lazard,Asset Management,awm,D,xbrl_q,2016,3,267.725,qtd,r0,XBRL R-file (10-Q),0001564590-17-020405
+Lazard,Asset Management,awm,D,xbrl_q,2016,4,283.706,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-17-020405
+Lazard,Asset Management,awm,D,xbrl_q,2017,1,283.363,qtd,r0,XBRL R-file (10-Q),0001564590-18-009879
+Lazard,Asset Management,awm,D,xbrl_q,2017,2,309.878,qtd,r0,XBRL R-file (10-Q),0001564590-18-017927
+Lazard,Asset Management,awm,D,xbrl_q,2017,3,320.487,qtd,r0,XBRL R-file (10-Q),0001564590-18-025419
+Lazard,Asset Management,awm,D,xbrl_q,2017,4,342.09199999999987,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-18-025419
+Lazard,Asset Management,awm,D,xbrl_q,2018,1,354.283,qtd,r0,XBRL R-file (10-Q),0001564590-19-013924
+Lazard,Asset Management,awm,D,xbrl_q,2018,2,352.588,qtd,r0,XBRL R-file (10-Q),0001564590-19-026610
+Lazard,Asset Management,awm,D,xbrl_q,2018,3,325.24,qtd,r0,XBRL R-file (10-Q),0001564590-19-039979
+Lazard,Asset Management,awm,D,xbrl_q,2018,4,299.6899999999998,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-19-039979
+Lazard,Asset Management,awm,D,xbrl_q,2019,1,301.833,qtd,r0,XBRL R-file (10-Q),0001564590-20-020870
+Lazard,Asset Management,awm,D,xbrl_q,2019,2,315.591,qtd,r0,XBRL R-file (10-Q),0001564590-20-036141
+Lazard,Asset Management,awm,D,xbrl_q,2019,3,300.015,qtd,r0,XBRL R-file (10-Q),0001564590-20-049671
+Lazard,Asset Management,awm,D,xbrl_q,2019,4,319.95100000000014,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-20-049671
+Lazard,Asset Management,awm,D,xbrl_q,2020,1,282.521,qtd,r0,XBRL R-file (10-Q),0001564590-21-022899
+Lazard,Asset Management,awm,D,xbrl_q,2020,2,254.84900000000002,qtd,r0,XBRL R-file (10-Q),0001564590-21-039851
+Lazard,Asset Management,awm,D,xbrl_q,2020,3,277.243,qtd,r0,XBRL R-file (10-Q),0001564590-21-053194
+Lazard,Asset Management,awm,D,xbrl_q,2020,4,352.85300000000007,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-21-053194
+Lazard,Asset Management,awm,D,xbrl_q,2021,1,347.49,qtd,r0,XBRL R-file (10-Q),0001564590-22-017059
+Lazard,Asset Management,awm,D,xbrl_q,2021,2,365.255,qtd,r0,XBRL R-file (10-Q),0001564590-22-027267
+Lazard,Asset Management,awm,D,xbrl_q,2021,3,338.747,qtd,r0,XBRL R-file (10-Q),0001564590-22-035901
+Lazard,Asset Management,awm,D,xbrl_q,2021,4,373.49300000000017,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-22-035901
+Lazard,Asset Management,awm,D,xbrl_q,2022,1,338.50100000000003,qtd,r0,XBRL R-file (10-Q),0001564590-23-006915
+Lazard,Asset Management,awm,D,xbrl_q,2022,2,289.151,qtd,r0,XBRL R-file (10-Q),0001628280-23-026250
+Lazard,Asset Management,awm,D,xbrl_q,2022,3,298.797,qtd,r0,XBRL R-file (10-Q),0001628280-23-035416
+Lazard,Asset Management,awm,D,xbrl_q,2022,4,278.47800000000007,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-23-035416
+Lazard,Asset Management,awm,D,xbrl_q,2023,1,284.044,qtd,r0,XBRL R-file (10-Q),0001628280-24-018661
+Lazard,Asset Management,awm,D,xbrl_q,2023,2,288.313,qtd,r0,XBRL R-file (10-Q),0001628280-24-033170
+Lazard,Asset Management,awm,D,xbrl_q,2023,3,284.855,qtd,r0,XBRL R-file (10-Q),0001628280-24-044770
+Lazard,Asset Management,awm,D,xbrl_q,2023,4,294.2840000000001,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-24-044770
+Lazard,Asset Management,awm,D,xbrl_q,2024,1,295.476,qtd,r0,XBRL R-file (10-Q),0001628280-25-021162
+Lazard,Asset Management,awm,D,xbrl_q,2024,2,285.487,qtd,r0,XBRL R-file (10-Q),0001628280-24-033170
+Lazard,Asset Management,awm,D,xbrl_q,2024,3,293.878,qtd,r0,XBRL R-file (10-Q),0001628280-24-044770
+Lazard,Asset Management,awm,D,xbrl_q,2024,4,312.1360000000001,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-24-044770
+Lazard,Asset Management,awm,D,xbrl_q,2025,1,288.1,qtd,r0,XBRL R-file (10-Q),0001628280-25-021162
+Lazard,Asset Management,awm,D,xbrl_q,2025,2,292.478,qtd,r0,XBRL R-file (10-Q),0001311370-26-000022
+Lazard,Asset Management,awm,D,xbrl_q,2025,3,327.029,qtd,r0,XBRL R-file (10-Q),0001311370-25-000052
+Lazard,Asset Management,awm,D,xbrl_q,2025,4,367.11900000000014,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001311370-25-000052
+Lazard,Asset Management,awm,D,xbrl_q,2026,1,338.272,qtd,r0,XBRL R-file (10-Q),0001311370-26-000015
+Lazard,Asset Management,awm,D,xbrl_q,2026,2,342.183,qtd,r0,XBRL R-file (10-Q),0001311370-26-000022
+Morgan Stanley,Global Wealth Management Group,awm,A,xbrl_q,2010,2,3074.0,qtd,r0,XBRL R-file (10-Q),0001193125-11-213320
+Morgan Stanley,Global Wealth Management Group,awm,A,xbrl_q,2010,3,3104.0,qtd,r0,XBRL R-file (10-Q),0001193125-11-299890
+Morgan Stanley,Global Wealth Management Group,awm,A,xbrl_q,2011,2,3476.0,qtd,r0,XBRL R-file (10-Q),0001193125-11-213320
+Morgan Stanley,Global Wealth Management Group,awm,A,xbrl_q,2011,3,3260.0,qtd,r0,XBRL R-file (10-Q),0001193125-11-299890
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2014,1,752.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169056
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2014,2,3702.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-276529
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2014,3,3773.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-364313
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2014,4,3804.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-364313
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2015,1,3834.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-577875
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2015,2,3875.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670066
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2015,3,3640.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757027
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2015,4,3751.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757027
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2016,1,3668.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-158668
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2016,2,3811.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247402
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2016,3,3881.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757027
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2016,4,500.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757027
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2017,1,609.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-152899
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2017,2,4151.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-238269
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2017,3,675.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-318377
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2017,4,637.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-318377
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2018,1,718.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-136929
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2018,2,691.0,qtd,r0,XBRL R-file (10-Q),0001628280-19-009973
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2018,3,4399.0,qtd,r0,XBRL R-file (10-Q),0001628280-19-013331
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2018,4,4144.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-19-013331
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2019,1,4389.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-136929
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2019,2,4408.0,qtd,r0,XBRL R-file (10-Q),0001628280-19-009973
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2019,3,764.0,qtd,r0,XBRL R-file (10-Q),0001628280-19-013331
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2019,4,4591.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-19-013331
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2020,1,4056.0,qtd,r0,XBRL R-file (10-Q),0000895421-21-000334
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2020,2,4704.0,qtd,r0,XBRL R-file (10-Q),0000895421-21-000425
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2020,3,4654.0,qtd,r0,XBRL R-file (10-Q),0000895421-21-000532
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2020,4,5672.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-21-000532
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2021,1,1314.0,qtd,r0,XBRL R-file (10-Q),0000895421-22-000442
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2021,2,1702.0,qtd,r0,XBRL R-file (10-Q),0000895421-22-000515
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2021,3,1453.0,qtd,r0,XBRL R-file (10-Q),0000895421-22-000587
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2021,4,6254.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-22-000587
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2022,1,1335.0,qtd,r0,XBRL R-file (10-Q),0000895421-23-000315
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2022,2,1411.0,qtd,r0,XBRL R-file (10-Q),0000895421-23-000374
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2022,3,1168.0,qtd,r0,XBRL R-file (10-Q),0000895421-23-000441
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2022,4,1461.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-23-000441
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2023,1,6880.0,qtd,r0,XBRL R-file (10-Q),0000895421-24-000322
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2023,2,1386.0,qtd,r0,XBRL R-file (10-Q),0000895421-24-000403
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2023,3,1455.0,qtd,r0,XBRL R-file (10-Q),0000895421-24-000491
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2023,4,1152.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-24-000491
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2024,1,6880.0,qtd,r0,XBRL R-file (10-Q),0000895421-25-000343
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2024,2,6792.0,qtd,r0,XBRL R-file (10-Q),0000895421-25-000440
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2024,3,7270.0,qtd,r0,XBRL R-file (10-Q),0000895421-25-000539
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2024,4,1643.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-25-000539
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2025,1,1602.0,qtd,r0,XBRL R-file (10-Q),0000895421-26-000121
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2025,2,1552.0,qtd,r0,XBRL R-file (10-Q),0000895421-26-000212
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2025,3,1651.0,qtd,r0,XBRL R-file (10-Q),0000895421-25-000539
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2025,4,1720.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-25-000539
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2026,1,1535.0,qtd,r0,XBRL R-file (10-Q),0000895421-26-000121
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2026,2,1646.0,qtd,r0,XBRL R-file (10-Q),0000895421-26-000212
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2019,1,104.467,qtd,r0,XBRL R-file (10-Q),0001564590-20-020516
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2019,2,133.035,qtd,r0,XBRL R-file (10-Q),0001564590-20-035160
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2019,3,146.07500000000002,qtd,r0,XBRL R-file (10-Q),0001564590-20-048897
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2019,4,188.19399999999996,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-20-048897
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2020,1,156.591,qtd,r0,XBRL R-file (10-Q),0001564590-21-022565
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2020,2,192.53900000000002,qtd,r0,XBRL R-file (10-Q),0001564590-21-039514
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2020,3,262.4,qtd,r0,XBRL R-file (10-Q),0001564590-21-052968
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2020,4,260.7560000000001,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-21-052968
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2021,1,152.6,qtd,r0,XBRL R-file (10-Q),0001564590-22-016468
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2021,2,197.624,qtd,r0,XBRL R-file (10-Q),0001564590-22-027118
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2021,3,179.9,qtd,r0,XBRL R-file (10-Q),0001564590-22-035710
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2021,4,232.59900000000005,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-22-035710
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2022,1,181.65800000000002,qtd,r0,XBRL R-file (10-Q),0001564590-22-016468
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2022,2,186.649,qtd,r0,XBRL R-file (10-Q),0001564590-22-027118
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2022,3,224.405,qtd,r0,XBRL R-file (10-Q),0001564590-22-035710
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2022,4,230.784,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-22-035710
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2023,1,168.09,qtd,r0,XBRL R-file (10-Q),0000950170-24-052960
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2023,2,323.794,qtd,r0,XBRL R-file (10-Q),0000950170-24-090024
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2023,3,244.12900000000002,qtd,r0,XBRL R-file (10-Q),0000950170-24-119582
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2023,4,290.6329999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000950170-24-119582
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2024,1,288.681,qtd,r0,XBRL R-file (10-Q),0000950170-25-061984
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2024,2,307.082,qtd,r0,XBRL R-file (10-Q),0000950170-25-100937
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2024,3,283.787,qtd,r0,XBRL R-file (10-Q),0001193125-25-269723
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2024,4,434.45299999999986,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-25-269723
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2025,1,282.187,qtd,r0,XBRL R-file (10-Q),0000950170-25-061984
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2025,2,354.521,qtd,r0,XBRL R-file (10-Q),0000950170-25-100937
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2025,3,389.79900000000004,qtd,r0,XBRL R-file (10-Q),0001193125-25-269723
+PJT Partners,Advisory Fees,advisory,D,xbrl_q,2025,4,473.8689999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-25-269723
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2019,1,2.45,qtd,r0,XBRL R-file (10-Q),0001564590-20-020516
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2019,2,2.509,qtd,r0,XBRL R-file (10-Q),0001564590-20-035160
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2019,3,3.079,qtd,r0,XBRL R-file (10-Q),0001564590-20-048897
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2019,4,3.7620000000000005,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-20-048897
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2020,1,3.345,qtd,r0,XBRL R-file (10-Q),0001564590-21-022565
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2020,2,3.336,qtd,r0,XBRL R-file (10-Q),0001564590-21-039514
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2020,3,2.17,qtd,r0,XBRL R-file (10-Q),0001564590-21-052968
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2020,4,1.6339999999999986,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-21-052968
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2021,1,50.383,qtd,r0,XBRL R-file (10-Q),0001564590-22-016468
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2021,2,1.822,qtd,r0,XBRL R-file (10-Q),0001564590-22-027118
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2021,3,1.7590000000000001,qtd,r0,XBRL R-file (10-Q),0001564590-22-035710
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2021,4,79.08100000000002,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-22-035710
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2022,1,60.351,qtd,r0,XBRL R-file (10-Q),0001564590-22-016468
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2022,2,49.482,qtd,r0,XBRL R-file (10-Q),0001564590-22-027118
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2022,3,39.652,qtd,r0,XBRL R-file (10-Q),0001564590-22-035710
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2022,4,43.405,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-22-035710
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2023,1,27.585,qtd,r0,XBRL R-file (10-Q),0000950170-24-052960
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2023,2,3.952,qtd,r0,XBRL R-file (10-Q),0000950170-24-090024
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2023,3,3.9650000000000003,qtd,r0,XBRL R-file (10-Q),0000950170-24-119582
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2023,4,28.338000000000008,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000950170-24-119582
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2024,1,34.489,qtd,r0,XBRL R-file (10-Q),0000950170-25-061984
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2024,2,46.873,qtd,r0,XBRL R-file (10-Q),0000950170-25-100937
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2024,3,4.095,qtd,r0,XBRL R-file (10-Q),0001193125-25-269723
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2024,4,3.658999999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-25-269723
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2025,1,36.031,qtd,r0,XBRL R-file (10-Q),0000950170-25-061984
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2025,2,3.364,qtd,r0,XBRL R-file (10-Q),0000950170-25-100937
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2025,3,3.307,qtd,r0,XBRL R-file (10-Q),0001193125-25-269723
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2025,4,4.349,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-25-269723
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2014,3,3805.0,qtd,r0,XBRL R-file (10-Q),0000072971-15-000674
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2015,1,3976.0,qtd,r0,XBRL R-file (10-Q),0000072971-16-001085
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2015,2,3976.0,qtd,r0,XBRL R-file (10-Q),0000072971-16-001218
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2015,3,3878.0,qtd,r0,XBRL R-file (10-Q),0000072971-16-001340
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2016,1,3854.0,qtd,r0,XBRL R-file (10-Q),0000072971-17-000339
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2016,2,3919.0,qtd,r0,XBRL R-file (10-Q),0000072971-17-000397
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2016,3,4099.0,qtd,r0,XBRL R-file (10-Q),0000072971-17-000466
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2017,1,1141.0,qtd,r0,XBRL R-file (10-Q),0000072971-18-000324
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2017,2,1171.0,qtd,r0,XBRL R-file (10-Q),0000072971-18-000408
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2017,3,1177.0,qtd,r0,XBRL R-file (10-Q),0000072971-18-000471
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2017,4,1152.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000072971-18-000471
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2018,1,1112.0,qtd,r0,XBRL R-file (10-Q),0000072971-19-000254
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2018,2,1111.0,qtd,r0,XBRL R-file (10-Q),0000072971-19-000331
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2018,3,1102.0,qtd,r0,XBRL R-file (10-Q),0000072971-19-000406
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2018,4,12544.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000072971-19-000406
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2019,1,1101.0,qtd,r0,XBRL R-file (10-Q),0000072971-19-000254
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2019,2,1037.0,qtd,r0,XBRL R-file (10-Q),0000072971-19-000331
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2019,3,3794.0,qtd,r0,XBRL R-file (10-Q),0000072971-20-000338
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2019,4,4563.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000072971-20-000338
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2020,1,3544.0,qtd,r0,XBRL R-file (10-Q),0000072971-21-000221
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2020,2,3206.0,qtd,r0,XBRL R-file (10-Q),0000072971-21-000267
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2020,3,3290.0,qtd,r0,XBRL R-file (10-Q),0000072971-21-000317
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2020,4,4746.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000072971-21-000317
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2021,1,3544.0,qtd,r1,XBRL R-file (10-Q),0000072971-22-000113
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2021,2,3536.0,qtd,r1,XBRL R-file (10-Q),0000072971-22-000174
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2021,3,3618.0,qtd,r1,XBRL R-file (10-Q),0000072971-22-000205
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2021,4,3648.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000072971-22-000205
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2022,1,3757.0,qtd,r1,XBRL R-file (10-Q),0000072971-23-000102
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2022,2,3705.0,qtd,r1,XBRL R-file (10-Q),0000072971-23-000138
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2022,3,3665.0,qtd,r1,XBRL R-file (10-Q),0000072971-23-000170
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2022,4,3695.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000072971-23-000170
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2023,1,3681.0,qtd,r1,XBRL R-file (10-Q),0000072971-24-000129
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2023,2,3648.0,qtd,r1,XBRL R-file (10-Q),0000072971-24-000185
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2023,3,3702.0,qtd,r1,XBRL R-file (10-Q),0000072971-24-000243
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2023,4,3660.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000072971-24-000243
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2024,1,3742.0,qtd,r1,XBRL R-file (10-Q),0000072971-25-000129
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2024,2,3858.0,qtd,r1,XBRL R-file (10-Q),0000072971-25-000201
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2024,3,3878.0,qtd,r1,XBRL R-file (10-Q),0000072971-25-000253
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2024,4,3958.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000072971-25-000253
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2025,1,3404.0,qtd,r1,XBRL R-file (10-Q),0000072971-26-000217
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2025,2,3438.0,qtd,r1,XBRL R-file (10-Q),0000072971-26-000302
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2025,3,4196.0,qtd,r1,XBRL R-file (10-Q),0000072971-25-000253
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2025,4,4360.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000072971-25-000253
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2026,1,3875.0,qtd,r1,XBRL R-file (10-Q),0000072971-26-000217
+Wells Fargo,Wealth And Investment Management,awm,A,xbrl_q,2026,2,3892.0,qtd,r1,XBRL R-file (10-Q),0000072971-26-000302

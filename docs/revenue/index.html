@@ -41,14 +41,18 @@
   </nav>
 
   <header class="pulse-hero">
-    <p class="kicker">Bank revenue tracker · annual · from 10-K filings</p>
+    <p class="kicker">Bank revenue tracker · annual &amp; quarterly · from 10-K and 10-Q filings</p>
     <h1>Where the banks <span class="tick">▮</span> make their money</h1>
-    <p class="lede">Annual net revenues by business line for six bulge-bracket banks and six
+    <p class="lede">Net revenues by business line for six bulge-bracket banks and six
       independent advisors — advisory, ECM, DCM, FICC, equities, asset &amp; wealth management,
       private banking, and more. Every figure comes from the firms' own SEC filings (XBRL
       segment data plus MD&amp;A tables). Cells a firm doesn't disclose are left blank, never
       estimated. Vertical markers show segment reorganization breaks: values are never
       spliced across them.</p>
+    <div class="freq-toggle" role="group" aria-label="Frequency">
+      <button id="freq-annual" class="freq-btn freq-active" aria-pressed="true">Annual</button>
+      <button id="freq-quarterly" class="freq-btn" aria-pressed="false">Quarterly</button>
+    </div>
   </header>
 </div>
 
@@ -59,8 +63,9 @@
     <p>The revenue tracker is the third leg of
       <a href="../">frb-heat-index</a> alongside the
       <a href="../frb/">FRB Heat Index replication</a> and
-      <a href="../pulse/">Market Pulse</a>. Data: <code>../data/revenue.json</code>,
-      built from 10-K XBRL filings via the revenue pipeline
+      <a href="../pulse/">Market Pulse</a>. Data: <code>../data/revenue.json</code>
+      (annual, from 10-K filings) and <code>../data/revenue_quarterly.json</code>
+      (quarterly, from 10-Q filings), built via the revenue pipeline
       (<code>src/revenue/</code>); raw filings preserved under
       <code>data/revenue/raw/</code>. See
       <a href="https://github.com/fcela/frb-heat-index/issues/23">issue #23</a>
