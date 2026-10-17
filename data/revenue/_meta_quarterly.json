@@ -15859,9 +15859,9 @@
   "reconciliation_vs_annual": {
     "tolerance": "5% or $25M, whichever is larger",
     "n_checks": 180,
-    "n_pass": 137,
-    "n_flag": 43,
-    "match_rate": 0.7611,
+    "n_pass": 138,
+    "n_flag": 42,
+    "match_rate": 0.7667,
     "checks": [
       {
         "firm": "Bank of America",
@@ -16075,9 +16075,9 @@
         "taxonomy_line": "advisory",
         "year": 2024,
         "q_sum_m": 2898.5,
-        "annual_m": 2440.6,
-        "diff_m": 457.9,
-        "status": "flag"
+        "annual_m": 2898.5,
+        "diff_m": 0.0,
+        "status": "pass"
       },
       {
         "firm": "Evercore",

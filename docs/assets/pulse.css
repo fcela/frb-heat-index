@@ -200,6 +200,12 @@
   height: 0.2rem;
 }
 .rev-card { margin-bottom: 1.5rem; }
+.rev-subhead {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.25rem;
+  color: var(--ink);
+}
 
 /* Revenue tracker frequency toggle (Annual | Quarterly). */
 .freq-toggle {
