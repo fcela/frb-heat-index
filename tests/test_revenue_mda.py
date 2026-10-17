@@ -7,9 +7,13 @@ Fixtures are real 10-K main documents (unedited filing HTML, gzip-compressed):
       accession 0000886982-24-000006)
   tests/fixtures_revenue_mda/c_10k_fy2023.htm.gz   (Citigroup FY2023 10-K,
       accession 0000831001-24-000033)
-Expected values below were read off the filings' MD&A tables; the 2023/2022
-columns were cross-checked against the firms' FY2024 10-Ks (restatements are
-genuine filing-to-filing revisions, e.g. Citi DCM 2022: 1,100 -> 1,099).
+  tests/fixtures_revenue_mda/jpm_10k_fy2025.htm.gz (JPMorgan FY2025 10-K,
+      accession 0001628280-26-008131)
+  tests/fixtures_revenue_mda/ms_10k_fy2025.htm.gz  (Morgan Stanley FY2025 10-K,
+      accession 0000895421-26-000086)
+  tests/fixtures_revenue_mda/bac_10k_fy2025.htm.gz (Bank of America FY2025
+      10-K, accession 0000070858-26-000157)
+Expected values below were read off the filings' MD&A tables.
 """
 
 import gzip
@@ -50,6 +54,45 @@ EXPECTED_C = {
     ("ficc", 2023): 14820.0, ("ficc", 2022): 15710.0, ("ficc", 2021): 14345.0,
     ("equities", 2023): 4037.0, ("equities", 2022): 4451.0,
     ("equities", 2021): 5054.0,
+}
+
+# JPMorgan FY2025 10-K: CIB "Investment banking fees" (advisory / equity /
+# debt underwriting) and "Selected income statement data" revenue-by-business
+# (Fixed Income Markets / Equity Markets).
+EXPECTED_JPM = {
+    ("advisory", 2025): 3497.0, ("advisory", 2024): 3290.0,
+    ("advisory", 2023): 2814.0,
+    ("ecm", 2025): 1732.0, ("ecm", 2024): 1692.0, ("ecm", 2023): 1151.0,
+    ("dcm", 2025): 4506.0, ("dcm", 2024): 4134.0, ("dcm", 2023): 2666.0,
+    ("ficc", 2025): 22532.0, ("ficc", 2024): 20066.0,
+    ("ficc", 2023): 19180.0,
+    ("equities", 2025): 13250.0, ("equities", 2024): 9941.0,
+    ("equities", 2023): 8784.0,
+}
+
+# Morgan Stanley FY2025 10-K: Institutional Securities income statement --
+# Advisory once; "Equity"/"Fixed Income" twice (first = underwriting,
+# last = sales & trading).
+EXPECTED_MS = {
+    ("advisory", 2025): 2888.0, ("advisory", 2024): 2378.0,
+    ("advisory", 2023): 2244.0,
+    ("ecm", 2025): 1965.0, ("ecm", 2024): 1599.0, ("ecm", 2023): 889.0,
+    ("dcm", 2025): 2766.0, ("dcm", 2024): 2193.0, ("dcm", 2023): 1445.0,
+    ("ficc", 2025): 8716.0, ("ficc", 2024): 8418.0, ("ficc", 2023): 7673.0,
+    ("equities", 2025): 15631.0, ("equities", 2024): 12230.0,
+    ("equities", 2023): 9986.0,
+}
+
+# Bank of America FY2025 10-K: "Noninterest Income by Business Segment"
+# (Total Corporation block: advisory + combined underwriting) and the
+# Global Markets sales-and-trading table (FICC/Equities, 2-year table).
+EXPECTED_BAC = {
+    ("advisory", 2025): 1890.0, ("advisory", 2024): 1690.0,
+    ("advisory", 2023): 1575.0,
+    ("ecm_dcm_combined", 2025): 3320.0, ("ecm_dcm_combined", 2024): 3275.0,
+    ("ecm_dcm_combined", 2023): 2235.0,
+    ("ficc", 2025): 12267.0, ("ficc", 2024): 11371.0,
+    ("equities", 2025): 8604.0, ("equities", 2024): 7436.0,
 }
 
 
@@ -123,6 +166,55 @@ def test_citi_banking_and_markets():
     print(f"test_citi_banking_and_markets: OK ({len(recs)} cells)")
 
 
+def test_jpm_cib_splits():
+    """JPMorgan: CIB IB-fee split + Fixed Income/Equity Markets, real 10-K."""
+    path = _fixture("jpm_10k_fy2025.htm.gz")
+    recs = parse_filing("JPM", "0000019617", "0001628280-26-008131", path)
+    by = _by_line_year(recs)
+    assert len(recs) == 15, f"expected 15 cells, got {len(recs)}"
+    for key, want in EXPECTED_JPM.items():
+        assert by.get(key) == want, f"JPM {key}: got {by.get(key)}, want {want}"
+    assert {r["source"] for r in recs} == {
+        "mda:Investment banking fees",
+        "mda:CIB revenue by business"}, {r["source"] for r in recs}
+    print(f"test_jpm_cib_splits: OK ({len(recs)} cells)")
+
+
+def test_ms_institutional_securities():
+    """Morgan Stanley: IS advisory/underwriting + sales & trading, real 10-K.
+
+    The underwriting "Equity"/"Fixed Income" rows are the FIRST matches;
+    the sales & trading rows the LAST -- the occurrence logic is the point.
+    """
+    path = _fixture("ms_10k_fy2025.htm.gz")
+    recs = parse_filing("MS", "0000895421", "0000895421-26-000086", path)
+    by = _by_line_year(recs)
+    assert len(recs) == 15, f"expected 15 cells, got {len(recs)}"
+    for key, want in EXPECTED_MS.items():
+        assert by.get(key) == want, f"MS {key}: got {by.get(key)}, want {want}"
+    assert {r["source"] for r in recs} == {
+        "mda:Institutional Securities income statement",
+        "mda:Institutional Securities investment banking"}, \
+        {r["source"] for r in recs}
+    print(f"test_ms_institutional_securities: OK ({len(recs)} cells)")
+
+
+def test_bac_segments():
+    """Bank of America: segment-note IB splits + GM sales & trading."""
+    path = _fixture("bac_10k_fy2025.htm.gz")
+    recs = parse_filing("BAC", "0000070858", "0000070858-26-000157", path)
+    by = _by_line_year(recs)
+    assert len(recs) == 10, f"expected 10 cells, got {len(recs)}"
+    for key, want in EXPECTED_BAC.items():
+        assert by.get(key) == want, \
+            f"BAC {key}: got {by.get(key)}, want {want}"
+    assert {r["source"] for r in recs} == {
+        "mda:Noninterest income by business segment",
+        "mda:Global Markets sales and trading revenue"}, \
+        {r["source"] for r in recs}
+    print(f"test_bac_segments: OK ({len(recs)} cells)")
+
+
 def test_missing_table_raises():
     """A filing without the expected table fails loudly, not silently."""
     html = ("<html><body><h1>Item 7. MD&A</h1>"
@@ -163,9 +255,10 @@ def test_dedupe_prefers_later_filing():
 
 
 def test_specs_cover_expected_firms():
-    # JPM is intentionally absent: its FI/Equities split is XBRL-covered.
-    assert set(FIRM_SPECS) == {"GS", "MS", "C", "BAC", "JEF", "EVR", "LAZ",
-                               "MC", "PJT", "HL"}, set(FIRM_SPECS)
+    # JPM added 2026-10-17: CIB IB-fee and revenue-by-business splits are
+    # MD&A-sourced (the XBRL layer carries division totals only).
+    assert set(FIRM_SPECS) == {"GS", "MS", "C", "BAC", "JPM", "JEF", "EVR",
+                               "LAZ", "MC", "PJT", "HL"}, set(FIRM_SPECS)
     print("test_specs_cover_expected_firms: OK")
 
 
@@ -176,6 +269,9 @@ def main():
     test_missing_table_raises()
     test_gs_ib_and_markets()
     test_citi_banking_and_markets()
+    test_jpm_cib_splits()
+    test_ms_institutional_securities()
+    test_bac_segments()
     print("ALL REVENUE-MDA TESTS PASS")
 
 

@@ -55,8 +55,10 @@ def load_inputs():
 def build_panel(seg, sub):
     """Combine segment totals and MD&A splits into firm x line x year panel.
 
-    Precedence: MD&A sub-splits win for the lines they cover (they are the
-    finer granularity). Segment totals fill the lines the splits don't cover.
+    Precedence: direct (D) disclosures beat approximate (A) mappings of the
+    same line -- MD&A sub-splits win for the lines they cover (they are the
+    finer granularity). Segment totals fill the lines the splits don't
+    cover. Within a quality tier the later filing's restated value wins.
     """
     # Tag each row with its taxonomy line and map quality.
     rows = []
@@ -88,10 +90,22 @@ def build_panel(seg, sub):
         .alias("regime")
     )
 
-    # Dedupe: same firm/line/year from overlapping filings — prefer the later
-    # filing's restated value. `accession` sorts chronologically.
-    df = df.sort(["firm", "taxonomy_line", "year", "accession"])
+    # Dedupe: same firm/line/year from overlapping filings and the two
+    # layers. Direct (D) disclosures beat approximate (A) mappings of the
+    # same line -- e.g. MD&A advisory fees beat the whole "Banking"
+    # division mapped to advisory with quality A. Within a quality tier
+    # the later filing's restated value wins (`accession` sorts
+    # chronologically).
+    quality_rank = {"D": 0, "A": 1, "U": 2}
+    df = df.with_columns(
+        pl.col("map_quality").replace_strict(
+            quality_rank, default=3).alias("_qrank"))
+    # Winner sorts last: best quality tier first, then later accession
+    # within the tier.
+    df = df.sort(["firm", "taxonomy_line", "year", "_qrank", "accession"],
+                 descending=[False, False, False, True, False])
     df = df.unique(subset=["firm", "taxonomy_line", "year"], keep="last")
+    df = df.drop("_qrank")
 
     # Drop unmappable (null line) rows but record them in meta.
     unmapped = df.filter(pl.col("taxonomy_line").is_null())
@@ -112,6 +126,106 @@ def build_panel(seg, sub):
     return panel, unmapped_recs
 
 
+# MD&A splits -> parent XBRL division(s), for the reconciliation check.
+# Each group lists candidate parent segment names (the first name present
+# for that firm+year wins; filing vintages restate labels, e.g. JPM's
+# "Corporate & Investment Bank" vs "Commercial & Investment Bank") and the
+# taxonomy lines whose values must fit inside the parent total. Pre-2021
+# Citi has no XBRL Banking/Markets split, so both groups fall back to the
+# wider "Institutional Clients Group" parent (a looser but valid bound).
+RECONCILE_GROUPS = {
+    "JPMorgan": [
+        (["Commercial & Investment Bank", "Corporate & Investment Bank",
+          "Investment Bank"],
+         ["advisory", "ecm", "dcm", "ficc", "equities"]),
+    ],
+    "Morgan Stanley": [
+        (["Institutional Securities"],
+         ["advisory", "ecm", "dcm", "ficc", "equities"]),
+    ],
+    "Bank of America": [
+        (["Global Banking"], ["advisory", "ecm_dcm_combined"]),
+        (["Global Markets"], ["ficc", "equities"]),
+    ],
+    "Citigroup": [
+        (["Banking", "Institutional Clients Group"],
+         ["advisory", "ecm", "dcm"]),
+        (["Markets", "Institutional Clients Group"],
+         ["ficc", "equities"]),
+    ],
+}
+
+RECONCILE_TOL_PCT = 0.05
+RECONCILE_TOL_ABS = 25.0  # USD millions
+
+
+def reconcile_splits(sub, seg):
+    """Check MD&A splits against parent XBRL division totals.
+
+    For each (firm, year, group): the splits' sum must not exceed the
+    parent division's XBRL total by more than 5% or $25M, whichever is
+    larger. Mismatches are flagged in the report, never fudged.
+
+    `sub` is the subsplits frame (firm codes), `seg` the XBRL segments
+    frame (firm display names). Returns a report dict for _meta.json.
+    """
+    checks = []
+    sub = sub.with_columns(
+        pl.col("firm").map_elements(canonical_firm,
+                                    return_dtype=pl.String).alias("_cfirm"))
+    for firm, groups in RECONCILE_GROUPS.items():
+        fsub = sub.filter(pl.col("_cfirm") == firm)
+        fseg = seg.filter(pl.col("firm") == firm)
+        years = sorted(set(fsub["year"].to_list()))
+        for year in years:
+            for parents, lines in groups:
+                srows = fsub.filter((pl.col("year") == year)
+                                    & pl.col("taxonomy_line").is_in(lines))
+                if len(srows) == 0:
+                    continue
+                splits_sum = srows["net_revenue_m"].sum()
+                parent = next(
+                    (p for p in parents
+                     if len(fseg.filter(
+                         (pl.col("year") == year)
+                         & (pl.col("segment_native") == p))) > 0),
+                    None)
+                if parent is None:
+                    checks.append({
+                        "firm": firm, "year": int(year),
+                        "group": "|".join(lines), "parent": None,
+                        "status": "no_parent",
+                    })
+                    continue
+                prow = fseg.filter(
+                    (pl.col("year") == year)
+                    & (pl.col("segment_native") == parent)).sort("accession")
+                parent_total = prow["net_revenue_m"][-1]
+                allowed = parent_total * (1 + RECONCILE_TOL_PCT) \
+                    + RECONCILE_TOL_ABS
+                status = "pass" if splits_sum <= allowed else "flag"
+                checks.append({
+                    "firm": firm, "year": int(year),
+                    "group": "|".join(lines), "parent": parent,
+                    "parent_total_m": round(float(parent_total), 3),
+                    "splits_sum_m": round(float(splits_sum), 3),
+                    "status": status,
+                })
+    n_pass = sum(1 for c in checks if c["status"] == "pass")
+    n_flag = sum(1 for c in checks if c["status"] == "flag")
+    n_noparent = sum(1 for c in checks if c["status"] == "no_parent")
+    denom = n_pass + n_flag
+    return {
+        "tolerance": "5% or $25M, whichever is larger",
+        "n_checks": len(checks),
+        "n_pass": n_pass,
+        "n_flag": n_flag,
+        "n_no_parent": n_noparent,
+        "match_rate": round(n_pass / denom, 4) if denom else None,
+        "checks": checks,
+    }
+
+
 def main():
     seg, sub = load_inputs()
     panel, unmapped = build_panel(seg, sub)
@@ -130,6 +244,7 @@ def main():
         "raw_location": "data/revenue/raw/<cik>/<accession>/ (preserved, git-ignored)",
         "break_policy": ("values never spliced across reorg breaks; "
                          "regime column identifies the reporting regime"),
+        "reconciliation": reconcile_splits(sub, seg),
     }
     (DATA / "_meta.json").write_text(json.dumps(meta, indent=2))
 

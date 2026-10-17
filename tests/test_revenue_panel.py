@@ -106,6 +106,65 @@ def test_build_panel_never_splices_breaks():
     assert regimes[0] != regimes[1]  # Q4-2023 reorg break preserved
 
 
+def test_build_panel_direct_beats_approximate():
+    # Citi "Banking" division maps to advisory with quality A; the MD&A
+    # advisory fee split is quality D. The direct disclosure must win even
+    # when the approximate mapping comes from a later filing.
+    seg = pl.DataFrame([
+        {"firm": "Citigroup", "cik": "0000831001", "segment_native": "Banking",
+         "year": 2023, "net_revenue_m": 39000.0,
+         "accession": "0000831001-26-000011", "r_file": "R1.htm",
+         "source": "XBRL R-file"},
+    ])
+    sub = pl.DataFrame([
+        {"firm": "C", "cik": "0000831001", "taxonomy_line": "advisory",
+         "year": 2023, "net_revenue_m": 1017.0,
+         "source": "mda:Banking business metrics",
+         "accession": "0000831001-24-000033"},
+    ])
+    panel, _ = build_panel(seg, sub)
+    row = panel.filter((pl.col("firm") == "Citigroup")
+                       & (pl.col("taxonomy_line") == "advisory"))
+    assert len(row) == 1
+    assert row["net_revenue_m"][0] == 1017.0
+    assert row["map_quality"][0] == "D"
+    assert row["layer"][0] == "mda"
+
+
+def test_reconcile_splits_pass_and_flag():
+    from src.revenue.build_revenue import reconcile_splits
+    seg = pl.DataFrame([
+        {"firm": "Morgan Stanley", "cik": "0000895421",
+         "segment_native": "Institutional Securities", "year": 2025,
+         "net_revenue_m": 33080.0, "accession": "a1", "r_file": "R1.htm",
+         "source": "XBRL R-file"},
+        {"firm": "Morgan Stanley", "cik": "0000895421",
+         "segment_native": "Institutional Securities", "year": 2024,
+         "net_revenue_m": 10000.0, "accession": "a1", "r_file": "R1.htm",
+         "source": "XBRL R-file"},
+    ])
+    sub = pl.DataFrame([
+        # 2025: splits sum 2888+1965+2766+15631+8716 = 31966 <= 33080*1.05+25
+        {"firm": "MS", "cik": "0000895421", "taxonomy_line": line,
+         "year": 2025, "net_revenue_m": v,
+         "source": "mda:t", "accession": "a2"}
+        for line, v in [("advisory", 2888.0), ("ecm", 1965.0),
+                        ("dcm", 2766.0), ("equities", 15631.0),
+                        ("ficc", 8716.0)]
+    ] + [
+        # 2024: splits sum far above the parent -> flag, not fudge
+        {"firm": "MS", "cik": "0000895421", "taxonomy_line": "advisory",
+         "year": 2024, "net_revenue_m": 99999.0,
+         "source": "mda:t", "accession": "a2"},
+    ])
+    rep = reconcile_splits(sub, seg)
+    by = {(c["firm"], c["year"]): c["status"] for c in rep["checks"]}
+    assert by[("Morgan Stanley", 2025)] == "pass", rep["checks"]
+    assert by[("Morgan Stanley", 2024)] == "flag", rep["checks"]
+    assert rep["n_pass"] == 1 and rep["n_flag"] == 1
+    assert rep["match_rate"] == 0.5
+
+
 def main():
     test_taxonomy_lines()
     test_map_quality_goldman()
@@ -114,7 +173,9 @@ def main():
     test_regime_breaks()
     test_build_panel_dedupe_and_regime()
     test_build_panel_never_splices_breaks()
-    print("test_revenue_panel: all 7 tests passed")
+    test_build_panel_direct_beats_approximate()
+    test_reconcile_splits_pass_and_flag()
+    print("test_revenue_panel: all 9 tests passed")
 
 
 if __name__ == "__main__":

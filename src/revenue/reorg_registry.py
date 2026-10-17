@@ -59,6 +59,31 @@ REORGS = [
 # Firms expected to have zero registry entries (asserted in tests).
 NO_REORG_FIRMS = ["Lazard", "Moelis", "PJT Partners"]
 
+# Label-only renames: (firm, old_substring, new_substring, effective_date).
+# A rename is not a break; the two labels denote the same economic segment
+# and must be canonicalized before series are keyed, or parallel series
+# collide on the taxonomy line.
+RENAMES = [
+    ("JPMorgan", "Asset Management", "Asset & Wealth Management", "2016-01-01"),
+]
+
+
+def canonical_segment(firm, segment_native):
+    """Map a pre-rename segment label to its post-rename label.
+
+    Label-only renames denote the same economic segment; canonicalizing
+    lets quarterly and annual builders key series consistently across the
+    rename date.
+    """
+    seg = segment_native or ""
+    for f, old, new, _ in RENAMES:
+        if f == firm and old.lower() in seg.lower():
+            # Replace the old label with the new one, preserving the rest.
+            idx = seg.lower().find(old.lower())
+            seg = seg[:idx] + new + seg[idx + len(old):]
+            break
+    return seg
+
 
 def _breaks_for(firm):
     return sorted(
@@ -74,6 +99,26 @@ def regime_for(firm, year):
     return f"r{idx}"
 
 
+def regime_for_quarter(firm, year, quarter):
+    """Regime label for a fiscal quarter.
+
+    Reorgs land in specific quarters (e.g. JPM 2024-04-01 -> Q2 2024 is
+    the first quarter of the new regime); values are never spliced
+    across the break. The quarter's end date decides the regime.
+    """
+    month_end = {1: "03-31", 2: "06-30", 3: "09-30", 4: "12-31"}[int(quarter)]
+    q_end = f"{int(year)}-{month_end}"
+    breaks = _breaks_for(firm)
+    idx = sum(1 for b in breaks if b["effective"] <= q_end)
+    return f"r{idx}"
+
+
 def is_break(firm, year_a, year_b):
     """True if a reorg break falls between two fiscal years."""
     return regime_for(firm, year_a) != regime_for(firm, year_b)
+
+
+def is_break_q(firm, year_a, q_a, year_b, q_b):
+    """True if a reorg break falls between two fiscal quarters."""
+    return regime_for_quarter(firm, year_a, q_a) != regime_for_quarter(
+        firm, year_b, q_b)
