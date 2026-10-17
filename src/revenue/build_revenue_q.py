@@ -15,12 +15,11 @@ writes:
   data/revenue/panel_quarterly.csv   (firm x taxonomy_line x year x quarter)
   docs/data/revenue_quarterly.json   (site bundle)
 
-Scope: XBRL segment layer only. 10-Q MD&A sub-business splits (e.g. JPM
-CIB revenue-by-business, MS IS income statement) are NOT extracted --
-their quarterly tables exist but the MD&A extractor is 10-K-oriented.
-Division-reporters therefore show division totals (often unmappable to a
-single taxonomy line) at quarterly frequency. This limitation is reported
-in _meta.json, not silently worked around.
+Scope: XBRL segment layer plus Layer 2Q (10-Q MD&A sub-business splits
+via parse_mda_q.py). Division-reporters (JPM, MS, BofA, Citi) get their
+business-line splits (FICC/Equities/Advisory/Underwriting) from quarterly
+MD&A tables; the D-quality MD&A values win over XBRL division totals for
+the same firm/line/quarter.
 
 Run: python3 -m src.revenue.build_revenue_q
 """
@@ -48,12 +47,16 @@ def quarter_of(period_end):
     return y, (m - 1) // 3 + 1
 
 
-def build_quarterly(seg_q, seg_a):
+def build_quarterly(seg_q, seg_a, with_mda=True):
     """Derive quarterly values from 10-Q periods + annuals.
 
     Returns (panel_df, derivation_log). panel_df has firm, taxonomy_line,
     year, quarter, net_revenue_m, derivation, map_quality, layer, regime,
     source, accession.
+
+    When with_mda is True (default), Layer 2Q quarterly MD&A subsplits
+    are merged in with D quality winning over XBRL division totals.
+    Set False in unit tests that supply synthetic segments.
     """
     # Index QTD and YTD values: (firm, segment, year, quarter) -> value.
     qtd = {}   # 3-month durations
@@ -208,6 +211,45 @@ def build_quarterly(seg_q, seg_a):
         df = df.unique(subset=["firm", "taxonomy_line", "year", "quarter"],
                        keep="first").drop("_drank")
         df = df.sort(["firm", "taxonomy_line", "year", "quarter"])
+    # Merge Layer 2Q: quarterly MD&A sub-business splits. These are
+    # direct (D) disclosures of business lines the XBRL layer only sees
+    # as division totals (JPM CIB, MS Institutional Securities, BofA
+    # GB/GM, Citi Banking/Markets). D quality wins over XBRL A/U for the
+    # same firm/line/quarter.
+    sub_path = DATA / "subsplits_quarterly.csv"
+    if with_mda and sub_path.exists():
+        sub = pl.read_csv(sub_path)
+        mda_rows = []
+        for r in sub.iter_rows(named=True):
+            firm = canonical_firm(r["firm"])
+            mda_rows.append({
+                "firm": firm, "segment_native": None,
+                "taxonomy_line": r["taxonomy_line"],
+                "map_quality": "D", "layer": "mda_q",
+                "year": r["year"], "quarter": r["quarter"],
+                "net_revenue_m": r["net_revenue_m"],
+                "derivation": "mda_qtd",
+                "regime": regime_for_quarter(firm, r["year"], r["quarter"]),
+                "source": r["source"], "accession": r["accession"],
+            })
+        if mda_rows:
+            mda_df = pl.DataFrame(mda_rows, schema=df.schema)
+            df = pl.concat([df, mda_df], how="diagonal")
+            # Dedupe with quality rank: D (mda_q) beats XBRL A/U.
+            # Within a tier the later filing wins (accession sorts
+            # chronologically).
+            qrank = {"D": 0, "A": 1, "U": 2}
+            df = df.with_columns(
+                pl.col("map_quality").replace_strict(
+                    qrank, default=3).alias("_qrank"))
+            df = df.sort(
+                ["firm", "taxonomy_line", "year", "quarter",
+                 "_qrank", "accession"],
+                descending=[False, False, False, False, False, True])
+            df = df.unique(
+                subset=["firm", "taxonomy_line", "year", "quarter"],
+                keep="first").drop("_qrank")
+            df = df.sort(["firm", "taxonomy_line", "year", "quarter"])
     # Drop unmappable rows from the panel (recorded in meta).
     unmapped = df.filter(pl.col("taxonomy_line").is_null())
     panel = df.filter(pl.col("taxonomy_line").is_not_null())
@@ -274,8 +316,9 @@ def main():
         "derivation_log": dlog,
         "n_derived_cells": n_derived,
         "reconciliation_vs_annual": recon,
-        "scope": ("XBRL segment layer only; 10-Q MD&A sub-business splits "
-                  "not extracted (see module docstring)"),
+        "scope": ("XBRL segment layer + Layer 2Q (10-Q MD&A sub-business "
+                  "splits via parse_mda_q.py); D-quality MD&A wins over "
+                  "XBRL division totals"),
         "break_policy": ("values never spliced across reorg breaks; "
                          "regime column identifies the reporting regime"),
     }

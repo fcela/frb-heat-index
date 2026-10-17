@@ -3,7 +3,7 @@
   "n_lines": 11,
   "year_min": 2010,
   "year_max": 2026,
-  "n_cells": 874,
+  "n_cells": 1275,
   "taxonomy_lines": [
     "advisory",
     "ecm",
@@ -15930,9 +15930,9 @@
         "firm": "Citigroup",
         "taxonomy_line": "advisory",
         "year": 2024,
-        "q_sum_m": 6201.0,
+        "q_sum_m": 1088.0,
         "annual_m": 1245.0,
-        "diff_m": 4956.0,
+        "diff_m": 157.0,
         "status": "flag"
       },
       {
@@ -17485,6 +17485,6 @@
       }
     ]
   },
-  "scope": "XBRL segment layer only; 10-Q MD&A sub-business splits not extracted (see module docstring)",
+  "scope": "XBRL segment layer + Layer 2Q (10-Q MD&A sub-business splits via parse_mda_q.py); D-quality MD&A wins over XBRL division totals",
   "break_policy": "values never spliced across reorg breaks; regime column identifies the reporting regime"
 }

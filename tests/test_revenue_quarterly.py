@@ -94,7 +94,7 @@ def test_ytd_derivation():
     seg_a = _seg_a([
         ("Lazard", "0001311370", "Financial Advisory", 2024, 1800.0, "a4"),
     ])
-    panel, unmapped, dlog = build_quarterly(seg_q, seg_a)
+    panel, unmapped, dlog = build_quarterly(seg_q, seg_a, with_mda=False)
     # Financial Advisory -> advisory (D).
     adv = panel.filter(pl.col("taxonomy_line") == "advisory").sort("quarter")
     assert len(adv) == 4, adv
@@ -120,7 +120,7 @@ def test_derivation_validation_flags():
          850.0, "a2"),
     ])
     seg_a = _seg_a([])
-    panel, _, dlog = build_quarterly(seg_q, seg_a)
+    panel, _, dlog = build_quarterly(seg_q, seg_a, with_mda=False)
     adv = panel.filter(pl.col("taxonomy_line") == "advisory")
     # Q3 derived = 100 - 850 = -750, |−750| > 100*1.1 -> flagged, no Q3 cell
     assert 3 not in adv["quarter"].to_list(), adv

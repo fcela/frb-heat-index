@@ -1,4 +1,25 @@
 firm,segment_native,taxonomy_line,map_quality,layer,year,quarter,net_revenue_m,derivation,regime,source,accession
+Bank of America,,advisory,D,mda_q,2019,3,452.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-20-000071
+Bank of America,,advisory,D,mda_q,2020,1,269.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000063
+Bank of America,,advisory,D,mda_q,2020,2,406.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000084
+Bank of America,,advisory,D,mda_q,2020,3,397.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000107
+Bank of America,,advisory,D,mda_q,2021,1,400.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000088
+Bank of America,,advisory,D,mda_q,2021,2,407.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000112
+Bank of America,,advisory,D,mda_q,2021,3,654.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000131
+Bank of America,,advisory,D,mda_q,2022,1,473.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000142
+Bank of America,,advisory,D,mda_q,2022,2,392.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000176
+Bank of America,,advisory,D,mda_q,2022,3,432.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000272
+Bank of America,,advisory,D,mda_q,2023,1,363.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000156
+Bank of America,,advisory,D,mda_q,2023,2,375.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000208
+Bank of America,,advisory,D,mda_q,2023,3,448.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000280
+Bank of America,,advisory,D,mda_q,2024,1,373.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000200
+Bank of America,,advisory,D,mda_q,2024,2,374.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000268
+Bank of America,,advisory,D,mda_q,2024,3,387.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000405
+Bank of America,,advisory,D,mda_q,2025,1,384.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000249
+Bank of America,,advisory,D,mda_q,2025,2,333.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000394
+Bank of America,,advisory,D,mda_q,2025,3,583.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000405
+Bank of America,,advisory,D,mda_q,2026,1,553.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000249
+Bank of America,,advisory,D,mda_q,2026,2,558.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000394
 Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2010,2,4189.0,qtd,r0,XBRL R-file (10-Q),0000950123-11-072937
 Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2010,3,3898.0,qtd,r0,XBRL R-file (10-Q),0000070858-11-000140
 Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2011,1,4496.0,qtd,r0,XBRL R-file (10-Q),0000070858-12-000191
@@ -40,15 +61,91 @@ Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2025,1,6016.0
 Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2025,2,5937.0,qtd,r3,XBRL R-file (10-Q),0000070858-26-000394
 Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2026,1,6712.0,qtd,r3,XBRL R-file (10-Q),0000070858-26-000249
 Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2026,2,6871.0,qtd,r3,XBRL R-file (10-Q),0000070858-26-000394
-Citigroup,Banking,advisory,A,xbrl_q,2023,1,1179.0,qtd,r3,XBRL R-file (10-Q),0000831001-24-000100
-Citigroup,Banking,advisory,A,xbrl_q,2023,2,2184.0,ytd_derived_q2,r3,"XBRL R-file (10-Q, ytd_derived_q2)",0000831001-24-000100
-Citigroup,Banking,advisory,A,xbrl_q,2023,3,1597.0,qtd,r3,XBRL R-file (10-Q),0000831001-24-000134
-Citigroup,Banking,advisory,A,xbrl_q,2024,1,1952.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000086
-Citigroup,Banking,advisory,A,xbrl_q,2024,2,1921.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000131
-Citigroup,Banking,advisory,A,xbrl_q,2024,3,2132.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000154
+Bank of America,,ecm_dcm_combined,D,mda_q,2019,3,740.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-20-000071
+Bank of America,,ecm_dcm_combined,D,mda_q,2020,1,848.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000063
+Bank of America,,ecm_dcm_combined,D,mda_q,2020,2,1523.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000084
+Bank of America,,ecm_dcm_combined,D,mda_q,2020,3,1239.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000107
+Bank of America,,ecm_dcm_combined,D,mda_q,2021,1,1546.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000088
+Bank of America,,ecm_dcm_combined,D,mda_q,2021,2,1314.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000112
+Bank of America,,ecm_dcm_combined,D,mda_q,2021,3,1168.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000131
+Bank of America,,ecm_dcm_combined,D,mda_q,2022,1,672.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000142
+Bank of America,,ecm_dcm_combined,D,mda_q,2022,2,435.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000176
+Bank of America,,ecm_dcm_combined,D,mda_q,2022,3,452.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000272
+Bank of America,,ecm_dcm_combined,D,mda_q,2023,1,569.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000156
+Bank of America,,ecm_dcm_combined,D,mda_q,2023,2,657.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000208
+Bank of America,,ecm_dcm_combined,D,mda_q,2023,3,531.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000280
+Bank of America,,ecm_dcm_combined,D,mda_q,2024,1,901.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000200
+Bank of America,,ecm_dcm_combined,D,mda_q,2024,2,869.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000268
+Bank of America,,ecm_dcm_combined,D,mda_q,2024,3,742.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000405
+Bank of America,,ecm_dcm_combined,D,mda_q,2025,1,770.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000249
+Bank of America,,ecm_dcm_combined,D,mda_q,2025,2,806.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000394
+Bank of America,,ecm_dcm_combined,D,mda_q,2025,3,992.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000405
+Bank of America,,ecm_dcm_combined,D,mda_q,2026,1,951.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000249
+Bank of America,,ecm_dcm_combined,D,mda_q,2026,2,1220.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000394
+Bank of America,,equities,D,mda_q,2019,3,1152.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-20-000071
+Bank of America,,equities,D,mda_q,2020,1,1690.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-21-000063
+Bank of America,,equities,D,mda_q,2020,2,1210.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-21-000084
+Bank of America,,equities,D,mda_q,2020,3,1205.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-21-000107
+Bank of America,,equities,D,mda_q,2021,1,1836.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-22-000088
+Bank of America,,equities,D,mda_q,2021,2,1624.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-22-000112
+Bank of America,,equities,D,mda_q,2021,3,1605.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-22-000131
+Bank of America,,equities,D,mda_q,2022,1,2011.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-23-000142
+Bank of America,,equities,D,mda_q,2022,2,1653.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-23-000176
+Bank of America,,equities,D,mda_q,2022,3,1540.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-23-000272
+Bank of America,,equities,D,mda_q,2023,1,1627.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-24-000156
+Bank of America,,equities,D,mda_q,2023,2,1618.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-24-000208
+Bank of America,,equities,D,mda_q,2023,3,1695.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-24-000280
+Bank of America,,equities,D,mda_q,2024,1,1861.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000200
+Bank of America,,equities,D,mda_q,2024,2,1937.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000268
+Bank of America,,equities,D,mda_q,2024,3,1996.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000405
+Bank of America,,equities,D,mda_q,2025,1,2186.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000200
+Bank of America,,equities,D,mda_q,2025,2,2133.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000394
+Bank of America,,equities,D,mda_q,2025,3,2270.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000405
+Bank of America,,equities,D,mda_q,2026,1,2842.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000249
+Bank of America,,equities,D,mda_q,2026,2,3622.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000394
+Bank of America,,ficc,D,mda_q,2019,3,2056.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-20-000071
+Bank of America,,ficc,D,mda_q,2020,1,2945.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-21-000063
+Bank of America,,ficc,D,mda_q,2020,2,2941.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-21-000084
+Bank of America,,ficc,D,mda_q,2020,3,2019.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-21-000107
+Bank of America,,ficc,D,mda_q,2021,1,3242.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-22-000088
+Bank of America,,ficc,D,mda_q,2021,2,1937.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-22-000112
+Bank of America,,ficc,D,mda_q,2021,3,2009.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-22-000131
+Bank of America,,ficc,D,mda_q,2022,1,2708.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-23-000142
+Bank of America,,ficc,D,mda_q,2022,2,2500.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-23-000176
+Bank of America,,ficc,D,mda_q,2022,3,2552.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-23-000272
+Bank of America,,ficc,D,mda_q,2023,1,3440.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-24-000156
+Bank of America,,ficc,D,mda_q,2023,2,2667.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-24-000208
+Bank of America,,ficc,D,mda_q,2023,3,2710.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-24-000280
+Bank of America,,ficc,D,mda_q,2024,1,3231.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000200
+Bank of America,,ficc,D,mda_q,2024,2,2742.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000268
+Bank of America,,ficc,D,mda_q,2024,3,2934.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000405
+Bank of America,,ficc,D,mda_q,2025,1,3478.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000200
+Bank of America,,ficc,D,mda_q,2025,2,3195.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000394
+Bank of America,,ficc,D,mda_q,2025,3,3091.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000405
+Bank of America,,ficc,D,mda_q,2026,1,3545.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000249
+Bank of America,,ficc,D,mda_q,2026,2,3476.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000394
+Citigroup,,advisory,D,mda_q,2018,1,215.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
+Citigroup,,advisory,D,mda_q,2018,2,361.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
+Citigroup,,advisory,D,mda_q,2018,3,262.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
+Citigroup,,advisory,D,mda_q,2019,1,378.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000044
+Citigroup,,advisory,D,mda_q,2019,2,232.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000078
+Citigroup,,advisory,D,mda_q,2019,3,276.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000110
+Citigroup,,advisory,D,mda_q,2020,1,386.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000066
+Citigroup,,advisory,D,mda_q,2020,2,229.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000126
+Citigroup,,advisory,D,mda_q,2020,3,163.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000167
+Citigroup,,advisory,D,mda_q,2021,1,281.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000066
+Citigroup,,advisory,D,mda_q,2021,2,405.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000126
+Citigroup,,advisory,D,mda_q,2021,3,539.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-22-000146
+Citigroup,,advisory,D,mda_q,2022,3,392.0,mda_qtd,r3,mda_q:ICG revenue details,0000831001-22-000146
+Citigroup,,advisory,D,mda_q,2023,1,276.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000051
+Citigroup,,advisory,D,mda_q,2023,2,156.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000100
+Citigroup,,advisory,D,mda_q,2023,3,299.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000134
+Citigroup,,advisory,D,mda_q,2024,1,230.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000086
+Citigroup,,advisory,D,mda_q,2024,2,268.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000131
+Citigroup,,advisory,D,mda_q,2024,3,394.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-24-000134
 Citigroup,Banking,advisory,A,xbrl_q,2024,4,196.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
-Citigroup,Banking,advisory,A,xbrl_q,2025,1,1530.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000019
-Citigroup,Banking,advisory,A,xbrl_q,2025,2,1434.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000045
+Citigroup,,advisory,D,mda_q,2025,1,424.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000086
+Citigroup,,advisory,D,mda_q,2025,2,408.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000131
 Citigroup,Banking,advisory,A,xbrl_q,2025,4,6618.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
 Citigroup,Banking,advisory,A,xbrl_q,2026,1,1767.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000019
 Citigroup,Banking,advisory,A,xbrl_q,2026,2,1922.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000045
@@ -65,6 +162,80 @@ Citigroup,Wealth,awm,D,xbrl_q,2025,2,2814.0,qtd,r4,XBRL R-file (10-Q),0000831001
 Citigroup,Wealth,awm,D,xbrl_q,2025,4,6564.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
 Citigroup,Wealth,awm,D,xbrl_q,2026,1,3065.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000019
 Citigroup,Wealth,awm,D,xbrl_q,2026,2,3177.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000045
+Citigroup,,dcm,D,mda_q,2018,1,699.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
+Citigroup,,dcm,D,mda_q,2018,2,726.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
+Citigroup,,dcm,D,mda_q,2018,3,660.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
+Citigroup,,dcm,D,mda_q,2019,1,804.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000044
+Citigroup,,dcm,D,mda_q,2019,2,737.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000078
+Citigroup,,dcm,D,mda_q,2019,3,705.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000110
+Citigroup,,dcm,D,mda_q,2020,1,788.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000066
+Citigroup,,dcm,D,mda_q,2020,2,1039.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000126
+Citigroup,,dcm,D,mda_q,2020,3,740.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000167
+Citigroup,,dcm,D,mda_q,2021,1,816.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000066
+Citigroup,,dcm,D,mda_q,2021,2,823.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000126
+Citigroup,,dcm,D,mda_q,2021,3,770.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-22-000146
+Citigroup,,dcm,D,mda_q,2022,3,139.0,mda_qtd,r3,mda_q:ICG revenue details,0000831001-22-000146
+Citigroup,,dcm,D,mda_q,2023,1,355.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000051
+Citigroup,,dcm,D,mda_q,2023,2,259.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000100
+Citigroup,,dcm,D,mda_q,2023,3,272.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000134
+Citigroup,,dcm,D,mda_q,2024,1,571.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000086
+Citigroup,,dcm,D,mda_q,2024,2,493.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000131
+Citigroup,,dcm,D,mda_q,2024,3,476.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-24-000134
+Citigroup,,dcm,D,mda_q,2025,1,553.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000086
+Citigroup,,dcm,D,mda_q,2025,2,432.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000131
+Citigroup,,ecm,D,mda_q,2018,1,216.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
+Citigroup,,ecm,D,mda_q,2018,2,335.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
+Citigroup,,ecm,D,mda_q,2018,3,259.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
+Citigroup,,ecm,D,mda_q,2019,1,172.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000044
+Citigroup,,ecm,D,mda_q,2019,2,314.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000078
+Citigroup,,ecm,D,mda_q,2019,3,247.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000110
+Citigroup,,ecm,D,mda_q,2020,1,180.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000066
+Citigroup,,ecm,D,mda_q,2020,2,491.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000126
+Citigroup,,ecm,D,mda_q,2020,3,484.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000167
+Citigroup,,ecm,D,mda_q,2021,1,876.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000066
+Citigroup,,ecm,D,mda_q,2021,2,544.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000126
+Citigroup,,ecm,D,mda_q,2021,3,468.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-22-000146
+Citigroup,,ecm,D,mda_q,2022,3,100.0,mda_qtd,r3,mda_q:ICG revenue details,0000831001-22-000146
+Citigroup,,ecm,D,mda_q,2023,1,109.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000051
+Citigroup,,ecm,D,mda_q,2023,2,158.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000100
+Citigroup,,ecm,D,mda_q,2023,3,123.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000134
+Citigroup,,ecm,D,mda_q,2024,1,171.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000086
+Citigroup,,ecm,D,mda_q,2024,2,174.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000131
+Citigroup,,ecm,D,mda_q,2024,3,129.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-24-000134
+Citigroup,,ecm,D,mda_q,2025,1,127.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000086
+Citigroup,,ecm,D,mda_q,2025,2,218.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000131
+Citigroup,,equities,D,mda_q,2018,1,1103.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
+Citigroup,,equities,D,mda_q,2018,2,864.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
+Citigroup,,equities,D,mda_q,2018,3,792.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
+Citigroup,,equities,D,mda_q,2019,1,842.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000044
+Citigroup,,equities,D,mda_q,2019,2,790.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000078
+Citigroup,,equities,D,mda_q,2019,3,760.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000110
+Citigroup,,equities,D,mda_q,2020,1,1169.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000066
+Citigroup,,equities,D,mda_q,2020,2,770.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000126
+Citigroup,,equities,D,mda_q,2020,3,875.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000167
+Citigroup,,equities,D,mda_q,2021,1,1476.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000066
+Citigroup,,equities,D,mda_q,2021,2,1058.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000126
+Citigroup,,equities,D,mda_q,2021,3,1347.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-22-000146
+Citigroup,,equities,D,mda_q,2022,3,1006.0,mda_qtd,r3,mda_q:ICG revenue details,0000831001-22-000146
+Citigroup,,equities,D,mda_q,2023,1,1167.0,mda_qtd,r3,mda_q:Markets revenue by component,0000831001-24-000051
+Citigroup,,equities,D,mda_q,2024,1,1227.0,mda_qtd,r4,mda_q:Markets revenue by component,0000831001-25-000086
+Citigroup,,equities,D,mda_q,2025,1,1509.0,mda_qtd,r4,mda_q:Markets revenue by component,0000831001-25-000086
+Citigroup,,ficc,D,mda_q,2018,1,3425.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
+Citigroup,,ficc,D,mda_q,2018,2,3082.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
+Citigroup,,ficc,D,mda_q,2018,3,3206.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
+Citigroup,,ficc,D,mda_q,2019,1,3452.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000044
+Citigroup,,ficc,D,mda_q,2019,2,3323.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000078
+Citigroup,,ficc,D,mda_q,2019,3,3211.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000110
+Citigroup,,ficc,D,mda_q,2020,1,4786.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000066
+Citigroup,,ficc,D,mda_q,2020,2,5595.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000126
+Citigroup,,ficc,D,mda_q,2020,3,3788.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000167
+Citigroup,,ficc,D,mda_q,2021,1,4550.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000066
+Citigroup,,ficc,D,mda_q,2021,2,3211.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-21-000126
+Citigroup,,ficc,D,mda_q,2021,3,3040.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-22-000146
+Citigroup,,ficc,D,mda_q,2022,3,3062.0,mda_qtd,r3,mda_q:ICG revenue details,0000831001-22-000146
+Citigroup,,ficc,D,mda_q,2023,1,4623.0,mda_qtd,r3,mda_q:Markets revenue by component,0000831001-24-000051
+Citigroup,,ficc,D,mda_q,2024,1,4130.0,mda_qtd,r4,mda_q:Markets revenue by component,0000831001-25-000086
+Citigroup,,ficc,D,mda_q,2025,1,4477.0,mda_qtd,r4,mda_q:Markets revenue by component,0000831001-25-000086
 Evercore,Investment Banking,advisory,D,xbrl_q,2011,1,82.379,qtd,r0,XBRL R-file (10-Q),0001193125-12-220423
 Evercore,Investment Banking,advisory,D,xbrl_q,2011,2,113.976,qtd,r0,XBRL R-file (10-Q),0001193125-12-342677
 Evercore,Investment Banking,advisory,D,xbrl_q,2011,3,139.166,qtd,r0,XBRL R-file (10-Q),0001193125-12-457575
@@ -490,6 +661,33 @@ Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2024,3,364.028,qtd,r0,XBRL R-
 Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2025,2,79.0,qtd,r0,XBRL R-file (10-Q),0001302215-26-000067
 Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2025,3,86.988,qtd,r0,XBRL R-file (10-Q),0001302215-25-000111
 Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2026,2,89.0,qtd,r0,XBRL R-file (10-Q),0001302215-26-000067
+JPMorgan,,advisory,D,mda_q,2017,3,620.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-18-000206
+JPMorgan,,advisory,D,mda_q,2018,1,575.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000067
+JPMorgan,,advisory,D,mda_q,2018,2,626.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000127
+JPMorgan,,advisory,D,mda_q,2018,3,581.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000232
+JPMorgan,,advisory,D,mda_q,2019,1,644.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000299
+JPMorgan,,advisory,D,mda_q,2019,2,525.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000372
+JPMorgan,,advisory,D,mda_q,2019,3,506.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000438
+JPMorgan,,advisory,D,mda_q,2020,1,503.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000292
+JPMorgan,,advisory,D,mda_q,2020,2,602.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000373
+JPMorgan,,advisory,D,mda_q,2020,3,428.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000458
+JPMorgan,,advisory,D,mda_q,2021,1,680.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000319
+JPMorgan,,advisory,D,mda_q,2021,2,916.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000422
+JPMorgan,,advisory,D,mda_q,2021,3,1228.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000492
+JPMorgan,,advisory,D,mda_q,2022,1,801.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000310
+JPMorgan,,advisory,D,mda_q,2022,2,664.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000432
+JPMorgan,,advisory,D,mda_q,2022,3,848.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000524
+JPMorgan,,advisory,D,mda_q,2023,1,756.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000326
+JPMorgan,,advisory,D,mda_q,2023,2,540.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000453
+JPMorgan,,advisory,D,mda_q,2023,3,767.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000611
+JPMorgan,,advisory,D,mda_q,2024,1,598.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-25-000421
+JPMorgan,,advisory,D,mda_q,2024,2,785.0,mda_qtd,r2,mda_q:Investment banking fees,0000019617-25-000615
+JPMorgan,,advisory,D,mda_q,2024,3,847.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-25-048859
+JPMorgan,,advisory,D,mda_q,2025,1,694.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-029344
+JPMorgan,,advisory,D,mda_q,2025,2,844.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-054343
+JPMorgan,,advisory,D,mda_q,2025,3,926.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-25-048859
+JPMorgan,,advisory,D,mda_q,2026,1,1266.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-029344
+JPMorgan,,advisory,D,mda_q,2026,2,1012.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-054343
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2010,2,2068.0,qtd,r0,XBRL R-file (10-Q),0001193125-11-212045
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2010,3,2172.0,qtd,r0,XBRL R-file (10-Q),0000019617-11-000264
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2010,4,2613.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-11-000264
@@ -545,6 +743,114 @@ JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2025,3,6066.0,qtd,r2,XBRL R-file
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2025,4,6516.0,annual_derived_q4,r2,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-25-048859
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2026,1,6374.0,qtd,r2,XBRL R-file (10-Q),0001628280-26-029344
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2026,2,6851.0,qtd,r2,XBRL R-file (10-Q),0001628280-26-054343
+JPMorgan,,dcm,D,mda_q,2017,3,924.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-18-000206
+JPMorgan,,dcm,D,mda_q,2018,1,775.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000067
+JPMorgan,,dcm,D,mda_q,2018,2,943.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000127
+JPMorgan,,dcm,D,mda_q,2018,3,822.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000232
+JPMorgan,,dcm,D,mda_q,2019,1,935.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000299
+JPMorgan,,dcm,D,mda_q,2019,2,816.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000372
+JPMorgan,,dcm,D,mda_q,2019,3,961.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000438
+JPMorgan,,dcm,D,mda_q,2020,1,1073.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000292
+JPMorgan,,dcm,D,mda_q,2020,2,1268.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000373
+JPMorgan,,dcm,D,mda_q,2020,3,1005.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000458
+JPMorgan,,dcm,D,mda_q,2021,1,1252.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000319
+JPMorgan,,dcm,D,mda_q,2021,2,1593.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000422
+JPMorgan,,dcm,D,mda_q,2021,3,1037.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000492
+JPMorgan,,dcm,D,mda_q,2022,1,1000.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000310
+JPMorgan,,dcm,D,mda_q,2022,2,741.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000432
+JPMorgan,,dcm,D,mda_q,2022,3,624.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000524
+JPMorgan,,dcm,D,mda_q,2023,1,663.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000326
+JPMorgan,,dcm,D,mda_q,2023,2,711.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000453
+JPMorgan,,dcm,D,mda_q,2023,3,688.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000611
+JPMorgan,,dcm,D,mda_q,2024,1,1061.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-25-000421
+JPMorgan,,dcm,D,mda_q,2024,2,1076.0,mda_qtd,r2,mda_q:Investment banking fees,0000019617-25-000615
+JPMorgan,,dcm,D,mda_q,2024,3,1076.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-25-048859
+JPMorgan,,dcm,D,mda_q,2025,1,1230.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-029344
+JPMorgan,,dcm,D,mda_q,2025,2,1204.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-054343
+JPMorgan,,dcm,D,mda_q,2025,3,1174.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-25-048859
+JPMorgan,,dcm,D,mda_q,2026,1,1145.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-029344
+JPMorgan,,dcm,D,mda_q,2026,2,1436.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-054343
+JPMorgan,,ecm,D,mda_q,2017,3,300.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-18-000206
+JPMorgan,,ecm,D,mda_q,2018,1,346.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000067
+JPMorgan,,ecm,D,mda_q,2018,2,570.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000127
+JPMorgan,,ecm,D,mda_q,2018,3,420.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000232
+JPMorgan,,ecm,D,mda_q,2019,1,265.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000299
+JPMorgan,,ecm,D,mda_q,2019,2,505.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000372
+JPMorgan,,ecm,D,mda_q,2019,3,514.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000438
+JPMorgan,,ecm,D,mda_q,2020,1,331.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000292
+JPMorgan,,ecm,D,mda_q,2020,2,977.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000373
+JPMorgan,,ecm,D,mda_q,2020,3,732.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000458
+JPMorgan,,ecm,D,mda_q,2021,1,1056.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000319
+JPMorgan,,ecm,D,mda_q,2021,2,1063.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000422
+JPMorgan,,ecm,D,mda_q,2021,3,1032.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000492
+JPMorgan,,ecm,D,mda_q,2022,1,249.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000310
+JPMorgan,,ecm,D,mda_q,2022,2,245.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000432
+JPMorgan,,ecm,D,mda_q,2022,3,290.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000524
+JPMorgan,,ecm,D,mda_q,2023,1,235.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000326
+JPMorgan,,ecm,D,mda_q,2023,2,318.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000453
+JPMorgan,,ecm,D,mda_q,2023,3,274.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000611
+JPMorgan,,ecm,D,mda_q,2024,1,355.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-25-000421
+JPMorgan,,ecm,D,mda_q,2024,2,495.0,mda_qtd,r2,mda_q:Investment banking fees,0000019617-25-000615
+JPMorgan,,ecm,D,mda_q,2024,3,344.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-25-048859
+JPMorgan,,ecm,D,mda_q,2025,1,324.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-029344
+JPMorgan,,ecm,D,mda_q,2025,2,465.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-054343
+JPMorgan,,ecm,D,mda_q,2025,3,527.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-25-048859
+JPMorgan,,ecm,D,mda_q,2026,1,472.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-029344
+JPMorgan,,ecm,D,mda_q,2026,2,829.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-054343
+JPMorgan,,equities,D,mda_q,2017,3,1363.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-18-000206
+JPMorgan,,equities,D,mda_q,2018,1,2017.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000067
+JPMorgan,,equities,D,mda_q,2018,2,1959.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000127
+JPMorgan,,equities,D,mda_q,2018,3,1595.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000232
+JPMorgan,,equities,D,mda_q,2019,1,1741.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-20-000299
+JPMorgan,,equities,D,mda_q,2019,2,1728.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-20-000372
+JPMorgan,,equities,D,mda_q,2019,3,1517.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-20-000438
+JPMorgan,,equities,D,mda_q,2020,1,2237.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-21-000292
+JPMorgan,,equities,D,mda_q,2020,2,2380.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-21-000373
+JPMorgan,,equities,D,mda_q,2020,3,1999.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-21-000458
+JPMorgan,,equities,D,mda_q,2021,1,3289.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-22-000319
+JPMorgan,,equities,D,mda_q,2021,2,2689.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-22-000422
+JPMorgan,,equities,D,mda_q,2021,3,2597.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-22-000492
+JPMorgan,,equities,D,mda_q,2022,1,3055.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-23-000310
+JPMorgan,,equities,D,mda_q,2022,2,3079.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-23-000432
+JPMorgan,,equities,D,mda_q,2022,3,2302.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-23-000524
+JPMorgan,,equities,D,mda_q,2023,1,2683.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-24-000326
+JPMorgan,,equities,D,mda_q,2023,2,2454.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-24-000453
+JPMorgan,,equities,D,mda_q,2023,3,2069.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-24-000611
+JPMorgan,,equities,D,mda_q,2024,1,2585.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-25-000421
+JPMorgan,,equities,D,mda_q,2024,2,2812.0,mda_qtd,r2,mda_q:CIB revenue by business,0000019617-25-000615
+JPMorgan,,equities,D,mda_q,2024,3,2501.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-25-048859
+JPMorgan,,equities,D,mda_q,2025,1,3814.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-029344
+JPMorgan,,equities,D,mda_q,2025,2,3246.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-054343
+JPMorgan,,equities,D,mda_q,2025,3,3331.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-25-048859
+JPMorgan,,equities,D,mda_q,2026,1,4481.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-029344
+JPMorgan,,equities,D,mda_q,2026,2,6025.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-054343
+JPMorgan,,ficc,D,mda_q,2017,3,3164.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-18-000206
+JPMorgan,,ficc,D,mda_q,2018,1,4553.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000067
+JPMorgan,,ficc,D,mda_q,2018,2,3453.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000127
+JPMorgan,,ficc,D,mda_q,2018,3,2844.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000232
+JPMorgan,,ficc,D,mda_q,2019,1,3725.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-20-000299
+JPMorgan,,ficc,D,mda_q,2019,2,3690.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-20-000372
+JPMorgan,,ficc,D,mda_q,2019,3,3557.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-20-000438
+JPMorgan,,ficc,D,mda_q,2020,1,4993.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-21-000292
+JPMorgan,,ficc,D,mda_q,2020,2,7338.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-21-000373
+JPMorgan,,ficc,D,mda_q,2020,3,4597.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-21-000458
+JPMorgan,,ficc,D,mda_q,2021,1,5761.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-22-000319
+JPMorgan,,ficc,D,mda_q,2021,2,4098.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-22-000422
+JPMorgan,,ficc,D,mda_q,2021,3,3672.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-22-000492
+JPMorgan,,ficc,D,mda_q,2022,1,5698.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-23-000310
+JPMorgan,,ficc,D,mda_q,2022,2,4711.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-23-000432
+JPMorgan,,ficc,D,mda_q,2022,3,4469.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-23-000524
+JPMorgan,,ficc,D,mda_q,2023,1,5699.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-24-000326
+JPMorgan,,ficc,D,mda_q,2023,2,4608.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-24-000453
+JPMorgan,,ficc,D,mda_q,2023,3,4548.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-24-000611
+JPMorgan,,ficc,D,mda_q,2024,1,5428.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-25-000421
+JPMorgan,,ficc,D,mda_q,2024,2,4981.0,mda_qtd,r2,mda_q:CIB revenue by business,0000019617-25-000615
+JPMorgan,,ficc,D,mda_q,2024,3,4651.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-25-048859
+JPMorgan,,ficc,D,mda_q,2025,1,5849.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-029344
+JPMorgan,,ficc,D,mda_q,2025,2,5690.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-054343
+JPMorgan,,ficc,D,mda_q,2025,3,5613.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-25-048859
+JPMorgan,,ficc,D,mda_q,2026,1,7078.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-029344
+JPMorgan,,ficc,D,mda_q,2026,2,6053.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-054343
 Jefferies,Investment Banking & Capital Markets,advisory,A,xbrl_q,2013,2,651.509,qtd,r0,XBRL R-file (10-Q),0000096223-14-000030
 Jefferies,Investment Banking & Capital Markets,advisory,A,xbrl_q,2013,3,502.766,qtd,r0,XBRL R-file (10-Q),0000096223-14-000036
 Jefferies,Investment Banking & Capital Markets,advisory,A,xbrl_q,2013,4,979.7269999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000096223-14-000036
@@ -718,6 +1024,25 @@ Lazard,Asset Management,awm,D,xbrl_q,2025,3,327.029,qtd,r0,XBRL R-file (10-Q),00
 Lazard,Asset Management,awm,D,xbrl_q,2025,4,367.11900000000014,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001311370-25-000052
 Lazard,Asset Management,awm,D,xbrl_q,2026,1,338.272,qtd,r0,XBRL R-file (10-Q),0001311370-26-000015
 Lazard,Asset Management,awm,D,xbrl_q,2026,2,342.183,qtd,r0,XBRL R-file (10-Q),0001311370-26-000022
+Morgan Stanley,,advisory,D,mda_q,2020,2,462.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-21-000425
+Morgan Stanley,,advisory,D,mda_q,2020,3,357.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-21-000532
+Morgan Stanley,,advisory,D,mda_q,2021,1,480.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000442
+Morgan Stanley,,advisory,D,mda_q,2021,2,664.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000515
+Morgan Stanley,,advisory,D,mda_q,2021,3,1272.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000587
+Morgan Stanley,,advisory,D,mda_q,2022,1,944.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000442
+Morgan Stanley,,advisory,D,mda_q,2022,2,598.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-23-000374
+Morgan Stanley,,advisory,D,mda_q,2022,3,693.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-23-000441
+Morgan Stanley,,advisory,D,mda_q,2023,1,638.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000322
+Morgan Stanley,,advisory,D,mda_q,2023,2,455.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000403
+Morgan Stanley,,advisory,D,mda_q,2023,3,449.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000491
+Morgan Stanley,,advisory,D,mda_q,2024,1,461.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000343
+Morgan Stanley,,advisory,D,mda_q,2024,2,592.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000440
+Morgan Stanley,,advisory,D,mda_q,2024,3,546.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000539
+Morgan Stanley,,advisory,D,mda_q,2025,1,563.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000121
+Morgan Stanley,,advisory,D,mda_q,2025,2,508.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000212
+Morgan Stanley,,advisory,D,mda_q,2025,3,684.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000539
+Morgan Stanley,,advisory,D,mda_q,2026,1,978.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000121
+Morgan Stanley,,advisory,D,mda_q,2026,2,798.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000212
 Morgan Stanley,Global Wealth Management Group,awm,A,xbrl_q,2010,2,3074.0,qtd,r0,XBRL R-file (10-Q),0001193125-11-213320
 Morgan Stanley,Global Wealth Management Group,awm,A,xbrl_q,2010,3,3104.0,qtd,r0,XBRL R-file (10-Q),0001193125-11-299890
 Morgan Stanley,Global Wealth Management Group,awm,A,xbrl_q,2011,2,3476.0,qtd,r0,XBRL R-file (10-Q),0001193125-11-213320
@@ -772,6 +1097,82 @@ Morgan Stanley,Investment Management,awm,A,xbrl_q,2025,3,1651.0,qtd,r0,XBRL R-fi
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2025,4,1720.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-25-000539
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2026,1,1535.0,qtd,r0,XBRL R-file (10-Q),0000895421-26-000121
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2026,2,1646.0,qtd,r0,XBRL R-file (10-Q),0000895421-26-000212
+Morgan Stanley,,dcm,D,mda_q,2020,2,707.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-21-000425
+Morgan Stanley,,dcm,D,mda_q,2020,3,476.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-21-000532
+Morgan Stanley,,dcm,D,mda_q,2021,1,631.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000442
+Morgan Stanley,,dcm,D,mda_q,2021,2,640.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000515
+Morgan Stanley,,dcm,D,mda_q,2021,3,567.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000587
+Morgan Stanley,,dcm,D,mda_q,2022,1,432.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000442
+Morgan Stanley,,dcm,D,mda_q,2022,2,326.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-23-000374
+Morgan Stanley,,dcm,D,mda_q,2022,3,366.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-23-000441
+Morgan Stanley,,dcm,D,mda_q,2023,1,407.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000322
+Morgan Stanley,,dcm,D,mda_q,2023,2,395.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000403
+Morgan Stanley,,dcm,D,mda_q,2023,3,252.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000491
+Morgan Stanley,,dcm,D,mda_q,2024,1,556.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000343
+Morgan Stanley,,dcm,D,mda_q,2024,2,675.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000440
+Morgan Stanley,,dcm,D,mda_q,2024,3,555.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000539
+Morgan Stanley,,dcm,D,mda_q,2025,1,677.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000121
+Morgan Stanley,,dcm,D,mda_q,2025,2,532.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000212
+Morgan Stanley,,dcm,D,mda_q,2025,3,772.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000539
+Morgan Stanley,,dcm,D,mda_q,2026,1,742.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000121
+Morgan Stanley,,dcm,D,mda_q,2026,2,788.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000212
+Morgan Stanley,,ecm,D,mda_q,2020,2,882.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-21-000425
+Morgan Stanley,,ecm,D,mda_q,2020,3,874.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-21-000532
+Morgan Stanley,,ecm,D,mda_q,2021,1,1502.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000442
+Morgan Stanley,,ecm,D,mda_q,2021,2,1072.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000515
+Morgan Stanley,,ecm,D,mda_q,2021,3,1010.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000587
+Morgan Stanley,,ecm,D,mda_q,2022,1,258.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000442
+Morgan Stanley,,ecm,D,mda_q,2022,2,148.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-23-000374
+Morgan Stanley,,ecm,D,mda_q,2022,3,218.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-23-000441
+Morgan Stanley,,ecm,D,mda_q,2023,1,202.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000322
+Morgan Stanley,,ecm,D,mda_q,2023,2,225.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000403
+Morgan Stanley,,ecm,D,mda_q,2023,3,237.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000491
+Morgan Stanley,,ecm,D,mda_q,2024,1,430.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000343
+Morgan Stanley,,ecm,D,mda_q,2024,2,352.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000440
+Morgan Stanley,,ecm,D,mda_q,2024,3,362.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000539
+Morgan Stanley,,ecm,D,mda_q,2025,1,319.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000121
+Morgan Stanley,,ecm,D,mda_q,2025,2,500.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000212
+Morgan Stanley,,ecm,D,mda_q,2025,3,652.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000539
+Morgan Stanley,,ecm,D,mda_q,2026,1,396.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000121
+Morgan Stanley,,ecm,D,mda_q,2026,2,851.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000212
+Morgan Stanley,,equities,D,mda_q,2020,2,2627.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-21-000425
+Morgan Stanley,,equities,D,mda_q,2020,3,2311.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-21-000532
+Morgan Stanley,,equities,D,mda_q,2021,1,2875.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000442
+Morgan Stanley,,equities,D,mda_q,2021,2,2827.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000515
+Morgan Stanley,,equities,D,mda_q,2021,3,2876.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000587
+Morgan Stanley,,equities,D,mda_q,2022,1,3174.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000442
+Morgan Stanley,,equities,D,mda_q,2022,2,2960.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-23-000374
+Morgan Stanley,,equities,D,mda_q,2022,3,2459.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-23-000441
+Morgan Stanley,,equities,D,mda_q,2023,1,2729.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-24-000322
+Morgan Stanley,,equities,D,mda_q,2023,2,2548.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-24-000403
+Morgan Stanley,,equities,D,mda_q,2023,3,2507.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-24-000491
+Morgan Stanley,,equities,D,mda_q,2024,1,2842.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000343
+Morgan Stanley,,equities,D,mda_q,2024,2,3018.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000440
+Morgan Stanley,,equities,D,mda_q,2024,3,3045.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000539
+Morgan Stanley,,equities,D,mda_q,2025,1,4128.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-26-000121
+Morgan Stanley,,equities,D,mda_q,2025,2,3721.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-26-000212
+Morgan Stanley,,equities,D,mda_q,2025,3,4116.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000539
+Morgan Stanley,,equities,D,mda_q,2026,1,5148.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-26-000121
+Morgan Stanley,,equities,D,mda_q,2026,2,6300.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-26-000212
+Morgan Stanley,,ficc,D,mda_q,2020,2,3041.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-21-000425
+Morgan Stanley,,ficc,D,mda_q,2020,3,1954.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-21-000532
+Morgan Stanley,,ficc,D,mda_q,2021,1,2966.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000442
+Morgan Stanley,,ficc,D,mda_q,2021,2,1682.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000515
+Morgan Stanley,,ficc,D,mda_q,2021,3,1640.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000587
+Morgan Stanley,,ficc,D,mda_q,2022,1,2923.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000442
+Morgan Stanley,,ficc,D,mda_q,2022,2,2500.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-23-000374
+Morgan Stanley,,ficc,D,mda_q,2022,3,2181.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-23-000441
+Morgan Stanley,,ficc,D,mda_q,2023,1,2576.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-24-000322
+Morgan Stanley,,ficc,D,mda_q,2023,2,1716.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-24-000403
+Morgan Stanley,,ficc,D,mda_q,2023,3,1947.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-24-000491
+Morgan Stanley,,ficc,D,mda_q,2024,1,2485.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000343
+Morgan Stanley,,ficc,D,mda_q,2024,2,1999.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000440
+Morgan Stanley,,ficc,D,mda_q,2024,3,2003.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000539
+Morgan Stanley,,ficc,D,mda_q,2025,1,2604.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-26-000121
+Morgan Stanley,,ficc,D,mda_q,2025,2,2180.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-26-000212
+Morgan Stanley,,ficc,D,mda_q,2025,3,2169.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000539
+Morgan Stanley,,ficc,D,mda_q,2026,1,3358.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-26-000121
+Morgan Stanley,,ficc,D,mda_q,2026,2,2455.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-26-000212
 PJT Partners,Advisory Fees,advisory,D,xbrl_q,2019,1,104.467,qtd,r0,XBRL R-file (10-Q),0001564590-20-020516
 PJT Partners,Advisory Fees,advisory,D,xbrl_q,2019,2,133.035,qtd,r0,XBRL R-file (10-Q),0001564590-20-035160
 PJT Partners,Advisory Fees,advisory,D,xbrl_q,2019,3,146.07500000000002,qtd,r0,XBRL R-file (10-Q),0001564590-20-048897
