@@ -206,6 +206,23 @@
   margin: 1.25rem 0 0.25rem;
   color: var(--ink);
 }
+/* Caption under hand-rolled SVG charts (matches Plot figcaption tone). */
+.rev-cap {
+  font-size: 0.8rem;
+  color: var(--muted, #75705f);
+  margin: 0.35rem 0 0;
+  max-width: 72ch;
+}
+
+/* Methodology disclosure box on the revenue tracker. */
+.rev-method {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--muted, #75705f);
+  max-width: 78ch;
+}
+.rev-method summary { cursor: pointer; font-weight: 600; }
+.rev-method p { margin: 0.5rem 0; }
 
 /* Revenue tracker frequency toggle (Annual | Quarterly). */
 .freq-toggle {

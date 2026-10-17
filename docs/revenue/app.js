@@ -2,6 +2,9 @@
    hardcoded. Observable Plot visual language, shared with the main site.
    Straight polylines only — no smoothing. */
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+esm";
+import {
+  buildPeriods, poolAndShares, concentration, migration, INDEPENDENTS,
+} from "./analysis.js";
 
 /* ---------------- theme (same tokens as the main site) ---------------- */
 
@@ -143,55 +146,15 @@ function legendHTML(firms) {
 /* ---------------- pool & share ---------------- */
 
 /* Aggregate one business line into per-period industry pool (sum over
-   disclosing firms) and per-firm shares of that pool. Regime breaks are
-   collected wherever any firm's reporting regime changes; coverage breaks
-   where the set of disclosing firms changes between consecutive periods.
-   Both break comparability of the pool across the vertical. */
+   disclosing firms) and per-firm shares of that pool. Edge handling lives
+   in analysis.js buildPeriods: the incomplete trailing run is dropped and
+   the thin-coverage ramp is shaded, never hidden. */
 function aggregateLine(line, freq) {
+  const P = buildPeriods(line, freq);
   const colors = {};
   line.firms.forEach((f, i) => { colors[f.firm] = FIRM_COLORS[i % FIRM_COLORS.length]; });
-  const xOf = d => (d.t != null ? d.t : d.year);
-  const step = freq === "q" ? 0.125 : 0.5;
-  const perX = new Map(); // x -> Map(firm -> value)
-  const metaX = new Map(); // x -> Map(firm -> {year, quarter, q})
-  const breaks = new Set();
-  for (const f of line.firms) {
-    let prevRegime = null;
-    for (const d of f.series) {
-      if (d.value == null || !Number.isFinite(d.value)) { prevRegime = d.regime; continue; }
-      const x = xOf(d);
-      if (prevRegime !== null && d.regime !== prevRegime) breaks.add(x - step);
-      if (!perX.has(x)) { perX.set(x, new Map()); metaX.set(x, new Map()); }
-      perX.get(x).set(f.firm, d.value);
-      metaX.get(x).set(f.firm, { year: d.year, quarter: d.quarter, q: d.map_quality });
-      prevRegime = d.regime;
-    }
-  }
-  const xs = [...perX.keys()].sort((a, b) => a - b);
-  // Coverage breaks: the disclosing set changed vs the previous period.
-  let prevFirms = null;
-  for (const x of xs) {
-    const firms = [...perX.get(x).keys()].sort().join("|");
-    if (prevFirms !== null && firms !== prevFirms) breaks.add(x - step);
-    prevFirms = firms;
-  }
-  const poolPts = xs.map(x => {
-    const m = perX.get(x);
-    return { x, v: [...m.values()].reduce((a, b) => a + b, 0), n: m.size };
-  });
-  const shareSeries = line.firms.map(f => {
-    const sp = [];
-    for (const x of xs) {
-      const m = perX.get(x);
-      const tot = [...m.values()].reduce((a, b) => a + b, 0);
-      const v = m.get(f.firm);
-      if (v == null || tot <= 0) continue;
-      const meta = metaX.get(x).get(f.firm) || {};
-      sp.push({ x, sh: v / tot, g: f.firm, year: meta.year, quarter: meta.quarter, q: meta.q });
-    }
-    return { firm: f.firm, sp };
-  });
-  return { colors, poolPts, shareSeries, breaks: [...breaks].sort((a, b) => a - b) };
+  const { poolPts, shareSeries } = poolAndShares(P);
+  return { colors, poolPts, shareSeries, breaks: P.breaks, P };
 }
 
 function breakMarks(breaks) {
@@ -200,17 +163,46 @@ function breakMarks(breaks) {
   );
 }
 
-/* Industry pool: total disclosed revenue per period. Straight line. */
+/* Shaded thin-coverage ramp: [first period, stableStart). Pool totals and
+   shares inside the ramp are understated while coverage builds. */
+function rampMark(P) {
+  if (P.stableStart == null || P.stableStart <= P.firstX) return [];
+  return [Plot.rect([{
+    x1: P.firstX - P.step, x2: P.stableStart - P.step,
+  }], { x1: "x1", x2: "x2", fill: T().faint, fillOpacity: 0.14 })];
+}
+
+function edgeCaption(P, freq) {
+  const bits = [];
+  if (P.stableStart != null && P.stableStart > P.firstX) {
+    bits.push(`shaded: thin-coverage ramp before ${fmtX(P.stableStart, freq)}`);
+  }
+  if (P.nDroppedTrailing) {
+    bits.push(`${P.nDroppedTrailing} trailing incomplete period${P.nDroppedTrailing === 1 ? "" : "s"} dropped (not all firms filed)`);
+  }
+  return bits.length ? " " + bits.join("; ") + "." : "";
+}
+
+function fmtX(x, freq) {
+  if (freq !== "q" || Number.isInteger(x)) return `${Math.round(x)}`;
+  return `${Math.floor(x)}Q${Math.round((x % 1) * 4) + 1}`;
+}
+
+/* Industry pool: total disclosed revenue per period. Straight line.
+   The incomplete trailing run is dropped (buildPeriods); the thin-coverage
+   ramp is shaded. */
 function poolChart(agg, unit, freq) {
   if (!agg.poolPts.length) return null;
+  const P = agg.P;
   const marks = [
+    ...rampMark(P),
     ...breakMarks(agg.breaks),
     Plot.line(agg.poolPts, { x: "x", y: "v", stroke: T().accent, strokeWidth: 2 }),
   ];
   marks.push(Plot.tip(agg.poolPts, Plot.pointer({
     x: "x", y: "v",
     title: d => {
-      const t = freq === "q" ? `${d.x.toFixed(2)}` : `${d.x}`;
+      const t = freq === "q" ? fmtX(d.x, freq) : `${d.x}`;
       return `Industry pool · ${t}\n$${fmtM(d.v)} across ${d.n} disclosing firms`;
     },
   })));
@@ -221,7 +213,8 @@ function poolChart(agg, unit, freq) {
     y: { label: unit || null, grid: true, nice: true, tickFormat: d => "$" + fmtM(d) },
     marks,
     caption: "Sum across disclosing firms only — the pool moves when coverage changes. " +
-      "Dashed verticals: reorg breaks or coverage changes; values not spliced across them.",
+      "Dashed verticals: reorg breaks or coverage changes; values not spliced across them." +
+      edgeCaption(P, freq),
   });
 }
 
@@ -230,7 +223,8 @@ function poolChart(agg, unit, freq) {
 function shareChart(line, agg, freq) {
   const pts = agg.shareSeries.flatMap(s => s.sp);
   if (!pts.length) return null;
-  const marks = [...breakMarks(agg.breaks)];
+  const P = agg.P;
+  const marks = [...rampMark(P), ...breakMarks(agg.breaks)];
   for (const s of agg.shareSeries) {
     if (!s.sp.length) continue;
     marks.push(Plot.line(s.sp, {
@@ -253,8 +247,164 @@ function shareChart(line, agg, freq) {
          tickFormat: d => `${Math.round(d * 100)}%` },
     marks,
     caption: "Each firm's share of the disclosed industry pool. " +
-      "Dashed verticals: reorg breaks or coverage changes.",
+      "Dashed verticals: reorg breaks or coverage changes." +
+      edgeCaption(P, freq),
   });
+}
+
+/* ---------------- concentration ---------------- */
+
+/* HHI (0–1) over time: solid = all disclosing firms, dashed = balanced
+   panel (firms disclosing in every window of the stable range). The gap
+   between them is the coverage effect, not consolidation. Gray: CR4.
+   Straight lines only. */
+function concentrationChart(conc, P, freq) {
+  const pts = conc.filter(d => d.hhi != null);
+  if (!pts.length) return null;
+  const bal = pts.filter(d => d.hhiBal != null);
+  const marks = [...rampMark(P), ...breakMarks(P.breaks)];
+  marks.push(Plot.line(pts, { x: "x", y: "hhi", stroke: T().accent, strokeWidth: 2 }));
+  if (bal.length > 1) {
+    marks.push(Plot.line(bal, {
+      x: "x", y: "hhiBal", stroke: T().muted, strokeWidth: 1.6, strokeDasharray: "5,3",
+    }));
+  }
+  marks.push(Plot.line(pts, { x: "x", y: "cr4", stroke: T().faint, strokeWidth: 1.2 }));
+  marks.push(Plot.tip(pts, Plot.pointer({
+    x: "x", y: "hhi",
+    title: d => {
+      const t = fmtX(d.x, freq);
+      let s = `Concentration · ${t}\nHHI ${d.hhi.toFixed(3)} (≈${d.effN.toFixed(1)} effective firms)\nCR4 ${(d.cr4 * 100).toFixed(1)}% · ${d.n} disclosing firms`;
+      if (d.hhiBal != null) s += `\nBalanced-panel HHI ${d.hhiBal.toFixed(3)} (≈${d.effNBal.toFixed(1)} effective)`;
+      return s;
+    },
+  })));
+  const first = pts[0], last = pts[pts.length - 1];
+  // Caption endpoints use the stable-coverage range: the ramp's single-firm
+  // HHI of 1.0 is a coverage artifact, not a concentration fact.
+  const spts = P.stableStart != null ? pts.filter(d => d.x >= P.stableStart) : pts;
+  const sfirst = spts[0] || first, slast = spts[spts.length - 1] || last;
+  const balNote = bal.length > 1
+    ? " Dashed: HHI among firms disclosing throughout (balanced panel) — the gap to the solid line is the coverage effect, not consolidation."
+    : " No balanced-panel line: fewer than two firms disclose throughout the stable range, so every HHI move here mixes coverage and competition.";
+  const negNote = conc.some(d => d.neg)
+    ? " HHI undefined in periods with negative net revenue (investment losses); those points are omitted, not interpolated."
+    : "";
+  return {
+    figure: basePlot({
+      width: 1020, height: 220,
+      marginLeft: 64, marginRight: 20, marginTop: 14, marginBottom: 40,
+      x: { label: null, grid: true, tickSize: 0 },
+      y: { label: "HHI / CR4 (0–1)", grid: true, domain: [0, 1],
+           tickFormat: d => d.toFixed(1) },
+      marks,
+      caption: `HHI ${sfirst.hhi.toFixed(2)} → ${slast.hhi.toFixed(2)} ` +
+        `(≈${sfirst.effN.toFixed(1)} → ≈${slast.effN.toFixed(1)} effective firms, stable-coverage range). ` +
+        "Solid: all disclosing firms. Gray: CR4." + balNote + negNote + edgeCaption(P, freq),
+    }),
+    legend: `<span class="rev-legend-item"><span class="rev-swatch" style="background:${T().accent}"></span>HHI, all disclosing firms</span>` +
+      (bal.length > 1 ? `<span class="rev-legend-item"><span class="rev-swatch" style="background:${T().muted}"></span>HHI, balanced panel</span>` : "") +
+      `<span class="rev-legend-item"><span class="rev-swatch" style="background:${T().faint}"></span>CR4</span>`,
+  };
+}
+
+/* ---------------- share migration (chained alluvial) ---------------- */
+
+/* Hand-rolled alluvial: one stacked bar per time window, straight-edged
+   ribbons between them (no splines, per the chart language). Bands that
+   start mid-diagram entered coverage (▲); bands that end left it (▼) —
+   disclosure changes, never competitive moves. Firms below 3% max window
+   share fold into "Other", except advisory independents, always labeled. */
+function alluvialChart(mig, colors, freq) {
+  if (mig.nWindows < 2) return null;
+  const nW = mig.nWindows;
+  const W = 1020, H = 400, mL = 168, mR = 24, mT = 26, mB = 46;
+  const availW = W - mL - mR, availH = H - mT - mB;
+  const barW = Math.min(96, (availW - (nW - 1) * 40) / nW);
+  const gap = nW > 1 ? (availW - nW * barW) / (nW - 1) : 0;
+  const y = s => mT + (1 - s) * availH;
+  const ink = T().ink, muted = T().muted, faint = T().faint;
+  const colOf = f => f === "Other" ? faint : (colors[f] || muted);
+
+  // Stacked segments per window, fixed firm order, largest on top.
+  // Data space: y0 < y1 are cumulative shares from the TOP (y0=1-sh_first).
+  const stacks = mig.windows.map(w => {
+    let acc = 1;
+    const segs = [];
+    for (const f of mig.order) {
+      const sh = w.segs.get(f) || 0;
+      if (sh <= 0) continue;
+      segs.push({ firm: f, sh, y0: acc - sh, y1: acc });
+      acc -= sh;
+    }
+    return { label: w.label, segs, present: new Set(segs.map(s => s.firm)) };
+  });
+  const xBar = i => mL + i * (barW + gap);
+  const escA = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" ` +
+    `style="max-width:${W}px;display:block" font-family="Inter,-apple-system,sans-serif">`;
+  // Ribbons between adjacent windows.
+  for (let i = 0; i < nW - 1; i++) {
+    const A = stacks[i], B = stacks[i + 1];
+    const x0 = xBar(i) + barW, x1 = xBar(i + 1);
+    for (const f of mig.order) {
+      const a = A.segs.find(s => s.firm === f), b = B.segs.find(s => s.firm === f);
+      const col = colOf(f);
+      if (a && b) {
+        // Continuing band: straight-edged quad.
+        svg += `<polygon points="${x0},${y(a.y0).toFixed(1)} ${x1},${y(b.y0).toFixed(1)} ` +
+          `${x1},${y(b.y1).toFixed(1)} ${x0},${y(a.y1).toFixed(1)}" fill="${col}" fill-opacity="0.45">` +
+          `<title>${escA(f)}: ${(a.sh * 100).toFixed(1)}% → ${(b.sh * 100).toFixed(1)}% ` +
+          `(${A.label} → ${B.label})</title></polygon>`;
+      } else if (!a && b) {
+        // Entering coverage: triangle from the previous bar's edge + ▲ marker.
+        const ym = y((b.y0 + b.y1) / 2);
+        svg += `<polygon points="${x0},${ym.toFixed(1)} ${x1},${y(b.y0).toFixed(1)} ` +
+          `${x1},${y(b.y1).toFixed(1)}" fill="${col}" fill-opacity="0.45">` +
+          `<title>${escA(f)} entered coverage in ${B.label} ` +
+          `(${(b.sh * 100).toFixed(1)}% of window pool) — disclosure change, not a competitive gain</title></polygon>`;
+        svg += `<text x="${x0 + 4}" y="${(ym - 6).toFixed(1)}" font-size="11" fill="${muted}">▲</text>`;
+      } else if (a && !b) {
+        // Leaving coverage: triangle to the next bar's edge + ▼ marker.
+        const ym = y((a.y0 + a.y1) / 2);
+        svg += `<polygon points="${x0},${y(a.y0).toFixed(1)} ${x0},${y(a.y1).toFixed(1)} ` +
+          `${x1},${ym.toFixed(1)}" fill="${col}" fill-opacity="0.45">` +
+          `<title>${escA(f)} left coverage after ${A.label} ` +
+          `(${(a.sh * 100).toFixed(1)}% of window pool) — disclosure change, not a competitive loss</title></polygon>`;
+        svg += `<text x="${x1 - 16}" y="${(ym - 6).toFixed(1)}" font-size="11" fill="${muted}">▼</text>`;
+      }
+    }
+  }
+  // Window bars + labels.
+  stacks.forEach((st, i) => {
+    const x = xBar(i);
+    for (const s of st.segs) {
+      const h = Math.max(y(s.y0) - y(s.y1), 0.75);
+      svg += `<rect x="${x.toFixed(1)}" y="${y(s.y1).toFixed(1)}" width="${barW.toFixed(1)}" ` +
+        `height="${h.toFixed(1)}" fill="${colOf(s.firm)}" fill-opacity="0.85">` +
+        `<title>${escA(s.firm)} · ${st.label}: ${(s.sh * 100).toFixed(1)}% of window pool</title></rect>`;
+    }
+    svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${H - 22}" font-size="12" ` +
+      `text-anchor="middle" fill="${muted}">${escA(st.label)}</text>`;
+    // Firm labels left of the first bar for readable segments.
+    if (i === 0) {
+      for (const s of st.segs) {
+        if ((s.y1 - s.y0) * availH < 15) continue;
+        svg += `<text x="${x - 8}" y="${(y((s.y0 + s.y1) / 2) + 4).toFixed(1)}" ` +
+          `font-size="12" text-anchor="end" fill="${ink}">${escA(s.firm)}</text>`;
+      }
+    }
+  });
+  svg += "</svg>";
+  const nBal = mig.balanced.length;
+  return {
+    svg,
+    caption: `Each band is a firm's share of the window pool (${freq === "q" ? "2-year" : "3-year"} windows, ` +
+      `stable-coverage range only). ▲ share entered coverage here; ▼ share left coverage here — ` +
+      `disclosure changes, never competitive moves. ${nBal} firm${nBal === 1 ? "" : "s"} disclose ` +
+      `in every window${nBal ? ` (${mig.balanced.map(escA).join(", ")})` : ""}; the rest enter or exit mid-range.`,
+  };
 }
 
 function lineSection(line, unit, freq) {
@@ -263,10 +413,19 @@ function lineSection(line, unit, freq) {
   const agg = aggregateLine(line, freq);
   const pool = poolChart(agg, unit, freq);
   const share = shareChart(line, agg, freq);
+  const conc = concentrationChart(concentration(agg.P, freq), agg.P, freq);
+  const keepSet = line.line === "advisory" ? new Set(INDEPENDENTS) : new Set();
+  const mig = alluvialChart(migration(agg.P, freq, { keepSet }), agg.colors, freq);
   const label = LINE_LABELS[line.line] || line.line;
   const per = freq === "q" ? "quarterly" : "annual";
-  const sub = (title, c) =>
-    `<h3 class="rev-subhead">${title}</h3><div class="chart" role="img" aria-label="${esc(label)} ${per} ${esc(title.toLowerCase())}">${c ? "" : "<p class='pulse-stamp'>no data</p>"}</div>`;
+  const sub = (title, c, legend) =>
+    `<h3 class="rev-subhead">${title}</h3>` +
+    (legend ? `<div class="rev-legend">${legend}</div>` : "") +
+    `<div class="chart" role="img" aria-label="${esc(label)} ${per} ${esc(title.toLowerCase())}">${c ? "" : "<p class='pulse-stamp'>no data</p>"}</div>`;
+  const subSvg = (title, m) =>
+    `<h3 class="rev-subhead">${title}</h3>` +
+    `<div class="chart" role="img" aria-label="${esc(label)} ${per} ${esc(title.toLowerCase())}">${m ? m.svg : "<p class='pulse-stamp'>no data</p>"}</div>` +
+    (m ? `<p class="rev-cap">${esc(m.caption)}</p>` : "");
   const tmp = document.createElement("div");
   tmp.innerHTML = `<section class="card rev-card" id="${id}">
     <h2>${esc(label)}</h2>
@@ -275,13 +434,16 @@ function lineSection(line, unit, freq) {
     ${legendHTML(line.firms)}
     ${sub("Industry pool", pool)}
     ${sub("Market share", share)}
+    ${sub("Concentration", conc && conc.figure, conc && conc.legend)}
+    ${subSvg("Share migration", mig)}
     ${sub("Revenue by firm", chart)}
   </section>`;
   const sec = tmp.firstChild;
   const charts = sec.querySelectorAll(".chart");
   if (pool) charts[0].appendChild(pool);
   if (share) charts[1].appendChild(share);
-  if (chart) charts[2].appendChild(chart);
+  if (conc && conc.figure) charts[2].appendChild(conc.figure);
+  if (chart) charts[4].appendChild(chart);
   return sec;
 }
 
