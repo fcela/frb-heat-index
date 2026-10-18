@@ -3,18 +3,23 @@ Bank of America,,advisory,D,mda_q,2019,3,452.0,mda_qtd,r3,mda_q:Noninterest inco
 Bank of America,,advisory,D,mda_q,2020,1,269.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000063
 Bank of America,,advisory,D,mda_q,2020,2,406.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000084
 Bank of America,,advisory,D,mda_q,2020,3,397.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000107
+Bank of America,,advisory,D,mda_q,2020,4,549.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,advisory,D,mda_q,2021,1,400.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000088
 Bank of America,,advisory,D,mda_q,2021,2,407.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000112
 Bank of America,,advisory,D,mda_q,2021,3,654.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000131
+Bank of America,,advisory,D,mda_q,2021,4,850.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,advisory,D,mda_q,2022,1,473.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000142
 Bank of America,,advisory,D,mda_q,2022,2,392.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000176
 Bank of America,,advisory,D,mda_q,2022,3,432.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000272
+Bank of America,,advisory,D,mda_q,2022,4,486.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,advisory,D,mda_q,2023,1,363.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000156
 Bank of America,,advisory,D,mda_q,2023,2,375.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000208
 Bank of America,,advisory,D,mda_q,2023,3,448.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000280
+Bank of America,,advisory,D,mda_q,2023,4,389.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,advisory,D,mda_q,2024,1,373.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000200
 Bank of America,,advisory,D,mda_q,2024,2,374.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000268
 Bank of America,,advisory,D,mda_q,2024,3,387.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000405
+Bank of America,,advisory,D,mda_q,2024,4,556.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,advisory,D,mda_q,2025,1,384.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000249
 Bank of America,,advisory,D,mda_q,2025,2,333.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000394
 Bank of America,,advisory,D,mda_q,2025,3,583.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000405
@@ -65,18 +70,23 @@ Bank of America,,ecm_dcm_combined,D,mda_q,2019,3,740.0,mda_qtd,r3,mda_q:Noninter
 Bank of America,,ecm_dcm_combined,D,mda_q,2020,1,848.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000063
 Bank of America,,ecm_dcm_combined,D,mda_q,2020,2,1523.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000084
 Bank of America,,ecm_dcm_combined,D,mda_q,2020,3,1239.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000107
+Bank of America,,ecm_dcm_combined,D,mda_q,2020,4,1088.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,ecm_dcm_combined,D,mda_q,2021,1,1546.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000088
 Bank of America,,ecm_dcm_combined,D,mda_q,2021,2,1314.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000112
 Bank of America,,ecm_dcm_combined,D,mda_q,2021,3,1168.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000131
+Bank of America,,ecm_dcm_combined,D,mda_q,2021,4,1049.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,ecm_dcm_combined,D,mda_q,2022,1,672.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000142
 Bank of America,,ecm_dcm_combined,D,mda_q,2022,2,435.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000176
 Bank of America,,ecm_dcm_combined,D,mda_q,2022,3,452.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000272
+Bank of America,,ecm_dcm_combined,D,mda_q,2022,4,411.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,ecm_dcm_combined,D,mda_q,2023,1,569.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000156
 Bank of America,,ecm_dcm_combined,D,mda_q,2023,2,657.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000208
 Bank of America,,ecm_dcm_combined,D,mda_q,2023,3,531.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000280
+Bank of America,,ecm_dcm_combined,D,mda_q,2023,4,478.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,ecm_dcm_combined,D,mda_q,2024,1,901.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000200
 Bank of America,,ecm_dcm_combined,D,mda_q,2024,2,869.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000268
 Bank of America,,ecm_dcm_combined,D,mda_q,2024,3,742.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000405
+Bank of America,,ecm_dcm_combined,D,mda_q,2024,4,763.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,ecm_dcm_combined,D,mda_q,2025,1,770.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000249
 Bank of America,,ecm_dcm_combined,D,mda_q,2025,2,806.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000394
 Bank of America,,ecm_dcm_combined,D,mda_q,2025,3,992.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000405
@@ -86,18 +96,23 @@ Bank of America,,equities,D,mda_q,2019,3,1152.0,mda_qtd,r3,mda_q:Global Markets 
 Bank of America,,equities,D,mda_q,2020,1,1690.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-21-000063
 Bank of America,,equities,D,mda_q,2020,2,1210.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-21-000084
 Bank of America,,equities,D,mda_q,2020,3,1205.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-21-000107
+Bank of America,,equities,D,mda_q,2020,4,1317.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,equities,D,mda_q,2021,1,1836.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-22-000088
 Bank of America,,equities,D,mda_q,2021,2,1624.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-22-000112
 Bank of America,,equities,D,mda_q,2021,3,1605.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-22-000131
+Bank of America,,equities,D,mda_q,2021,4,1363.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,equities,D,mda_q,2022,1,2011.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-23-000142
 Bank of America,,equities,D,mda_q,2022,2,1653.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-23-000176
 Bank of America,,equities,D,mda_q,2022,3,1540.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-23-000272
+Bank of America,,equities,D,mda_q,2022,4,1368.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,equities,D,mda_q,2023,1,1627.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-24-000156
 Bank of America,,equities,D,mda_q,2023,2,1618.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-24-000208
 Bank of America,,equities,D,mda_q,2023,3,1695.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-24-000280
+Bank of America,,equities,D,mda_q,2023,4,1540.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,equities,D,mda_q,2024,1,1861.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000200
 Bank of America,,equities,D,mda_q,2024,2,1937.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000268
 Bank of America,,equities,D,mda_q,2024,3,1996.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000405
+Bank of America,,equities,D,mda_q,2024,4,1642.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,equities,D,mda_q,2025,1,2186.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000200
 Bank of America,,equities,D,mda_q,2025,2,2133.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000394
 Bank of America,,equities,D,mda_q,2025,3,2270.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000405
@@ -107,18 +122,23 @@ Bank of America,,ficc,D,mda_q,2019,3,2056.0,mda_qtd,r3,mda_q:Global Markets sale
 Bank of America,,ficc,D,mda_q,2020,1,2945.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-21-000063
 Bank of America,,ficc,D,mda_q,2020,2,2941.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-21-000084
 Bank of America,,ficc,D,mda_q,2020,3,2019.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-21-000107
+Bank of America,,ficc,D,mda_q,2020,4,1690.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,ficc,D,mda_q,2021,1,3242.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-22-000088
 Bank of America,,ficc,D,mda_q,2021,2,1937.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-22-000112
 Bank of America,,ficc,D,mda_q,2021,3,2009.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-22-000131
+Bank of America,,ficc,D,mda_q,2021,4,1573.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,ficc,D,mda_q,2022,1,2708.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-23-000142
 Bank of America,,ficc,D,mda_q,2022,2,2500.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-23-000176
 Bank of America,,ficc,D,mda_q,2022,3,2552.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-23-000272
+Bank of America,,ficc,D,mda_q,2022,4,2157.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,ficc,D,mda_q,2023,1,3440.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-24-000156
 Bank of America,,ficc,D,mda_q,2023,2,2667.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-24-000208
 Bank of America,,ficc,D,mda_q,2023,3,2710.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-24-000280
+Bank of America,,ficc,D,mda_q,2023,4,2079.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,ficc,D,mda_q,2024,1,3231.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000200
 Bank of America,,ficc,D,mda_q,2024,2,2742.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000268
 Bank of America,,ficc,D,mda_q,2024,3,2934.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000405
+Bank of America,,ficc,D,mda_q,2024,4,2464.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,ficc,D,mda_q,2025,1,3478.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000200
 Bank of America,,ficc,D,mda_q,2025,2,3195.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000394
 Bank of America,,ficc,D,mda_q,2025,3,3091.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000405
@@ -127,6 +147,7 @@ Bank of America,,ficc,D,mda_q,2026,2,3476.0,mda_qtd,r3,mda_q:Global Markets sale
 Citigroup,,advisory,D,mda_q,2018,1,215.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
 Citigroup,,advisory,D,mda_q,2018,2,361.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
 Citigroup,,advisory,D,mda_q,2018,3,262.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
+Citigroup,,advisory,D,mda_q,2018,4,463.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,advisory,D,mda_q,2019,1,378.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000044
 Citigroup,,advisory,D,mda_q,2019,2,232.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000078
 Citigroup,,advisory,D,mda_q,2019,3,276.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000110
@@ -140,31 +161,35 @@ Citigroup,,advisory,D,mda_q,2022,3,392.0,mda_qtd,r3,mda_q:ICG revenue details,00
 Citigroup,,advisory,D,mda_q,2023,1,276.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000051
 Citigroup,,advisory,D,mda_q,2023,2,156.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000100
 Citigroup,,advisory,D,mda_q,2023,3,299.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000134
+Citigroup,,advisory,D,mda_q,2023,4,286.0,mda_annual_derived_q4,r4,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,advisory,D,mda_q,2024,1,230.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000086
 Citigroup,,advisory,D,mda_q,2024,2,268.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000131
 Citigroup,,advisory,D,mda_q,2024,3,394.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-24-000134
-Citigroup,Banking,advisory,A,xbrl_q,2024,4,196.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
+Citigroup,,advisory,D,mda_q,2024,4,353.0,mda_annual_derived_q4,r4,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,advisory,D,mda_q,2025,1,424.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000086
 Citigroup,,advisory,D,mda_q,2025,2,408.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000131
-Citigroup,Banking,advisory,A,xbrl_q,2025,4,6618.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
+Citigroup,Banking,advisory,A,xbrl_q,2025,3,2132.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000154
+Citigroup,Banking,advisory,A,xbrl_q,2025,4,2210.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
 Citigroup,Banking,advisory,A,xbrl_q,2026,1,1767.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000019
 Citigroup,Banking,advisory,A,xbrl_q,2026,2,1922.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000045
-Citigroup,Wealth,awm,D,xbrl_q,2023,1,1776.0,qtd,r3,XBRL R-file (10-Q),0000831001-24-000100
-Citigroup,Wealth,awm,D,xbrl_q,2023,2,1731.0,ytd_derived_q2,r3,"XBRL R-file (10-Q, ytd_derived_q2)",0000831001-24-000100
-Citigroup,Wealth,awm,D,xbrl_q,2023,3,2002.0,qtd,r3,XBRL R-file (10-Q),0000831001-24-000134
-Citigroup,Wealth,awm,D,xbrl_q,2023,4,1488.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-24-000134
-Citigroup,Wealth,awm,D,xbrl_q,2024,1,2096.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000086
-Citigroup,Wealth,awm,D,xbrl_q,2024,2,2166.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000131
-Citigroup,Wealth,awm,D,xbrl_q,2024,3,2164.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000154
-Citigroup,Wealth,awm,D,xbrl_q,2024,4,1057.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
+Citigroup,Wealth,awm,D,xbrl_q,2023,1,1766.0,qtd,r3,XBRL R-file (10-Q),0000831001-24-000051
+Citigroup,Wealth,awm,D,xbrl_q,2023,2,1776.0,qtd,r3,XBRL R-file (10-Q),0000831001-24-000100
+Citigroup,Wealth,awm,D,xbrl_q,2023,3,1831.0,qtd,r3,XBRL R-file (10-Q),0000831001-24-000134
+Citigroup,Wealth,awm,D,xbrl_q,2023,4,1640.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-24-000134
+Citigroup,Wealth,awm,D,xbrl_q,2024,1,1687.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000086
+Citigroup,Wealth,awm,D,xbrl_q,2024,2,1807.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000131
+Citigroup,Wealth,awm,D,xbrl_q,2024,3,1995.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000154
+Citigroup,Wealth,awm,D,xbrl_q,2024,4,1994.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
 Citigroup,Wealth,awm,D,xbrl_q,2025,1,2757.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000019
 Citigroup,Wealth,awm,D,xbrl_q,2025,2,2814.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000045
-Citigroup,Wealth,awm,D,xbrl_q,2025,4,6564.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
+Citigroup,Wealth,awm,D,xbrl_q,2025,3,2164.0,qtd,r4,XBRL R-file (10-Q),0000831001-25-000154
+Citigroup,Wealth,awm,D,xbrl_q,2025,4,2133.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
 Citigroup,Wealth,awm,D,xbrl_q,2026,1,3065.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000019
 Citigroup,Wealth,awm,D,xbrl_q,2026,2,3177.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000045
 Citigroup,,dcm,D,mda_q,2018,1,699.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
 Citigroup,,dcm,D,mda_q,2018,2,726.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
 Citigroup,,dcm,D,mda_q,2018,3,660.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
+Citigroup,,dcm,D,mda_q,2018,4,634.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,dcm,D,mda_q,2019,1,804.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000044
 Citigroup,,dcm,D,mda_q,2019,2,737.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000078
 Citigroup,,dcm,D,mda_q,2019,3,705.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000110
@@ -178,14 +203,17 @@ Citigroup,,dcm,D,mda_q,2022,3,139.0,mda_qtd,r3,mda_q:ICG revenue details,0000831
 Citigroup,,dcm,D,mda_q,2023,1,355.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000051
 Citigroup,,dcm,D,mda_q,2023,2,259.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000100
 Citigroup,,dcm,D,mda_q,2023,3,272.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000134
+Citigroup,,dcm,D,mda_q,2023,4,310.0,mda_annual_derived_q4,r4,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,dcm,D,mda_q,2024,1,571.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000086
 Citigroup,,dcm,D,mda_q,2024,2,493.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000131
 Citigroup,,dcm,D,mda_q,2024,3,476.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-24-000134
+Citigroup,,dcm,D,mda_q,2024,4,384.0,mda_annual_derived_q4,r4,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,dcm,D,mda_q,2025,1,553.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000086
 Citigroup,,dcm,D,mda_q,2025,2,432.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000131
 Citigroup,,ecm,D,mda_q,2018,1,216.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
 Citigroup,,ecm,D,mda_q,2018,2,335.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
 Citigroup,,ecm,D,mda_q,2018,3,259.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
+Citigroup,,ecm,D,mda_q,2018,4,181.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,ecm,D,mda_q,2019,1,172.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000044
 Citigroup,,ecm,D,mda_q,2019,2,314.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000078
 Citigroup,,ecm,D,mda_q,2019,3,247.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000110
@@ -199,14 +227,17 @@ Citigroup,,ecm,D,mda_q,2022,3,100.0,mda_qtd,r3,mda_q:ICG revenue details,0000831
 Citigroup,,ecm,D,mda_q,2023,1,109.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000051
 Citigroup,,ecm,D,mda_q,2023,2,158.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000100
 Citigroup,,ecm,D,mda_q,2023,3,123.0,mda_qtd,r3,mda_q:Banking business metrics - investment banking fees,0000831001-24-000134
+Citigroup,,ecm,D,mda_q,2023,4,110.0,mda_annual_derived_q4,r4,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,ecm,D,mda_q,2024,1,171.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000086
 Citigroup,,ecm,D,mda_q,2024,2,174.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000131
 Citigroup,,ecm,D,mda_q,2024,3,129.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-24-000134
+Citigroup,,ecm,D,mda_q,2024,4,214.0,mda_annual_derived_q4,r4,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,ecm,D,mda_q,2025,1,127.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000086
 Citigroup,,ecm,D,mda_q,2025,2,218.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-25-000131
 Citigroup,,equities,D,mda_q,2018,1,1103.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
 Citigroup,,equities,D,mda_q,2018,2,864.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
 Citigroup,,equities,D,mda_q,2018,3,792.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
+Citigroup,,equities,D,mda_q,2018,4,668.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,equities,D,mda_q,2019,1,842.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000044
 Citigroup,,equities,D,mda_q,2019,2,790.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000078
 Citigroup,,equities,D,mda_q,2019,3,760.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000110
@@ -223,6 +254,7 @@ Citigroup,,equities,D,mda_q,2025,1,1509.0,mda_qtd,r4,mda_q:Markets revenue by co
 Citigroup,,ficc,D,mda_q,2018,1,3425.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
 Citigroup,,ficc,D,mda_q,2018,2,3082.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
 Citigroup,,ficc,D,mda_q,2018,3,3206.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
+Citigroup,,ficc,D,mda_q,2018,4,1922.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,ficc,D,mda_q,2019,1,3452.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000044
 Citigroup,,ficc,D,mda_q,2019,2,3323.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000078
 Citigroup,,ficc,D,mda_q,2019,3,3211.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-20-000110
@@ -249,9 +281,9 @@ Evercore,Investment Banking,advisory,D,xbrl_q,2013,2,182.605,qtd,r0,XBRL R-file 
 Evercore,Investment Banking,advisory,D,xbrl_q,2013,3,163.645,qtd,r0,XBRL R-file (10-Q),0001360901-14-000019
 Evercore,Investment Banking,advisory,D,xbrl_q,2013,4,192.93899999999996,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-14-000019
 Evercore,Investment Banking,advisory,D,xbrl_q,2014,1,127.851,qtd,r0,XBRL R-file (10-Q),0001360901-15-000007
-Evercore,Investment Banking,advisory,D,xbrl_q,2014,2,244.377,qtd,r0,XBRL R-file (10-Q),0001360901-15-000010
-Evercore,Investment Banking,advisory,D,xbrl_q,2014,3,285.918,qtd,r0,XBRL R-file (10-Q),0001360901-15-000014
-Evercore,Investment Banking,advisory,D,xbrl_q,2014,4,72.76200000000006,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-15-000014
+Evercore,Investment Banking,advisory,D,xbrl_q,2014,2,191.323,qtd,r0,XBRL R-file (10-Q),0001360901-15-000010
+Evercore,Investment Banking,advisory,D,xbrl_q,2014,3,203.028,qtd,r0,XBRL R-file (10-Q),0001360901-15-000014
+Evercore,Investment Banking,advisory,D,xbrl_q,2014,4,297.43500000000006,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-15-000014
 Evercore,Investment Banking,advisory,D,xbrl_q,2015,1,216.58,qtd,r0,XBRL R-file (10-Q),0001360901-16-000020
 Evercore,Investment Banking,advisory,D,xbrl_q,2015,2,244.377,qtd,r0,XBRL R-file (10-Q),0001360901-16-000023
 Evercore,Investment Banking,advisory,D,xbrl_q,2015,3,285.918,qtd,r0,XBRL R-file (10-Q),0001360901-16-000026
@@ -311,9 +343,9 @@ Evercore,Investment Management,awm,D,xbrl_q,2013,2,24.841,qtd,r0,XBRL R-file (10
 Evercore,Investment Management,awm,D,xbrl_q,2013,3,23.683,qtd,r0,XBRL R-file (10-Q),0001360901-14-000019
 Evercore,Investment Management,awm,D,xbrl_q,2013,4,25.733000000000004,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-14-000019
 Evercore,Investment Management,awm,D,xbrl_q,2014,1,21.262,qtd,r0,XBRL R-file (10-Q),0001360901-15-000007
-Evercore,Investment Management,awm,D,xbrl_q,2014,2,23.719,qtd,r0,XBRL R-file (10-Q),0001360901-15-000010
-Evercore,Investment Management,awm,D,xbrl_q,2014,3,23.033,qtd,r0,XBRL R-file (10-Q),0001360901-15-000014
-Evercore,Investment Management,awm,D,xbrl_q,2014,4,28.066000000000003,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-15-000014
+Evercore,Investment Management,awm,D,xbrl_q,2014,2,26.373,qtd,r0,XBRL R-file (10-Q),0001360901-15-000010
+Evercore,Investment Management,awm,D,xbrl_q,2014,3,24.133,qtd,r0,XBRL R-file (10-Q),0001360901-15-000014
+Evercore,Investment Management,awm,D,xbrl_q,2014,4,24.453000000000003,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001360901-15-000014
 Evercore,Investment Management,awm,D,xbrl_q,2015,1,21.403,qtd,r0,XBRL R-file (10-Q),0001360901-16-000020
 Evercore,Investment Management,awm,D,xbrl_q,2015,2,23.719,qtd,r0,XBRL R-file (10-Q),0001360901-16-000023
 Evercore,Investment Management,awm,D,xbrl_q,2015,3,23.033,qtd,r0,XBRL R-file (10-Q),0001360901-16-000026
@@ -388,32 +420,32 @@ Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2018,3,9
 Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2018,4,1201.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
 Goldman Sachs,Investment Banking - Financial Advisory,advisory,D,xbrl_q,2019,1,887.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
 Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2012,3,1016.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
-Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2012,4,105.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2012,4,1067.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
 Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2013,1,115.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
-Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2013,2,116.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2013,2,1098.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
 Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2013,3,1085.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
-Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2013,4,122.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2013,4,1143.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
 Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2014,1,118.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
-Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2014,2,100.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2014,2,1203.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
 Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2014,3,1214.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-362853
-Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2014,4,1231.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-362853
-Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2015,1,1194.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2014,4,136.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-362853
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2015,1,136.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
 Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2015,2,140.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670394
-Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2015,3,1212.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2015,3,137.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
 Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2015,4,1236.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757421
 Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2016,1,1165.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
 Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2016,2,1181.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
 Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2016,3,1225.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-331475
-Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2016,4,1227.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-17-331475
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2016,4,154.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-17-331475
 Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2017,1,160.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-151188
 Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2017,2,165.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
 Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2017,3,168.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
 Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2017,4,165.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
 Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2018,1,212.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
-Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2018,2,1345.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
-Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2018,3,1382.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
-Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2018,4,1365.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
-Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2019,1,165.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2018,2,182.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2018,3,174.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investment Management - Transaction Revenues,awm,A,xbrl_q,2018,4,186.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investment Management - Management and Other Fees,awm,D,xbrl_q,2019,1,1332.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
 Goldman Sachs,Asset Management,awm,D,xbrl_q,2021,3,2279.0,qtd,r1,XBRL R-file (10-Q),0000886982-22-000002
 Goldman Sachs,Asset Management,awm,D,xbrl_q,2021,4,2891.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000886982-22-000002
 Goldman Sachs,Asset & Wealth Management,awm,D,xbrl_q,2022,1,2603.0,qtd,r1,XBRL R-file (10-Q),0000886982-23-000005
@@ -470,32 +502,32 @@ Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2011,3,-2479.0,qtd,
 Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2011,4,872.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-12-458820
 Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2012,1,1911.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-208066
 Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2012,2,203.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-324664
-Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2012,3,558.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
-Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2012,4,1123.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
-Goldman Sachs,Investing and Lending - Other,awm_investments,D,xbrl_q,2013,1,375.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
-Goldman Sachs,Investing and Lending - Other,awm_investments,D,xbrl_q,2013,2,295.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
-Goldman Sachs,Investing and Lending - Other,awm_investments,D,xbrl_q,2013,3,237.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
-Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2013,4,2447.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
-Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2014,1,907.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2012,3,1804.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
+Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2012,4,485.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2013,1,2068.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2013,2,462.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2013,3,1475.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2013,4,2060.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2014,1,1529.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
 Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2014,2,1447.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
-Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2014,3,1058.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-362853
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2014,3,1692.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-362853
 Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2014,4,365.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-362853
 Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2015,1,1160.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
 Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2015,2,1801.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670394
-Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2015,3,300.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
-Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2015,4,299.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757421
-Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2016,1,87.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
-Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2016,2,485.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2015,3,370.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2015,4,997.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757421
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2016,1,87.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2016,2,1111.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
 Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2016,3,920.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-331475
 Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2016,4,1027.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-17-331475
-Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2017,1,798.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-151188
+Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2017,1,666.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-151188
 Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2017,2,1180.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
-Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2017,3,1391.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
-Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2017,4,2315.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2017,3,1883.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2017,4,1106.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
 Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2018,1,1069.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
-Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2018,2,1944.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
-Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2018,3,1861.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
-Goldman Sachs,Investing and Lending,awm_investments,D,xbrl_q,2018,4,2358.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Investing and Lending - Equity Securities,awm_investments,D,xbrl_q,2018,2,1281.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
+Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2018,3,750.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
+Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2018,4,1364.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
 Goldman Sachs,Investing and Lending - Debt Securities and Loans,awm_investments,D,xbrl_q,2019,1,990.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
 Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2012,3,466.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
 Goldman Sachs,Investment Banking - Debt Underwriting,dcm,D,xbrl_q,2012,4,593.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
@@ -578,32 +610,32 @@ Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2018,2
 Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2018,3,1064.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
 Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2018,4,843.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
 Goldman Sachs,Investment Banking - Underwriting,ecm_dcm_combined,D,xbrl_q,2019,1,923.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
-Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2012,3,847.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
-Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2012,4,2304.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
-Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2013,1,793.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2012,3,721.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2012,4,722.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
+Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2013,1,809.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-190498
 Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2013,2,836.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-298671
-Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2013,3,1616.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
-Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2013,4,1682.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
-Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2014,1,416.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
-Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2014,2,483.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2013,3,727.0,qtd,r0,XBRL R-file (10-Q),0001193125-14-396758
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2013,4,747.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-14-396758
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2014,1,828.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169551
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2014,2,1607.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-273233
 Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2014,3,429.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-362853
 Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2014,4,751.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-362853
-Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2015,1,808.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
-Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2015,2,767.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670394
-Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2015,3,818.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
+Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2015,1,1124.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-580382
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2015,2,1997.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670394
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2015,3,1752.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757421
 Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2015,4,562.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757421
-Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2016,1,1780.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
-Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2016,2,1754.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
+Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2016,1,470.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-156659
+Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2016,2,745.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247803
 Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2016,3,1784.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-331475
 Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2016,4,459.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-17-331475
 Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2017,1,552.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-151188
 Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2017,2,1892.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
 Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2017,3,1668.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
-Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2017,4,737.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
-Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2018,1,817.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2017,4,1369.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2018,1,2311.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
 Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2018,2,1891.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-236920
 Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2018,3,1794.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-317325
-Goldman Sachs,Institutional Client Services - Equities,equities,D,xbrl_q,2018,4,1604.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
+Goldman Sachs,Institutional Client Services - Equities Client Execution,equities,D,xbrl_q,2018,4,401.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-317325
 Goldman Sachs,Institutional Client Services - Commissions and Fees,equities,A,xbrl_q,2019,1,714.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-137184
 Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2012,3,2224.0,qtd,r0,XBRL R-file (10-Q),0001193125-13-430752
 Goldman Sachs,"Institutional Client Services - Fixed Income, Currency and Commodities Client Execution",ficc,D,xbrl_q,2012,4,2038.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-13-430752
@@ -636,53 +668,70 @@ Goldman Sachs,Consumer & Wealth Management,private_banking,A,xbrl_q,2021,3,2018.
 Goldman Sachs,Consumer & Wealth Management,private_banking,A,xbrl_q,2021,4,1967.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000886982-22-000002
 Goldman Sachs,Consumer & Wealth Management,private_banking,A,xbrl_q,2022,3,2377.0,qtd,r1,XBRL R-file (10-Q),0000886982-22-000002
 Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2014,3,92.549,qtd,r0,XBRL R-file (10-Q),0001302215-15-000014
-Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2015,2,28.408,qtd,r0,XBRL R-file (10-Q),0001302215-16-000063
-Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2015,3,100.20700000000001,qtd,r0,XBRL R-file (10-Q),0001302215-16-000079
-Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2016,1,38.993,qtd,r0,XBRL R-file (10-Q),0001302215-16-000063
-Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2016,2,34.463,qtd,r0,XBRL R-file (10-Q),0001302215-17-000044
-Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2016,3,33.082,qtd,r0,XBRL R-file (10-Q),0001302215-17-000052
-Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2017,1,96.036,qtd,r0,XBRL R-file (10-Q),0001302215-17-000044
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2014,4,107.979,qtd,r0,XBRL R-file (10-Q),0001302215-16-000022
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2015,2,78.397,qtd,r0,XBRL R-file (10-Q),0001302215-16-000063
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2015,3,89.931,qtd,r0,XBRL R-file (10-Q),0001302215-16-000079
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2015,4,124.133,qtd,r0,XBRL R-file (10-Q),0001302215-17-000004
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2016,2,56.33,qtd,r0,XBRL R-file (10-Q),0001302215-17-000044
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2016,3,100.20700000000001,qtd,r0,XBRL R-file (10-Q),0001302215-17-000052
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2016,4,34.26,qtd,r0,XBRL R-file (10-Q),0001302215-18-000004
 Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2017,2,34.463,qtd,r0,XBRL R-file (10-Q),0001302215-18-000032
-Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2017,3,63.281,qtd,r0,XBRL R-file (10-Q),0001302215-18-000038
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2017,3,145.821,qtd,r0,XBRL R-file (10-Q),0001302215-18-000038
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2017,4,129.00300000000001,qtd,r0,XBRL R-file (10-Q),0001302215-19-000008
 Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2018,2,132.871,qtd,r0,XBRL R-file (10-Q),0001302215-19-000054
-Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2018,3,146.05700000000002,qtd,r0,XBRL R-file (10-Q),0001302215-18-000038
-Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2019,2,133.589,qtd,r0,XBRL R-file (10-Q),0001302215-19-000054
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2018,3,36.251,qtd,r0,XBRL R-file (10-Q),0001302215-18-000038
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2018,4,39.035000000000004,qtd,r0,XBRL R-file (10-Q),0001302215-19-000008
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2019,2,37.406,qtd,r0,XBRL R-file (10-Q),0001302215-19-000054
 Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2019,3,155.981,qtd,r0,XBRL R-file (10-Q),0001302215-20-000135
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2019,4,92.808,qtd,r0,XBRL R-file (10-Q),0001302215-21-000006
 Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2020,2,34.545,qtd,r0,XBRL R-file (10-Q),0001302215-21-000078
 Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2020,3,125.391,qtd,r0,XBRL R-file (10-Q),0001302215-21-000087
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2020,4,177.995,qtd,r0,XBRL R-file (10-Q),0001302215-22-000007
 Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2021,2,98.775,qtd,r0,XBRL R-file (10-Q),0001302215-22-000067
 Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2021,3,83.184,qtd,r0,XBRL R-file (10-Q),0001302215-22-000076
-Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2022,2,78.83800000000001,qtd,r0,XBRL R-file (10-Q),0001302215-23-000079
-Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2022,3,97.694,qtd,r0,XBRL R-file (10-Q),0001302215-23-000089
-Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2023,2,123.36800000000001,qtd,r0,XBRL R-file (10-Q),0001302215-24-000090
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2021,4,83.862,qtd,r0,XBRL R-file (10-Q),0001302215-23-000007
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2022,2,75.855,qtd,r0,XBRL R-file (10-Q),0001302215-23-000079
+Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2022,3,76.827,qtd,r0,XBRL R-file (10-Q),0001302215-23-000089
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2022,4,98.819,qtd,r0,XBRL R-file (10-Q),0001302215-24-000005
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2023,2,227.05100000000002,qtd,r0,XBRL R-file (10-Q),0001302215-24-000090
 Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2023,3,281.684,qtd,r0,XBRL R-file (10-Q),0001302215-24-000110
-Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2024,2,328.41700000000003,qtd,r0,XBRL R-file (10-Q),0001302215-25-000092
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2023,4,128.565,qtd,r0,XBRL R-file (10-Q),0001302215-25-000007
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2024,2,117.422,qtd,r0,XBRL R-file (10-Q),0001302215-25-000092
 Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2024,3,364.028,qtd,r0,XBRL R-file (10-Q),0001302215-25-000111
-Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2025,2,79.0,qtd,r0,XBRL R-file (10-Q),0001302215-26-000067
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2024,4,421.60200000000003,qtd,r0,XBRL R-file (10-Q),0001302215-26-000007
+Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2025,2,398.0,qtd,r0,XBRL R-file (10-Q),0001302215-26-000067
 Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2025,3,86.988,qtd,r0,XBRL R-file (10-Q),0001302215-25-000111
+Houlihan Lokey,Financial Restructuring,advisory,D,xbrl_q,2025,4,156.25300000000001,qtd,r0,XBRL R-file (10-Q),0001302215-26-000007
 Houlihan Lokey,Financial Advisory Services,advisory,A,xbrl_q,2026,2,89.0,qtd,r0,XBRL R-file (10-Q),0001302215-26-000067
 JPMorgan,,advisory,D,mda_q,2017,3,620.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-18-000206
 JPMorgan,,advisory,D,mda_q,2018,1,575.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000067
 JPMorgan,,advisory,D,mda_q,2018,2,626.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000127
 JPMorgan,,advisory,D,mda_q,2018,3,581.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000232
+JPMorgan,,advisory,D,mda_q,2018,4,727.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,advisory,D,mda_q,2019,1,644.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000299
 JPMorgan,,advisory,D,mda_q,2019,2,525.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000372
 JPMorgan,,advisory,D,mda_q,2019,3,506.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000438
+JPMorgan,,advisory,D,mda_q,2019,4,702.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,advisory,D,mda_q,2020,1,503.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000292
 JPMorgan,,advisory,D,mda_q,2020,2,602.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000373
 JPMorgan,,advisory,D,mda_q,2020,3,428.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000458
+JPMorgan,,advisory,D,mda_q,2020,4,835.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,advisory,D,mda_q,2021,1,680.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000319
 JPMorgan,,advisory,D,mda_q,2021,2,916.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000422
 JPMorgan,,advisory,D,mda_q,2021,3,1228.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000492
+JPMorgan,,advisory,D,mda_q,2021,4,1557.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,advisory,D,mda_q,2022,1,801.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000310
 JPMorgan,,advisory,D,mda_q,2022,2,664.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000432
 JPMorgan,,advisory,D,mda_q,2022,3,848.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000524
+JPMorgan,,advisory,D,mda_q,2022,4,738.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,advisory,D,mda_q,2023,1,756.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000326
 JPMorgan,,advisory,D,mda_q,2023,2,540.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000453
 JPMorgan,,advisory,D,mda_q,2023,3,767.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000611
+JPMorgan,,advisory,D,mda_q,2023,4,751.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,advisory,D,mda_q,2024,1,598.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-25-000421
 JPMorgan,,advisory,D,mda_q,2024,2,785.0,mda_qtd,r2,mda_q:Investment banking fees,0000019617-25-000615
 JPMorgan,,advisory,D,mda_q,2024,3,847.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-25-048859
+JPMorgan,,advisory,D,mda_q,2024,4,1060.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,advisory,D,mda_q,2025,1,694.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-029344
 JPMorgan,,advisory,D,mda_q,2025,2,844.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-054343
 JPMorgan,,advisory,D,mda_q,2025,3,926.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-25-048859
@@ -719,8 +768,10 @@ JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2018,1,3506.0,qtd,r1,XBRL R-file
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2018,2,3572.0,qtd,r1,XBRL R-file (10-Q),0000019617-18-000151
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2019,3,3568.0,qtd,r1,XBRL R-file (10-Q),0000019617-20-000438
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2019,4,2975.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-20-000438
-JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2020,3,3737.0,qtd,r1,XBRL R-file (10-Q),0000019617-20-000438
-JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2020,4,3287.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-20-000438
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2020,1,3389.0,qtd,r1,XBRL R-file (10-Q),0000019617-21-000292
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2020,2,3430.0,qtd,r1,XBRL R-file (10-Q),0000019617-21-000373
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2020,3,3554.0,qtd,r1,XBRL R-file (10-Q),0000019617-21-000458
+JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2020,4,3867.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000019617-21-000458
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2021,1,4077.0,qtd,r1,XBRL R-file (10-Q),0000019617-22-000319
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2021,2,4107.0,qtd,r1,XBRL R-file (10-Q),0000019617-22-000422
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2021,3,4300.0,qtd,r1,XBRL R-file (10-Q),0000019617-22-000492
@@ -747,24 +798,31 @@ JPMorgan,,dcm,D,mda_q,2017,3,924.0,mda_qtd,r1,mda_q:Investment banking fees,0000
 JPMorgan,,dcm,D,mda_q,2018,1,775.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000067
 JPMorgan,,dcm,D,mda_q,2018,2,943.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000127
 JPMorgan,,dcm,D,mda_q,2018,3,822.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000232
+JPMorgan,,dcm,D,mda_q,2018,4,740.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,dcm,D,mda_q,2019,1,935.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000299
 JPMorgan,,dcm,D,mda_q,2019,2,816.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000372
 JPMorgan,,dcm,D,mda_q,2019,3,961.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000438
+JPMorgan,,dcm,D,mda_q,2019,4,820.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,dcm,D,mda_q,2020,1,1073.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000292
 JPMorgan,,dcm,D,mda_q,2020,2,1268.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000373
 JPMorgan,,dcm,D,mda_q,2020,3,1005.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000458
+JPMorgan,,dcm,D,mda_q,2020,4,1005.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,dcm,D,mda_q,2021,1,1252.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000319
 JPMorgan,,dcm,D,mda_q,2021,2,1593.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000422
 JPMorgan,,dcm,D,mda_q,2021,3,1037.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000492
+JPMorgan,,dcm,D,mda_q,2021,4,1143.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,dcm,D,mda_q,2022,1,1000.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000310
 JPMorgan,,dcm,D,mda_q,2022,2,741.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000432
 JPMorgan,,dcm,D,mda_q,2022,3,624.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000524
+JPMorgan,,dcm,D,mda_q,2022,4,527.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,dcm,D,mda_q,2023,1,663.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000326
 JPMorgan,,dcm,D,mda_q,2023,2,711.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000453
 JPMorgan,,dcm,D,mda_q,2023,3,688.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000611
+JPMorgan,,dcm,D,mda_q,2023,4,604.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,dcm,D,mda_q,2024,1,1061.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-25-000421
 JPMorgan,,dcm,D,mda_q,2024,2,1076.0,mda_qtd,r2,mda_q:Investment banking fees,0000019617-25-000615
 JPMorgan,,dcm,D,mda_q,2024,3,1076.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-25-048859
+JPMorgan,,dcm,D,mda_q,2024,4,921.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,dcm,D,mda_q,2025,1,1230.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-029344
 JPMorgan,,dcm,D,mda_q,2025,2,1204.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-054343
 JPMorgan,,dcm,D,mda_q,2025,3,1174.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-25-048859
@@ -774,24 +832,31 @@ JPMorgan,,ecm,D,mda_q,2017,3,300.0,mda_qtd,r1,mda_q:Investment banking fees,0000
 JPMorgan,,ecm,D,mda_q,2018,1,346.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000067
 JPMorgan,,ecm,D,mda_q,2018,2,570.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000127
 JPMorgan,,ecm,D,mda_q,2018,3,420.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000232
+JPMorgan,,ecm,D,mda_q,2018,4,348.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ecm,D,mda_q,2019,1,265.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000299
 JPMorgan,,ecm,D,mda_q,2019,2,505.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000372
 JPMorgan,,ecm,D,mda_q,2019,3,514.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-20-000438
+JPMorgan,,ecm,D,mda_q,2019,4,382.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ecm,D,mda_q,2020,1,331.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000292
 JPMorgan,,ecm,D,mda_q,2020,2,977.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000373
 JPMorgan,,ecm,D,mda_q,2020,3,732.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-21-000458
+JPMorgan,,ecm,D,mda_q,2020,4,718.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ecm,D,mda_q,2021,1,1056.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000319
 JPMorgan,,ecm,D,mda_q,2021,2,1063.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000422
 JPMorgan,,ecm,D,mda_q,2021,3,1032.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-22-000492
+JPMorgan,,ecm,D,mda_q,2021,4,802.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ecm,D,mda_q,2022,1,249.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000310
 JPMorgan,,ecm,D,mda_q,2022,2,245.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000432
 JPMorgan,,ecm,D,mda_q,2022,3,290.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-23-000524
+JPMorgan,,ecm,D,mda_q,2022,4,250.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ecm,D,mda_q,2023,1,235.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000326
 JPMorgan,,ecm,D,mda_q,2023,2,318.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000453
 JPMorgan,,ecm,D,mda_q,2023,3,274.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-24-000611
+JPMorgan,,ecm,D,mda_q,2023,4,324.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ecm,D,mda_q,2024,1,355.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-25-000421
 JPMorgan,,ecm,D,mda_q,2024,2,495.0,mda_qtd,r2,mda_q:Investment banking fees,0000019617-25-000615
 JPMorgan,,ecm,D,mda_q,2024,3,344.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-25-048859
+JPMorgan,,ecm,D,mda_q,2024,4,498.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ecm,D,mda_q,2025,1,324.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-029344
 JPMorgan,,ecm,D,mda_q,2025,2,465.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-054343
 JPMorgan,,ecm,D,mda_q,2025,3,527.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-25-048859
@@ -801,24 +866,31 @@ JPMorgan,,equities,D,mda_q,2017,3,1363.0,mda_qtd,r1,mda_q:CIB revenue by busines
 JPMorgan,,equities,D,mda_q,2018,1,2017.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000067
 JPMorgan,,equities,D,mda_q,2018,2,1959.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000127
 JPMorgan,,equities,D,mda_q,2018,3,1595.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000232
+JPMorgan,,equities,D,mda_q,2018,4,1317.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,equities,D,mda_q,2019,1,1741.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-20-000299
 JPMorgan,,equities,D,mda_q,2019,2,1728.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-20-000372
 JPMorgan,,equities,D,mda_q,2019,3,1517.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-20-000438
+JPMorgan,,equities,D,mda_q,2019,4,1508.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,equities,D,mda_q,2020,1,2237.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-21-000292
 JPMorgan,,equities,D,mda_q,2020,2,2380.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-21-000373
 JPMorgan,,equities,D,mda_q,2020,3,1999.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-21-000458
+JPMorgan,,equities,D,mda_q,2020,4,1989.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,equities,D,mda_q,2021,1,3289.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-22-000319
 JPMorgan,,equities,D,mda_q,2021,2,2689.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-22-000422
 JPMorgan,,equities,D,mda_q,2021,3,2597.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-22-000492
+JPMorgan,,equities,D,mda_q,2021,4,1954.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,equities,D,mda_q,2022,1,3055.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-23-000310
 JPMorgan,,equities,D,mda_q,2022,2,3079.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-23-000432
 JPMorgan,,equities,D,mda_q,2022,3,2302.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-23-000524
+JPMorgan,,equities,D,mda_q,2022,4,1652.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,equities,D,mda_q,2023,1,2683.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-24-000326
 JPMorgan,,equities,D,mda_q,2023,2,2454.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-24-000453
 JPMorgan,,equities,D,mda_q,2023,3,2069.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-24-000611
+JPMorgan,,equities,D,mda_q,2023,4,1578.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,equities,D,mda_q,2024,1,2585.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-25-000421
 JPMorgan,,equities,D,mda_q,2024,2,2812.0,mda_qtd,r2,mda_q:CIB revenue by business,0000019617-25-000615
 JPMorgan,,equities,D,mda_q,2024,3,2501.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-25-048859
+JPMorgan,,equities,D,mda_q,2024,4,2043.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,equities,D,mda_q,2025,1,3814.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-029344
 JPMorgan,,equities,D,mda_q,2025,2,3246.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-054343
 JPMorgan,,equities,D,mda_q,2025,3,3331.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-25-048859
@@ -828,24 +900,31 @@ JPMorgan,,ficc,D,mda_q,2017,3,3164.0,mda_qtd,r1,mda_q:CIB revenue by business,00
 JPMorgan,,ficc,D,mda_q,2018,1,4553.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000067
 JPMorgan,,ficc,D,mda_q,2018,2,3453.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000127
 JPMorgan,,ficc,D,mda_q,2018,3,2844.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000232
+JPMorgan,,ficc,D,mda_q,2018,4,1856.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ficc,D,mda_q,2019,1,3725.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-20-000299
 JPMorgan,,ficc,D,mda_q,2019,2,3690.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-20-000372
 JPMorgan,,ficc,D,mda_q,2019,3,3557.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-20-000438
+JPMorgan,,ficc,D,mda_q,2019,4,3446.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ficc,D,mda_q,2020,1,4993.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-21-000292
 JPMorgan,,ficc,D,mda_q,2020,2,7338.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-21-000373
 JPMorgan,,ficc,D,mda_q,2020,3,4597.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-21-000458
+JPMorgan,,ficc,D,mda_q,2020,4,3950.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ficc,D,mda_q,2021,1,5761.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-22-000319
 JPMorgan,,ficc,D,mda_q,2021,2,4098.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-22-000422
 JPMorgan,,ficc,D,mda_q,2021,3,3672.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-22-000492
+JPMorgan,,ficc,D,mda_q,2021,4,3334.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ficc,D,mda_q,2022,1,5698.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-23-000310
 JPMorgan,,ficc,D,mda_q,2022,2,4711.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-23-000432
 JPMorgan,,ficc,D,mda_q,2022,3,4469.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-23-000524
+JPMorgan,,ficc,D,mda_q,2022,4,4196.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ficc,D,mda_q,2023,1,5699.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-24-000326
 JPMorgan,,ficc,D,mda_q,2023,2,4608.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-24-000453
 JPMorgan,,ficc,D,mda_q,2023,3,4548.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-24-000611
+JPMorgan,,ficc,D,mda_q,2023,4,4325.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ficc,D,mda_q,2024,1,5428.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-25-000421
 JPMorgan,,ficc,D,mda_q,2024,2,4981.0,mda_qtd,r2,mda_q:CIB revenue by business,0000019617-25-000615
 JPMorgan,,ficc,D,mda_q,2024,3,4651.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-25-048859
+JPMorgan,,ficc,D,mda_q,2024,4,5006.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ficc,D,mda_q,2025,1,5849.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-029344
 JPMorgan,,ficc,D,mda_q,2025,2,5690.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-054343
 JPMorgan,,ficc,D,mda_q,2025,3,5613.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-25-048859
@@ -858,8 +937,9 @@ Jefferies,Investment Banking & Capital Markets,advisory,A,xbrl_q,2014,1,930.5120
 Jefferies,Investment Banking & Capital Markets,advisory,A,xbrl_q,2014,2,689.303,qtd,r0,XBRL R-file (10-Q),0000096223-14-000030
 Jefferies,Investment Banking & Capital Markets,advisory,A,xbrl_q,2014,3,840.35,qtd,r0,XBRL R-file (10-Q),0000096223-14-000036
 Jefferies,Investment Banking and Capital Markets,advisory,A,xbrl_q,2019,2,859.275,qtd,r0,XBRL R-file (10-Q),0000096223-20-000041
-Jefferies,Investment Banking and Capital Markets,advisory,A,xbrl_q,2019,3,1274.115,qtd,r0,XBRL R-file (10-Q),0000096223-20-000050
+Jefferies,Investment Banking and Capital Markets,advisory,A,xbrl_q,2019,3,757.362,qtd,r0,XBRL R-file (10-Q),0000096223-20-000050
 Jefferies,Investment Banking and Capital Markets,advisory,A,xbrl_q,2020,2,1028.832,qtd,r1,XBRL R-file (10-Q),0000096223-20-000041
+Jefferies,Investment Banking and Capital Markets,advisory,A,xbrl_q,2020,3,1274.115,qtd,r1,XBRL R-file (10-Q),0000096223-20-000050
 Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2022,1,1462.4,qtd,r1,XBRL R-file (10-Q),0000096223-23-000017
 Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2022,2,1105.2,qtd,r1,XBRL R-file (10-Q),0000096223-23-000026
 Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2022,3,1116.0,qtd,r1,XBRL R-file (10-Q),0000096223-23-000033
@@ -874,15 +954,16 @@ Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2024,3,1620.1
 Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2024,4,1638.5,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-24-042612
 Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2025,1,1399.0,qtd,r1,XBRL R-file (10-Q),0001628280-25-017192
 Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2025,2,1470.4,qtd,r1,XBRL R-file (10-Q),0000096223-26-000025
-Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2025,3,2645.0,qtd,r1,XBRL R-file (10-Q),0000096223-26-000033
-Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2025,4,2683.2000000000007,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000096223-26-000033
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2025,3,1858.0,qtd,r1,XBRL R-file (10-Q),0000096223-26-000033
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2025,4,5063.200000000001,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000096223-26-000033
 Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2026,1,1796.0,qtd,r1,XBRL R-file (10-Q),0000096223-26-000017
-Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2026,2,2006.1000000000001,qtd,r1,XBRL R-file (10-Q),0000096223-26-000025
-Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2026,3,2133.0,qtd,r1,XBRL R-file (10-Q),0000096223-26-000033
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2026,2,2557.1,qtd,r1,XBRL R-file (10-Q),0000096223-26-000025
+Jefferies,Investment Banking And Capital Markets,advisory,A,xbrl_q,2026,3,3064.0,qtd,r1,XBRL R-file (10-Q),0000096223-26-000033
 Jefferies,Asset Management,awm,A,xbrl_q,2019,2,44.362,qtd,r0,XBRL R-file (10-Q),0000096223-20-000041
-Jefferies,Asset Management,awm,A,xbrl_q,2019,3,118.558,qtd,r0,XBRL R-file (10-Q),0000096223-20-000050
+Jefferies,Asset Management,awm,A,xbrl_q,2019,3,20.341,qtd,r0,XBRL R-file (10-Q),0000096223-20-000050
 Jefferies,Asset Management,awm,A,xbrl_q,2020,2,7.391,qtd,r1,XBRL R-file (10-Q),0000096223-20-000041
-Jefferies,Asset Management,awm,A,xbrl_q,2020,4,794.259,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000096223-20-000050
+Jefferies,Asset Management,awm,A,xbrl_q,2020,3,118.558,qtd,r1,XBRL R-file (10-Q),0000096223-20-000050
+Jefferies,Asset Management,awm,A,xbrl_q,2020,4,668.322,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000096223-20-000050
 Jefferies,Asset Management,awm,A,xbrl_q,2022,1,226.8,qtd,r1,XBRL R-file (10-Q),0000096223-23-000017
 Jefferies,Asset Management,awm,A,xbrl_q,2022,2,234.0,qtd,r1,XBRL R-file (10-Q),0000096223-23-000026
 Jefferies,Asset Management,awm,A,xbrl_q,2022,3,398.3,qtd,r1,XBRL R-file (10-Q),0000096223-23-000033
@@ -896,9 +977,9 @@ Jefferies,Asset Management,awm,A,xbrl_q,2024,2,156.5,qtd,r1,XBRL R-file (10-Q),0
 Jefferies,Asset Management,awm,A,xbrl_q,2024,3,59.0,qtd,r1,XBRL R-file (10-Q),0001628280-24-042612
 Jefferies,Asset Management,awm,A,xbrl_q,2024,4,314.8,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-24-042612
 Jefferies,Asset Management,awm,A,xbrl_q,2025,1,191.70000000000002,qtd,r1,XBRL R-file (10-Q),0001628280-25-017192
-Jefferies,Asset Management,awm,A,xbrl_q,2025,2,228.5,qtd,r1,XBRL R-file (10-Q),0000096223-26-000025
-Jefferies,Asset Management,awm,A,xbrl_q,2025,3,177.0,qtd,r1,XBRL R-file (10-Q),0000096223-26-000033
-Jefferies,Asset Management,awm,A,xbrl_q,2025,4,483.9,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000096223-26-000033
+Jefferies,Asset Management,awm,A,xbrl_q,2025,2,154.6,qtd,r1,XBRL R-file (10-Q),0000096223-26-000025
+Jefferies,Asset Management,awm,A,xbrl_q,2025,3,251.0,qtd,r1,XBRL R-file (10-Q),0000096223-26-000033
+Jefferies,Asset Management,awm,A,xbrl_q,2025,4,263.9,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000096223-26-000033
 Jefferies,Asset Management,awm,A,xbrl_q,2026,1,220.3,qtd,r1,XBRL R-file (10-Q),0000096223-26-000017
 Jefferies,Asset Management,awm,A,xbrl_q,2026,2,187.70000000000002,qtd,r1,XBRL R-file (10-Q),0000096223-26-000025
 Jefferies,Asset Management,awm,A,xbrl_q,2026,3,86.0,qtd,r1,XBRL R-file (10-Q),0000096223-26-000033
@@ -1029,15 +1110,19 @@ Morgan Stanley,,advisory,D,mda_q,2020,3,357.0,mda_qtd,r0,mda_q:Institutional Sec
 Morgan Stanley,,advisory,D,mda_q,2021,1,480.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000442
 Morgan Stanley,,advisory,D,mda_q,2021,2,664.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000515
 Morgan Stanley,,advisory,D,mda_q,2021,3,1272.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000587
+Morgan Stanley,,advisory,D,mda_q,2021,4,1071.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,advisory,D,mda_q,2022,1,944.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000442
 Morgan Stanley,,advisory,D,mda_q,2022,2,598.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-23-000374
 Morgan Stanley,,advisory,D,mda_q,2022,3,693.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-23-000441
+Morgan Stanley,,advisory,D,mda_q,2022,4,711.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,advisory,D,mda_q,2023,1,638.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000322
 Morgan Stanley,,advisory,D,mda_q,2023,2,455.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000403
 Morgan Stanley,,advisory,D,mda_q,2023,3,449.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000491
+Morgan Stanley,,advisory,D,mda_q,2023,4,702.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,advisory,D,mda_q,2024,1,461.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000343
 Morgan Stanley,,advisory,D,mda_q,2024,2,592.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000440
 Morgan Stanley,,advisory,D,mda_q,2024,3,546.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000539
+Morgan Stanley,,advisory,D,mda_q,2024,4,779.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,advisory,D,mda_q,2025,1,563.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000121
 Morgan Stanley,,advisory,D,mda_q,2025,2,508.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000212
 Morgan Stanley,,advisory,D,mda_q,2025,3,684.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000539
@@ -1048,53 +1133,53 @@ Morgan Stanley,Global Wealth Management Group,awm,A,xbrl_q,2010,3,3104.0,qtd,r0,
 Morgan Stanley,Global Wealth Management Group,awm,A,xbrl_q,2011,2,3476.0,qtd,r0,XBRL R-file (10-Q),0001193125-11-213320
 Morgan Stanley,Global Wealth Management Group,awm,A,xbrl_q,2011,3,3260.0,qtd,r0,XBRL R-file (10-Q),0001193125-11-299890
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2014,1,752.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-169056
-Morgan Stanley,Wealth Management,awm,A,xbrl_q,2014,2,3702.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-276529
-Morgan Stanley,Wealth Management,awm,A,xbrl_q,2014,3,3773.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-364313
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2014,2,705.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-276529
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2014,3,667.0,qtd,r0,XBRL R-file (10-Q),0001193125-15-364313
 Morgan Stanley,Wealth Management,awm,A,xbrl_q,2014,4,3804.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-15-364313
-Morgan Stanley,Wealth Management,awm,A,xbrl_q,2015,1,3834.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-577875
-Morgan Stanley,Wealth Management,awm,A,xbrl_q,2015,2,3875.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670066
-Morgan Stanley,Wealth Management,awm,A,xbrl_q,2015,3,3640.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757027
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2015,1,669.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-577875
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2015,2,751.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-670066
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2015,3,274.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757027
 Morgan Stanley,Wealth Management,awm,A,xbrl_q,2015,4,3751.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757027
-Morgan Stanley,Wealth Management,awm,A,xbrl_q,2016,1,3668.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-158668
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2016,1,477.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-158668
 Morgan Stanley,Wealth Management,awm,A,xbrl_q,2016,2,3811.0,qtd,r0,XBRL R-file (10-Q),0001193125-17-247402
 Morgan Stanley,Wealth Management,awm,A,xbrl_q,2016,3,3881.0,qtd,r0,XBRL R-file (10-Q),0001193125-16-757027
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2016,4,500.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757027
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2017,1,609.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-152899
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2016,4,3990.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-16-757027
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2017,1,4058.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-152899
 Morgan Stanley,Wealth Management,awm,A,xbrl_q,2017,2,4151.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-238269
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2017,3,675.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-318377
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2017,4,637.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-318377
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2018,1,718.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-136929
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2018,2,691.0,qtd,r0,XBRL R-file (10-Q),0001628280-19-009973
-Morgan Stanley,Wealth Management,awm,A,xbrl_q,2018,3,4399.0,qtd,r0,XBRL R-file (10-Q),0001628280-19-013331
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2017,3,4220.0,qtd,r0,XBRL R-file (10-Q),0001193125-18-318377
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2017,4,4407.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-18-318377
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2018,1,4374.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-136929
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2018,2,4325.0,qtd,r0,XBRL R-file (10-Q),0001628280-19-009973
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2018,3,653.0,qtd,r0,XBRL R-file (10-Q),0001628280-19-013331
 Morgan Stanley,Wealth Management,awm,A,xbrl_q,2018,4,4144.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-19-013331
 Morgan Stanley,Wealth Management,awm,A,xbrl_q,2019,1,4389.0,qtd,r0,XBRL R-file (10-Q),0001193125-19-136929
 Morgan Stanley,Wealth Management,awm,A,xbrl_q,2019,2,4408.0,qtd,r0,XBRL R-file (10-Q),0001628280-19-009973
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2019,3,764.0,qtd,r0,XBRL R-file (10-Q),0001628280-19-013331
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2019,3,4358.0,qtd,r0,XBRL R-file (10-Q),0001628280-19-013331
 Morgan Stanley,Wealth Management,awm,A,xbrl_q,2019,4,4591.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-19-013331
-Morgan Stanley,Wealth Management,awm,A,xbrl_q,2020,1,4056.0,qtd,r0,XBRL R-file (10-Q),0000895421-21-000334
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2020,1,692.0,qtd,r0,XBRL R-file (10-Q),0000895421-21-000334
 Morgan Stanley,Wealth Management,awm,A,xbrl_q,2020,2,4704.0,qtd,r0,XBRL R-file (10-Q),0000895421-21-000425
 Morgan Stanley,Wealth Management,awm,A,xbrl_q,2020,3,4654.0,qtd,r0,XBRL R-file (10-Q),0000895421-21-000532
 Morgan Stanley,Wealth Management,awm,A,xbrl_q,2020,4,5672.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-21-000532
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2021,1,1314.0,qtd,r0,XBRL R-file (10-Q),0000895421-22-000442
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2021,2,1702.0,qtd,r0,XBRL R-file (10-Q),0000895421-22-000515
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2021,3,1453.0,qtd,r0,XBRL R-file (10-Q),0000895421-22-000587
-Morgan Stanley,Wealth Management,awm,A,xbrl_q,2021,4,6254.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-22-000587
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2022,1,1335.0,qtd,r0,XBRL R-file (10-Q),0000895421-23-000315
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2021,1,5959.0,qtd,r0,XBRL R-file (10-Q),0000895421-22-000442
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2021,2,6095.0,qtd,r0,XBRL R-file (10-Q),0000895421-22-000515
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2021,3,5935.0,qtd,r0,XBRL R-file (10-Q),0000895421-22-000587
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2021,4,1751.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-22-000587
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2022,1,5935.0,qtd,r0,XBRL R-file (10-Q),0000895421-23-000315
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2022,2,1411.0,qtd,r0,XBRL R-file (10-Q),0000895421-23-000374
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2022,3,1168.0,qtd,r0,XBRL R-file (10-Q),0000895421-23-000441
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2022,4,1461.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-23-000441
-Morgan Stanley,Wealth Management,awm,A,xbrl_q,2023,1,6880.0,qtd,r0,XBRL R-file (10-Q),0000895421-24-000322
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2023,2,1386.0,qtd,r0,XBRL R-file (10-Q),0000895421-24-000403
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2023,3,1455.0,qtd,r0,XBRL R-file (10-Q),0000895421-24-000491
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2023,4,1152.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-24-000491
-Morgan Stanley,Wealth Management,awm,A,xbrl_q,2024,1,6880.0,qtd,r0,XBRL R-file (10-Q),0000895421-25-000343
-Morgan Stanley,Wealth Management,awm,A,xbrl_q,2024,2,6792.0,qtd,r0,XBRL R-file (10-Q),0000895421-25-000440
-Morgan Stanley,Wealth Management,awm,A,xbrl_q,2024,3,7270.0,qtd,r0,XBRL R-file (10-Q),0000895421-25-000539
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2023,1,6559.0,qtd,r0,XBRL R-file (10-Q),0000895421-24-000322
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2023,2,6660.0,qtd,r0,XBRL R-file (10-Q),0000895421-24-000403
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2023,3,1336.0,qtd,r0,XBRL R-file (10-Q),0000895421-24-000491
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2023,4,1464.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-24-000491
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2024,1,1377.0,qtd,r0,XBRL R-file (10-Q),0000895421-25-000343
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2024,2,1386.0,qtd,r0,XBRL R-file (10-Q),0000895421-25-000440
+Morgan Stanley,Investment Management,awm,A,xbrl_q,2024,3,1455.0,qtd,r0,XBRL R-file (10-Q),0000895421-25-000539
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2024,4,1643.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-25-000539
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2025,1,1602.0,qtd,r0,XBRL R-file (10-Q),0000895421-26-000121
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2025,2,1552.0,qtd,r0,XBRL R-file (10-Q),0000895421-26-000212
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2025,2,7764.0,qtd,r0,XBRL R-file (10-Q),0000895421-26-000212
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2025,3,1651.0,qtd,r0,XBRL R-file (10-Q),0000895421-25-000539
-Morgan Stanley,Investment Management,awm,A,xbrl_q,2025,4,1720.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-25-000539
+Morgan Stanley,Wealth Management,awm,A,xbrl_q,2025,4,8429.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-25-000539
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2026,1,1535.0,qtd,r0,XBRL R-file (10-Q),0000895421-26-000121
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2026,2,1646.0,qtd,r0,XBRL R-file (10-Q),0000895421-26-000212
 Morgan Stanley,,dcm,D,mda_q,2020,2,707.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-21-000425
@@ -1102,15 +1187,19 @@ Morgan Stanley,,dcm,D,mda_q,2020,3,476.0,mda_qtd,r0,mda_q:Institutional Securiti
 Morgan Stanley,,dcm,D,mda_q,2021,1,631.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000442
 Morgan Stanley,,dcm,D,mda_q,2021,2,640.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000515
 Morgan Stanley,,dcm,D,mda_q,2021,3,567.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000587
+Morgan Stanley,,dcm,D,mda_q,2021,4,510.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,dcm,D,mda_q,2022,1,432.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000442
 Morgan Stanley,,dcm,D,mda_q,2022,2,326.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-23-000374
 Morgan Stanley,,dcm,D,mda_q,2022,3,366.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-23-000441
+Morgan Stanley,,dcm,D,mda_q,2022,4,314.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,dcm,D,mda_q,2023,1,407.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000322
 Morgan Stanley,,dcm,D,mda_q,2023,2,395.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000403
 Morgan Stanley,,dcm,D,mda_q,2023,3,252.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000491
+Morgan Stanley,,dcm,D,mda_q,2023,4,391.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,dcm,D,mda_q,2024,1,556.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000343
 Morgan Stanley,,dcm,D,mda_q,2024,2,675.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000440
 Morgan Stanley,,dcm,D,mda_q,2024,3,555.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000539
+Morgan Stanley,,dcm,D,mda_q,2024,4,407.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,dcm,D,mda_q,2025,1,677.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000121
 Morgan Stanley,,dcm,D,mda_q,2025,2,532.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000212
 Morgan Stanley,,dcm,D,mda_q,2025,3,772.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000539
@@ -1121,15 +1210,19 @@ Morgan Stanley,,ecm,D,mda_q,2020,3,874.0,mda_qtd,r0,mda_q:Institutional Securiti
 Morgan Stanley,,ecm,D,mda_q,2021,1,1502.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000442
 Morgan Stanley,,ecm,D,mda_q,2021,2,1072.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000515
 Morgan Stanley,,ecm,D,mda_q,2021,3,1010.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000587
+Morgan Stanley,,ecm,D,mda_q,2021,4,853.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,ecm,D,mda_q,2022,1,258.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-22-000442
 Morgan Stanley,,ecm,D,mda_q,2022,2,148.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-23-000374
 Morgan Stanley,,ecm,D,mda_q,2022,3,218.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-23-000441
+Morgan Stanley,,ecm,D,mda_q,2022,4,227.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,ecm,D,mda_q,2023,1,202.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000322
 Morgan Stanley,,ecm,D,mda_q,2023,2,225.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000403
 Morgan Stanley,,ecm,D,mda_q,2023,3,237.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-24-000491
+Morgan Stanley,,ecm,D,mda_q,2023,4,225.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,ecm,D,mda_q,2024,1,430.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000343
 Morgan Stanley,,ecm,D,mda_q,2024,2,352.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000440
 Morgan Stanley,,ecm,D,mda_q,2024,3,362.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000539
+Morgan Stanley,,ecm,D,mda_q,2024,4,455.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,ecm,D,mda_q,2025,1,319.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000121
 Morgan Stanley,,ecm,D,mda_q,2025,2,500.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-26-000212
 Morgan Stanley,,ecm,D,mda_q,2025,3,652.0,mda_qtd,r0,mda_q:Institutional Securities investment banking,0000895421-25-000539
@@ -1140,15 +1233,19 @@ Morgan Stanley,,equities,D,mda_q,2020,3,2311.0,mda_qtd,r0,mda_q:Institutional Se
 Morgan Stanley,,equities,D,mda_q,2021,1,2875.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000442
 Morgan Stanley,,equities,D,mda_q,2021,2,2827.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000515
 Morgan Stanley,,equities,D,mda_q,2021,3,2876.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000587
+Morgan Stanley,,equities,D,mda_q,2021,4,2857.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,equities,D,mda_q,2022,1,3174.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000442
 Morgan Stanley,,equities,D,mda_q,2022,2,2960.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-23-000374
 Morgan Stanley,,equities,D,mda_q,2022,3,2459.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-23-000441
+Morgan Stanley,,equities,D,mda_q,2022,4,2176.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,equities,D,mda_q,2023,1,2729.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-24-000322
 Morgan Stanley,,equities,D,mda_q,2023,2,2548.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-24-000403
 Morgan Stanley,,equities,D,mda_q,2023,3,2507.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-24-000491
+Morgan Stanley,,equities,D,mda_q,2023,4,2202.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,equities,D,mda_q,2024,1,2842.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000343
 Morgan Stanley,,equities,D,mda_q,2024,2,3018.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000440
 Morgan Stanley,,equities,D,mda_q,2024,3,3045.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000539
+Morgan Stanley,,equities,D,mda_q,2024,4,3325.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,equities,D,mda_q,2025,1,4128.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-26-000121
 Morgan Stanley,,equities,D,mda_q,2025,2,3721.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-26-000212
 Morgan Stanley,,equities,D,mda_q,2025,3,4116.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000539
@@ -1159,15 +1256,19 @@ Morgan Stanley,,ficc,D,mda_q,2020,3,1954.0,mda_qtd,r0,mda_q:Institutional Securi
 Morgan Stanley,,ficc,D,mda_q,2021,1,2966.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000442
 Morgan Stanley,,ficc,D,mda_q,2021,2,1682.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000515
 Morgan Stanley,,ficc,D,mda_q,2021,3,1640.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000587
+Morgan Stanley,,ficc,D,mda_q,2021,4,1228.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,ficc,D,mda_q,2022,1,2923.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-22-000442
 Morgan Stanley,,ficc,D,mda_q,2022,2,2500.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-23-000374
 Morgan Stanley,,ficc,D,mda_q,2022,3,2181.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-23-000441
+Morgan Stanley,,ficc,D,mda_q,2022,4,1418.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,ficc,D,mda_q,2023,1,2576.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-24-000322
 Morgan Stanley,,ficc,D,mda_q,2023,2,1716.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-24-000403
 Morgan Stanley,,ficc,D,mda_q,2023,3,1947.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-24-000491
+Morgan Stanley,,ficc,D,mda_q,2023,4,1434.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,ficc,D,mda_q,2024,1,2485.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000343
 Morgan Stanley,,ficc,D,mda_q,2024,2,1999.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000440
 Morgan Stanley,,ficc,D,mda_q,2024,3,2003.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000539
+Morgan Stanley,,ficc,D,mda_q,2024,4,1931.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,ficc,D,mda_q,2025,1,2604.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-26-000121
 Morgan Stanley,,ficc,D,mda_q,2025,2,2180.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-26-000212
 Morgan Stanley,,ficc,D,mda_q,2025,3,2169.0,mda_qtd,r0,mda_q:Institutional Securities income statement,0000895421-25-000539
@@ -1202,16 +1303,16 @@ PJT Partners,Advisory Fees,advisory,D,xbrl_q,2025,2,354.521,qtd,r0,XBRL R-file (
 PJT Partners,Advisory Fees,advisory,D,xbrl_q,2025,3,389.79900000000004,qtd,r0,XBRL R-file (10-Q),0001193125-25-269723
 PJT Partners,Advisory Fees,advisory,D,xbrl_q,2025,4,473.8689999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-25-269723
 PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2019,1,2.45,qtd,r0,XBRL R-file (10-Q),0001564590-20-020516
-PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2019,2,2.509,qtd,r0,XBRL R-file (10-Q),0001564590-20-035160
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2019,2,28.695,qtd,r0,XBRL R-file (10-Q),0001564590-20-035160
 PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2019,3,3.079,qtd,r0,XBRL R-file (10-Q),0001564590-20-048897
 PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2019,4,3.7620000000000005,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-20-048897
 PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2020,1,3.345,qtd,r0,XBRL R-file (10-Q),0001564590-21-022565
-PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2020,2,3.336,qtd,r0,XBRL R-file (10-Q),0001564590-21-039514
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2020,2,35.26,qtd,r0,XBRL R-file (10-Q),0001564590-21-039514
 PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2020,3,2.17,qtd,r0,XBRL R-file (10-Q),0001564590-21-052968
 PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2020,4,1.6339999999999986,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-21-052968
 PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2021,1,50.383,qtd,r0,XBRL R-file (10-Q),0001564590-22-016468
-PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2021,2,1.822,qtd,r0,XBRL R-file (10-Q),0001564590-22-027118
-PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2021,3,1.7590000000000001,qtd,r0,XBRL R-file (10-Q),0001564590-22-035710
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2021,2,40.337,qtd,r0,XBRL R-file (10-Q),0001564590-22-027118
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2021,3,46.891,qtd,r0,XBRL R-file (10-Q),0001564590-22-035710
 PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2021,4,79.08100000000002,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-22-035710
 PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2022,1,60.351,qtd,r0,XBRL R-file (10-Q),0001564590-22-016468
 PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2022,2,49.482,qtd,r0,XBRL R-file (10-Q),0001564590-22-027118
@@ -1219,10 +1320,10 @@ PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2022,3,39.652,qtd,r0,XBRL R-
 PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2022,4,43.405,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001564590-22-035710
 PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2023,1,27.585,qtd,r0,XBRL R-file (10-Q),0000950170-24-052960
 PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2023,2,3.952,qtd,r0,XBRL R-file (10-Q),0000950170-24-090024
-PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2023,3,3.9650000000000003,qtd,r0,XBRL R-file (10-Q),0000950170-24-119582
+PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2023,3,26.66,qtd,r0,XBRL R-file (10-Q),0000950170-24-119582
 PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2023,4,28.338000000000008,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000950170-24-119582
 PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2024,1,34.489,qtd,r0,XBRL R-file (10-Q),0000950170-25-061984
-PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2024,2,46.873,qtd,r0,XBRL R-file (10-Q),0000950170-25-100937
+PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2024,2,4.126,qtd,r0,XBRL R-file (10-Q),0000950170-25-100937
 PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2024,3,4.095,qtd,r0,XBRL R-file (10-Q),0001193125-25-269723
 PJT Partners,Interest Income from Placement Fees and Other,placement_fees,D,xbrl_q,2024,4,3.658999999999999,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001193125-25-269723
 PJT Partners,Placement Fees,placement_fees,D,xbrl_q,2025,1,36.031,qtd,r0,XBRL R-file (10-Q),0000950170-25-061984
@@ -1246,9 +1347,9 @@ Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2018,3,1102.0,qtd,r0,X
 Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2018,4,12544.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000072971-19-000406
 Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2019,1,1101.0,qtd,r0,XBRL R-file (10-Q),0000072971-19-000254
 Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2019,2,1037.0,qtd,r0,XBRL R-file (10-Q),0000072971-19-000331
-Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2019,3,3794.0,qtd,r0,XBRL R-file (10-Q),0000072971-20-000338
-Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2019,4,4563.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000072971-20-000338
-Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2020,1,3544.0,qtd,r0,XBRL R-file (10-Q),0000072971-21-000221
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2019,3,5141.0,qtd,r0,XBRL R-file (10-Q),0000072971-20-000338
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2019,4,2462.0,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0000072971-20-000338
+Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2020,1,3270.0,qtd,r0,XBRL R-file (10-Q),0000072971-21-000221
 Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2020,2,3206.0,qtd,r0,XBRL R-file (10-Q),0000072971-21-000267
 Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2020,3,3290.0,qtd,r0,XBRL R-file (10-Q),0000072971-21-000317
 Wells Fargo,Wealth and Investment Management,awm,A,xbrl_q,2020,4,4746.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000072971-21-000317

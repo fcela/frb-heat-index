@@ -79,8 +79,10 @@ def _period_columns(table):
 
     The duration row ("3/6/9 Months Ended") and the end-date row
     ("Sep. 30, 2018") are the first two rows carrying those markers.
-    Returns a list of (duration, end_date) per column, or None when the
-    table has no period headers (not a quarterly segment table).
+    Returns a list of (column_index, duration, period_end); column_index
+    is the absolute cell index in the table row, so value extraction
+    works even when the label cell spans multiple columns. Returns None
+    when the table has no period headers (not a quarterly segment table).
     """
     dur_row = date_row = None
     for i, row in enumerate(table[:8]):
@@ -102,17 +104,26 @@ def _period_columns(table):
     elif len(durs) < len(dates):
         durs = [None] * (len(dates) - len(durs)) + durs
     # Forward-fill: duration/date cells often span merged columns; the
-    # parser expands colspans, but some filers leave blanks.
+    # parser expands colspans, but some filers leave blanks. Never invent
+    # a duration for a point-in-time column: an explicit date with no
+    # duration is a balance-sheet column (e.g. "Dec. 31, 2024" assets),
+    # not a period. (Regression: Citi 2025-Q3 10-Q labeled its Dec-31-2024
+    # point-in-time column (9, 2024-12-31), shifting 9M values into the
+    # wrong periods and producing a bogus annual-derived Q4.)
     cols = []
     last_dur = last_date = None
-    for du, da in zip(durs, dates):
+    for idx, (du, da) in enumerate(zip(durs, dates)):
+        if du is None and da is not None:
+            cols.append((idx, None, da))
+            continue
         last_dur = du or last_dur
         last_date = da or last_date
-        cols.append((last_dur, last_date))
-    # The label column has no period; drop leading (None, None) entries.
-    while cols and cols[0] == (None, None):
+        cols.append((idx, last_dur, last_date))
+    # The label column(s) have no period; drop leading (None, None).
+    while cols and cols[0][1] is None and cols[0][2] is None:
         cols.pop(0)
-    if not any(d and dt for d, dt in cols):
+    cols = [(i, d, dt) for (i, d, dt) in cols if d and dt]
+    if not cols:
         return None
     return cols
 
@@ -167,10 +178,7 @@ def parse_segment_table_q(html_text, extra_labels=(), sum_labels=()):
                     text_headers_seen = True
                 continue
             if norm in labels:
-                for j, (dur, end) in enumerate(cols):
-                    if not dur or not end:
-                        continue
-                    c = j + 1  # column 0 is the label
+                for c, dur, end in cols:
                     if c >= len(row):
                         continue
                     value = _parse_value(row[c][0])
@@ -227,10 +235,7 @@ def parse_segment_table_q_sum(table, cols, flat, sum_labels):
                 text_headers_seen = True
             continue
         if norm in labels:
-            for j, (dur, end) in enumerate(cols):
-                if not dur or not end:
-                    continue
-                c = j + 1
+            for c, dur, end in cols:
                 if c >= len(row):
                     continue
                 value = _parse_value(row[c][0])

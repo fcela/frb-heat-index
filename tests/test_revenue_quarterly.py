@@ -167,12 +167,35 @@ def test_period_column_date_alignment():
          ("$ 12,414", None), ("$ 28,259", None), ("$ 26,375", None)],
     ]
     cols = _period_columns(table)
-    # Drop the label column (None, None); data cols pair correctly.
-    assert cols[0] == (3, "2011-06-30"), cols
-    assert cols[1] == (3, "2010-06-30"), cols
-    assert cols[2] == (6, "2011-06-30"), cols
-    assert cols[3] == (6, "2010-06-30"), cols
+    # (column_index, duration, period_end); label column dropped.
+    assert cols[0] == (1, 3, "2011-06-30"), cols
+    assert cols[1] == (2, 3, "2010-06-30"), cols
+    assert cols[2] == (3, 6, "2011-06-30"), cols
+    assert cols[3] == (4, 6, "2010-06-30"), cols
     print("test_period_column_date_alignment: OK")
+
+
+def test_period_column_point_in_time_skipped():
+    # A date cell with no duration (point-in-time balance-sheet column)
+    # must not inherit the previous duration via forward-fill.
+    # Regression: Citi 2025-Q3 10-Q R65 labeled Dec-31-2024 assets as
+    # (9, 2024-12-31), shifting 9M values into wrong periods.
+    from src.revenue.parse_xbrl_q import _period_columns
+    table = [
+        [("REPORTABLE BUSINESS SEGMENTS", None),
+         ("REPORTABLE BUSINESS SEGMENTS", None),
+         ("3 Months Ended", None), ("3 Months Ended", None),
+         ("9 Months Ended", None), ("9 Months Ended", None), ("", None)],
+        [("Sep. 30, 2025", None), ("Sep. 30, 2024", None),
+         ("Sep. 30, 2025", None), ("Sep. 30, 2024", None),
+         ("Dec. 31, 2024", None)],
+        [("Total revenues", None), ("$ 2,132", None), ("$ 1,597", None),
+         ("$ 6,005", None), ("$ 4,960", None), ("$ 1,182,000", None)],
+    ]
+    cols = _period_columns(table)
+    assert cols == [(2, 3, "2025-09-30"), (3, 3, "2024-09-30"),
+                    (4, 9, "2025-09-30"), (5, 9, "2024-09-30")], cols
+    print("test_period_column_point_in_time_skipped: OK")
 
 
 def test_segment_rename_canonicalization():
@@ -188,6 +211,91 @@ def test_segment_rename_canonicalization():
     print("test_segment_rename_canonicalization: OK")
 
 
+def test_hl_fiscal_q3_qtd_q4():
+    # Houlihan Lokey (fiscal year ends Mar 31) files a 10-Q for its fiscal
+    # Q3, quarter ended Dec 31 = calendar Q4. The 3M value must be emitted
+    # directly as Q4, not dropped. Regression: HL was absent from every Q4,
+    # injecting a periodic composition change into quarterly HHI.
+    # Values pinned against HL's 2024-Q3 10-Q (0001302215-25-000007).
+    seg_q = _seg_q([
+        ("Houlihan Lokey", "0001302215", "Corporate Finance", 3,
+         "2024-06-30", 328.417, "q1"),
+        ("Houlihan Lokey", "0001302215", "Corporate Finance", 3,
+         "2024-09-30", 364.028, "q2"),
+        ("Houlihan Lokey", "0001302215", "Corporate Finance", 9,
+         "2024-09-30", 1114.047, "q2"),
+        ("Houlihan Lokey", "0001302215", "Corporate Finance", 3,
+         "2024-12-31", 421.602, "q3"),
+        ("Houlihan Lokey", "0001302215", "Corporate Finance", 9,
+         "2024-12-31", 1114.047, "q3"),
+    ])
+    seg_a = _seg_a([
+        ("Houlihan Lokey", "0001302215", "Corporate Finance", 2024,
+         1900.0, "k1"),
+    ])
+    panel, _, _ = build_quarterly(seg_q, seg_a, with_mda=False)
+    adv = panel.filter(pl.col("taxonomy_line") == "advisory").sort("quarter")
+    vals = dict(zip(adv["quarter"].to_list(), adv["net_revenue_m"].to_list()))
+    der = dict(zip(adv["quarter"].to_list(), adv["derivation"].to_list()))
+    assert vals[4] == 421.602, vals
+    assert der[4] == "qtd", der
+    print("test_hl_fiscal_q3_qtd_q4: OK")
+
+
+def test_hl_no_annual_derived_q4():
+    # HL's "annual" is a fiscal year (Apr-Mar); annual - calendar-9M is
+    # meaningless and must not be emitted as Q4.
+    seg_q = _seg_q([
+        ("Houlihan Lokey", "0001302215", "Corporate Finance", 9,
+         "2024-09-30", 1114.047, "q2"),
+    ])
+    seg_a = _seg_a([
+        ("Houlihan Lokey", "0001302215", "Corporate Finance", 2024,
+         1900.0, "k1"),
+    ])
+    panel, _, _ = build_quarterly(seg_q, seg_a, with_mda=False)
+    adv = panel.filter(pl.col("taxonomy_line") == "advisory")
+    assert 4 not in adv["quarter"].to_list(), adv
+    print("test_hl_no_annual_derived_q4: OK")
+
+
+def test_mda_annual_derived_q4():
+    # Division-reporters get Q4 = annual MD&A sub-split less Q1-Q3.
+    # Without this they vanish from every Q4 (periodic HHI artifact).
+    import tempfile, os
+    from src.revenue import build_revenue_q as bq
+    orig_data = bq.DATA
+    with tempfile.TemporaryDirectory() as td:
+        bq.DATA = Path(td)
+        pl.DataFrame([
+            {"firm": "JPM", "cik": "0000019617", "taxonomy_line": "ficc",
+             "year": 2024, "quarter": 1, "net_revenue_m": 1000.0,
+             "source": "s", "accession": "a1"},
+            {"firm": "JPM", "cik": "0000019617", "taxonomy_line": "ficc",
+             "year": 2024, "quarter": 2, "net_revenue_m": 1100.0,
+             "source": "s", "accession": "a2"},
+            {"firm": "JPM", "cik": "0000019617", "taxonomy_line": "ficc",
+             "year": 2024, "quarter": 3, "net_revenue_m": 1200.0,
+             "source": "s", "accession": "a3"},
+        ]).write_csv(Path(td) / "subsplits_quarterly.csv")
+        pl.DataFrame([
+            {"firm": "JPM", "cik": "0000019617", "taxonomy_line": "ficc",
+             "year": 2024, "net_revenue_m": 4000.0,
+             "source": "s", "accession": "a0"},
+        ]).write_csv(Path(td) / "subsplits_annual.csv")
+        seg_q = _seg_q([])
+        seg_a = _seg_a([])
+        panel, _, _ = build_quarterly(seg_q, seg_a, with_mda=True)
+        bq.DATA = orig_data
+    ficc = panel.filter(pl.col("taxonomy_line") == "ficc",
+                        pl.col("year") == 2024).sort("quarter")
+    vals = dict(zip(ficc["quarter"].to_list(), ficc["net_revenue_m"].to_list()))
+    assert vals[4] == 700.0, vals  # 4000 - (1000+1100+1200)
+    der = dict(zip(ficc["quarter"].to_list(), ficc["derivation"].to_list()))
+    assert der[4] == "mda_annual_derived_q4", der
+    print("test_mda_annual_derived_q4: OK")
+
+
 def main():
     test_period_parsing()
     test_quarter_regimes()
@@ -195,7 +303,11 @@ def main():
     test_derivation_validation_flags()
     test_reconcile_quarterly()
     test_period_column_date_alignment()
+    test_period_column_point_in_time_skipped()
     test_segment_rename_canonicalization()
+    test_hl_fiscal_q3_qtd_q4()
+    test_hl_no_annual_derived_q4()
+    test_mda_annual_derived_q4()
     print("ALL REVENUE-QUARTERLY TESTS PASS")
 
 
