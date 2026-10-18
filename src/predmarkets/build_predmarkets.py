@@ -24,17 +24,20 @@ import argparse
 import datetime as dt
 import json
 import math
+import re
 import sys
 from pathlib import Path
 
 import polars as pl
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from src.predmarkets import distribution as distmod
 from src.predmarkets import kalshi
 from src.predmarkets.indicators import (
     FOMC_STRIKE_ORDER,
     INDICATORS,
     MONTH_CODES,
+    PAPER_DOI,
     RELEASE_GAP_DAYS,
 )
 
@@ -190,6 +193,11 @@ def strike_label(market: dict, event: dict, reg: dict) -> str:
     if order == "year":
         year = event_year(event)
         return str(year) if year else (sub or market["ticker"])
+    if order == "company":
+        # KXIPO-style: subtitle empty; company code is the ticker suffix.
+        return sub or market["ticker"].rsplit("-", 1)[-1]
+    if order == "tail":
+        return sub or market["ticker"]
     if sub:
         return sub
     return market["ticker"].rsplit("-", 1)[-1]
@@ -210,7 +218,33 @@ def strike_rank(market: dict, event: dict, reg: dict) -> tuple:
             return (int(label), label)
         except ValueError:
             return (float("inf"), label)
+    if order == "tail":
+        return (TAIL_STRIKE_ORDER.get(label, 50), label)
     return (0, label)
+
+
+# Fixed display order for the derived tail-risk series.
+TAIL_STRIKE_ORDER = {
+    "CPI > 3%": 0,
+    "CPI > 4%": 1,
+    "GDP < 1.5%": 2,
+    "GDP < 0%": 3,
+}
+
+# Realized FOMC decisions, meeting date -> decision bucket (Kalshi wording).
+# Public record (FOMC statements); verified 2026-10-18 against the Fed's
+# 2026 meeting chronology. "Hike 0bps" is Kalshi's label for no change.
+REALIZED_FOMC = {
+    "2025-09-17": "Cut 25bps",
+    "2025-10-29": "Cut 25bps",
+    "2025-12-10": "Cut 25bps",
+    "2026-01-28": "Hike 0bps",
+    "2026-03-18": "Hike 0bps",
+    "2026-04-29": "Hike 0bps",
+    "2026-06-17": "Hike 0bps",
+    "2026-07-29": "Hike 0bps",
+    "2026-09-16": "Hike 25bps",
+}
 
 
 # ------------------------------------------------------------ frame handling
@@ -248,6 +282,10 @@ def load_existing(data_dir: Path, key: str) -> pl.DataFrame | None:
     df = pl.read_csv(p, schema_overrides={"date": pl.Utf8})
     if df.height == 0:
         return None
+    # Legacy CSVs may carry numeric strikes (inferred Float64); the frame
+    # contract is String strikes.
+    if df.schema.get("strike") != pl.Utf8:
+        df = df.with_columns(pl.col("strike").cast(pl.Utf8))
     return df
 
 
@@ -270,6 +308,403 @@ def validate_frame(df: pl.DataFrame, key: str) -> None:
     out = df.filter((pl.col("value") < 0) | (pl.col("value") > 1))
     if out.height:
         raise RuntimeError(f"{key}: {out.height} probabilities outside [0,1]")
+
+
+# ------------------------------------------- implied-distribution machinery
+
+# Fixed outcome grids (cell edges) for the density heatmaps, per indicator.
+DIST_GRIDS = {
+    "fed_funds": [round(0.0 + 0.25 * i, 2) for i in range(25)],      # 0–6%
+    "cpi_yoy": [round(2.0 + 0.1 * i, 2) for i in range(36)],        # 2–5.5%
+    "gdp_quarterly": [round(0.0 + 0.25 * i, 2) for i in range(19)],  # 0–4.5%
+    "unemployment": [round(3.5 + 0.1 * i, 2) for i in range(21)],   # 3.5–5.5%
+}
+DIST_QUANTILES = [0.05, 0.25, 0.5, 0.75, 0.95]
+
+# Tail-risk definitions: (label, source_key, predicate on bins).
+# Predicates see bins as {low, high, mass}; None = open end.
+TAIL_DEFS = [
+    ("CPI > 3%", "cpi_yoy",
+     lambda b: b["low"] is not None and b["low"] >= 3.0),
+    ("CPI > 4%", "cpi_yoy",
+     lambda b: b["low"] is not None and b["low"] >= 4.0),
+    ("GDP < 1.5%", "gdp_quarterly",
+     lambda b: b["high"] is not None and b["high"] <= 1.5),
+    ("GDP < 0%", "gdp_quarterly",
+     lambda b: b["high"] is not None and b["high"] <= 0.0),
+]
+
+
+def _ladder_on(df: pl.DataFrame, date: str, event: str) -> list[tuple[float, float]]:
+    """(strike level, probability) pairs for one date × event."""
+    out = []
+    for r in df.filter(
+            (pl.col("date") == date) & (pl.col("event") == event)
+            ).iter_rows(named=True):
+        level = distmod.parse_level(r["strike"])
+        if level is not None:
+            out.append((level, r["value"]))
+    return out
+
+
+def _front_event_on(df: pl.DataFrame, date: str,
+                    close_times: dict[str, dt.datetime]) -> str | None:
+    """Front event on a date: nearest close among events with data that day
+    that had not yet closed."""
+    cands = df.filter(pl.col("date") == date)["event"].unique().to_list()
+    best, best_close = None, None
+    for e in cands:
+        ct = close_times.get(e)
+        if ct is None:
+            ct = _infer_horizon(e)
+            if ct is None:
+                continue
+            ct = dt.datetime.combine(ct, dt.time.min, tzinfo=dt.timezone.utc)
+        if ct.date() > dt.date.fromisoformat(date):
+            if best_close is None or ct < best_close:
+                best, best_close = e, ct
+    return best
+
+
+def _infer_horizon(event_ticker: str) -> dt.date | None:
+    """Horizon date inferred from the event ticker, for ordering events.
+
+    Proxies are month-accurate (good for front-event ordering); exact
+    meeting/release days come from the API's close_time where available.
+    """
+    # FOMC decision / fed funds level: KXFED(DECISION)-YYMON. Meetings fall in
+    # the latter half of the month; month-end is the ordering-safe proxy
+    # (the API's close_time is used where available).
+    m = re.match(r"KXFED(?:DECISION)?-(\d{2})([A-Z]{3})$", event_ticker)
+    if m:
+        mon = MONTH_CODES.get(m.group(2))
+        if mon:
+            y = 2000 + int(m.group(1))
+            last = (dt.date(y + (mon == 12), mon % 12 + 1, 1)
+                    - dt.timedelta(days=1)).day
+            return dt.date(y, mon, last)
+        return None
+    # CPI / unemployment: KX(CPIYOY|U3)-YYMON -> release ~mid following month
+    m = re.match(r"KX(?:CPIYOY|U3)-(\d{2})([A-Z]{3})$", event_ticker)
+    if m:
+        mon = MONTH_CODES.get(m.group(2))
+        if mon:
+            y, mo = 2000 + int(m.group(1)), mon + 1
+            if mo > 12:
+                y, mo = y + 1, 1
+            return dt.date(y, mo, 15)
+        return None
+    # GDP: KXGDP-YYMONDD -> release date is in the ticker
+    m = re.match(r"KXGDP-(\d{2})([A-Z]{3})(\d{2})$", event_ticker)
+    if m:
+        mon = MONTH_CODES.get(m.group(2))
+        if mon:
+            return dt.date(2000 + int(m.group(1)), mon, int(m.group(3)))
+        return None
+    # Annual ladders: KXRECSSNBER-YY(YY), KXIPO-YY(YY) -> year end
+    m = re.match(r"KX(?:RECSSNBER|IPO)-(\d{2}|\d{4})$", event_ticker)
+    if m:
+        y = m.group(1)
+        return dt.date(2000 + int(y) if len(y) == 2 else int(y), 12, 31)
+    return None
+
+
+def build_distribution_views(key: str, df: pl.DataFrame,
+                             close_times: dict[str, dt.datetime]
+                             ) -> tuple[pl.DataFrame, list[dict], dict]:
+    """Per-date implied distributions for a threshold indicator.
+
+    Returns (dist_csv_frame, fan_series, heatmap). The fan series holds
+    quantile rows for the front event each day; the heatmap holds the fixed
+    grid plus per-date cell masses. Moments come from the same bins.
+    """
+    grid = DIST_GRIDS[key]
+    dist_rows, fan, heat_cells = [], [], []
+    dates = sorted(df["date"].unique().to_list())
+    for date in dates:
+        ev = _front_event_on(df, date, close_times)
+        if ev is None:
+            continue
+        ladder = _ladder_on(df, date, ev)
+        if len(ladder) < 2:
+            continue
+        levels = [lv for lv, _ in ladder]
+        probs = [p for _, p in ladder]
+        bins = distmod.recover_threshold_bins(levels, probs)
+        qs = distmod.distribution_quantiles(bins, DIST_QUANTILES)
+        if any(v is None for v in qs.values()):
+            continue
+        mo = distmod.distribution_moments(bins)
+        dist_rows.append({
+            "date": date, "event": ev,
+            "q05": qs[0.05], "q25": qs[0.25], "q50": qs[0.50],
+            "q75": qs[0.75], "q95": qs[0.95],
+            "mean": mo["mean"], "variance": mo["variance"],
+        })
+        fan.append({
+            "date": date, "event": ev,
+            "q05": qs[0.05], "q25": qs[0.25], "q50": qs[0.50],
+            "q75": qs[0.75], "q95": qs[0.95],
+        })
+        heat_cells.append({
+            "date": date, "event": ev,
+            "masses": distmod.allocate_to_grid(bins, grid),
+        })
+    dist_df = (pl.DataFrame(dist_rows) if dist_rows
+               else pl.DataFrame(schema={
+                   "date": pl.Utf8, "event": pl.Utf8, "q05": pl.Float64,
+                   "q25": pl.Float64, "q50": pl.Float64, "q75": pl.Float64,
+                   "q95": pl.Float64, "mean": pl.Float64,
+                   "variance": pl.Float64}))
+    heatmap = {"grid": grid, "cells": heat_cells}
+    return dist_df, fan, heatmap
+
+
+def build_tail_risks(frames: dict[str, pl.DataFrame],
+                     close_times: dict[str, dict[str, dt.datetime]]
+                     ) -> pl.DataFrame:
+    """Daily tail probabilities summed from the CPI/GDP implied distributions
+    (paper Figure 13). One row per date × tail definition."""
+    rows = []
+    for label, src_key, pred in TAIL_DEFS:
+        df = frames.get(src_key)
+        if df is None or df.height == 0:
+            continue
+        for date in sorted(df["date"].unique().to_list()):
+            ev = _front_event_on(df, date, close_times.get(src_key, {}))
+            if ev is None:
+                continue
+            ladder = _ladder_on(df, date, ev)
+            if len(ladder) < 2:
+                continue
+            bins = distmod.recover_threshold_bins(
+                [lv for lv, _ in ladder], [p for _, p in ladder])
+            mass = sum(b["mass"] for b in bins if pred(b))
+            rows.append({
+                "date": date, "value": mass, "event": ev,
+                "ticker": f"TAIL-{label}", "strike": label, "volume": 0.0,
+            })
+    if not rows:
+        return pl.DataFrame(schema={c: pl.Utf8 for c in CSV_COLUMNS})
+    df = pl.DataFrame(rows).with_columns(pl.col("date").cast(pl.Utf8))
+    return df.select(CSV_COLUMNS).sort(["date", "strike"])
+
+
+# FOMC meeting dates by event ticker (decision day; public FOMC calendar).
+FOMC_EVENT_DATES = {
+    "KXFEDDECISION-26SEP": "2026-09-16",
+    "KXFEDDECISION-26OCT": "2026-10-28",
+    "KXFEDDECISION-26DEC": "2026-12-09",
+}
+
+
+def build_fomc_track_record(df: pl.DataFrame) -> list[dict]:
+    """Day-before mode bucket vs realized decision, per resolved meeting.
+
+    For each event whose meeting date has a realized decision on record, take
+    the mode bucket (highest-probability) on the last trading day with data
+    before the meeting and grade it against the realized bucket. The archive
+    starts at one meeting (Sep 2026); it extends automatically as meetings
+    settle and their markets enter the archive.
+    """
+    out = []
+    for event, meeting in FOMC_EVENT_DATES.items():
+        realized = REALIZED_FOMC.get(meeting)
+        if realized is None:
+            continue
+        ev_df = df.filter(pl.col("event") == event)
+        if ev_df.height == 0:
+            continue
+        days = [d for d in ev_df["date"].unique().to_list() if d < meeting]
+        if not days:
+            continue
+        last_day = max(days)
+        day_df = ev_df.filter(pl.col("date") == last_day)
+        if day_df.height == 0:
+            continue
+        best = day_df.sort("value", descending=True).row(0, named=True)
+        mode_bucket = best["strike"].strip()
+        out.append({
+            "meeting": meeting,
+            "event": event,
+            "as_of": last_day,
+            "mode_bucket": mode_bucket,
+            "mode_probability": round(float(best["value"]), 4),
+            "realized_bucket": realized,
+            "hit": mode_bucket == realized,
+        })
+    return sorted(out, key=lambda r: r["meeting"])
+
+
+def _company_of(ticker: str) -> str:
+    return ticker.rsplit("-", 1)[-1]
+
+
+def build_ipo_expected(df: pl.DataFrame,
+                       close_times: dict[str, dt.datetime]) -> pl.DataFrame:
+    """Expected IPO count per day: sum of company probabilities for the
+    front (current-year) event."""
+    rows = []
+    for date in sorted(df["date"].unique().to_list()):
+        ev = _front_event_on(df, date, close_times)
+        if ev is None:
+            continue
+        day = df.filter((pl.col("date") == date) & (pl.col("event") == ev))
+        if day.height == 0:
+            continue
+        exp_n = float(day["value"].sum())
+        top = day.sort("value", descending=True).head(5)
+        rows.append({
+            "date": date, "value": exp_n, "event": ev,
+            "ticker": "IPO-EXPECTED", "strike": "expected IPOs",
+            "volume": 0.0,
+            "top5": "; ".join(
+                f"{_company_of(r['ticker'])} {r['value']:.0%}"
+                for r in top.iter_rows(named=True)),
+        })
+    if not rows:
+        return pl.DataFrame(schema={c: pl.Utf8 for c in CSV_COLUMNS})
+    base = (pl.DataFrame([{k: r[k] for k in CSV_COLUMNS} for r in rows])
+            .with_columns(pl.col("date").cast(pl.Utf8)))
+    return base.select(CSV_COLUMNS).sort("date")
+
+
+def _derived_entry(key: str, reg: dict, df: pl.DataFrame,
+                   now: dt.datetime) -> tuple[dict, dict]:
+    """Site + meta entries for a derived indicator from its CSV frame."""
+    strikes = sorted(df["strike"].unique().to_list(),
+                     key=lambda s: TAIL_STRIKE_ORDER.get(s, 99))
+    colors = strike_colors(reg["palette"], len(strikes))
+    strike_colors_map = dict(zip(strikes, colors))
+    last_value = {s: None for s in strikes}
+    series = []
+    for r in df.sort(["date", "strike"]).iter_rows(named=True):
+        v = sanitize_value(r["value"])
+        series.append({"date": r["date"], "strike": r["strike"], "value": v})
+        last_value[r["strike"]] = v
+    entry = {
+        "key": key,
+        "title": reg["title"],
+        "why": reg["why"],
+        "source": reg["source"],
+        "frequency": reg["frequency"],
+        "unit": reg["unit"],
+        "status": "live" if df.height else "no-open-market",
+        "note": reg["note"],
+        "paper": reg.get("paper"),
+        "paper_doi": PAPER_DOI,
+        "event_title": "",
+        "event_ticker": None,
+        "event_scope": reg["event_scope"],
+        "horizons": [],
+        "strikes": strikes,
+        "strike_colors": strike_colors_map,
+        "last_observation": str(df["date"].max()) if df.height else None,
+        "first_observation": str(df["date"].min()) if df.height else None,
+        "n_observations": df.height,
+        "last_value": last_value,
+        "series": series,
+    }
+    meta_entry = {k: v for k, v in entry.items() if k != "series"}
+    meta_entry["derived_from"] = reg.get("derived_from")
+    return entry, meta_entry
+
+
+def _build_derived(site_indicators: list, meta_indicators: dict,
+                   frames: dict[str, pl.DataFrame],
+                   close_times: dict[str, dict[str, dt.datetime]],
+                   data_dir: Path, now: dt.datetime) -> None:
+    """Derived indicators and distribution views. Mutates the site/meta lists
+    in place. All inputs are committed CSV frames; no network."""
+    dist_note = ("Implied distributions are recovered from each day's strike "
+                 "ladder following Diercks/Katz/Wright (2026), FEDS 2026-010, "
+                 "Section 3: bin probabilities by strike differencing with "
+                 "mode-outward monotonicity. These are risk-neutral (Q-measure) "
+                 "probabilities, not physical ones; thin tail contracts can be stale.")
+
+    # ---- implied-distribution views for the threshold indicators ----
+    for key in DIST_GRIDS:
+        df = frames.get(key)
+        if df is None or df.height == 0:
+            continue
+        dist_df, fan, heatmap = build_distribution_views(
+            key, df, close_times.get(key, {}))
+        if dist_df.height:
+            dist_df.write_csv(data_dir / f"dist_{key}.csv")
+        for entry in site_indicators:
+            if entry["key"] == key:
+                entry["distribution"] = {
+                    "fan": fan,
+                    "heatmap": heatmap,
+                    "note": dist_note,
+                }
+                # Daily moments double as an uncertainty gauge (paper Sec. 7).
+                entry["moments"] = [
+                    {"date": r["date"], "mean": r["mean"],
+                     "variance": r["variance"]}
+                    for r in dist_df.iter_rows(named=True)
+                    if r["mean"] is not None
+                ]
+                break
+        meta_indicators[key]["distribution_days"] = dist_df.height
+
+    # ---- tail risks (paper Figure 13) ----
+    tail_reg = INDICATORS["tail_risks"]
+    tail_df = build_tail_risks(frames, close_times)
+    if tail_df.height:
+        tail_df.write_csv(data_dir / "tail_risks.csv")
+    entry, meta_entry = _derived_entry("tail_risks", tail_reg, tail_df, now)
+    strict_json(entry["series"])
+    site_indicators.append(entry)
+    meta_indicators["tail_risks"] = meta_entry
+
+    # ---- FOMC track record: day-before mode vs realized decision ----
+    fomc_df = frames.get("fomc_decision")
+    if fomc_df is not None and fomc_df.height:
+        record = build_fomc_track_record(fomc_df)
+        for entry in site_indicators:
+            if entry["key"] == "fomc_decision":
+                entry["track_record"] = record
+                hits = sum(1 for r in record if r["hit"])
+                entry["track_record_note"] = (
+                    f"Day-before mode matched the realized decision in "
+                    f"{hits}/{len(record)} past meetings in the archive. "
+                    f"Realized decisions are public record (FOMC statements).")
+                break
+        meta_indicators["fomc_decision"]["track_record"] = record
+
+    # ---- IPO pipeline: expected count replaces the company lines ----
+    ipo_df = frames.get("ipo_pipeline")
+    if ipo_df is not None and ipo_df.height:
+        exp_df = build_ipo_expected(ipo_df, close_times.get("ipo_pipeline", {}))
+        if exp_df.height:
+            exp_df.write_csv(data_dir / "ipo_expected.csv")
+        for entry in site_indicators:
+            if entry["key"] == "ipo_pipeline":
+                series = [{"date": r["date"], "strike": "expected IPOs",
+                           "value": sanitize_value(r["value"])}
+                          for r in exp_df.iter_rows(named=True)]
+                entry["series"] = series
+                entry["strikes"] = ["expected IPOs"]
+                entry["strike_colors"] = {"expected IPOs": "#1d4ed8"}
+                last = exp_df.row(-1, named=True)
+                entry["last_value"] = {"expected IPOs": last["value"]}
+                entry["n_observations"] = exp_df.height
+                entry["last_observation"] = str(exp_df["date"].max())
+                entry["first_observation"] = str(exp_df["date"].min())
+                # Top-5 front-runners as card context.
+                top5 = {}
+                for r in ipo_df.filter(
+                        pl.col("date") == ipo_df["date"].max()
+                        ).sort("value", descending=True).head(5
+                        ).iter_rows(named=True):
+                    top5[_company_of(r["ticker"])] = round(float(r["value"]), 3)
+                entry["top5"] = top5
+                strict_json(entry["series"])
+                meta_indicators["ipo_pipeline"]["strikes"] = ["expected IPOs"]
+                meta_indicators["ipo_pipeline"]["top5"] = top5
+                break
+        meta_indicators["ipo_pipeline"]["n_expected_series"] = exp_df.height
 
 
 # ---------------------------------------------------------------- build
@@ -400,8 +835,14 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
     site_json.parent.mkdir(parents=True, exist_ok=True)
     now = dt.datetime.now(dt.timezone.utc)
     site_indicators, meta_indicators = [], {}
+    frames: dict[str, pl.DataFrame] = {}
+    close_times: dict[str, dict[str, dt.datetime]] = {}
 
     for key, reg in INDICATORS.items():
+        if reg.get("series_ticker") is None:
+            # Derived indicator (e.g. tail_risks): built after the fetch loop
+            # from the committed CSVs of its sources.
+            continue
         try:
             events = kalshi.fetch_events(reg["series_ticker"], transport)
             evs = open_events(events)
@@ -423,8 +864,14 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
                 # pipeline failure.
                 validate_frame(df, key)
                 df.write_csv(data_dir / f"{key}.csv")
+            frames[key] = df
+            close_times[key] = {ev["event_ticker"]: event_close_time(ev)
+                                for ev in evs}
 
             entry, meta_entry = _site_entry(key, reg, evs, chart_evs, df)
+            entry["paper"] = reg.get("paper")
+            entry["paper_doi"] = PAPER_DOI
+            meta_entry["paper"] = reg.get("paper")
             if not chart_evs:
                 entry["status"] = meta_entry["status"] = "no-open-market"
                 note = (reg["note"] + " " +
@@ -443,6 +890,7 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
                 "key": key, "title": reg["title"], "why": reg["why"],
                 "source": reg["source"], "frequency": reg["frequency"],
                 "unit": reg["unit"], "status": "error", "note": reg["note"],
+                "paper": reg.get("paper"), "paper_doi": PAPER_DOI,
                 "event_title": "", "event_ticker": None,
                 "event_scope": reg["event_scope"], "horizons": [],
                 "strikes": [], "strike_colors": {},
@@ -454,6 +902,10 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
             meta_entry["error"] = err
             site_indicators.append(entry)
             meta_indicators[key] = meta_entry
+
+    # ---- derived indicators & distribution views (no fetching) ----
+    _build_derived(site_indicators, meta_indicators, frames, close_times,
+                   data_dir, now)
 
     built = now.isoformat(timespec="seconds")
     meta = {

@@ -247,3 +247,30 @@
   background: var(--tape-ink);
   color: var(--tape-bg);
 }
+
+/* Prediction-markets paper deepening: citations, track record, sub-views. */
+.pulse-paper {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--muted, #75705f);
+  max-width: 78ch;
+}
+.pulse-paper-label { font-weight: 600; }
+.pulse-paper a { color: inherit; }
+.pulse-sub { margin-top: 1rem; }
+.pulse-sub h4, .pulse-subhead {
+  font-size: 0.9rem;
+  margin: 1.25rem 0 0.5rem;
+  font-weight: 600;
+}
+.pulse-table {
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+}
+.pulse-table th, .pulse-table td {
+  border: 1px solid var(--tape-line, #e9e4d6);
+  padding: 0.35rem 0.7rem;
+  text-align: left;
+}
+.pulse-table th { font-weight: 600; }
