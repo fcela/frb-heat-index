@@ -40,6 +40,22 @@ from src.revenue.build_revenue import sanitize_records  # noqa: E402
 REPO = Path(__file__).resolve().parents[2]
 DATA = REPO / "data" / "revenue"
 
+# Firms whose fiscal year does not end December 31 (verified in each
+# firm's 10-K DocumentFiscalYearEnd; all other covered firms are --12-31).
+# Their "annual" XBRL values cover a different 12-month window than
+# calendar-year 9M YTD, so annual-derived calendar Q4 is meaningless for
+# them and is skipped. Their fiscal-Q3 10-Q (quarter ended Dec 31) does
+# carry calendar-Q4 3M data, which is emitted directly as QTD.
+#
+# Annual-panel convention (documented, not changed): a fiscal year is
+# mapped to the calendar year of its end date, so Houlihan Lokey FY2024
+# (Apr 2023-Mar 2024) appears as 2024. Nine of its twelve months fall in
+# the prior calendar year; treat cross-firm annual comparisons for HL
+# as offset by one quarter.
+FISCAL_YEAR_ENDS = {
+    "Houlihan Lokey": "--03-31",
+}
+
 
 def quarter_of(period_end):
     """'2018-09-30' -> (2018, 3). Calendar quarters by end-date month."""
@@ -178,16 +194,30 @@ def build_quarterly(seg_q, seg_a, with_mda=True):
             if v is not None:
                 emit(firm, seg, y, 1, v, "qtd",
                      acc_of.get((key, y, 1, 3), ""))
-            # Q4 = Annual - 9M.
-            tot9 = ytd9.get((key, y, 3))
-            ann = annual.get((firm, seg, y))
-            if tot9 is not None and ann is not None:
-                validated("annual_derived_q4", firm, seg, y, 4,
-                          ann - tot9, ann,
-                          acc_of.get((key, y, 3, 9), ""))
-            elif (key, y, 4) not in qtd:
-                # (10-Qs never carry Q4; only log when truly missing.)
-                pass
+            # Q4: direct QTD when a 10-Q carries it. Calendar-year filers
+            # never have Q4 in a 10-Q, but Houlihan Lokey (fiscal year
+            # ends Mar 31) files a 10-Q for its fiscal Q3, quarter ended
+            # Dec 31 = calendar Q4. Previously this was silently dropped
+            # ("10-Qs never carry Q4"), leaving HL out of every Q4 and
+            # injecting a periodic composition change into quarterly HHI.
+            v4 = qtd.get((key, y, 4))
+            if v4 is not None:
+                emit(firm, seg, y, 4, v4, "qtd",
+                     acc_of.get((key, y, 4, 3), ""))
+            else:
+                # Q4 = Annual - 9M. Only meaningful for calendar-year
+                # filers: a fiscal-year "annual" (HL: Apr-Mar) is not
+                # comparable to calendar 9M (Jan-Sep).
+                tot9 = ytd9.get((key, y, 3))
+                ann = annual.get((firm, seg, y))
+                if (tot9 is not None and ann is not None
+                        and firm not in FISCAL_YEAR_ENDS):
+                    validated("annual_derived_q4", firm, seg, y, 4,
+                              ann - tot9, ann,
+                              acc_of.get((key, y, 3, 9), ""))
+                elif (key, y, 4) not in qtd:
+                    # (Only log when truly missing.)
+                    pass
 
     df = pl.DataFrame(rows, schema={
         "firm": pl.String, "segment_native": pl.String,
@@ -234,6 +264,71 @@ def build_quarterly(seg_q, seg_a, with_mda=True):
             })
         if mda_rows:
             mda_df = pl.DataFrame(mda_rows, schema=df.schema)
+            # Q4 for MD&A firms: 10-Qs never carry Q4, but the annual
+            # MD&A subsplits do. Derive Q4 = annual - (Q1+Q2+Q3) when all
+            # three quarters are present as mda_qtd. Without this, the
+            # division-reporters (JPM/MS/BofA/Citi) vanish from every Q4,
+            # injecting a periodic composition change into quarterly HHI.
+            ann_path = DATA / "subsplits_annual.csv"
+            if ann_path.exists():
+                ann = pl.read_csv(ann_path)
+                ann_map = {(canonical_firm(r["firm"]), r["taxonomy_line"],
+                            r["year"]): r["net_revenue_m"]
+                           for r in ann.iter_rows(named=True)}
+                q123 = {}
+                for r in mda_df.iter_rows(named=True):
+                    if r["derivation"] == "mda_qtd" and r["quarter"] in (1, 2, 3):
+                        q123.setdefault(
+                            (r["firm"], r["taxonomy_line"], r["year"]), {})[
+                            r["quarter"]] = r["net_revenue_m"]
+                q4_rows = []
+                for (firm, line, y), qs in sorted(q123.items()):
+                    if len(qs) != 3:
+                        continue
+                    if ((firm, line, y, 4) in
+                            {(r["firm"], r["taxonomy_line"], r["year"],
+                              r["quarter"])
+                             for r in mda_df.iter_rows(named=True)}):
+                        continue
+                    total = ann_map.get((firm, line, y))
+                    if total is None:
+                        continue
+                    v4 = total - sum(qs.values())
+                    # Validate: same sign, magnitude within annual.
+                    if abs(v4) > abs(total) * 1.1:
+                        log.append({"firm": firm, "taxonomy_line": line,
+                                    "year": y, "quarter": 4,
+                                    "derivation": "mda_annual_derived_q4",
+                                    "status": "failed_magnitude",
+                                    "value_m": v4, "ref_m": total})
+                        continue
+                    if v4 != 0 and total != 0 and (v4 > 0) != (total > 0) \
+                            and abs(v4) > abs(total) * 0.05:
+                        log.append({"firm": firm, "taxonomy_line": line,
+                                    "year": y, "quarter": 4,
+                                    "derivation": "mda_annual_derived_q4",
+                                    "status": "failed_sign",
+                                    "value_m": v4, "ref_m": total})
+                        continue
+                    log.append({"firm": firm, "taxonomy_line": line,
+                                "year": y, "quarter": 4,
+                                "derivation": "mda_annual_derived_q4",
+                                "status": "ok", "value_m": v4,
+                                "ref_m": total})
+                    q4_rows.append({
+                        "firm": firm, "segment_native": None,
+                        "taxonomy_line": line, "map_quality": "D",
+                        "layer": "mda_q", "year": y, "quarter": 4,
+                        "net_revenue_m": v4,
+                        "derivation": "mda_annual_derived_q4",
+                        "regime": regime_for_quarter(firm, y, 4),
+                        "source": "MD&A annual sub-split less Q1-Q3",
+                        "accession": "",
+                    })
+                if q4_rows:
+                    mda_df = pl.concat(
+                        [mda_df, pl.DataFrame(q4_rows, schema=df.schema)],
+                        how="diagonal")
             df = pl.concat([df, mda_df], how="diagonal")
             # Dedupe with quality rank: D (mda_q) beats XBRL A/U.
             # Within a tier the later filing wins (accession sorts

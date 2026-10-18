@@ -3,7 +3,7 @@
    Straight polylines only — no smoothing. */
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+esm";
 import {
-  buildPeriods, poolAndShares, concentration, migration, INDEPENDENTS,
+  buildPeriods, poolAndShares, concentration, migration, INDEPENDENTS, toTTM,
 } from "./analysis.js";
 
 /* ---------------- theme (same tokens as the main site) ---------------- */
@@ -150,7 +150,11 @@ function legendHTML(firms) {
    in analysis.js buildPeriods: the incomplete trailing run is dropped and
    the thin-coverage ramp is shaded, never hidden. */
 function aggregateLine(line, freq) {
-  const P = buildPeriods(line, freq);
+  // Quarterly pool/share/concentration/migration run on TTM (trailing
+  // twelve months) per firm: robust to fiscal calendars and quarterly
+  // seasonality. The per-firm absolute chart (lineChart) keeps raw quarters.
+  const src = freq === "q" ? toTTM(line) : line;
+  const P = buildPeriods(src, freq);
   const colors = {};
   line.firms.forEach((f, i) => { colors[f.firm] = FIRM_COLORS[i % FIRM_COLORS.length]; });
   const { poolPts, shareSeries } = poolAndShares(P);

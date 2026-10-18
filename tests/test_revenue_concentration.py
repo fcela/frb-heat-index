@@ -36,6 +36,12 @@ def test_js_syntax():
 
 
 @pytest.mark.skipif(NODE is None, reason="node not installed")
+def test_ttm_transform():
+    out = run_node(FIX / "ttm-check.mjs", REPO)
+    assert "TTM OK" in out
+
+
+@pytest.mark.skipif(NODE is None, reason="node not installed")
 def test_site_renders_both_frequencies(tmp_path):
     out = run_node(FIX / "render-harness.mjs", REPO, tmp_path)
     res = json.loads(out)

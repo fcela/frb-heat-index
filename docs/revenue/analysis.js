@@ -28,6 +28,36 @@ export function xOf(d) {
 
 function isQ(freq) { return freq === "q"; }
 
+/* TTM transform for quarterly series: per firm, each quarter's value is
+   replaced by the trailing-twelve-months sum (the four quarters ending at
+   that quarter). Only defined when all four quarters are present; a firm
+   missing any quarter of the window is excluded from that TTM point (not
+   estimated). This makes quarterly share/HHI robust to reporting-calendar
+   quirks (fiscal-year ends, off-schedule filings) and to real quarterly
+   seasonality: a share gain that reverses next quarter washes out of TTM.
+   The per-firm absolute chart keeps raw quarters. */
+export function toTTM(line) {
+  const firms = line.firms.map(f => {
+    const pts = f.series
+      .filter(d => d.quarter != null && d.value != null && Number.isFinite(d.value))
+      .map(d => ({ x: d.year + (d.quarter - 1) / 4, v: d.value, d }))
+      .sort((a, b) => a.x - b.x);
+    const byX = new Map();
+    for (const p of pts) byX.set(Math.round(p.x * 4) / 4, p);
+    const ttm = [];
+    for (const p of pts) {
+      const x = Math.round(p.x * 4) / 4;
+      const win = [0, 1, 2, 3].map(k => Math.round((x - k * 0.25) * 4) / 4);
+      if (win.every(w => byX.has(w))) {
+        const v = win.reduce((a, w) => a + byX.get(w).v, 0);
+        ttm.push({ ...p.d, value: v });
+      }
+    }
+    return { firm: f.firm, series: ttm };
+  }).filter(f => f.series.length);
+  return { ...line, firms };
+}
+
 /* Build per-period firm->value maps with the edge rule applied.
    Returns { xs, perX, metaX, breaks, maxC, stableStart, cutEnd, firstX,
              step, nDroppedTrailing, lastDroppedX }. */
