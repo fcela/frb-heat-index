@@ -14,10 +14,17 @@ import tempfile
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
+import polars as pl
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.predmarkets import kalshi
+from src.predmarkets import distribution as distmod
 from src.predmarkets.build_predmarkets import (
     build,
+    build_distribution_views,
+    build_fomc_track_record,
+    build_ipo_expected,
+    build_tail_risks,
     chart_events,
     event_horizon,
     front_gap_note,
@@ -28,7 +35,7 @@ from src.predmarkets.build_predmarkets import (
     strike_rank,
     validate_frame,
 )
-from src.predmarkets.indicators import INDICATORS
+from src.predmarkets.indicators import INDICATORS, PAPER_DOI
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures" / "predmarkets"
 
@@ -255,11 +262,16 @@ def test_build_end_to_end():
         meta = build(transport=fixture_transport, data_dir=data_dir,
                      site_json=site_json)
         assert meta["n_error"] == 0, meta["indicators"]
-        assert meta["n_live"] == 4, meta["n_live"]
+        # 4 original live + ipo_pipeline + tail_risks (derived)
+        assert meta["n_live"] == 6, meta["n_live"]
         # KXFED / KXGDP have no open fixture events -> honest status, no series
         assert meta["indicators"]["fed_funds"]["status"] == "no-open-market"
         assert meta["indicators"]["gdp_quarterly"]["status"] == "no-open-market"
         assert "No open markets" in meta["indicators"]["fed_funds"]["note"]
+        # Derived indicators built from fixtures.
+        assert meta["indicators"]["tail_risks"]["status"] == "live"
+        assert meta["indicators"]["ipo_pipeline"]["status"] == "live"
+        assert "expected IPOs" in meta["indicators"]["ipo_pipeline"]["strikes"]
 
         site = json.loads(site_json.read_text())
         raw = site_json.read_text()
@@ -310,6 +322,90 @@ def test_build_end_to_end():
         print("ok test_build_end_to_end")
 
 
+def test_distribution_recovery():
+    # Clean ladder: bins by differencing, sums to 1.
+    bins = distmod.recover_threshold_bins(
+        [3.5, 3.75, 4.0, 4.25], [0.95, 0.80, 0.30, 0.05])
+    assert abs(sum(b["mass"] for b in bins) - 1.0) < 1e-9
+    by = {(b["low"], b["high"]): b["mass"] for b in bins}
+    assert abs(by[(3.75, 4.0)] - 0.50) < 1e-9
+    assert abs(by[(4.25, None)] - 0.05) < 1e-9
+    assert abs(by[(None, 3.5)] - 0.05) < 1e-9
+    # Messy ladder (non-monotone from a stale tail quote): no negative mass,
+    # still sums to 1, mode-outward monotonicity holds.
+    bins2 = distmod.recover_threshold_bins([3.5, 3.75, 4.0], [0.90, 0.95, 0.30])
+    assert all(b["mass"] >= 0 for b in bins2)
+    assert abs(sum(b["mass"] for b in bins2) - 1.0) < 1e-9
+    masses = [b["mass"] for b in bins2]
+    mode = masses.index(max(masses))
+    for i in range(mode - 1, -1, -1):
+        assert masses[i] <= masses[i + 1] + 1e-9
+    for i in range(mode + 1, len(masses)):
+        assert masses[i] <= masses[i - 1] + 1e-9
+    # Quantiles land inside the ladder; moments are finite.
+    qs = distmod.distribution_quantiles(bins, [0.05, 0.5, 0.95])
+    assert 3.5 <= qs[0.05] <= qs[0.5] <= qs[0.95] <= 4.25
+    mo = distmod.distribution_moments(bins)
+    assert mo["mean"] is not None and mo["variance"] >= 0
+    # Mutually exclusive buckets normalize.
+    assert abs(sum(distmod.recover_exclusive_buckets([0.6, 0.3, 0.2])) - 1.0) < 1e-9
+    # Grid allocation conserves mass.
+    grid = [3.0 + 0.25 * i for i in range(7)]
+    cells = distmod.allocate_to_grid(bins, grid)
+    assert abs(sum(cells) - 1.0) < 1e-6
+    print("ok test_distribution_recovery")
+
+
+def test_tail_risks_and_track_record():
+    # Synthetic frames: one date, one event each.
+    cpi = pl.DataFrame({
+        "date": ["2026-10-01"] * 4, "value": [0.99, 0.90, 0.40, 0.05],
+        "event": ["KXCPIYOY-26NOV"] * 4, "ticker": ["t"] * 4,
+        "strike": ["2.9", "3.1", "4.1", "5.1"], "volume": [1.0] * 4,
+    })
+    gdp = pl.DataFrame({
+        "date": ["2026-10-01"] * 3, "value": [0.95, 0.60, 0.10],
+        "event": ["KXGDP-26OCT30"] * 3, "ticker": ["t"] * 3,
+        "strike": ["0.5%", "1.5%", "3.0%"], "volume": [1.0] * 3,
+    })
+    tail = build_tail_risks({"cpi_yoy": cpi, "gdp_quarterly": gdp}, {})
+    got = {r["strike"]: r["value"] for r in tail.iter_rows(named=True)}
+    # P(CPI>3) = mass at/above 3.1 ≈ 0.90-ish; P(GDP<1.5) ≈ 1-0.60 = 0.40-ish.
+    assert got["CPI > 3%"] > 0.8, got
+    assert got["CPI > 4%"] < 0.5, got
+    assert abs(got["GDP < 1.5%"] - 0.4) < 0.15, got
+    # Track record on a synthetic meeting.
+    fomc = pl.DataFrame({
+        "date": ["2026-09-15", "2026-09-15"],
+        "value": [0.87, 0.10],
+        "event": ["KXFEDDECISION-26SEP"] * 2,
+        "ticker": ["a", "b"],
+        "strike": ["Hike 25bps", "Hike 0bps"],
+        "volume": [1.0, 1.0],
+    })
+    rec = build_fomc_track_record(fomc)
+    assert len(rec) == 1 and rec[0]["hit"] is True
+    assert rec[0]["mode_bucket"] == "Hike 25bps"
+    # IPO expected count sums company probabilities.
+    ipo = pl.DataFrame({
+        "date": ["2026-10-01"] * 3, "value": [0.7, 0.2, 0.05],
+        "event": ["KXIPO-26"] * 3,
+        "ticker": ["KXIPO-26-A", "KXIPO-26-B", "KXIPO-26-C"],
+        "strike": ["", "", ""], "volume": [1.0] * 3,
+    })
+    exp = build_ipo_expected(ipo, {})
+    assert abs(exp.row(0, named=True)["value"] - 0.95) < 1e-9
+    print("ok test_tail_risks_and_track_record")
+
+
+def test_paper_citations_present():
+    for key in ("fomc_decision", "fed_funds", "cpi_yoy", "gdp_quarterly",
+                "unemployment", "recession"):
+        assert INDICATORS[key].get("paper"), key
+    assert PAPER_DOI.startswith("https://doi.org/")
+    print("ok test_paper_citations_present")
+
+
 if __name__ == "__main__":
     test_candle_close_extraction()
     test_candle_trading_date()
@@ -320,5 +416,8 @@ if __name__ == "__main__":
     test_merge_incremental()
     test_validate_bounds()
     test_sequential_colors()
+    test_distribution_recovery()
+    test_tail_risks_and_track_record()
+    test_paper_citations_present()
     test_build_end_to_end()
     print("all predmarkets tests pass")

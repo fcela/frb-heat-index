@@ -45,8 +45,10 @@
     <h1>The macro odds, <span class="tick">▮</span> priced in real time</h1>
     <p class="lede">Market-implied probabilities for the events that drive the quarterly heat map —
       the next FOMC decision, the funds-rate level after it, CPI inflation, GDP growth, the
-      unemployment rate, and NBER recession calls. Every number is the daily closing price of a
-      $1 binary contract on a federally regulated exchange, read directly as a probability. All
+      unemployment rate, and NBER recession calls — plus macro tail risks, the IPO pipeline,
+      and the full implied probability distributions behind the headline numbers. Every number
+      is the daily closing price of a $1 binary contract on a federally regulated exchange,
+      read directly as a probability. All
       charts share one fixed 0–1 axis; dashed verticals mark resolution days; gaps where no
       market is listed are marked, never interpolated.</p>
     <details class="rev-method">
@@ -64,6 +66,13 @@
       not mutually exclusive — a full ladder spans the distribution — while decision buckets use
       the exchange's own mutually exclusive wording. Settled events drop out of discovery but
       stay in the archive; listed-print gaps are noted, never interpolated.</p>
+      <p><strong>Implied distributions.</strong> For the threshold series (fed funds, CPI, GDP,
+      unemployment) each day's strike ladder is converted into a full implied probability
+      distribution — bin probabilities by strike differencing with mode-outward monotonicity,
+      following Section 3 of the paper — rendered as a fan chart (median with 50% and 90%
+      intervals) and a density heatmap. These are risk-neutral probabilities, not physical
+      ones, and thin tail contracts can be stale. The same distributions feed the macro
+      tail-risk series (Figure 13 of the paper) and the daily mean/variance uncertainty gauge.</p>
       <p>These markets are documented as a high-frequency, continuously updated, distributionally
       rich benchmark of macroeconomic expectations in Finance and Economics Discussion Series
       2026-010, “Kalshi and the Rise of Macro Markets”, Board of Governors of the Federal Reserve

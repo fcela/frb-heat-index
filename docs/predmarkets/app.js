@@ -101,6 +101,68 @@ function indicatorChart(ind) {
   });
 }
 
+function fanChart(dist) {
+  // Bank-of-England-style fan: median line with 50% and 90% interval bands.
+  const pts = (dist.fan || []).map(d => ({
+    date: new Date(d.date + "T00:00:00"),
+    q05: d.q05, q25: d.q25, q50: d.q50, q75: d.q75, q95: d.q95,
+  })).filter(d => [d.q05, d.q25, d.q50, d.q75, d.q95].every(Number.isFinite));
+  if (!pts.length) return null;
+  const band90 = themeName === "dark" ? "#1d4ed833" : "#1d4ed822";
+  const band50 = themeName === "dark" ? "#1d4ed855" : "#1d4ed844";
+  return basePlot({
+    width: 1020, height: 240,
+    marginLeft: 64, marginRight: 20, marginTop: 14, marginBottom: 40,
+    x: { type: "time", label: null, grid: true, tickSize: 0, ticks: 8 },
+    y: { grid: true, label: null, tickFormat: v => v + "%" },
+    marks: [
+      Plot.areaY(pts, { x: "date", y1: "q05", y2: "q95", fill: band90 }),
+      Plot.areaY(pts, { x: "date", y1: "q25", y2: "q75", fill: band50 }),
+      Plot.line(pts, {
+        x: "date", y: "q50", stroke: T().accent, strokeWidth: 2,
+        title: d => `${d.date.toISOString().slice(0, 10)}\nmedian ${d.q50.toFixed(2)}% · 50% interval ${d.q25.toFixed(2)}–${d.q75.toFixed(2)}%`,
+      }),
+      Plot.tip(pts, Plot.pointer({
+        x: "date", y: "q50",
+        title: d => `${d.date.toISOString().slice(0, 10)}\nmedian ${d.q50.toFixed(2)}%\n90% interval ${d.q05.toFixed(2)}–${d.q95.toFixed(2)}%`,
+      })),
+    ],
+  });
+}
+
+function heatmapChart(dist) {
+  // Time on x, outcome level on y, color = implied probability mass.
+  const hm = dist.heatmap || {};
+  const grid = hm.grid || [];
+  const cells = hm.cells || [];
+  if (!grid.length || !cells.length) return null;
+  const rows = [];
+  for (const c of cells) {
+    const date = new Date(c.date + "T00:00:00");
+    (c.masses || []).forEach((m, i) => {
+      if (i + 1 < grid.length && m > 0.0005) {
+        rows.push({ date, lo: grid[i], hi: grid[i + 1], mid: (grid[i] + grid[i + 1]) / 2, m });
+      }
+    });
+  }
+  if (!rows.length) return null;
+  const maxM = Math.max(...rows.map(r => r.m));
+  return basePlot({
+    width: 1020, height: 240,
+    marginLeft: 64, marginRight: 20, marginTop: 14, marginBottom: 40,
+    x: { type: "time", label: null, grid: true, tickSize: 0, ticks: 8 },
+    y: { grid: true, label: null, tickFormat: v => v + "%" },
+    color: { scheme: "blues", domain: [0, maxM], label: "probability mass" },
+    marks: [
+      Plot.rect(rows, {
+        x1: d => d.date, x2: d => new Date(d.date.getTime() + 86400000),
+        y1: "lo", y2: "hi", fill: "m",
+        title: d => `${d.date.toISOString().slice(0, 10)} · ${d.lo.toFixed(2)}–${d.hi.toFixed(2)}%\nprobability ${pct(d.m)}`,
+      }),
+    ],
+  });
+}
+
 /* ---------------- render ---------------- */
 
 function statusBadge(status) {
@@ -119,6 +181,32 @@ function lastValueHTML(ind) {
     `<span class="m"><span class="sw" style="background:${colors[s] || "#a8a294"}"></span><b>${esc(s)}</b> ${pct(lv[s])}</span>`
   ).join("");
   return `<div class="pulse-multi">${items}<span class="m"><span class="md">${esc(fmtDate(ind.last_observation))}</span></span></div>`;
+}
+
+function paperHTML(ind) {
+  if (!ind.paper) return "";
+  const doi = ind.paper_doi || "https://doi.org/10.17016/FEDS.2026.010";
+  return `<p class="pulse-paper"><span class="pulse-paper-label">Paper:</span> ${esc(ind.paper)} <a href="${esc(doi)}" target="_blank" rel="noopener">FEDS 2026-010</a></p>`;
+}
+
+function trackRecordHTML(ind) {
+  const rec = ind.track_record || [];
+  if (!rec.length) return "";
+  const rows = rec.map(r =>
+    `<tr><td>${esc(r.meeting)}</td><td>${esc(r.mode_bucket)} (${pct(r.mode_probability, 0)})</td><td>${esc(r.realized_bucket)}</td><td>${r.hit ? "✓" : "✗"}</td></tr>`
+  ).join("");
+  const note = ind.track_record_note ? `<p class="pulse-note">${esc(ind.track_record_note)}</p>` : "";
+  return `<div class="pulse-sub"><h4>Track record: day-before mode vs realized decision</h4>
+    <table class="pulse-table"><thead><tr><th>Meeting</th><th>Mode (day before)</th><th>Realized</th><th></th></tr></thead>
+    <tbody>${rows}</tbody></table>${note}</div>`;
+}
+
+function top5HTML(ind) {
+  const top = ind.top5 || {};
+  const names = Object.keys(top);
+  if (!names.length) return "";
+  const items = names.map(n => `<span class="m"><b>${esc(n)}</b> ${pct(top[n], 0)}</span>`).join("");
+  return `<div class="pulse-sub"><h4>Front-runners by announcement probability</h4><div class="pulse-multi">${items}</div></div>`;
 }
 
 function renderTape(inds) {
@@ -148,6 +236,11 @@ function renderMarkets(pm) {
     const card = document.createElement("div");
     card.className = "pulse-card";
     card.id = `ind-${ind.key}`;
+    const extras = [
+      paperHTML(ind),
+      trackRecordHTML(ind),
+      top5HTML(ind),
+    ].join("");
     if (ind.series && ind.series.length) {
       card.innerHTML = `
         <div class="pulse-head">
@@ -157,9 +250,34 @@ function renderMarkets(pm) {
         </div>
         <p class="blurb">${esc(ind.why)}</p>
         <div class="pulse-chart"></div>
+        <div class="pulse-dist"></div>
+        ${extras}
         ${ind.note ? `<p class="pulse-note">${esc(ind.note)}</p>` : ""}`;
       const fig = indicatorChart(ind);
       if (fig) card.querySelector(".pulse-chart").appendChild(fig);
+      if (ind.distribution) {
+        const dw = card.querySelector(".pulse-dist");
+        const fan = fanChart(ind.distribution);
+        if (fan) {
+          const h = document.createElement("h4");
+          h.className = "pulse-subhead";
+          h.textContent = "Implied distribution over time — fan chart (median, 50% and 90% intervals)";
+          dw.appendChild(h);
+          dw.appendChild(fan);
+        }
+        const hm = heatmapChart(ind.distribution);
+        if (hm) {
+          const h = document.createElement("h4");
+          h.className = "pulse-subhead";
+          h.textContent = "Implied distribution over time — density heatmap";
+          dw.appendChild(h);
+          dw.appendChild(hm);
+          const note = document.createElement("p");
+          note.className = "pulse-note";
+          note.textContent = ind.distribution.note || "";
+          dw.appendChild(note);
+        }
+      }
     } else {
       card.innerHTML = `
         <div class="pulse-head">
@@ -167,6 +285,7 @@ function renderMarkets(pm) {
           <div class="pulse-src">${esc(ind.source)} · ${esc(ind.frequency)}</div>
         </div>
         <p class="blurb">${esc(ind.why)}</p>
+        ${extras}
         ${ind.note ? `<p class="pulse-note">${esc(ind.note)}</p>` : ""}`;
     }
     el.appendChild(card);
