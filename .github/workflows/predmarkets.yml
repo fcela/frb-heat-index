@@ -1,0 +1,73 @@
+# Daily refresh of the prediction-markets dataset (event-market probabilities).
+#
+# Schedule: 06:00 UTC every day. The priced series are daily closes of $1
+# binary contracts, so a daily cadence keeps them fresh; 06:00 UTC runs after
+# the exchange's ET trading day closes. Incremental by design:
+# build_predmarkets.py --incremental re-fetches each ticker from its last
+# committed date minus a two-day overlap and merges into the existing CSVs
+# (dedupe on date+ticker, keep-last).
+#
+# Failure policy: a series that fails marks its indicator "error" in _meta.json
+# but does not fail the run; last good data is kept. The run is logged as a
+# GitHub issue either way.
+
+name: Daily prediction-markets update
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  update-predmarkets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install polars
+
+      - name: Refresh prediction-markets data (incremental)
+        run: python3 -m src.predmarkets.build_predmarkets --incremental
+
+      - name: Run predmarkets tests
+        run: python3 tests/test_predmarkets.py
+
+      - name: Commit and push data changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/predmarkets/ docs/data/predmarkets.json
+          if git diff --staged --quiet; then
+            echo "no changes"
+          else
+            git commit -m "Daily prediction-markets update: $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      - name: Log run as issue
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let body = 'Daily prediction-markets refresh completed.';
+            try {
+              const meta = JSON.parse(fs.readFileSync('data/predmarkets/_meta.json', 'utf8'));
+              const lines = Object.entries(meta.indicators).map(([k, v]) =>
+                `- ${k}: ${v.status}${v.last_observation ? ` (last ${v.last_observation})` : ''}${v.error ? ` — ${v.error}` : ''}`);
+              body = `**${meta.n_live}/${meta.n_indicators} live**, ${meta.n_no_open_market} no-open-market, ${meta.n_error} errors.\n\n${lines.join('\n')}`;
+            } catch (e) { body = 'Could not read _meta.json: ' + e.message; }
+            await github.rest.issues.create({
+              owner: context.repo.owner, repo: context.repo.repo,
+              title: `Daily prediction-markets update ${new Date().toISOString().slice(0, 10)}`,
+              body,
+            });

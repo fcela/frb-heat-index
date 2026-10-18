@@ -118,6 +118,7 @@
 .status-live-experimental { color: var(--experimental); border-color: var(--experimental); }
 .status-pending-sourcing { color: var(--muted); border-color: var(--line); }
 .status-error { color: var(--err); border-color: var(--err); }
+.status-no-open-market { color: var(--muted); border-color: var(--line); }
 
 /* ---------- multi-series readouts ---------- */
 
