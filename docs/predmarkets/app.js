@@ -59,6 +59,16 @@ function basePlot(opts) {
 
 /* ---------------- charts ---------------- */
 
+function isCount(ind) {
+  return (ind.unit || "").toLowerCase().includes("count");
+}
+
+function fmtVal(ind, v, digits = 1) {
+  if (v == null || !Number.isFinite(v)) return "n/a";
+  if (isCount(ind)) return Number(v).toLocaleString("en-US", { maximumFractionDigits: digits });
+  return pct(v, digits);
+}
+
 function indicatorChart(ind) {
   const pts = ind.series
     .map(d => ({ date: new Date(d.date + "T00:00:00"), v: d.value, g: d.strike }))
@@ -78,6 +88,12 @@ function indicatorChart(ind) {
       title: h => `${h.label}\nresolves ${h.date.toISOString().slice(0, 10)}`,
     }));
   }
+  // Probability indicators share the fixed 0–1 axis; count indicators
+  // (IPO pipeline) get a data-driven axis.
+  const yAxis = isCount(ind)
+    ? { grid: true, label: null, tickFormat: v => v }
+    : { domain: [0, 1], ticks: 5, tickFormat: v => (v * 100) + "%", grid: true, label: null };
+  const tipFmt = d => `${d.g} · ${d.date.toISOString().slice(0, 10)}\n${fmtVal(ind, d.v)}`;
   for (const s of ind.strikes || []) {
     const sp = pts.filter(d => d.g === s);
     if (!sp.length) continue;
@@ -85,18 +101,15 @@ function indicatorChart(ind) {
       x: "date", y: "v",
       stroke: colors[s] || T().accent,
       strokeWidth: 1.8,
-      title: d => `${s} · ${d.date.toISOString().slice(0, 10)}\n${pct(d.v)}`,
+      title: tipFmt,
     }));
   }
-  marks.push(Plot.tip(pts, Plot.pointer({
-    x: "date", y: "v",
-    title: d => `${d.g} · ${d.date.toISOString().slice(0, 10)}\n${pct(d.v)}`,
-  })));
+  marks.push(Plot.tip(pts, Plot.pointer({ x: "date", y: "v", title: tipFmt })));
   return basePlot({
     width: 1020, height: 240,
     marginLeft: 64, marginRight: 20, marginTop: 14, marginBottom: 40,
     x: { type: "time", label: null, grid: true, tickSize: 0, ticks: 8 },
-    y: { domain: [0, 1], ticks: 5, tickFormat: v => (v * 100) + "%", grid: true, label: null },
+    y: yAxis,
     marks,
   });
 }
@@ -178,7 +191,7 @@ function lastValueHTML(ind) {
   const colors = ind.strike_colors || {};
   const lv = ind.last_value || {};
   const items = (ind.strikes || []).map(s =>
-    `<span class="m"><span class="sw" style="background:${colors[s] || "#a8a294"}"></span><b>${esc(s)}</b> ${pct(lv[s])}</span>`
+    `<span class="m"><span class="sw" style="background:${colors[s] || "#a8a294"}"></span><b>${esc(s)}</b> ${fmtVal(ind, lv[s])}</span>`
   ).join("");
   return `<div class="pulse-multi">${items}<span class="m"><span class="md">${esc(fmtDate(ind.last_observation))}</span></span></div>`;
 }

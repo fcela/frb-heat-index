@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>frb-heat-index — U.S. Financial-System Vulnerabilities from Public Data</title>
-<meta name="description" content="Two views of U.S. financial-system risk, rebuilt from public data: the quarterly FRB heat-index replication and the higher-frequency Market Pulse.">
+<meta name="description" content="Three views of U.S. financial-system risk, rebuilt from public data: the quarterly FRB heat-index replication, the higher-frequency Market Pulse, and market-implied macro expectations from prediction markets.">
 <meta property="og:title" content="frb-heat-index">
 <meta property="og:description" content="The quarterly FRB heat-index replication and the higher-frequency Market Pulse — U.S. financial-system vulnerabilities from public data.">
 <meta property="og:type" content="website">
@@ -74,6 +74,7 @@
     <div class="nav-links">
       <a href="frb/">FRB Heat Index</a>
       <a href="pulse/">Market Pulse</a>
+      <a href="predmarkets/">Prediction Markets</a>
     </div>
     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">◐</button>
   </div>
@@ -82,9 +83,9 @@
 <header class="hero landing-hero">
   <div class="hero-inner">
     <p class="kicker">U.S. financial-system vulnerabilities · public data only</p>
-    <h1>Two views of <span class="hot">financial-system risk</span></h1>
-    <p class="lede">A slow-moving quarterly vulnerability map and a higher-frequency market
-      pulse — all rebuilt from public data sources,
+    <h1>Three views of <span class="hot">financial-system risk</span></h1>
+    <p class="lede">A slow-moving quarterly vulnerability map, a higher-frequency market
+      pulse, and market-implied macro expectations — all rebuilt from public data sources,
       all refreshed by automated pipelines.</p>
   </div>
 </header>
@@ -121,6 +122,22 @@
         <dt>Coverage</dt><dd>5+ year backfills where sources allow</dd>
       </dl>
       <a class="open" href="pulse/">Open the market pulse →</a>
+    </section>
+
+    <section class="card product-card">
+      <p class="kicker">Daily · event markets</p>
+      <h2>Prediction Markets</h2>
+      <p class="desc">Market-implied probabilities for the macro events that move the
+        quarterly heat map — FOMC decisions, the funds rate, CPI, GDP, unemployment,
+        recession odds — plus macro tail risks and the IPO pipeline. Implied probability
+        distributions recovered from the strike ladders, following Diercks/Katz/Wright
+        (2026), "Kalshi and the Rise of Macro Markets," FEDS 2026-010.</p>
+      <dl class="specs">
+        <dt>Indicators</dt><dd>8 series from Kalshi's public API</dd>
+        <dt>Frequency</dt><dd>Daily closes, refreshed daily</dd>
+        <dt>Coverage</dt><dd>From each market's listing date</dd>
+      </dl>
+      <a class="open" href="predmarkets/">Open prediction markets →</a>
     </section>
 
   </div>
