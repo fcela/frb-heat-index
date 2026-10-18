@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prediction Markets — frb-heat-index</title>
+<meta name="description" content="Market-implied probabilities for the macro events that move the quarterly heat map — FOMC decisions, fed funds, CPI, GDP, unemployment, NBER recession — from daily closes of $1 binary contracts on a federally regulated exchange.">
+<meta property="og:title" content="Prediction Markets — frb-heat-index">
+<meta property="og:description" content="Event-market probabilities for the macro calendar: FOMC, fed funds, CPI, GDP, unemployment, recession — daily closes read as probabilities on shared 0–1 axes.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='6' height='28' fill='%232166ac'%3E%3Crect x='10' y='10' width='6' height='20' fill='%23f4a582'%3E%3Crect x='18' y='6' width='6' height='24' fill='%23d6604d'%3E%3Crect x='26' y='14' width='4' height='16' fill='%23b2182b'%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/pulse.css">
+<script>
+  // Set theme before first paint to avoid a flash.
+  try {
+    var t = localStorage.getItem("frb-heat-theme");
+    if (t === "dark" || (t === null && matchMedia("(prefers-color-scheme: dark)").matches))
+      document.documentElement.dataset.theme = "dark";
+  } catch (e) {}
+</script>
+<script type="module" src="app.js"></script>
+</head>
+<body>
+
+<div class="tape-band">
+  <nav class="nav" aria-label="Sections">
+    <div class="nav-inner">
+      <span class="brand"><a href="../" style="color:inherit;text-decoration:none">frb-heat-index</a> <span class="dot">●</span></span>
+      <div class="nav-links">
+        <a href="./" aria-current="page">Prediction Markets</a>
+        <a href="../frb/">FRB Heat Index</a>
+        <a href="../pulse/">Market Pulse</a>
+        <a href="../frb/#methodology">Methodology</a>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">◐</button>
+    </div>
+  </nav>
+
+  <header class="pulse-hero">
+    <p class="kicker">Prediction markets · daily close · event-market probabilities</p>
+    <h1>The macro odds, <span class="tick">▮</span> priced in real time</h1>
+    <p class="lede">Market-implied probabilities for the events that drive the quarterly heat map —
+      the next FOMC decision, the funds-rate level after it, CPI inflation, GDP growth, the
+      unemployment rate, and NBER recession calls. Every number is the daily closing price of a
+      $1 binary contract on a federally regulated exchange, read directly as a probability. All
+      charts share one fixed 0–1 axis; dashed verticals mark resolution days; gaps where no
+      market is listed are marked, never interpolated.</p>
+    <details class="rev-method">
+      <summary>Methodology: reading event-market prices as probabilities</summary>
+      <p><strong>Prices are probabilities.</strong> Contracts pay $1 if the stated outcome
+      occurs, so a daily close of $0.86 is a 0.86 probability. Nothing is transformed, smoothed,
+      or annualized: charts draw straight lines between daily closes, and days without trades
+      carry the exchange's previous close (volume 0 in the committed archive).</p>
+      <p><strong>What is charted.</strong> Most series chart the front market — the nearest open
+      event, discovered dynamically, never a hardcoded calendar. The recession series charts the
+      full annual ladder: every open calendar-year market. Dashed verticals mark scheduled
+      resolution — meeting day, release day, or calendar year-end for the ladder. Every chart
+      uses the same fixed 0–1 probability axis, so levels are comparable across series.</p>
+      <p><strong>Reading the strikes.</strong> Threshold strikes like “≥4.0%” are cumulative and
+      not mutually exclusive — a full ladder spans the distribution — while decision buckets use
+      the exchange's own mutually exclusive wording. Settled events drop out of discovery but
+      stay in the archive; listed-print gaps are noted, never interpolated.</p>
+      <p>These markets are documented as a high-frequency, continuously updated, distributionally
+      rich benchmark of macroeconomic expectations in Finance and Economics Discussion Series
+      2026-010, “Kalshi and the Rise of Macro Markets”, Board of Governors of the Federal Reserve
+      System, <a href="https://doi.org/10.17016/FEDS.2026.010">https://doi.org/10.17016/FEDS.2026.010</a>.</p>
+    </details>
+  </header>
+
+  <div class="tape" id="tape" aria-label="Priced events"></div>
+</div>
+
+<main>
+  <nav class="pulse-toc" id="predmarkets-toc" aria-label="Tracked series"></nav>
+  <div id="predmarkets" style="max-width:1180px;margin:0 auto;padding:0 1.25rem"><p class="pulse-stamp">loading data…</p></div>
+  <div class="pulse-foot">
+    <p>Prediction Markets is a market-based companion to
+      <a href="../">frb-heat-index</a> — alongside the
+      <a href="../frb/">FRB Heat Index replication</a>, <a href="../pulse/">Market Pulse</a>,
+      and the bank revenue tracker. Where the heat map grades realized vulnerabilities and the
+      pulse reads raw market series, this page reads what event markets price for the macro
+      calendar itself. Data: <code>../data/predmarkets.json</code>, refreshed daily by the
+      <code>predmarkets.yml</code> pipeline; per-indicator CSVs under
+      <code>data/predmarkets/</code>. Prices come from the public API of a CFTC-regulated
+      exchange; nothing on this page is investment advice.</p>
+  </div>
+</main>
+
+</body>
+</html>
