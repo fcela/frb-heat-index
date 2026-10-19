@@ -1,7 +1,10 @@
 /* Prediction Markets standalone page. All data from ../data/predmarkets.json;
    nothing hardcoded. Observable Plot visual language, shared with the main
    site: straight polylines (no smoothing — a close is a close), dashed ruleX
-   event markers, and one fixed 0-1 probability axis on every chart. */
+   event markers, square corners, and one fixed 0-1 probability axis on every
+   probability chart. Realized overlays (fan markers, track records, FOMC
+   rate fan, IPO counts, recession quarters) come from the pipeline-built
+   realized dataset — never hand-entered. */
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+esm";
 
 /* ---------------- theme (same tokens as the main site) ---------------- */
@@ -11,11 +14,13 @@ const THEMES = {
     ink: "#1b1a16", muted: "#75705f", faint: "#a8a294",
     grid: "#ece7d8", line: "#e9e4d6", missing: "#ece7d9",
     accent: "#1d4ed8", card: "#ffffff", tipBg: "#1b1a16", tipFg: "#faf9f6",
+    realized: "#b2182b",
   },
   dark: {
     ink: "#ede7d6", muted: "#a2987f", faint: "#6f675a",
     grid: "#2b261c", line: "#2e2a20", missing: "#2b261c",
     accent: "#7aa2f7", card: "#1d1a13", tipBg: "#ede7d6", tipFg: "#14120d",
+    realized: "#f87171",
   },
 };
 
@@ -39,6 +44,14 @@ function esc(s) {
 function pct(v, digits = 1) {
   if (v == null || !Number.isFinite(v)) return "n/a";
   return (Number(v) * 100).toLocaleString("en-US", { maximumFractionDigits: digits }) + "%";
+}
+
+/* Rate/level formatting: fixed decimals, trailing zeros trimmed. */
+function fmtRate(v, maxDigits = 2) {
+  if (v == null || !Number.isFinite(v)) return "n/a";
+  let s = Number(v).toFixed(maxDigits);
+  if (s.includes(".")) s = s.replace(/0+$/, "").replace(/\.$/, "");
+  return s;
 }
 
 function fmtDate(s) {
@@ -114,6 +127,8 @@ function indicatorChart(ind) {
   });
 }
 
+/* Fan chart for a distributional indicator, with the realized print
+   overlaid as a dashed level + dot when the front event has resolved. */
 function fanChart(dist) {
   // Bank-of-England-style fan: median line with 50% and 90% interval bands.
   const pts = (dist.fan || []).map(d => ({
@@ -123,23 +138,37 @@ function fanChart(dist) {
   if (!pts.length) return null;
   const band90 = themeName === "dark" ? "#1d4ed833" : "#1d4ed822";
   const band50 = themeName === "dark" ? "#1d4ed855" : "#1d4ed844";
+  const marks = [
+    Plot.areaY(pts, { x: "date", y1: "q05", y2: "q95", fill: band90 }),
+    Plot.areaY(pts, { x: "date", y1: "q25", y2: "q75", fill: band50 }),
+    Plot.line(pts, {
+      x: "date", y: "q50", stroke: T().accent, strokeWidth: 2,
+      title: d => `${d.date.toISOString().slice(0, 10)}\nmedian ${d.q50.toFixed(2)}% · 50% interval ${d.q25.toFixed(2)}–${d.q75.toFixed(2)}%`,
+    }),
+  ];
+  const rz = dist.realized || null;
+  if (rz && Number.isFinite(rz.value)) {
+    const rzDate = rz.date ? new Date(rz.date + "T00:00:00") : null;
+    const okDate = rzDate instanceof Date && !isNaN(rzDate);
+    marks.push(Plot.ruleY([rz.value], {
+      stroke: T().realized, strokeWidth: 1.4, strokeDasharray: "4,3",
+      title: `Realized: ${fmtRate(rz.value)}%${okDate ? " (" + fmtDate(rz.date) + ")" : ""}`,
+    }));
+    if (okDate) marks.push(Plot.dot([{ d: rzDate, v: rz.value }], {
+      x: "d", y: "v", r: 4, fill: T().realized,
+      title: () => `Realized ${fmtRate(rz.value)}% · ${fmtDate(rz.date)}`,
+    }));
+  }
+  marks.push(Plot.tip(pts, Plot.pointer({
+    x: "date", y: "q50",
+    title: d => `${d.date.toISOString().slice(0, 10)}\nmedian ${d.q50.toFixed(2)}%\n90% interval ${d.q05.toFixed(2)}–${d.q95.toFixed(2)}%`,
+  })));
   return basePlot({
     width: 1020, height: 240,
     marginLeft: 64, marginRight: 20, marginTop: 14, marginBottom: 40,
     x: { type: "time", label: null, grid: true, tickSize: 0, ticks: 8 },
     y: { grid: true, label: null, tickFormat: v => v + "%" },
-    marks: [
-      Plot.areaY(pts, { x: "date", y1: "q05", y2: "q95", fill: band90 }),
-      Plot.areaY(pts, { x: "date", y1: "q25", y2: "q75", fill: band50 }),
-      Plot.line(pts, {
-        x: "date", y: "q50", stroke: T().accent, strokeWidth: 2,
-        title: d => `${d.date.toISOString().slice(0, 10)}\nmedian ${d.q50.toFixed(2)}% · 50% interval ${d.q25.toFixed(2)}–${d.q75.toFixed(2)}%`,
-      }),
-      Plot.tip(pts, Plot.pointer({
-        x: "date", y: "q50",
-        title: d => `${d.date.toISOString().slice(0, 10)}\nmedian ${d.q50.toFixed(2)}%\n90% interval ${d.q05.toFixed(2)}–${d.q95.toFixed(2)}%`,
-      })),
-    ],
+    marks,
   });
 }
 
@@ -176,7 +205,85 @@ function heatmapChart(dist) {
   });
 }
 
-/* ---------------- render ---------------- */
+/* FOMC decision buckets translated to the implied post-meeting target-
+   range upper bound (levels/deltas/notes all come from the pipeline). */
+function fomcFanChart(fan) {
+  const rows = (fan.rows || []).map(d => ({
+    date: new Date(d.date + "T00:00:00"),
+    q05: d.q05, q25: d.q25, q50: d.q50, q75: d.q75, q95: d.q95,
+  })).filter(d => [d.q05, d.q25, d.q50, d.q75, d.q95].every(Number.isFinite));
+  if (!rows.length) return null;
+  const rz = (fan.realized || []).filter(r => r.as_of && Number.isFinite(r.post_meeting_upper));
+  const band90 = themeName === "dark" ? "#1d4ed833" : "#1d4ed822";
+  const band50 = themeName === "dark" ? "#1d4ed855" : "#1d4ed844";
+  const marks = [
+    Plot.areaY(rows, { x: "date", y1: "q05", y2: "q95", fill: band90 }),
+    Plot.areaY(rows, { x: "date", y1: "q25", y2: "q75", fill: band50 }),
+  ];
+  if (fan.meeting) {
+    const md = new Date(fan.meeting + "T00:00:00");
+    if (!isNaN(md)) marks.push(Plot.ruleX([md], {
+      stroke: T().faint, strokeWidth: 1, strokeDasharray: "5,4",
+      title: `FOMC meeting ${fan.meeting} · base (pre-meeting upper bound) ${fmtRate(fan.base_rate)}%`,
+    }));
+  }
+  for (const r of rz) {
+    const d = new Date(r.as_of + "T00:00:00");
+    marks.push(Plot.ruleX([{ d, y1: r.q05, y2: r.q95 }], {
+      x: "d", y1: "y1", y2: "y2", stroke: T().realized, strokeWidth: 1.1,
+      title: `${r.meeting} meeting — day-before 90% interval ${fmtRate(r.q05)}–${fmtRate(r.q95)}%`,
+    }));
+    marks.push(Plot.ruleX([{ d, y1: r.q25, y2: r.q75 }], {
+      x: "d", y1: "y1", y2: "y2", stroke: T().realized, strokeWidth: 2.6,
+      title: `${r.meeting} meeting — day-before 50% interval ${fmtRate(r.q25)}–${fmtRate(r.q75)}%`,
+    }));
+    marks.push(Plot.dot([{ d, v: r.post_meeting_upper }], {
+      x: "d", y: "v", r: 4.5, fill: T().realized,
+      title: `${r.meeting} meeting — realized post-meeting upper bound ${fmtRate(r.post_meeting_upper)}%`,
+    }));
+  }
+  marks.push(Plot.line(rows, {
+    x: "date", y: "q50", stroke: T().accent, strokeWidth: 2,
+    title: d => `${d.date.toISOString().slice(0, 10)}\nmedian ${fmtRate(d.q50)}% · 50% interval ${fmtRate(d.q25)}–${fmtRate(d.q75)}%`,
+  }));
+  marks.push(Plot.tip(rows, Plot.pointer({
+    x: "date", y: "q50",
+    title: d => `${d.date.toISOString().slice(0, 10)}\nmedian ${fmtRate(d.q50)}%\n90% interval ${fmtRate(d.q05)}–${fmtRate(d.q95)}%`,
+  })));
+  return basePlot({
+    width: 1020, height: 260,
+    marginLeft: 64, marginRight: 20, marginTop: 14, marginBottom: 40,
+    x: { type: "time", label: null, grid: true, tickSize: 0, ticks: 8 },
+    y: { grid: true, label: null, tickFormat: v => fmtRate(v) + "%" },
+    marks,
+  });
+}
+
+/* Realized overlay for the recession ladder: published quarterly real-GDP
+   growth with the exchange's two-negative-quarter rule flagged. */
+function recessionQuartersChart(rec) {
+  const qs = (rec.quarters || [])
+    .map(q => ({ q: q.date, v: q.value, flag: !!q.rec_flag }))
+    .filter(q => Number.isFinite(q.v));
+  if (!qs.length) return null;
+  return basePlot({
+    width: 1020, height: 200,
+    marginLeft: 64, marginRight: 20, marginTop: 14, marginBottom: 52,
+    x: { type: "band", label: null, tickSize: 0, tickRotate: -45 },
+    y: { grid: true, label: null, tickFormat: v => fmtRate(v) + "%" },
+    marks: [
+      Plot.ruleY([0], { stroke: T().muted, strokeWidth: 1 }),
+      Plot.barY(qs, {
+        x: "q", y: "v",
+        fill: d => d.flag ? T().realized : T().faint,
+        fillOpacity: 0.9,
+        title: d => `${d.q}: ${fmtRate(d.v)}% real GDP growth (SAAR, latest published estimate)${d.flag ? " — flagged: part of a two-quarter negative run" : ""}`,
+      }),
+    ],
+  });
+}
+
+/* ---------------- card fragments ---------------- */
 
 function statusBadge(status) {
   const label = {
@@ -202,6 +309,32 @@ function paperHTML(ind) {
   return `<p class="pulse-paper"><span class="pulse-paper-label">Paper:</span> ${esc(ind.paper)} <a href="${esc(doi)}" target="_blank" rel="noopener">FEDS 2026-010</a></p>`;
 }
 
+/* "Measures:" block — exact quantity, reference period, source release,
+   resolution day, market-data as-of, spec-verification date, and links to
+   the exchange's market page(s). All text is pipeline-generated. */
+function measuresHTML(ind) {
+  const m = ind.measures;
+  if (!m || !m.text) return "";
+  const hzLabels = {};
+  (ind.horizons || []).forEach(h => { if (h.event_ticker) hzLabels[h.event_ticker] = h.label; });
+  const links = [];
+  const seen = new Set();
+  const pushLink = (ticker, url) => {
+    if (!url || seen.has(url)) return;
+    seen.add(url);
+    links.push(`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(hzLabels[ticker] || ticker)} ↗</a>`);
+  };
+  if (ind.kalshi_url) pushLink(ind.event_ticker, ind.kalshi_url);
+  for (const [t, u] of Object.entries(ind.kalshi_urls || {})) pushLink(t, u);
+  const metaBits = [];
+  if (ind.market_data_through) metaBits.push(`market data through ${esc(ind.market_data_through)}`);
+  if (m.verified) metaBits.push(`contract specs verified ${esc(m.verified)}`);
+  const meta = (metaBits.map(b => `<span>${b}</span>`).join('<span class="sep">·</span>') + (links.length ? '<span class="sep">·</span>' : "") + links.join(""))
+    ? `<p class="pulse-def-meta">${metaBits.map(b => `<span>${b}</span>`).join('<span class="sep">·</span>')}${links.length ? '<span class="sep">·</span>' : ""}${links.join("")}</p>`
+    : "");
+  return `<div class="pulse-def"><b>Measures:</b> ${esc(m.text)}${meta}</div>`;
+}
+
 function trackRecordHTML(ind) {
   const rec = ind.track_record || [];
   if (!rec.length) return "";
@@ -214,12 +347,72 @@ function trackRecordHTML(ind) {
     <tbody>${rows}</tbody></table>${note}</div>`;
 }
 
+/* Last-day implied distribution vs the realized print, per resolved event
+   in the archive (extends the FOMC track-record pattern to CPI, GDP,
+   unemployment, fed funds). */
+function realizedTrackHTML(ind) {
+  const tr = (ind.realized_track || []).slice()
+    .sort((a, b) => String(a.period || a.event).localeCompare(String(b.period || b.event)));
+  const note = ind.realized_track_note ? `<p class="pulse-note">${esc(ind.realized_track_note)}</p>` : "";
+  if (!tr.length) return note
+    ? `<div class="pulse-sub"><h4>Track record: last-day implied distribution vs realized print</h4>${note}</div>`
+    : "";
+  const rows = tr.map(r => {
+    const med = Number.isFinite(r.q50) ? `${fmtRate(r.q50)}% (${fmtRate(r.q25)}–${fmtRate(r.q75)}%)` : "n/a";
+    const int90 = Number.isFinite(r.q05) ? `${fmtRate(r.q05)}–${fmtRate(r.q95)}%` : "n/a";
+    const rz = Number.isFinite(r.realized) ? `${fmtRate(r.realized)}%` : "not yet available";
+    const h50 = r.hit_50 == null ? "" : r.hit_50 ? '<span class="pm-hit">✓</span>' : '<span class="pm-miss">✗</span>';
+    const h90 = r.hit_90 == null ? "" : r.hit_90 ? '<span class="pm-hit">✓</span>' : '<span class="pm-miss">✗</span>';
+    return `<tr><td>${esc(r.period || r.event)}</td><td>${esc(fmtDate(r.as_of))}</td><td>${med}</td><td>${int90}</td><td>${rz}</td><td>${h50}</td><td>${h90}</td></tr>`;
+  }).join("");
+  return `<div class="pulse-sub"><h4>Track record: last-day implied distribution vs realized print</h4>
+    <table class="pulse-table"><thead><tr><th>Reference</th><th>Day before</th><th>Median (50% int.)</th><th>90% int.</th><th>Realized</th><th>50%</th><th>90%</th></tr></thead>
+    <tbody>${rows}</tbody></table>${note}</div>`;
+}
+
 function top5HTML(ind) {
   const top = ind.top5 || {};
   const names = Object.keys(top);
   if (!names.length) return "";
   const items = names.map(n => `<span class="m"><b>${esc(n)}</b> ${pct(top[n], 0)}</span>`).join("");
   return `<div class="pulse-sub"><h4>Front-runners by announcement probability</h4><div class="pulse-multi">${items}</div></div>`;
+}
+
+/* IPO precision: named companies, realized confirmations, resolution. */
+function ipoPrecisionHTML(ind) {
+  if (ind.key !== "ipo_pipeline") return "";
+  const rz = ind.realized_ipo || null;
+  const names = ind.ipo_names || [];
+  const bits = [];
+  if (rz) {
+    const conf = (rz.confirmed || []);
+    bits.push(`<p class="pulse-note">Realized so far: <b>${rz.confirmed_count} of ${ind.n_named != null ? ind.n_named : names.length}</b> confirmed`
+      + (conf.length ? ` — ${conf.map(esc).join(", ")}` : "")
+      + `. ${esc(rz.note || "")}</p>`);
+  }
+  if (names.length) {
+    const chips = names.map(n =>
+      `<span class="pm-ipo-name${n.confirmed ? " confirmed" : ""}">${n.confirmed ? "✓ " : ""}${esc(n.name)}</span>`
+    ).join("");
+    bits.push(`<details class="pm-names"><summary>The ${names.length} named companies (exchange listing as of ${esc(ind.market_data_through)})</summary><div class="pm-ipo-names">${chips}</div></details>`);
+  }
+  if (!bits.length) return "";
+  return `<div class="pulse-sub"><h4>Named companies and realized confirmations</h4>${bits.join("")}</div>`;
+}
+
+/* Recession ladder realized overlay: rule-window statuses + quarterly
+   growth with flagged negative runs. */
+function recessionRealizedHTML(ind) {
+  const rec = ind.recession_realized || null;
+  if (!rec) return "";
+  const hzLabels = {};
+  (ind.horizons || []).forEach(h => { if (h.event_ticker) hzLabels[h.event_ticker] = h.label; });
+  const statuses = (rec.statuses || []).map(s =>
+    `<li><b>${esc(hzLabels[s.event] || s.event)}:</b> ${esc(s.note || "")}</li>`
+  ).join("");
+  return `<div class="pulse-sub"><h4>Realized overlay: the exchange's recession rule, applied to published BEA estimates</h4>
+    ${statuses ? `<ul class="pm-rec-status">${statuses}</ul>` : ""}
+    ${rec.note ? `<p class="pulse-note">${esc(rec.note)}</p>` : ""}</div>`;
 }
 
 function renderTape(inds) {
@@ -252,6 +445,9 @@ function renderMarkets(pm) {
     const extras = [
       paperHTML(ind),
       trackRecordHTML(ind),
+      realizedTrackHTML(ind),
+      ipoPrecisionHTML(ind),
+      recessionRealizedHTML(ind),
       top5HTML(ind),
     ].join("");
     if (ind.series && ind.series.length) {
@@ -262,14 +458,15 @@ function renderMarkets(pm) {
           <div class="pulse-src">${esc(ind.source)} · ${esc(ind.frequency)}</div>
         </div>
         <p class="blurb">${esc(ind.why)}</p>
+        ${measuresHTML(ind)}
         <div class="pulse-chart"></div>
         <div class="pulse-dist"></div>
         ${extras}
         ${ind.note ? `<p class="pulse-note">${esc(ind.note)}</p>` : ""}`;
       const fig = indicatorChart(ind);
       if (fig) card.querySelector(".pulse-chart").appendChild(fig);
+      const dw = card.querySelector(".pulse-dist");
       if (ind.distribution) {
-        const dw = card.querySelector(".pulse-dist");
         const fan = fanChart(ind.distribution);
         if (fan) {
           const h = document.createElement("h4");
@@ -277,6 +474,13 @@ function renderMarkets(pm) {
           h.textContent = "Implied distribution over time — fan chart (median, 50% and 90% intervals)";
           dw.appendChild(h);
           dw.appendChild(fan);
+          const rz = ind.distribution.realized;
+          if (rz && Number.isFinite(rz.value)) {
+            const p = document.createElement("p");
+            p.className = "pulse-note";
+            p.textContent = `Realized outcome: ${fmtRate(rz.value)}%${rz.date ? " (" + fmtDate(rz.date) + ")" : ""} — marked on the fan. ${rz.note || ""}`;
+            dw.appendChild(p);
+          }
         }
         const hm = heatmapChart(ind.distribution);
         if (hm) {
@@ -291,6 +495,54 @@ function renderMarkets(pm) {
           dw.appendChild(note);
         }
       }
+      // FOMC decision -> implied post-meeting rate fan (additional view).
+      if (ind.fomc_fan) {
+        const ff = ind.fomc_fan;
+        if ((ff.rows || []).length) {
+          const h = document.createElement("h4");
+          h.className = "pulse-subhead";
+          h.textContent = "Implied post-meeting funds rate — fan chart (target-range upper bound; median, 50% and 90% intervals)";
+          dw.appendChild(h);
+          const fig2 = fomcFanChart(ff);
+          if (fig2) dw.appendChild(fig2);
+        }
+        const notes = [ff.level_note, ff.note, ff.track_note].filter(Boolean);
+        if (notes.length) {
+          const p = document.createElement("p");
+          p.className = "pulse-note";
+          p.textContent = notes.join(" ");
+          dw.appendChild(p);
+        }
+        const rz = (ff.realized || []);
+        if (rz.length) {
+          const rows = rz.map(r => {
+            const med = r.as_of && Number.isFinite(r.q50)
+              ? `${fmtRate(r.q50)}% (${fmtRate(r.q25)}–${fmtRate(r.q75)}%)` : "n/a";
+            const base = Number.isFinite(r.base_rate) ? `${fmtRate(r.base_rate)}%` : "n/a";
+            const post = Number.isFinite(r.post_meeting_upper) ? `${fmtRate(r.post_meeting_upper)}%` : "n/a";
+            const h50 = r.hit_50 == null ? "" : r.hit_50 ? '<span class="pm-hit">✓</span>' : '<span class="pm-miss">✗</span>';
+            const h90 = r.hit_90 == null ? "" : r.hit_90 ? '<span class="pm-hit">✓</span>' : '<span class="pm-miss">✗</span>';
+            return `<tr><td>${esc(r.meeting)}</td><td>${base}</td><td>${med}</td><td>${post}</td><td>${h50}</td><td>${h90}</td></tr>`;
+          }).join("");
+          const div = document.createElement("div");
+          div.className = "pulse-sub";
+          div.innerHTML = `<h4>Rate fan track record: day-before implied rate vs realized post-meeting rate</h4>
+            <table class="pulse-table"><thead><tr><th>Meeting</th><th>Pre-meeting base</th><th>Median (50% int.)</th><th>Realized post-meeting</th><th>50%</th><th>90%</th></tr></thead>
+            <tbody>${rows}</tbody></table>`;
+          dw.appendChild(div);
+        }
+      }
+      // Recession ladder: quarterly growth bars with flagged runs.
+      if (ind.recession_realized) {
+        const h = document.createElement("h4");
+        h.className = "pulse-subhead";
+        h.textContent = "Realized quarterly real-GDP growth (published BEA estimates; negative two-quarter runs flagged)";
+        const fig3 = recessionQuartersChart(ind.recession_realized);
+        if (fig3) {
+          ind.recession_realized && dw.appendChild(h);
+          dw.appendChild(fig3);
+        }
+      }
     } else {
       card.innerHTML = `
         <div class="pulse-head">
@@ -298,6 +550,7 @@ function renderMarkets(pm) {
           <div class="pulse-src">${esc(ind.source)} · ${esc(ind.frequency)}</div>
         </div>
         <p class="blurb">${esc(ind.why)}</p>
+        ${measuresHTML(ind)}
         ${extras}
         ${ind.note ? `<p class="pulse-note">${esc(ind.note)}</p>` : ""}`;
     }
