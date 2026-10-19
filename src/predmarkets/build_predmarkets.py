@@ -17,6 +17,8 @@ decision->rate fan chart to the site bundle.
 Outputs:
   data/predmarkets/<key>.csv     date,value,event,ticker,strike,volume
   data/predmarkets/realized.csv  indicator,period,event,kind,value,...
+  data/predmarkets/accuracy.csv  per-resolved-event predicted-vs-actual
+                                records (append-only; see accuracy.py)
   data/predmarkets/fred/*.csv    raw FRED responses, preserved verbatim
   data/predmarkets/_meta.json    per-indicator status + market metadata
   docs/data/predmarkets.json     site bundle (strict JSON, NaN rejected)
@@ -40,6 +42,7 @@ from pathlib import Path
 import polars as pl
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from src.predmarkets import accuracy as accuracy_mod
 from src.predmarkets import distribution as distmod
 from src.predmarkets import fred
 from src.predmarkets import kalshi
@@ -814,6 +817,29 @@ def _company_of(ticker: str) -> str:
     return ticker.rsplit("-", 1)[-1]
 
 
+def _ipo_front_event(payloads: dict[str, list[dict]],
+                     prefer_ticker: str | None = None) -> dict | None:
+    """The live KXIPO event with nested markets — the front event's
+    ticker when it still lists markets, else the first that does."""
+    events = payloads.get("ipo_pipeline") or []
+    if prefer_ticker:
+        hit = next((e for e in events
+                    if (e.get("event_ticker") == prefer_ticker
+                        and e.get("markets"))), None)
+        if hit is not None:
+            return hit
+    return next((e for e in events if e.get("markets")), None)
+
+
+def _ipo_settled_yes(ipo_event: dict | None) -> set[str]:
+    """Tickers of the constituent company markets already settled Yes
+    (the exchange's record of a confirmed IPO)."""
+    if not ipo_event:
+        return set()
+    return {mk["ticker"] for mk in ipo_event["markets"]
+            if mk.get("result") == "yes"}
+
+
 def build_ipo_expected(df: pl.DataFrame,
                        close_times: dict[str, dt.datetime],
                        settled_yes_tickers: set[str] | None = None
@@ -1067,15 +1093,10 @@ def _build_derived(site_indicators: list, meta_indicators: dict,
     # ---- IPO pipeline: expected count replaces the company lines ----
     ipo_df = frames.get("ipo_pipeline")
     ipo_entry = entry_of("ipo_pipeline")
-    ipo_events = payloads.get("ipo_pipeline") or []
-    ipo_event = None
-    if ipo_entry and ipo_entry.get("event_ticker"):
-        ipo_event = next((e for e in ipo_events
-                          if (e.get("event_ticker") == ipo_entry["event_ticker"]
-                              and e.get("markets"))), None)
-    if ipo_event is None:
-        ipo_event = next((e for e in ipo_events if e.get("markets")), None)
-    settled_yes = set()
+    ipo_event = _ipo_front_event(payloads,
+                                 ipo_entry.get("event_ticker")
+                                 if ipo_entry else None)
+    settled_yes = _ipo_settled_yes(ipo_event)
     names = []
     if ipo_event:
         for mk in ipo_event["markets"]:
@@ -1170,6 +1191,90 @@ def _build_derived(site_indicators: list, meta_indicators: dict,
             if e.get("status") == "live":
                 e["note"] = (e.get("note", "") + " Realized-outcome refresh "
                              f"failed this run: {realized_err}").strip()
+
+
+# ------------------------------------------------- accuracy track record
+
+ACCURACY_KEYS = ("fomc_decision", "fed_funds", "cpi_yoy", "gdp_quarterly",
+                 "unemployment", "recession", "ipo_pipeline")
+
+
+def _build_accuracy(site_indicators: list, meta_indicators: dict,
+                    frames: dict[str, pl.DataFrame],
+                    close_times: dict[str, dict[str, dt.datetime]],
+                    realized_df: pl.DataFrame,
+                    payloads: dict[str, list[dict]], data_dir: Path,
+                    now: dt.datetime) -> dict | None:
+    """Extend the prediction-accuracy record and attach it to the bundle.
+
+    Computes this run's accuracy rows for every newly resolved event
+    (day-before / final-session forecasts from the committed market
+    archive vs realized outcomes), merges them append-only into
+    data/predmarkets/accuracy.csv (history is never recomputed), and
+    attaches per-card accuracy sections plus the cross-indicator
+    scorecard. Returns the scorecard block for the site bundle (or None
+    when no accuracy-covered indicator is present).
+    """
+    ipo_frame = frames.get("ipo_pipeline")
+    ipo_exp_df = pl.DataFrame()
+    if ipo_frame is not None and ipo_frame.height:
+        ipo_exp_df = build_ipo_expected(
+            ipo_frame, close_times.get("ipo_pipeline", {}),
+            _ipo_settled_yes(_ipo_front_event(payloads)))
+
+    new_rows: list[dict] = []
+    for key in ACCURACY_KEYS:
+        new_rows += accuracy_mod.accuracy_rows_for(
+            key, frames.get(key), close_times.get(key, {}),
+            realized_df, now, ipo_exp_df=ipo_exp_df)
+    merged = accuracy_mod.merge_accuracy(
+        accuracy_mod.load_accuracy(data_dir / "accuracy.csv"), new_rows, now)
+    if merged.height:
+        merged.write_csv(data_dir / "accuracy.csv")
+
+    rows_by_key: dict[str, list[dict]] = {}
+    for r in merged.iter_rows(named=True):
+        rows_by_key.setdefault(r["indicator"], []).append(r)
+
+    today = now.date().isoformat()
+    cards = []
+    for entry in site_indicators:
+        key = entry["key"]
+        if key not in ACCURACY_KEYS:
+            continue
+        rows = rows_by_key.get(key, [])
+        pending = [{"event": h["event_ticker"], "resolves": h["date"]}
+                   for h in entry.get("horizons", []) if h["date"] >= today]
+        summary = accuracy_mod.summarize_indicator(rows)
+        summary["n_pending"] = len(pending)
+        entry["accuracy"] = {
+            "convention": accuracy_mod.ACCURACY_CONVENTIONS[key],
+            "rows": rows,
+            "summary": summary,
+            "pending": pending,
+        }
+        meta_indicators[key]["accuracy_summary"] = summary
+        metric, metric_label = accuracy_mod.PRIMARY_METRIC[key]
+        cards.append({
+            "key": key, "title": entry["title"],
+            "metric": metric, "metric_label": metric_label,
+            "summary": summary,
+            "convention": accuracy_mod.ACCURACY_CONVENTIONS[key],
+        })
+    if not cards:
+        return None
+    return {
+        "note": ("Per resolved event: the market's forecast at a fixed, "
+                 "documented lead time vs the realized outcome — the "
+                 "day-before close for FOMC meetings (the statement lands "
+                 "mid-session), the final pre-release close for morning "
+                 "data releases, the final close for annual events. "
+                 "Records are append-only: predictions freeze at first "
+                 "record and each daily run only adds newly resolved "
+                 "events and fills outcomes still pending. Nothing "
+                 "resolved yet reads as pending, never as 0/0."),
+        "cards": cards,
+    }
 
 
 # ---------------------------------------------------------------- build
@@ -1445,6 +1550,11 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
                    fred_frames=fred_frames, payloads=payloads,
                    realized_err=realized_err)
 
+    # ---- accuracy track record: append resolved events, attach sections ----
+    accuracy_summary = _build_accuracy(site_indicators, meta_indicators,
+                                       frames, close_times, realized_df,
+                                       payloads, data_dir, now)
+
     built = now.isoformat(timespec="seconds")
     meta = {
         "built_at_utc": built,
@@ -1453,13 +1563,15 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
         "n_indicators": len(meta_indicators),
         "n_live": sum(1 for v in meta_indicators.values() if v["status"] == "live"),
         "n_no_open_market": sum(1 for v in meta_indicators.values()
-                                if v["status"] == "no-open-market"),
+                                 if v["status"] == "no-open-market"),
         "n_error": sum(1 for v in meta_indicators.values() if v["status"] == "error"),
         "indicators": meta_indicators,
     }
     (data_dir / "_meta.json").write_text(strict_json(meta) + "\n")
 
     site = {"meta": {"built_at_utc": built}, "indicators": site_indicators}
+    if accuracy_summary:
+        site["accuracy"] = accuracy_summary
     site_json.write_text(strict_json(site) + "\n")
     json.loads(site_json.read_text())  # strict re-parse of what the site serves
     return meta

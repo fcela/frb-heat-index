@@ -23,7 +23,9 @@ from src.predmarkets import kalshi
 from src.predmarkets import distribution as distmod
 from src.predmarkets import fred as fredmod
 from src.predmarkets import realized as realized_mod
+from src.predmarkets import accuracy as accuracy_mod
 from src.predmarkets.build_predmarkets import (
+    ACCURACY_KEYS,
     build,
     build_distribution_track_record,
     build_distribution_views,
@@ -41,6 +43,7 @@ from src.predmarkets.build_predmarkets import (
     strike_label,
     strike_rank,
     validate_frame,
+    _build_accuracy,
     _measures_block,
 )
 from src.predmarkets.indicators import (
