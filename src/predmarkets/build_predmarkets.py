@@ -61,6 +61,14 @@ REPO = Path(__file__).resolve().parents[2]
 DATA_DIR = REPO / "data" / "predmarkets"
 SITE_JSON = REPO / "docs" / "data" / "predmarkets.json"
 
+# Shared public-record FOMC tables and event-horizon helpers live in
+# realized.py (no circular imports); these aliases keep the build's own
+# references stable.
+REALIZED_FOMC = realized_mod.REALIZED_FOMC
+FOMC_EVENT_DATES = realized_mod.FOMC_EVENT_DATES
+_infer_horizon = realized_mod.infer_event_horizon
+_day_before_rows = realized_mod.day_before_rows
+
 CATEGORICAL_COLORS = ["#1d4ed8", "#b45309", "#059669", "#7c3aed", "#be185d", "#0369a1"]
 SEQUENTIAL_ANCHORS = [(0x1D, 0x4E, 0xD8), (0xB4, 0x53, 0x09), (0xB2, 0x18, 0x2B)]
 CSV_COLUMNS = ["date", "value", "event", "ticker", "strike", "volume"]
@@ -365,21 +373,6 @@ TAIL_STRIKE_ORDER = {
     "GDP < 0%": 3,
 }
 
-# Realized FOMC decisions, meeting date -> decision bucket (Kalshi wording).
-# Public record (FOMC statements); verified 2026-10-18 against the Fed's
-# 2026 meeting chronology. "Hike 0bps" is Kalshi's label for no change.
-REALIZED_FOMC = {
-    "2025-09-17": "Cut 25bps",
-    "2025-10-29": "Cut 25bps",
-    "2025-12-10": "Cut 25bps",
-    "2026-01-28": "Hike 0bps",
-    "2026-03-18": "Hike 0bps",
-    "2026-04-29": "Hike 0bps",
-    "2026-06-17": "Hike 0bps",
-    "2026-07-29": "Hike 0bps",
-    "2026-09-16": "Hike 25bps",
-}
-
 
 # ------------------------------------------------------------ frame handling
 
@@ -500,49 +493,6 @@ def _front_event_on(df: pl.DataFrame, date: str,
     return best
 
 
-def _infer_horizon(event_ticker: str) -> dt.date | None:
-    """Horizon date inferred from the event ticker, for ordering events.
-
-    Proxies are month-accurate (good for front-event ordering); exact
-    meeting/release days come from the API's close_time where available.
-    """
-    # FOMC decision / fed funds level: KXFED(DECISION)-YYMON. Meetings fall in
-    # the latter half of the month; month-end is the ordering-safe proxy
-    # (the API's close_time is used where available).
-    m = re.match(r"KXFED(?:DECISION)?-(\d{2})([A-Z]{3})$", event_ticker)
-    if m:
-        mon = MONTH_CODES.get(m.group(2))
-        if mon:
-            y = 2000 + int(m.group(1))
-            last = (dt.date(y + (mon == 12), mon % 12 + 1, 1)
-                    - dt.timedelta(days=1)).day
-            return dt.date(y, mon, last)
-        return None
-    # CPI / unemployment: KX(CPIYOY|U3)-YYMON -> release ~mid following month
-    m = re.match(r"KX(?:CPIYOY|U3)-(\d{2})([A-Z]{3})$", event_ticker)
-    if m:
-        mon = MONTH_CODES.get(m.group(2))
-        if mon:
-            y, mo = 2000 + int(m.group(1)), mon + 1
-            if mo > 12:
-                y, mo = y + 1, 1
-            return dt.date(y, mo, 15)
-        return None
-    # GDP: KXGDP-YYMONDD -> release date is in the ticker
-    m = re.match(r"KXGDP-(\d{2})([A-Z]{3})(\d{2})$", event_ticker)
-    if m:
-        mon = MONTH_CODES.get(m.group(2))
-        if mon:
-            return dt.date(2000 + int(m.group(1)), mon, int(m.group(3)))
-        return None
-    # Annual ladders: KXRECSSNBER-YY(YY), KXIPO-YY(YY) -> year end
-    m = re.match(r"KX(?:RECSSNBER|IPO)-(\d{2}|\d{4})$", event_ticker)
-    if m:
-        y = m.group(1)
-        return dt.date(2000 + int(y) if len(y) == 2 else int(y), 12, 31)
-    return None
-
-
 def build_distribution_views(key: str, df: pl.DataFrame,
                              close_times: dict[str, dt.datetime]
                              ) -> tuple[pl.DataFrame, list[dict], dict]:
@@ -624,13 +574,6 @@ def build_tail_risks(frames: dict[str, pl.DataFrame],
     return df.select(CSV_COLUMNS).sort(["date", "strike"])
 
 
-# FOMC meeting dates by event ticker (decision day; public FOMC calendar).
-FOMC_EVENT_DATES = {
-    "KXFEDDECISION-26SEP": "2026-09-16",
-    "KXFEDDECISION-26OCT": "2026-10-28",
-    "KXFEDDECISION-26DEC": "2026-12-09",
-}
-
 # The KXFED level events price the same meetings as the decision events;
 # resolved level events lose their API close times just like the decision
 # events do, so the same public-record calendar fills their archive gaps.
@@ -697,17 +640,7 @@ def build_fomc_track_record(df: pl.DataFrame) -> list[dict]:
 
 def _day_before_rows(df: pl.DataFrame, event: str,
                      horizon: dt.date) -> pl.DataFrame:
-    """Rows on the last trading day with data strictly before the
-    resolution morning (markets close 8:29 AM ET on release day, so the
-    release-day candle is the prior session's; data always stops at or
-    before the horizon, which keeps this honest even when the exact
-    close time is only proxied)."""
-    days = [d for d in df.filter(pl.col("event") == event)["date"]
-            .unique().to_list() if d < horizon.isoformat()]
-    if not days:
-        return df.clear()
-    return df.filter((pl.col("event") == event)
-                     & (pl.col("date") == max(days)))
+    return realized_mod.day_before_rows(df, event, horizon)
 
 
 def build_distribution_track_record(key: str, df: pl.DataFrame,

@@ -6,6 +6,11 @@ the pipeline (never hand-edited), refreshed on every daily run:
     indicator, period, event, kind, value, source,
     first_seen, last_checked, note
 
+This module is also the shared home of the public-record FOMC tables
+(realized decisions, meeting calendar) and the event-horizon helpers
+(infer_event_horizon, day_before_rows) used by the build's track records
+and by the accuracy layer (accuracy.py) — no circular imports.
+
 Row kinds:
   print   a completed official statistic (CPI YoY month, GDP quarter,
           unemployment month, post-FOMC target-range upper bound). Prints
@@ -79,6 +84,91 @@ def meeting_date_of(event_ticker: str,
                     - dt.timedelta(days=1)).day
             return dt.date(y, mon, last)
     return None
+
+
+# Realized FOMC decisions, meeting date -> decision bucket (Kalshi wording).
+# Public record (FOMC statements); verified 2026-10-18 against the Fed's
+# 2026 meeting chronology. "Hike 0bps" is Kalshi's label for no change.
+# Extended as meetings resolve — it is the actuals table behind both the
+# FOMC track record and the accuracy layer.
+REALIZED_FOMC = {
+    "2025-09-17": "Cut 25bps",
+    "2025-10-29": "Cut 25bps",
+    "2025-12-10": "Cut 25bps",
+    "2026-01-28": "Hike 0bps",
+    "2026-03-18": "Hike 0bps",
+    "2026-04-29": "Hike 0bps",
+    "2026-06-17": "Hike 0bps",
+    "2026-07-29": "Hike 0bps",
+    "2026-09-16": "Hike 25bps",
+}
+
+# FOMC meeting dates by event ticker (decision day; public FOMC calendar).
+# Resolved events stop being listed with nested markets, so their close
+# times vanish from the API; this public-record calendar fills those gaps.
+FOMC_EVENT_DATES = {
+    "KXFEDDECISION-26SEP": "2026-09-16",
+    "KXFEDDECISION-26OCT": "2026-10-28",
+    "KXFEDDECISION-26DEC": "2026-12-09",
+}
+
+
+def infer_event_horizon(event_ticker: str) -> dt.date | None:
+    """Horizon date inferred from the event ticker, for ordering events.
+
+    Proxies are month-accurate (good for front-event ordering); exact
+    meeting/release days come from the API's close_time where available.
+    """
+    # FOMC decision / fed funds level: KXFED(DECISION)-YYMON. Meetings fall in
+    # the latter half of the month; month-end is the ordering-safe proxy
+    # (the API's close_time is used where available).
+    m = re.match(r"KXFED(?:DECISION)?-(\d{2})([A-Z]{3})$", event_ticker)
+    if m:
+        mon = MONTH_CODES.get(m.group(2))
+        if mon:
+            y = 2000 + int(m.group(1))
+            last = (dt.date(y + (mon == 12), mon % 12 + 1, 1)
+                    - dt.timedelta(days=1)).day
+            return dt.date(y, mon, last)
+        return None
+    # CPI / unemployment: KX(CPIYOY|U3)-YYMON -> release ~mid following month
+    m = re.match(r"KX(?:CPIYOY|U3)-(\d{2})([A-Z]{3})$", event_ticker)
+    if m:
+        mon = MONTH_CODES.get(m.group(2))
+        if mon:
+            y, mo = 2000 + int(m.group(1)), mon + 1
+            if mo > 12:
+                y, mo = y + 1, 1
+            return dt.date(y, mo, 15)
+        return None
+    # GDP: KXGDP-YYMONDD -> release date is in the ticker
+    m = re.match(r"KXGDP-(\d{2})([A-Z]{3})(\d{2})$", event_ticker)
+    if m:
+        mon = MONTH_CODES.get(m.group(2))
+        if mon:
+            return dt.date(2000 + int(m.group(1)), mon, int(m.group(3)))
+        return None
+    # Annual ladders: KXRECSSNBER-YY(YY), KXIPO-YY(YY) -> year end
+    m = re.match(r"KX(?:RECSSNBER|IPO)-(\d{2}|\d{4})$", event_ticker)
+    if m:
+        y = m.group(1)
+        return dt.date(2000 + int(y) if len(y) == 2 else int(y), 12, 31)
+    return None
+
+
+def day_before_rows(df: pl.DataFrame, event: str,
+                    horizon: dt.date) -> pl.DataFrame:
+    """Rows on the last trading day with data strictly before the
+    resolution morning (markets close 8:29 AM ET on release day, so the
+    release-day candle is the prior session's; data always stops at or
+    before the horizon, which keeps this honest even when the exact
+    close time is only proxied)."""
+    days = [d for d in df.filter(pl.col("event") == event)["date"]
+            .unique().to_list() if d < horizon.isoformat()]
+    if not days:
+        return df.clear()
+    return df.filter((pl.col("event") == event)
+                     & (pl.col("date") == max(days)))
 
 
 def _period_sort_key(period: str) -> str:
