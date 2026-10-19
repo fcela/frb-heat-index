@@ -202,7 +202,7 @@ def _fmt_day(d: dt.date) -> str:
 
 
 def _month_name(y: int, m: int) -> str:
-    return f"{dt.date(y, m, 1):B} {y}"
+    return f"{dt.date(y, m, 1):%B} {y}"
 
 
 def _front_reference(key: str, ev: dict | None,
@@ -280,7 +280,7 @@ def _measures_block(key: str, reg: dict, ev: dict | None,
         for e in (ev if isinstance(ev, list) else [ev] if ev else []):
             w = realized_mod.RECESSION_WINDOWS.get(e["event_ticker"])
             if w:
-                bits.append(f"{e['event_ticker'].rsplit('-', 1)[-1]}: "
+                bits.append(f"{realized_mod._recession_year(e['event_ticker'])}: "
                             f"{w[0]}\u2013{w[1]}")
         ref = ("two consecutive negative real-GDP quarters within "
                + ("; ".join(bits) if bits

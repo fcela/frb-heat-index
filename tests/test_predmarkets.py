@@ -39,6 +39,7 @@ from src.predmarkets.build_predmarkets import (
     strike_label,
     strike_rank,
     validate_frame,
+    _measures_block,
 )
 from src.predmarkets.indicators import (
     FOMC_BUCKET_DELTAS,
