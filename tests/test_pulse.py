@@ -50,10 +50,10 @@ def test_segments_complete():
             assert f in ind, f"{seg_key}/{ind_key} missing {f}"
         assert ind["status"] in FETCHABLE_STATUSES + ("pending-sourcing",), ind_key
         n += 1
-    assert n == 34, f"expected 34 indicators, got {n}"
-    assert len(SEGMENTS) == 9
+    assert n == 42, f"expected 42 indicators, got {n}"
+    assert len(SEGMENTS) == 10
     fetchable = sum(1 for _, _, i in all_indicators() if i["status"] in FETCHABLE_STATUSES)
-    assert fetchable == 33, f"expected 33 fetchable, got {fetchable}"
+    assert fetchable == 41, f"expected 41 fetchable, got {fetchable}"
     print(f"ok test_segments_complete ({n} indicators, {fetchable} fetchable)")
 
 
@@ -63,9 +63,9 @@ def test_site_json_parses_strictly():
     raw = p.read_text()
     assert "NaN" not in raw, "bare NaN literal in site JSON"
     d = json.loads(raw)
-    assert "segments" in d and len(d["segments"]) == 9
+    assert "segments" in d and len(d["segments"]) == 10
     total = sum(len(s["indicators"]) for s in d["segments"])
-    assert total == 34, total
+    assert total == 42, total
     # Multi-series indicators carry their group column and subseries labels.
     for s in d["segments"]:
         for ind in s["indicators"]:
