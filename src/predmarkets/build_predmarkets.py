@@ -1044,11 +1044,19 @@ def _build_derived(site_indicators: list, meta_indicators: dict,
                 h50 = sum(1 for r in tr if r["hit_50"])
                 h90 = sum(1 for r in tr if r["hit_90"])
                 n_known = sum(1 for r in tr if r["realized"] is not None)
-                entry["realized_track_note"] = (
-                    f"Last-day implied distribution vs the realized print "
-                    f"for each resolved event in the archive: realized "
-                    f"inside the 50% interval {h50}/{n_known}, inside the "
-                    f"90% interval {h90}/{n_known}. " + realized_note)
+                # Empty archive must not read as "0 of 0 hits" - it is
+                # "nothing resolved yet", and the record extends itself.
+                if not tr:
+                    entry["realized_track_note"] = (
+                        "No resolved events in the archive yet - the record "
+                        "extends automatically as each event settles and "
+                        "its print arrives. " + realized_note)
+                else:
+                    entry["realized_track_note"] = (
+                        f"Last-day implied distribution vs the realized print "
+                        f"for each resolved event in the archive: realized "
+                        f"inside the 50% interval {h50}/{n_known}, inside the "
+                        f"90% interval {h90}/{n_known}. " + realized_note)
                 # Daily moments double as an uncertainty gauge (paper Sec. 7).
                 entry["moments"] = [
                     {"date": r["date"], "mean": r["mean"],
