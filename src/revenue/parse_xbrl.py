@@ -62,6 +62,11 @@ REVENUE_SUMS = {
     "Wells Fargo": ("net interest income", "noninterest income"),
 }
 
+# Single-segment filers with no per-segment R-file: the dimensionless
+# block of their only disaggregation table is the firm's segment total
+# (see parse_filing_dir's segment_default fallback).
+SINGLE_SEGMENT_FIRMS = {"Moelis"}
+
 YEAR_RE = re.compile(r"\b(?:19|20)\d{2}\b")
 UNIT_RE = re.compile(r"\$\W*in\s*(millions|thousands|billions)", re.I)
 UNIT_SCALE = {"millions": 1.0, "thousands": 0.001, "billions": 1000.0}
@@ -98,31 +103,33 @@ def find_segment_reports(reports, firm=None):
     segments, not regions.
 
     Single-segment filers may disclose revenue by type instead of a segment
-    note (PJT's "Disaggregation of Revenue"); firm-specific patterns cover
-    those.
+    note (PJT's "Disaggregation of Revenue"), or only by geography (Moelis);
+    firm-specific patterns cover those, and for them the geographic
+    exclusion is waived -- the geographic table is the revenue table.
     """
     # Firm-specific report patterns for filers without a segment note.
     firm_patterns = {
         "PJT Partners": ["disaggregation of revenue"],
+        "Moelis": ["geographical distribution of revenues"],
     }
     patterns = firm_patterns.get(firm, [])
     out = []
     for r in reports:
         s = r["short_name"].lower()
-        if "segment" not in s and not any(p in s for p in patterns):
+        firm_match = any(p in s for p in patterns)
+        if "segment" not in s and not firm_match:
             continue
         # Exclude geographic sub-reports ("... - Net Revenues by Region
         # (Details)", "... By Geographic Region (Detail)", "... by
-        # Geographic Area (Details)"). A main note that merely mentions
-        # geography (Morgan Stanley's "Segment, Geographic and Revenue
-        # Information") is kept.
-        if "by region" in s or "by geographic" in s:
-            continue
-        # Geographic sub-reports ("Schedule of Geographical Distribution of
-        # Revenue", "... Revenue and Assets by Geographical ..."). A main
-        # note titled "... Segment and Geographical Information" (Houlihan
-        # Lokey) is kept — only the geographic breakdown is excluded.
-        if "geographical distribution" in s or "by geographical" in s:
+        # Geographic Area (Details)", "Schedule of Geographical
+        # Distribution of Revenues and Assets (Details)"). A main note
+        # that merely mentions geography (Morgan Stanley's "Segment,
+        # Geographic and Revenue Information") is kept. The waiver above
+        # applies only to the geographic pair: single-segment filers'
+        # include patterns name their one revenue table explicitly.
+        if not firm_match and ("by region" in s or "by geographic" in s
+                               or "geographical distribution" in s
+                               or "by geographical" in s):
             continue
         if "portfolio segment" in s or "goodwill" in s:
             continue
@@ -139,9 +146,11 @@ class _TableParser(HTMLParser):
 
     Each table is a list of rows; each row is a list of (text, member_id)
     cells. Colspans are expanded by repeating the cell. member_id is the
-    XBRL concept reference from the cell's link (e.g.
+    axis=member link from the cell's onclick (e.g.
     "defref_us-gaap_StatementBusinessSegmentsAxis=ms_InstitutionalSecuritiesSegmentMember"),
-    or None. A member_id containing "Member" marks segment section headers.
+    or None. Plain concept references (defref_...LineItems, no "=") are
+    not members: a truthy placeholder for them let abstract rows pose as
+    segment headers and hijack row attribution.
     """
 
     def __init__(self):
@@ -173,10 +182,14 @@ class _TableParser(HTMLParser):
                         pass
         elif tag == "a" and self._cell is not None:
             for k, v in attrs:
-                if k == "onclick" and v and "Member" in v:
-                    m = re.search(r"defref_[A-Za-z0-9_.-]+=([A-Za-z0-9_.-]+)",
-                                  v)
-                    self._cell_member = m.group(0) if m else True
+                if k == "onclick" and v:
+                    # Capture any axis=member link, including members
+                    # whose concept name lacks the literal "Member"
+                    # (e.g. srt country_US); only a real match counts --
+                    # see the class docstring.
+                    m = re.search(
+                        r"defref_[A-Za-z0-9_.-]+=([A-Za-z0-9_.-]+)", v)
+                    self._cell_member = m.group(0) if m else None
 
     def handle_endtag(self, tag):
         if tag == "table":
@@ -356,6 +369,51 @@ def _pivot_member(text):
     return name
 
 
+# Annual vs partial period markers in R-file table headers. The raw tree
+# holds 10-Q accession dirs alongside 10-Ks, and some 10-K segment
+# tables mix quarterly and annual columns under "1/3/6/9 Months Ended"
+# headers (e.g. BofA's segment details). Period type is therefore
+# resolved per COLUMN: a year column under a partial-period marker is
+# dropped, one under "12 Months Ended" / "Year Ended" (or unmarked) is
+# kept. Colspans are already expanded by _TableParser, so each marker
+# cell covers exactly its own columns.
+_ANNUAL_PERIOD = re.compile(r"12\s*months?\s*ended|years?\s*ended", re.I)
+_PARTIAL_PERIOD = re.compile(
+    r"(?:three|six|nine|one|[1369])\s*months?\s*ended"
+    r"|three\s+and\s+nine\s+months\s+ended"
+    r"|as\s+of\s+or\s+for\s+the\s+three\s+months\s+ended", re.I)
+
+
+def _period_column_map(table, upto_row):
+    """{column index: True=annual, False=partial} from period marker rows.
+
+    Scans the rows at or above the year-date header row for period
+    markers; the marker row closest to the date row wins per column.
+    Returns None when the table declares no period markers at all.
+    """
+    marks = {}
+    for row in table[:upto_row + 1]:
+        for j, (text, _member) in enumerate(row):
+            if _PARTIAL_PERIOD.search(text):
+                marks[j] = False
+            elif _ANNUAL_PERIOD.search(text):
+                marks[j] = True
+    return marks or None
+
+
+def _drop_partial_years(year_cols, marks):
+    """Remove partial-period columns from a {year: [cols]} map in place."""
+    if not marks:
+        return year_cols
+    out = {}
+    for year, cols in year_cols.items():
+        keep = [c for c in cols
+                if c not in marks or marks[c] is not False]
+        if keep:
+            out[year] = keep
+    return out
+
+
 def parse_segment_table(html_text, extra_labels=(), sum_labels=()):
     """Extract segment revenue rows from one R-file's HTML.
 
@@ -396,6 +454,10 @@ def _parse_with_labels(html_text, revenue_labels, extra_labels):
         hdr_idx, col_years = _header_columns(table)
         if hdr_idx is None:
             continue
+        # Period type per column: drop year columns under 10-Q-style
+        # partial-period markers ("3 Months Ended", ...); keep columns
+        # under annual markers or with no marker at all.
+        marks = _period_column_map(table, hdr_idx)
         # Align header cells to data columns. The header row covers the
         # value columns; the offset is the difference between the data-row
         # and header lengths (label column, plus any dimension column the
@@ -413,6 +475,9 @@ def _parse_with_labels(html_text, revenue_labels, extra_labels):
         for j, y in enumerate(col_years):
             if y:
                 year_cols.setdefault(y, []).append(off + j)
+        year_cols = _drop_partial_years(year_cols, marks)
+        if not year_cols:
+            continue  # partial-period (10-Q) table; annual layer only
         years = sorted(year_cols)
         t_recs = []  # raw (unscaled) records for this table
         # Column-pivot layout: segments live in the header cells
@@ -424,7 +489,9 @@ def _parse_with_labels(html_text, revenue_labels, extra_labels):
         if "segment" in " ".join(header_texts).lower():
             members = [_pivot_member(t) for t in header_texts]
             if any(members):
-                pivot = [(m, y) for m, y in zip(members, col_years)]
+                pivot = [(m, y, j) for j, (m, y)
+                         in enumerate(zip(members, col_years))
+                         if j not in marks or marks[j] is not False]
         if pivot:
             for row in table:
                 if not row or not row[0][0]:
@@ -432,7 +499,7 @@ def _parse_with_labels(html_text, revenue_labels, extra_labels):
                 label = row[0][0]
                 if _norm_label(label) not in labels:
                     continue
-                for j, (member, year) in enumerate(pivot):
+                for member, year, j in pivot:
                     if not member or not year:
                         continue
                     c = off + j
@@ -551,9 +618,19 @@ def parse_segment_xml(xml_text, extra_labels=()):
         member = SEG_MEMBER_RE.search(key)
         period = PERIOD_RE.search(key)
         scale = re.search(r"<Scale>(-?\d+)</Scale>", block)
+        # 10-Q InstanceReport columns carry 3/6/9-month spans; the
+        # annual layer ingests only full-year (~12-month) periods.
+        # 1/1-12/31 spans compute to 11 months, so the threshold is 11.
+        year = None
+        if period:
+            m1, y1 = int(period.group(1)), int(period.group(3))
+            m2, y2 = int(period.group(4)), int(period.group(6))
+            span_months = (y2 - y1) * 12 + (m2 - m1)
+            if span_months >= 11:
+                year = int(period.group(6))
         columns.append({
             "segment": member.group(1).strip() if member else None,
-            "year": int(period.group(6)) if period else None,
+            "year": year,
             "scale": int(scale.group(1)) if scale else 0,
         })
     records = []
@@ -614,6 +691,12 @@ def parse_filing_dir(firm, cik, accession, filing_dir, segment_default=None):
     Returns records with firm/cik/accession/r_file/source attached. When
     several R-files yield a row for the same (segment, year), the R-file is
     preferred by _rfile_rank (detail / operating-results reports first).
+
+    segment_default (set for SINGLE_SEGMENT_FIRMS) enables the
+    dimensionless-block fallback: the dimensionless block of a table is
+    kept as the firm's one-segment total (attributed to segment_default),
+    and the dimensioned rows of the same table -- geographic components,
+    not business segments -- are dropped.
     """
     filing_dir = Path(filing_dir)
     fs = filing_dir / "FilingSummary.xml"
@@ -636,8 +719,14 @@ def parse_filing_dir(firm, cik, accession, filing_dir, segment_default=None):
         rank = _rfile_rank(rep["short_name"])
         for r in recs:
             if r.get("consolidated"):
-                continue  # consolidated block of a multi-segment table
-            seg = r["segment_native"] or segment_default or firm
+                if segment_default is None:
+                    continue  # consolidated block of a multi-segment table
+                seg = segment_default
+            else:
+                if segment_default is not None \
+                        and r["segment_native"] is not None:
+                    continue  # dimensioned sub-breakdown, not a segment
+                seg = r["segment_native"] or segment_default or firm
             label = _norm_label(r["label"])
             key = (seg, r["year"], label)
             cand = {
@@ -681,11 +770,13 @@ def build_segments_csv(raw_root=RAW_ROOT, out_path=OUT_CSV,
             continue
         cik = cik_dir.name
         firm = (firms_ciks or {}).get(cik, cik)
+        seg_default = firm if firm in SINGLE_SEGMENT_FIRMS else None
         for acc_dir in sorted(cik_dir.iterdir()):
             if not acc_dir.is_dir():
                 continue
             records.extend(
-                parse_filing_dir(firm, cik, acc_dir.name, acc_dir))
+                parse_filing_dir(firm, cik, acc_dir.name, acc_dir,
+                                 segment_default=seg_default))
     df = pl.DataFrame(records) if records else pl.DataFrame(
         [], schema={"firm": pl.String, "cik": pl.String,
                     "segment_native": pl.String, "year": pl.Int64,

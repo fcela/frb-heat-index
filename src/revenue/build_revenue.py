@@ -100,11 +100,18 @@ def build_panel(seg, sub):
     df = df.with_columns(
         pl.col("map_quality").replace_strict(
             quality_rank, default=3).alias("_qrank"))
-    # Winner sorts last: best quality tier first, then later accession
-    # within the tier.
+    # Winner sorts first: best quality tier, then later accession
+    # (restated value wins). maintain_order keeps polars' non-stable
+    # sort from reshuffling rows that tie on every key -- several
+    # segments can map to one line at the same quality from the same
+    # filing (e.g. GS's three Investing-and-Lending sub-segments), and
+    # an unstable order made the surviving cell vary run to run.
+    # Ties resolve to the first row in frame order (segment_native
+    # ascending within a firm-year).
     df = df.sort(["firm", "taxonomy_line", "year", "_qrank", "accession"],
-                 descending=[False, False, False, True, False])
-    df = df.unique(subset=["firm", "taxonomy_line", "year"], keep="last")
+                 descending=[False, False, False, False, True],
+                 maintain_order=True)
+    df = df.unique(subset=["firm", "taxonomy_line", "year"], keep="first")
     df = df.drop("_qrank")
 
     # Drop unmappable (null line) rows but record them in meta.
