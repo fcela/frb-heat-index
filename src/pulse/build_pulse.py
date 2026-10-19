@@ -51,6 +51,10 @@ from src.pulse import (
     fra_ois,
     dealer_cds,
     ma_announced,
+    vvix,
+    sf_news_sentiment,
+    gpr_threats,
+    manual_feeds,
 )
 from src.pulse.segments import SEGMENTS, FETCHABLE_STATUSES, all_indicators
 
@@ -208,6 +212,17 @@ def fetch_indicator(ind_key: str, ind: dict) -> pl.DataFrame:
         return dealer_cds.fetch_dealer_cds()
     if ind_key == "ma_announced":
         return ma_announced.fetch_ma_announced()
+    if ind_key == "vvix":
+        return vvix.fetch_vvix()
+    if ind_key == "news_sentiment":
+        return sf_news_sentiment.fetch_news_sentiment()
+    if ind_key == "gpr_threats":
+        return gpr_threats.fetch_gpr_threats()
+    if ind_key in ("cmi", "cfo_optimism"):
+        # Manual feeds: hand-maintained CSVs in data/pulse/manual/ with a
+        # documented update procedure (see README there). Validation is
+        # fail-closed on provenance.
+        return manual_feeds.fetch_manual_series(ind_key)
     raise RuntimeError(f"no fetcher for {ind_key}")
 
 

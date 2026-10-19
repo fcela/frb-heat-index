@@ -111,6 +111,7 @@ function statusBadge(status) {
     "live": "live",
     "live-proxy": "live · proxy",
     "live-experimental": "experimental",
+    "live-manual": "live · manual feed",
     "pending-sourcing": "source pending",
     "error": "unavailable",
   }[status] || status;
