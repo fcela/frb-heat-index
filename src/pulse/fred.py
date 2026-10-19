@@ -9,17 +9,26 @@ import subprocess
 import polars as pl
 
 
-def fetch_fred_csv(fred_id: str, timeout: int = 60) -> pl.DataFrame:
-    """Fetch a FRED series as CSV. Raises on HTTP error or empty data."""
-    url = f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={fred_id}"
+def curl_transport(url: str, timeout: int = 60) -> str:
     r = subprocess.run(
         ["curl", "-s", "--max-time", str(timeout), "-A", "curl", url],
         capture_output=True,
         text=True,
     )
     if r.returncode != 0 or not r.stdout.strip():
-        raise RuntimeError(f"FRED fetch failed for {fred_id}: curl rc={r.returncode}")
-    df = pl.read_csv(io.StringIO(r.stdout))
+        raise RuntimeError(f"curl fetch failed for {url}: rc={r.returncode}")
+    return r.stdout
+
+
+def fetch_fred_csv(fred_id: str, timeout: int = 60, transport=None) -> pl.DataFrame:
+    """Fetch a FRED series as CSV. Raises on HTTP error or empty data.
+
+    `transport(url, timeout=...) -> CSV text` is injectable so tests run
+    against fixtures with zero live calls.
+    """
+    url = f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={fred_id}"
+    text = (transport or curl_transport)(url, timeout=timeout)
+    df = pl.read_csv(io.StringIO(text))
     if df.height == 0:
         raise RuntimeError(f"FRED returned no rows for {fred_id}")
     # Column is named DATE/<id>; normalize.
