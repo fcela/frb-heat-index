@@ -359,11 +359,42 @@ def test_build_end_to_end():
         rec = by_key["recession"]
         assert rec["strikes"] == ["2026", "2027"]
         rec_evs = [e for e in load_fixture("events_KXRECSSNBER.json")["events"]
-                   if e.get("event_ticker") in ("KXRECSSNBER-26", "KXRECSSNBER-27")]
+                    if e.get("event_ticker") in ("KXRECSSNBER-26", "KXRECSSNBER-27")]
         exp_dates = [str(min(kalshi.parse_iso_z(m["close_time"])
                               for m in e["markets"]).date()) for e in rec_evs]
         assert [h["date"] for h in rec["horizons"]] == exp_dates
         assert set(rec["series"][0]) == {"date", "strike", "value"}
+
+        # Accuracy track record: scorecard + per-card sections, all seven
+        # accuracy-covered indicators. Anything unresolved reads as
+        # pending — summaries are null, never a fabricated 0/0.
+        acc = site.get("accuracy")
+        assert acc and len(acc["cards"]) == len(ACCURACY_KEYS), acc
+        acc_by_key = {c["key"]: c for c in acc["cards"]}
+        assert set(acc_by_key) == set(ACCURACY_KEYS)
+        assert "append-only" in acc["note"]
+        n_recorded = 0
+        for i in site["indicators"]:
+            if i["key"] not in ACCURACY_KEYS:
+                assert i.get("accuracy") is None
+                continue
+            a = i["accuracy"]
+            assert a["convention"], i["key"]
+            s = a["summary"]
+            n_recorded += s["n_events"]
+            if s["n_scored"] == 0:
+                assert s["hit_rate"] is None and s["mae"] is None
+                assert s["brier_mean"] is None, i["key"]
+            c = acc_by_key[i["key"]]
+            assert c["summary"] == s and c["title"] == i["title"]
+            assert c["metric"] and c["metric_label"]
+            for h in i.get("horizons", []):
+                if h["date"] >= now.date().isoformat():
+                    assert {"event": h["event_ticker"],
+                            "resolves": h["date"]} in a["pending"]
+        # Nothing recorded yet -> no accuracy.csv until an event resolves.
+        if n_recorded == 0:
+            assert not (data_dir / "accuracy.csv").exists()
 
         # incremental rerun is idempotent: same rows, no duplicates
         heights = {p.name: p.read_text().splitlines() for p in
@@ -659,6 +690,407 @@ def test_merge_realized_freeze():
     df3 = realized_mod.merge_realized(df2, [], now)
     assert df3.height == 3
     print("ok test_merge_realized_freeze")
+
+
+# ------------------------------------------------------ accuracy layer
+
+def _acc_frame(rows):
+    """Synthetic archive frame from (date, value, event, strike) tuples."""
+    return pl.DataFrame({
+        "date": [r[0] for r in rows],
+        "value": [float(r[1]) for r in rows],
+        "event": [r[2] for r in rows],
+        "ticker": [f"t{i}" for i in range(len(rows))],
+        "strike": [str(r[3]) for r in rows],
+        "volume": [1.0] * len(rows),
+    })
+
+
+def _rz_frame(rows):
+    """Synthetic realized-dataset frame (REALIZED_COLUMNS shape)."""
+    cols = realized_mod.REALIZED_COLUMNS
+    return pl.DataFrame(rows, schema={c: (pl.Float64 if c == "value"
+                                          else pl.Utf8) for c in cols})
+
+
+def test_accuracy_fomc_decision_rows():
+    now = dt.datetime(2026, 10, 19, tzinfo=dt.timezone.utc)
+    # Day-before session (09-15) carries the prediction; the meeting-day
+    # session (09-16) is post-information (the statement lands 2:00 PM ET)
+    # and must never feed the forecast.
+    df = _acc_frame([
+        ("2026-09-15", 0.02, "KXFEDDECISION-26SEP", "Cut >25bps"),
+        ("2026-09-15", 0.05, "KXFEDDECISION-26SEP", "Cut 25bps"),
+        ("2026-09-15", 0.06, "KXFEDDECISION-26SEP", "Hike 0bps"),
+        ("2026-09-15", 0.80, "KXFEDDECISION-26SEP", "Hike 25bps"),
+        ("2026-09-15", 0.02, "KXFEDDECISION-26SEP", "Hike >25bps"),
+        ("2026-09-16", 0.99, "KXFEDDECISION-26SEP", "Hike 25bps"),
+    ])
+    # Production path after delisting: the public-record calendar fills
+    # the close-time gap (archive_close_times).
+    ct = {"KXFEDDECISION-26SEP": dt.datetime(2026, 9, 16, tzinfo=dt.timezone.utc)}
+    rows = accuracy_mod.accuracy_rows_for("fomc_decision", df, ct,
+                                           pl.DataFrame(), now)
+    assert len(rows) == 1
+    r = rows[0]
+    assert r["event_date"] == "2026-09-16" and r["as_of"] == "2026-09-15"
+    assert r["lead_days"] == 1
+    assert r["predicted_label"] == "Hike 25bps"
+    # Mode probability is renormalized across the day-before buckets.
+    assert abs(r["predicted_probability"] - 0.80 / 0.95) < 1e-6
+    # Realized decision on record (public FOMC table) -> hit + Brier over
+    # the renormalized five-bucket distribution.
+    assert r["actual_label"] == "Hike 25bps" and r["hit"] == 1
+    raw = [0.02, 0.05, 0.06, 0.80, 0.02]
+    labels = ["Cut >25bps", "Cut 25bps", "Hike 0bps", "Hike 25bps",
+              "Hike >25bps"]
+    exp_brier = sum((v / 0.95 - (1.0 if l == "Hike 25bps" else 0.0)) ** 2
+                    for v, l in zip(raw, labels))
+    assert abs(r["brier"] - exp_brier) < 1e-6
+    # Delisted path (no close time anywhere) -> same row via the calendar.
+    rows2 = accuracy_mod.accuracy_rows_for("fomc_decision", df, {},
+                                           pl.DataFrame(), now)
+    assert rows2 == rows
+    # A future meeting is pending, not resolved: no row, even with data.
+    fut = _acc_frame([("2026-10-27", 0.9, "KXFEDDECISION-26OCT", "Hike 0bps")])
+    assert accuracy_mod.accuracy_rows_for(
+        "fomc_decision", fut,
+        {"KXFEDDECISION-26OCT": dt.datetime(2026, 10, 28, 17, 59,
+                                             tzinfo=dt.timezone.utc)},
+        pl.DataFrame(), now) == []
+    # A resolved meeting with no realized decision on record yet: the
+    # prediction is recorded, the outcome stays pending (fills in later).
+    feb = _acc_frame([("2026-02-10", 0.9, "KXFEDDECISION-26FEB", "Hike 0bps")])
+    rows3 = accuracy_mod.accuracy_rows_for(
+        "fomc_decision", feb,
+        {"KXFEDDECISION-26FEB": dt.datetime(2026, 2, 11, 17, 59,
+                                            tzinfo=dt.timezone.utc)},
+        pl.DataFrame(), now)
+    assert len(rows3) == 1
+    assert rows3[0]["predicted_label"] == "Hike 0bps"
+    assert rows3[0]["actual_label"] is None and rows3[0]["hit"] is None
+    assert rows3[0]["brier"] is None
+    assert "not yet recorded" in rows3[0]["note"]
+    # An event with no public-record meeting day and no close time is
+    # withheld, not guessed.
+    orphan = _acc_frame([("2026-05-01", 0.9, "KXFEDDECISION-XX", "Hike 0bps")])
+    assert accuracy_mod.accuracy_rows_for("fomc_decision", orphan, {},
+                                          pl.DataFrame(), now) == []
+    print("ok test_accuracy_fomc_decision_rows")
+
+
+def test_accuracy_level_rows():
+    now = dt.datetime(2026, 10, 19, tzinfo=dt.timezone.utc)
+    # CPI: trading stops 8:29 AM ET on release day, so the release-morning
+    # session IS the final pre-outcome quote -> the prediction reads the
+    # last session on or before the resolution day (inclusive).
+    cpi = _acc_frame([
+        ("2026-10-13", 0.95, "KXCPIYOY-26SEP", "3.0"),
+        ("2026-10-13", 0.60, "KXCPIYOY-26SEP", "3.2"),
+        ("2026-10-13", 0.05, "KXCPIYOY-26SEP", "3.4"),
+        ("2026-10-14", 0.95, "KXCPIYOY-26SEP", "3.0"),
+        ("2026-10-14", 0.60, "KXCPIYOY-26SEP", "3.2"),
+        ("2026-10-14", 0.05, "KXCPIYOY-26SEP", "3.4"),
+        ("2026-12-09", 0.90, "KXCPIYOY-26NOV", "3.2"),
+        ("2026-12-09", 0.55, "KXCPIYOY-26NOV", "3.4"),
+    ])
+    ct = {"KXCPIYOY-26NOV": dt.datetime(2026, 12, 10, 13, 29,
+                                        tzinfo=dt.timezone.utc)}
+    rz = _rz_frame([{"indicator": "cpi_yoy", "period": "2026-09",
+                      "event": "KXCPIYOY-26SEP", "kind": "print",
+                      "value": 3.3, "source": "s", "first_seen": "d",
+                      "last_checked": "d", "note": "print"}])
+    rows = accuracy_mod.accuracy_rows_for("cpi_yoy", cpi, ct, rz, now)
+    assert len(rows) == 1   # the open November event is pending
+    r = rows[0]
+    assert r["event"] == "KXCPIYOY-26SEP" and r["period"] == "2026-09"
+    assert r["event_date"] == "2026-10-14" and r["as_of"] == "2026-10-14"
+    assert r["lead_days"] == 0
+    # Ladder >3.0: 0.95, >3.2: 0.60, >3.4: 0.05 -> bin masses .05/.35/.55/.05;
+    # the median interpolates into the (3.2, 3.4] bin: 3.2 + 0.2*(0.5-0.4)/0.55.
+    exp_pred = 3.2 + 0.2 * (0.5 - 0.4) / 0.55
+    assert abs(r["predicted"] - exp_pred) < 1e-6
+    assert r["actual"] == 3.3
+    assert abs(r["abs_error"] - abs(exp_pred - 3.3)) < 1e-6
+    # Delisted (no close time): the archive's final session is both the
+    # prediction and the resolution-day record — same row.
+    rows2 = accuracy_mod.accuracy_rows_for("cpi_yoy", cpi, {}, rz, now)
+    assert len(rows2) == 1 and rows2[0]["as_of"] == "2026-10-14"
+    # Realized print not yet landed: prediction recorded, error pending.
+    rows3 = accuracy_mod.accuracy_rows_for("cpi_yoy", cpi, ct,
+                                           pl.DataFrame(), now)
+    assert rows3[0]["actual"] is None and rows3[0]["abs_error"] is None
+    assert "not yet available" in rows3[0]["note"]
+    # Empty/None frames -> no rows, no crash.
+    assert accuracy_mod.accuracy_rows_for("cpi_yoy", None, {}, rz, now) == []
+    assert accuracy_mod.accuracy_rows_for("cpi_yoy", cpi.clear(), {}, rz,
+                                          now) == []
+    print("ok test_accuracy_level_rows")
+
+
+def test_accuracy_fed_funds_day_before():
+    now = dt.datetime(2026, 10, 19, tzinfo=dt.timezone.utc)
+    # FOMC-family session rule: the meeting-day session closes AFTER the
+    # 2:00 PM ET statement, so the forecast reads the session strictly
+    # before the meeting day.
+    ffr = _acc_frame([
+        ("2026-09-15", 0.60, "KXFED-26SEP", "3.75%"),
+        ("2026-09-15", 0.20, "KXFED-26SEP", "4.00%"),
+        ("2026-09-15", 0.02, "KXFED-26SEP", "4.25%"),
+        ("2026-09-16", 0.95, "KXFED-26SEP", "4.00%"),
+    ])
+    rz = _rz_frame([{"indicator": "fed_funds", "period": "2026-09-16",
+                     "event": "KXFED-26SEP", "kind": "print", "value": 4.0,
+                     "source": "s", "first_seen": "d", "last_checked": "d",
+                     "note": "print"}])
+    rows = accuracy_mod.accuracy_rows_for("fed_funds", ffr, {}, rz, now)
+    assert len(rows) == 1
+    r = rows[0]
+    assert r["event_date"] == "2026-09-16" and r["as_of"] == "2026-09-15"
+    # Bins <=3.75: .4, (3.75,4.00]: .4, (4.00,4.25]: .18 -> the median is
+    # 3.75 + 0.25*(0.5-0.4)/(0.8-0.4).
+    exp_pred = 3.75 + 0.25 * (0.5 - 0.4) / (0.8 - 0.4)
+    assert abs(r["predicted"] - exp_pred) < 1e-6
+    assert r["actual"] == 4.0
+    assert abs(r["abs_error"] - abs(exp_pred - 4.0)) < 1e-6
+    print("ok test_accuracy_fed_funds_day_before")
+
+
+def test_accuracy_release_day_close_time():
+    now = dt.datetime(2026, 10, 19, tzinfo=dt.timezone.utc)
+    # A listed data-release event (close time on the release morning): the
+    # resolution-day session is the final pre-release quote (inclusive).
+    u3 = _acc_frame([
+        ("2026-10-02", 0.70, "KXU3-26SEP", "4.0%"),
+        ("2026-10-02", 0.20, "KXU3-26SEP", "4.2%"),
+        ("2026-10-02", 0.02, "KXU3-26SEP", "4.4%"),
+    ])
+    ct = {"KXU3-26SEP": dt.datetime(2026, 10, 2, 13, 29,
+                                    tzinfo=dt.timezone.utc)}
+    rz = _rz_frame([{"indicator": "unemployment", "period": "2026-09",
+                      "event": "KXU3-26SEP", "kind": "print", "value": 4.2,
+                      "source": "s", "first_seen": "d", "last_checked": "d",
+                      "note": "print"}])
+    rows = accuracy_mod.accuracy_rows_for("unemployment", u3, ct, rz, now)
+    assert len(rows) == 1
+    r = rows[0]
+    assert r["event_date"] == "2026-10-02" and r["as_of"] == "2026-10-02"
+    # Bins <=4.0: .3, (4.0,4.2]: .5, (4.2,4.4]: .18 -> median 4.0+0.2*(0.2/0.5).
+    assert abs(r["predicted"] - 4.08) < 1e-6
+    assert abs(r["abs_error"] - 0.12) < 1e-6
+    # A GDP event still trading (future close) is pending, not resolved.
+    gdp = _acc_frame([("2026-10-18", 0.50, "KXGDP-26OCT30", "2.0%"),
+                      ("2026-10-18", 0.10, "KXGDP-26OCT30", "3.0%")])
+    ct_gdp = {"KXGDP-26OCT30": dt.datetime(2026, 10, 30, 13, 29,
+                                           tzinfo=dt.timezone.utc)}
+    assert accuracy_mod.accuracy_rows_for("gdp_quarterly", gdp, ct_gdp,
+                                           rz, now) == []
+    print("ok test_accuracy_release_day_close_time")
+
+
+def test_accuracy_recession_and_ipo_rows():
+    now = dt.datetime(2027, 1, 5, tzinfo=dt.timezone.utc)
+    # A settled annual recession market (delisted): the archive's final
+    # session is the final close. The still-trading 2026 market (with a
+    # live close time) reads as pending.
+    rec = _acc_frame([
+        ("2026-01-29", 0.61, "KXRECSSNBER-25", ""),
+        ("2026-01-30", 0.62, "KXRECSSNBER-25", ""),
+        ("2027-01-02", 0.55, "KXRECSSNBER-26", ""),
+    ])
+    ct = {"KXRECSSNBER-26": dt.datetime(2027, 1, 31, 4, 59,
+                                        tzinfo=dt.timezone.utc)}
+    rz = _rz_frame([{"indicator": "recession", "period": "2025",
+                      "event": "KXRECSSNBER-25", "kind": "status",
+                      "value": 0.0, "source": "s", "first_seen": "d",
+                      "last_checked": "d", "note": "not occurred"}])
+    rows = accuracy_mod.accuracy_rows_for("recession", rec, ct, rz, now)
+    assert len(rows) == 1
+    r = rows[0]
+    assert r["event"] == "KXRECSSNBER-25" and r["period"] == "2025"
+    assert r["as_of"] == "2026-01-30" and abs(r["predicted"] - 0.62) < 1e-9
+    assert r["actual"] == 0.0
+    assert r["actual_label"] == "no technical recession"
+    assert abs(r["abs_error"] - 0.62) < 1e-9
+    assert abs(r["brier"] - 0.62 ** 2) < 1e-9
+    # Outcome not yet determined: prediction recorded, outcome pending.
+    rows2 = accuracy_mod.accuracy_rows_for("recession", rec, ct,
+                                           pl.DataFrame(), now)
+    assert rows2[0]["actual"] is None and "not yet determined" in rows2[0]["note"]
+    # An unexpected market shape on the final session (two rows) is
+    # withheld rather than guessed.
+    odd = _acc_frame([("2026-01-30", 0.62, "KXRECSSNBER-25", ""),
+                      ("2026-01-30", 0.30, "KXRECSSNBER-25", "")])
+    assert accuracy_mod.accuracy_rows_for("recession", odd, {}, rz, now) == []
+
+    # IPO pipeline: expected-count series (one row per session); the open
+    # event reads as pending, the settled event scores the final expected
+    # count against the exchange-confirmed count.
+    exp = pl.DataFrame({
+        "date": ["2026-12-30", "2026-12-31"], "value": [6.5, 6.8],
+        "event": ["KXIPO-26", "KXIPO-26"],
+        "ticker": ["IPO-EXPECTED"] * 2, "strike": ["expected IPOs"] * 2,
+        "volume": [0.0, 0.0],
+    })
+    rz_ipo = _rz_frame([{"indicator": "ipo_pipeline", "period": "2026",
+                          "event": "KXIPO-26", "kind": "status", "value": 7.0,
+                          "source": "s", "first_seen": "d",
+                          "last_checked": "d", "note": "seven confirmed"}])
+    ct_ipo = {"KXIPO-26": dt.datetime(2027, 1, 1, 4, 59,
+                                      tzinfo=dt.timezone.utc)}
+    assert accuracy_mod.accuracy_rows_for("ipo_pipeline", None, ct_ipo,
+                                          rz_ipo, dt.datetime(
+                                              2026, 12, 31,
+                                              tzinfo=dt.timezone.utc),
+                                          ipo_exp_df=exp) == []
+    rows3 = accuracy_mod.accuracy_rows_for("ipo_pipeline", None, {},
+                                           rz_ipo, now, ipo_exp_df=exp)
+    assert len(rows3) == 1
+    r3 = rows3[0]
+    assert r3["event"] == "KXIPO-26" and r3["period"] == "2026"
+    assert r3["as_of"] == "2026-12-31" and abs(r3["predicted"] - 6.8) < 1e-9
+    assert r3["actual"] == 7.0 and abs(r3["abs_error"] - 0.2) < 1e-9
+    assert r3["predicted_label"] == "expected IPOs"
+    print("ok test_accuracy_recession_and_ipo_rows")
+
+
+def test_merge_accuracy_freeze():
+    now1 = dt.datetime(2026, 10, 19, tzinfo=dt.timezone.utc)
+    base = {"indicator": "cpi_yoy", "event": "KXCPIYOY-26SEP",
+            "period": "2026-09", "event_date": "2026-10-14",
+            "as_of": "2026-10-14", "lead_days": 0, "predicted": 3.236364,
+            "predicted_label": None, "predicted_probability": None,
+            "actual": None, "actual_label": None, "abs_error": None,
+            "hit": None, "brier": None, "note": "n"}
+    df1 = accuracy_mod.merge_accuracy(None, [dict(base)], now1)
+    assert df1.height == 1
+    r1 = df1.row(0, named=True)
+    assert r1["first_seen"] == "2026-10-19" and r1["last_checked"] == "2026-10-19"
+    # The print lands on a later run: the outcome fills at first
+    # observation, and the frozen prediction does not move even though
+    # the recompute now says 3.5 (history is never recomputed).
+    now2 = dt.datetime(2026, 10, 20, tzinfo=dt.timezone.utc)
+    later = dict(base, predicted=3.5, actual=3.7, abs_error=0.2)
+    fresh = dict(base, event="KXCPIYOY-26NOV", period="2026-11",
+                 event_date="2026-12-10", as_of="2026-12-10",
+                 predicted=3.4)
+    df2 = accuracy_mod.merge_accuracy(df1, [later, fresh], now2)
+    got = {(r["indicator"], r["event"]): r for r in df2.iter_rows(named=True)}
+    sep = got[("cpi_yoy", "KXCPIYOY-26SEP")]
+    assert sep["predicted"] == 3.236364            # frozen at first write
+    assert sep["actual"] == 3.7 and sep["abs_error"] == 0.2  # filled once
+    assert sep["first_seen"] == "2026-10-19" and sep["last_checked"] == "2026-10-20"
+    assert got[("cpi_yoy", "KXCPIYOY-26NOV")]["predicted"] == 3.4
+    assert df2.height == 2
+    # Rows absent from a later run are retained (archived events).
+    df3 = accuracy_mod.merge_accuracy(df2, [], dt.datetime(
+        2026, 10, 21, tzinfo=dt.timezone.utc))
+    assert df3.height == 2
+    keep = {(r["indicator"], r["event"]): r for r in df3.iter_rows(named=True)}
+    assert keep[("cpi_yoy", "KXCPIYOY-26SEP")]["last_checked"] == "2026-10-21"
+    assert keep[("cpi_yoy", "KXCPIYOY-26SEP")]["first_seen"] == "2026-10-19"
+    # An already-filled outcome never rewrites (a later recompute — even
+    # a wild one — cannot revise recorded history).
+    df4 = accuracy_mod.merge_accuracy(df3, [dict(later, actual=9.9,
+                                                 abs_error=6.2)],
+                                      dt.datetime(2026, 10, 22,
+                                                  tzinfo=dt.timezone.utc))
+    keep4 = {(r["indicator"], r["event"]): r for r in df4.iter_rows(named=True)}
+    assert keep4[("cpi_yoy", "KXCPIYOY-26SEP")]["actual"] == 3.7
+    assert keep4[("cpi_yoy", "KXCPIYOY-26SEP")]["abs_error"] == 0.2
+    # Empty in, empty out — with the committed schema.
+    empty = accuracy_mod.merge_accuracy(None, [], now1)
+    assert empty.height == 0
+    assert list(empty.columns) == accuracy_mod.ACCURACY_COLUMNS
+    print("ok test_merge_accuracy_freeze")
+
+
+def test_accuracy_summary_pending_never_zero():
+    # Empty record: null stats, rendered as pending — never 0/0.
+    s = accuracy_mod.summarize_indicator([])
+    assert s["n_events"] == 0 and s["n_scored"] == 0 and s["n_hits"] == 0
+    assert s["hit_rate"] is None and s["mae"] is None and s["brier_mean"] is None
+    # Recorded but unscored (outcome not yet observed): still pending.
+    s1 = accuracy_mod.summarize_indicator([{"actual": None,
+                                            "abs_error": None}])
+    assert s1["n_events"] == 1 and s1["n_scored"] == 0
+    assert s1["mae"] is None and s1["hit_rate"] is None
+    # Mixed record: only the scored rows feed the stats.
+    rows = [
+        {"actual": 3.7, "hit": None, "abs_error": 0.10, "brier": None},
+        {"actual": 3.3, "hit": None, "abs_error": 0.05, "brier": None},
+        {"actual_label": "Hike 25bps", "hit": 1, "abs_error": None,
+         "brier": 0.04},
+        {"actual_label": "Hike 0bps", "hit": 0, "abs_error": None,
+         "brier": 0.50},
+        {"actual": None, "hit": None, "abs_error": None, "brier": None},
+    ]
+    s2 = accuracy_mod.summarize_indicator(rows)
+    assert s2["n_events"] == 5 and s2["n_scored"] == 4 and s2["n_hits"] == 1
+    assert s2["hit_rate"] == 0.5
+    assert abs(s2["mae"] - 0.075) < 1e-9
+    assert abs(s2["brier_mean"] - 0.27) < 1e-9
+    print("ok test_accuracy_summary_pending_never_zero")
+
+
+def test_build_accuracy_attaches_cards():
+    now = dt.datetime(2026, 10, 19, tzinfo=dt.timezone.utc)
+    with tempfile.TemporaryDirectory() as tmp:
+        data_dir = Path(tmp)
+        site_indicators = [{
+            "key": "fomc_decision", "title": "FOMC decisions",
+            "horizons": [{"label": "Fed decision in Oct 2026?",
+                          "date": "2026-10-28",
+                          "event_ticker": "KXFEDDECISION-26OCT"}],
+        }]
+        meta_indicators = {"fomc_decision": {}}
+        df = _acc_frame([
+            ("2026-09-15", 0.02, "KXFEDDECISION-26SEP", "Cut >25bps"),
+            ("2026-09-15", 0.05, "KXFEDDECISION-26SEP", "Cut 25bps"),
+            ("2026-09-15", 0.06, "KXFEDDECISION-26SEP", "Hike 0bps"),
+            ("2026-09-15", 0.80, "KXFEDDECISION-26SEP", "Hike 25bps"),
+            ("2026-09-15", 0.02, "KXFEDDECISION-26SEP", "Hike >25bps"),
+        ])
+        ct = {"fomc_decision": {
+            "KXFEDDECISION-26SEP": dt.datetime(2026, 9, 16,
+                                               tzinfo=dt.timezone.utc)}}
+        sc = _build_accuracy(site_indicators, meta_indicators,
+                             {"fomc_decision": df}, ct, pl.DataFrame(),
+                             {}, data_dir, now)
+        assert sc and len(sc["cards"]) == 1
+        card = sc["cards"][0]
+        assert card["key"] == "fomc_decision"
+        assert card["metric"] == "hit_rate" and card["metric_label"] == "hit rate"
+        assert card["summary"]["n_events"] == 1
+        assert card["summary"]["n_scored"] == 1
+        assert card["summary"]["hit_rate"] == 1.0
+        entry = site_indicators[0]
+        assert entry["accuracy"]["rows"][0]["event"] == "KXFEDDECISION-26SEP"
+        assert entry["accuracy"]["convention"]
+        # Horizons at/after today read as pending.
+        assert entry["accuracy"]["pending"] == [
+            {"event": "KXFEDDECISION-26OCT", "resolves": "2026-10-28"}]
+        assert entry["accuracy"]["summary"]["n_pending"] == 1
+        assert meta_indicators["fomc_decision"]["accuracy_summary"]["n_scored"] == 1
+        # The append-only record was persisted.
+        on_disk = accuracy_mod.load_accuracy(data_dir / "accuracy.csv")
+        assert on_disk is not None and on_disk.height == 1
+        # A rerun on a later day: same row, history not recomputed,
+        # last_checked refreshed.
+        later = dt.datetime(2026, 10, 20, tzinfo=dt.timezone.utc)
+        _build_accuracy(site_indicators, meta_indicators,
+                        {"fomc_decision": df}, ct, pl.DataFrame(),
+                        {}, data_dir, later)
+        on_disk2 = accuracy_mod.load_accuracy(data_dir / "accuracy.csv")
+        assert on_disk2.height == 1
+        r2 = on_disk2.row(0, named=True)
+        assert r2["first_seen"] == "2026-10-19"
+        assert r2["last_checked"] == "2026-10-20"
+        assert r2["predicted_label"] == "Hike 25bps"
+        # No accuracy-covered indicators -> no scorecard block.
+        assert _build_accuracy([], {}, {}, {}, pl.DataFrame(), {},
+                               data_dir, now) is None
+        print("ok test_build_accuracy_attaches_cards")
 
 
 def test_fomc_fan_and_distribution_track():

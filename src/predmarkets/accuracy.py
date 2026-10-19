@@ -500,6 +500,9 @@ def merge_accuracy(old: pl.DataFrame | None, new_rows: list[dict],
                 changed = True
         if changed and cur.get("note") is not None:
             cur["note"] = row.get("note", cur["note"])
+    # last_checked always refreshes — for retained rows too (archived
+    # events keep their records and stay dated as verified).
+    for cur in by_key.values():
         cur["last_checked"] = today
     if not by_key:
         return pl.DataFrame(schema=ACCURACY_SCHEMA)
