@@ -30,8 +30,12 @@ import math
 
 
 def parse_level(label: str) -> float | None:
-    """'≥4.25%' -> 4.25; '4.25%' -> 4.25; '3.1' -> 3.1; 'Hike 25bps' -> None."""
-    s = str(label).strip().lstrip("≥").rstrip("%").strip()
+    """'>4.25%' -> 4.25; '≥4.25%' -> 4.25; '4.25%' -> 4.25; '3.1' -> 3.1;
+    'Hike 25bps' -> None."""
+    s = str(label).strip()
+    while s[:1] in (">", "≥"):
+        s = s[1:]
+    s = s.rstrip("%").strip()
     try:
         return float(s)
     except (TypeError, ValueError):

@@ -274,3 +274,61 @@
   text-align: left;
 }
 .pulse-table th { font-weight: 600; }
+
+/* Metric definitions, realized overlays, IPO precision. */
+.pulse-def {
+  border: 1px solid var(--tape-line, #e9e4d6);
+  background: color-mix(in srgb, var(--tape-line, #ece7d8) 26%, transparent);
+  padding: 0.6rem 0.8rem;
+  margin: 0.75rem 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--muted, #75705f);
+  max-width: 92ch;
+}
+.pulse-def b { color: var(--ink, #1b1a16); }
+.pulse-def-meta {
+  margin: 0.45rem 0 0;
+  font-size: 0.78rem;
+  color: var(--faint, #a8a294);
+}
+.pulse-def-meta .sep { margin: 0 0.45rem 0 0; }
+.pulse-def-meta a {
+  color: var(--accent-ink, #1d4ed8);
+  margin-right: 0.85rem;
+  white-space: nowrap;
+}
+.pm-hit { font-weight: 600; color: var(--ink, #1b1a16); }
+.pm-miss { font-weight: 600; color: var(--faint, #a8a294); }
+.pm-names summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--muted, #75705f);
+  margin: 0.35rem 0;
+}
+.pm-ipo-names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.45rem;
+  margin: 0.45rem 0 0.25rem;
+}
+.pm-ipo-name {
+  font-size: 0.75rem;
+  border: 1px solid var(--tape-line, #e9e4d6);
+  padding: 0.05rem 0.42rem;
+  color: var(--muted, #75705f);
+  white-space: nowrap;
+}
+.pm-ipo-name.confirmed {
+  color: #b2182b;
+  border-color: #b2182b;
+  font-weight: 600;
+}
+[data-theme="dark"] .pm-ipo-name.confirmed { color: #f87171; border-color: #f87171; }
+.pm-rec-status {
+  margin: 0.35rem 0;
+  padding-left: 1.2rem;
+  font-size: 0.85rem;
+  color: var(--muted, #75705f);
+}
+.pm-rec-status li { margin: 0.2rem 0; }

@@ -73,6 +73,17 @@
       intervals) and a density heatmap. These are risk-neutral probabilities, not physical
       ones, and thin tail contracts can be stale. The same distributions feed the macro
       tail-risk series (Figure 13 of the paper) and the daily mean/variance uncertainty gauge.</p>
+      <p><strong>Definitions and realized outcomes.</strong> Every card carries a
+      <em>Measures</em> line stating exactly what the contract settles on — the quantity, the
+      reference period or meeting, the source agency release, and the resolution date — with
+      the market data's as-of date and a link to the exchange's own market page, drawn from
+      the listed contract rules. Where an event has resolved, the realized outcome is
+      overlaid: fan charts mark the print, the FOMC decision is also read as an implied
+      post-meeting funds-rate fan (target-range upper bound, per-meeting base), and each
+      distributional series keeps a track record of the day-before implied distribution
+      against the realized print. Realized values are pipeline-built from keyless public
+      feeds (BLS/BEA/Fed series via FRED) and frozen at first observation, so later revisions
+      are never spliced silently; any vintage mismatch is stated on the card.</p>
       <p>These markets are documented as a high-frequency, continuously updated, distributionally
       rich benchmark of macroeconomic expectations in Finance and Economics Discussion Series
       2026-010, “Kalshi and the Rise of Macro Markets”, Board of Governors of the Federal Reserve

@@ -2,11 +2,17 @@
 
 The series that made the Phase-1 cut (dynamic discovery, honest gaps):
   KXFEDDECISION  FOMC decision buckets at the next meeting (front event)
-  KXFED          Fed funds rate level thresholds after the next meeting
-  KXCPIYOY       CPI YoY thresholds at the next monthly print
-  KXGDP          Real GDP growth thresholds for the current quarter
-  KXU3           Unemployment rate thresholds at the next monthly print
-  KXRECSSNBER    NBER recession ladder (all open calendar years)
+  KXFED          Fed funds target-range upper-bound thresholds after the
+                 next meeting (strictly above, per the listed rules)
+  KXCPIYOY       CPI-U YoY inflation thresholds at the next monthly print
+  KXGDP          Real GDP growth (advance estimate, SAAR) for the quarter
+                 whose advance release is next
+  KXU3           U-3 unemployment rate thresholds at the next monthly
+                 Employment Situation print
+  KXRECSSNBER    Annual recession ladder — settles on the exchange's BEA
+                 technical-recession rule (two consecutive negative
+                 real-GDP quarters), NOT on NBER committee calls, despite
+                 the series ticker
 
 Rejected in Phase 1 and deliberately absent: KXPAYROLLS (thin, coarse
 strikes, settlement exposed to jobs-report delay/cancellation), KXUSNFP
@@ -15,10 +21,17 @@ splicing; the annual ladder covers it), KXCPI MoM (redundant with YoY),
 KXU3EOY/annual variants (thin or redundant).
 
 Strike labels: mutually-exclusive buckets keep Kalshi's own subtitles
-verbatim; threshold ("greater") markets get ">=X%" labels; recession
-years are derived from the event ticker. Event dates are never hardcoded:
-they come from each market's close_time (or, for annual recession markets,
-the calendar year in the event ticker).
+verbatim; threshold ("greater") markets get ">X%" labels matching the
+strict-inequality settlement rules ("increases by more than X%", "above
+X%", "greater than X%" — all verified against the listed contract rules
+2026-10-19); recession years are derived from the event ticker. Event
+dates are never hardcoded: they come from each market's close_time (or,
+for annual recession markets, the calendar year in the event ticker).
+
+The `measures` block per indicator states exactly what the contract
+measures — quantity, reference period ({ref} filled from the front
+event), source release, resolution semantics — verified against the
+exchange's listed contract rules and settlement sources on 2026-10-19.
 """
 
 INDICATORS = {
@@ -33,12 +46,26 @@ INDICATORS = {
         "unit": "probability",
         "status": "live",
         "note": "Buckets are mutually exclusive and use Kalshi's own wording; "
-                "\"Hike 0bps\" means no change to the target range.",
+                "\"Hike 0bps\" means no change to the target range. If the "
+                "meeting is canceled, the hold bucket resolves Yes.",
         "paper": "The paper finds the mode and median of the Kalshi distribution "
                  "perfectly matched the realized federal funds rate on the day before "
                  "every FOMC meeting since 2022 \u2014 a statistically significant "
                  "improvement over fed funds futures (MAE 0.000 vs 0.010, RMSE 0.000 "
                  "vs 0.020, p<0.05).",
+        "measures": {
+            "quantity": "the size and direction of the change in the federal "
+                        "funds target range at the next scheduled FOMC meeting, "
+                        "in basis points — five mutually exclusive buckets "
+                        "(Cut >25bps, Cut 25bps, Hike 0bps, Hike 25bps, "
+                        "Hike >25bps)",
+            "reference": "the FOMC meeting on {ref}",
+            "source_release": "U.S. Federal Reserve — the FOMC statement "
+                              "(settlement source: federalreserve.gov)",
+            "resolution": "settles within minutes of the meeting statement on "
+                          "meeting day; a canceled meeting resolves the hold "
+                          "bucket to Yes",
+        },
         "event_scope": "front",
         "release_kind": "meeting",
         "palette": "categorical",
@@ -55,12 +82,25 @@ INDICATORS = {
         "frequency": "Daily close, event markets",
         "unit": "probability",
         "status": "live",
-        "note": "Each strike is the probability that the funds rate is at or above "
-                "that level after the meeting; strikes are not mutually exclusive.",
+        "note": "Each strike is the probability that the UPPER BOUND of the "
+                "target range is strictly above that level following the "
+                "meeting; strikes are cumulative, not mutually exclusive.",
         "paper": "The paper recommends Kalshi as the source for risk-neutral probability "
                  "densities of FOMC decisions at specific meetings: fed funds futures "
                  "force a two-outcome assumption, and SOFR options are too far removed "
                  "(basis and horizon mismatch).",
+        "measures": {
+            "quantity": "the UPPER BOUND of the federal funds target range "
+                        "following the next FOMC meeting — each strike is the "
+                        "probability the upper bound is strictly above that "
+                        "level (e.g. above 4.00%)",
+            "reference": "the FOMC meeting on {ref}",
+            "source_release": "Federal Reserve Board of Governors — the target "
+                              "range published on the Fed's official website",
+            "resolution": "expires the first 2:05 PM ET after the meeting "
+                          "statement (or one week after the meeting's last "
+                          "day)",
+        },
         "event_scope": "front",
         "release_kind": "meeting",
         "palette": "sequential",
@@ -76,13 +116,28 @@ INDICATORS = {
         "frequency": "Daily close, event markets",
         "unit": "probability",
         "status": "live",
-        "note": "Strikes are probabilities that YoY CPI prints above each threshold. "
-                "The exchange sometimes lists a MoM market without the matching YoY "
-                "market for a given print; those gaps are marked, never interpolated.",
+        "note": "Strikes are probabilities that YoY CPI prints strictly above "
+                "each threshold ('more than X%', per the listed rules — an "
+                "exact X.0 print resolves to No). The exchange sometimes "
+                "lists a MoM market without the matching YoY market for a "
+                "given print; those gaps are marked, never interpolated.",
         "paper": "For headline CPI the paper finds Kalshi statistically significantly "
                  "more accurate than the Bloomberg consensus: MAE 0.069 (mean) / 0.063 "
                  "(median, mode) vs 0.081; RMSE 0.080 vs 0.100. For core CPI the two "
                  "are statistically similar (MAE 0.070 both).",
+        "measures": {
+            "quantity": "year-over-year CPI-U inflation for a named month — "
+                        "the one-decimal YoY rate over the twelve months "
+                        "ending that month; each strike is the probability "
+                        "the rate is strictly above the threshold",
+            "reference": "the twelve months ending {ref} (the {ref_month} "
+                         "CPI print)",
+            "source_release": "U.S. Bureau of Labor Statistics — CPI news "
+                              "release (settlement source: bls.gov/cpi)",
+            "resolution": "settles on the release morning (trading closes "
+                          "8:29 AM ET that day) on the BLS-reported "
+                          "one-decimal YoY value",
+        },
         "event_scope": "front",
         "release_kind": "monthly",
         "palette": "sequential",
@@ -99,9 +154,26 @@ INDICATORS = {
         "unit": "probability",
         "status": "live",
         "note": "Strikes are probabilities that quarterly real GDP growth prints "
-                "above each threshold; strikes are not mutually exclusive.",
+                "strictly above each threshold; strikes are not mutually "
+                "exclusive. The event ticker embeds the release date "
+                "(e.g. KXGDP-26OCT30) and the contract settles on the "
+                "ADVANCE estimate.",
         "paper": "The paper notes no other market-based distribution exists for GDP "
                  "growth \u2014 Kalshi is unique here.",
+        "measures": {
+            "quantity": "real GDP growth for a named quarter — the "
+                        "seasonally adjusted annualized rate, one decimal, "
+                        "as first published in the BEA ADVANCE estimate "
+                        "(the listed rule names the Advance Estimate "
+                        "explicitly); each strike is the probability growth "
+                        "is strictly above the threshold",
+            "reference": "{ref}",
+            "source_release": "U.S. Bureau of Economic Analysis — advance "
+                              "GDP estimate (settlement source: bea.gov)",
+            "resolution": "trading closes 8:29 AM ET on release day and the "
+                          "market expires on the one-decimal advance-"
+                          "estimate value",
+        },
         "event_scope": "front",
         "release_kind": "quarterly",
         "palette": "sequential",
@@ -117,11 +189,24 @@ INDICATORS = {
         "frequency": "Daily close, event markets",
         "unit": "probability",
         "status": "live",
-        "note": "Strikes are probabilities that the U-3 unemployment rate prints "
-                "above each threshold; strikes are not mutually exclusive.",
+        "note": "Strikes are probabilities that the seasonally adjusted U-3 "
+                "unemployment rate prints strictly above each threshold; "
+                "strikes are not mutually exclusive.",
         "paper": "The paper finds Kalshi comparable to the Bloomberg consensus for "
                  "unemployment (no significant accuracy difference); the Kalshi mode "
                  "moves in 0.1pp increments.",
+        "measures": {
+            "quantity": "the seasonally adjusted U-3 unemployment rate for a "
+                        "named month — each strike is the probability the "
+                        "rate is strictly above the threshold",
+            "reference": "the Employment Situation estimate for {ref}",
+            "source_release": "U.S. Bureau of Labor Statistics — the "
+                              "Employment Situation news release "
+                              "(settlement source: bls.gov)",
+            "resolution": "settles on the release morning (trading closes "
+                          "8:29 AM ET that day) on the reported one-decimal "
+                          "rate",
+        },
         "event_scope": "front",
         "release_kind": "monthly",
         "palette": "sequential",
@@ -132,22 +217,42 @@ INDICATORS = {
         "series_ticker": "KXRECSSNBER",
         "title": "NBER recession",
         "why": "The clearest market summary of macro tail risk: the probability that "
-              "a recession is underway within each calendar year, per the NBER "
-              "business-cycle dating the contracts settle on.",
+              "a recession is underway within each covered window, on the "
+              "technical-recession rule the contracts actually settle on.",
         "source": "Kalshi public API v2 — series KXRECSSNBER",
         "frequency": "Daily close, event markets",
         "unit": "probability",
         "status": "live",
-        "note": "Annual ladder: every open calendar-year market is charted. Trading "
-                "runs into the following January while NBER dating catches up.",
+        "note": "Annual ladder: every open calendar-year market is charted. "
+                "Despite the series ticker, the listed rules settle on BEA "
+                "data — two consecutive quarters of negative real GDP "
+                "growth within the covered window (2025 or 2026 for the "
+                "2026 market; Q4 2026 through Q4 2027 for the 2027 market) — "
+                "NOT on NBER Business Cycle Dating Committee calls. Trading "
+                "runs to the morning of the expected Q4 advance-GDP "
+                "release (late January of the following year).",
         "paper": "Listed in the paper\u2019s Table 1 as a Kalshi macro series; the paper\u2019s "
                  "calibration analysis finds the implied probability densities fairly "
                  "well calibrated.",
+        "measures": {
+            "quantity": "whether a technical recession occurs within the "
+                        "covered window — the listed rule resolves Yes on "
+                        "two consecutive quarters of negative real GDP "
+                        "growth per BEA estimates; the series ticker says "
+                        "'NBER' but settlement is the BEA two-quarter rule, "
+                        "not an NBER committee call",
+            "reference": "{ref}",
+            "source_release": "U.S. Bureau of Economic Analysis — quarterly "
+                              "real GDP (advance estimates)",
+            "resolution": "closes at the sooner of occurrence or 8:25 AM ET "
+                          "on the expected release of the covered window's "
+                          "final Q4 advance-GDP estimate",
+        },
         "event_scope": "ladder",
         "release_kind": "annual",
         "palette": "categorical",
         "strike_order": "year",
-        "event_date_mode": "year_end",
+        "event_date_mode": "close_time",
     },
     "tail_risks": {
         # Derived indicator (no direct fetch): tail probabilities summed from
@@ -168,6 +273,17 @@ INDICATORS = {
                 "these markets.",
         "paper": "Follows Figure 13 of the paper, which plots the same tail-risk "
                  "time series; the paper stresses these are marginal densities.",
+        "measures": {
+            "quantity": "marginal tail probabilities summed from the CPI and "
+                        "GDP strike ladders: P(CPI YoY > 3%), P(CPI YoY > "
+                        "4%), P(real GDP growth < 1.5%), P(real GDP growth "
+                        "< 0%)",
+            "reference": "{ref}",
+            "source_release": "same releases as the CPI and GDP series "
+                              "(BLS CPI; BEA advance GDP estimate)",
+            "resolution": "inherits the resolution of the underlying CPI "
+                          "and GDP events",
+        },
         "event_scope": "front",
         "release_kind": "monthly",
         "palette": "categorical",
@@ -184,13 +300,34 @@ INDICATORS = {
         "frequency": "Daily close, event markets",
         "unit": "count / probability",
         "status": "live",
-        "note": "Each company market pays $1 if it officially announces an IPO "
-                "this calendar year; the expected count is the sum of the "
-                "probabilities. The candidate set changes as companies are added "
-                "or removed, so the count is a pipeline read, not a forecast.",
+        "note": "Each of the named company markets pays $1 if that company "
+                "confirms an IPO before Jan 1, 2027 — confirmed means the "
+                "SEC declares its Form S-1 effective, the IPO is priced, or "
+                "an exchange assigns it a ticker (trading may start "
+                "later). The window is calendar 2026; trading closes "
+                "11:59 PM ET on Dec 31, 2026. The expected count is the "
+                "sum of the named companies' Yes prices, with already-"
+                "confirmed companies counted at 1.0 each. The candidate "
+                "set changes as companies are added or removed, so the "
+                "count is a pipeline read, not a forecast.",
         "paper": "Equity-market expectations sit outside the paper's macro scope; "
                  "included here as the exchange's closest proxy for investment-"
                  "banking ECM activity.",
+        "measures": {
+            "quantity": "how many of the named companies will confirm an IPO "
+                        "in calendar 2026 — expected count = the sum of the "
+                        "Yes prices across all listed companies (settled-"
+                        "Yes companies contribute 1.0 each)",
+            "reference": "{ref}",
+            "source_release": "the exchange's own settlement of the "
+                              "constituent company markets (an IPO is "
+                              "confirmed on S-1 effectiveness, pricing, or "
+                              "ticker assignment)",
+            "resolution": "each company market settles the moment its IPO "
+                          "is confirmed; the event's last trading day is "
+                          "Dec 31, 2026 (11:59 PM ET) with final settlement "
+                          "in early January 2027",
+        },
         "event_scope": "front",
         "release_kind": "annual",
         "palette": "categorical",
@@ -240,3 +377,49 @@ MONTH_CODES = {
     "JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
     "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12,
 }
+
+# Date the contract-spec research on this page was verified against the
+# exchange's live API (listed rules_primary/rules_secondary and
+# settlement sources for every series).
+SPEC_VERIFIED = "2026-10-19"
+
+# Kalshi web URL pattern: https://kalshi.com/markets/<ticker>
+# (event pages use the event ticker, lowercased). VERIFIED 2026-10-19
+# via Wayback Machine 200-captures of live kalshi.com market URLs —
+# most recently kalshi.com/markets/kxcpiyoy-26dec/kxcpiyoy-26dec-t3.8
+# (captured 2026-10-13), whose embedded Next.js route exposes the
+# segments ["markets", "kxcpiyoy-26dec", "kxcpiyoy-26dec-t3.8"] — plus
+# 2026 captures of /markets/KXRECSSNBER-25 (event slug) and
+# /markets/kxu3-26apr-t4.2 (market slug) returning 200. kalshi.com
+# itself answers automated requests with a Vercel JS challenge (HTTP
+# 429), so archived 200-captures — not a live fetch — are the evidence.
+KALSHI_MARKET_URL = "https://kalshi.com/markets/"
+
+
+def kalshi_event_url(event_ticker: str) -> str:
+    """Web URL of an event's market page on the exchange's site."""
+    return KALSHI_MARKET_URL + str(event_ticker).lower()
+
+
+# FOMC decision bucket -> change in the target-range UPPER BOUND
+# (percentage points). ">25bps" buckets map to the smallest move in
+# their family (±0.50) and are labeled as such wherever plotted.
+FOMC_BUCKET_DELTAS = {
+    "Cut >25bps": -0.50,
+    "Cut 25bps": -0.25,
+    "Hike 0bps": 0.0,
+    "Hike 25bps": 0.25,
+    "Hike >25bps": 0.50,
+}
+
+# Documented mapping choice for the FOMC fan: levels are the upper
+# bound of the target range (the quantity the KXFED family settles
+# on), not the midpoint.
+FOMC_FAN_LEVEL_NOTE = (
+    "Levels are the UPPER BOUND of the federal funds target range — the "
+    "quantity the exchange's own funds-rate markets settle on (not the "
+    "midpoint). Each decision bucket is translated using the prevailing "
+    "pre-meeting target range (recorded per meeting from the daily "
+    "target-range series, never a single hardcoded base); 'Hike >25bps' "
+    "and 'Cut >25bps' map to ±0.50, the smallest move in each family, "
+    "and are labeled as such.")

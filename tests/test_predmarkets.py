@@ -9,6 +9,8 @@ tests make zero live calls and stay deterministic.
 
 import datetime as dt
 import json
+import shutil
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -19,13 +21,18 @@ import polars as pl
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.predmarkets import kalshi
 from src.predmarkets import distribution as distmod
+from src.predmarkets import fred as fredmod
+from src.predmarkets import realized as realized_mod
 from src.predmarkets.build_predmarkets import (
     build,
+    build_distribution_track_record,
     build_distribution_views,
+    build_fomc_fan,
     build_fomc_track_record,
     build_ipo_expected,
     build_tail_risks,
     chart_events,
+    event_close_time,
     event_horizon,
     front_gap_note,
     merge_incremental,
@@ -34,10 +41,18 @@ from src.predmarkets.build_predmarkets import (
     strike_label,
     strike_rank,
     validate_frame,
+    _measures_block,
 )
-from src.predmarkets.indicators import INDICATORS, PAPER_DOI
+from src.predmarkets.indicators import (
+    FOMC_BUCKET_DELTAS,
+    INDICATORS,
+    PAPER_DOI,
+    SPEC_VERIFIED,
+    kalshi_event_url,
+)
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures" / "predmarkets"
+REPO = Path(__file__).resolve().parents[1]
 
 
 def fixture_transport(url: str) -> str:
@@ -52,6 +67,9 @@ def fixture_transport(url: str) -> str:
         payload = {"markets": [{"market_ticker": t, "candlesticks": bank.get(t, [])}
                                for t in tickers]}
         return json.dumps(payload)
+    if parsed.path == "/graph/fredgraph.csv":
+        sid = qs["id"][0]
+        return (FIXTURES / "fred" / f"{sid}.csv").read_text()
     raise AssertionError(f"unexpected URL in fixture transport: {url}")
 
 
@@ -140,13 +158,15 @@ def test_strike_labels():
     cpi = load_fixture("events_KXCPIYOY.json")["events"]
     nov_ev = next(e for e in cpi if e["event_ticker"] == "KXCPIYOY-26NOV")
     reg = INDICATORS["cpi_yoy"]
+    # ">" (strict): the listed rules settle on "increases by more than X%",
+    # so an exact X.0 print resolves the strike to No.
     assert strike_label(market_of(nov_ev, "KXCPIYOY-26NOV-T3.8"), nov_ev,
-                        reg) == "≥3.8%"
+                        reg) == ">3.8%"
     u3 = load_fixture("events_KXU3.json")["events"]
     oct_ev = next(e for e in u3 if e["event_ticker"] == "KXU3-26OCT")
     reg = INDICATORS["unemployment"]
     assert strike_label(market_of(oct_ev, "KXU3-26OCT-T4.1"), oct_ev,
-                        reg) == "≥4.1%"
+                        reg) == ">4.1%"
     # recession: empty subtitle -> year from the event ticker
     rec = load_fixture("events_KXRECSSNBER.json")["events"]
     rec26 = next(e for e in rec if e["event_ticker"] == "KXRECSSNBER-26")
@@ -156,7 +176,7 @@ def test_strike_labels():
     gdp_market = {"subtitle": "Above 0.0%", "strike_type": "greater",
                   "ticker": "KXGDP-26OCT30-T0.0"}
     assert strike_label(gdp_market, {"event_ticker": "KXGDP-26OCT30"},
-                        INDICATORS["gdp_quarterly"]) == "≥0.0%"
+                        INDICATORS["gdp_quarterly"]) == ">0.0%"
     print("ok test_strike_labels")
 
 
@@ -187,11 +207,35 @@ def test_event_horizons():
     rec = load_fixture("events_KXRECSSNBER.json")["events"]
     rec27 = next(e for e in rec if e["event_ticker"] == "KXRECSSNBER-27")
     reg = INDICATORS["recession"]
-    assert event_horizon(rec27, reg) == dt.date(2027, 12, 31)
+    # close_time mode: the annual recession markets trade into late January
+    # of the following year (per the listed rules), so the marker is the
+    # market's last trading day, not the covered calendar year-end.
+    assert event_horizon(rec27, reg) == dt.date(2028, 1, 31)
     fed = load_fixture("events_KXFEDDECISION.json")["events"]
     oct_ev = next(e for e in fed if e["event_ticker"] == "KXFEDDECISION-26OCT")
     assert event_horizon(oct_ev, INDICATORS["fomc_decision"]) == dt.date(2026, 10, 28)
     print("ok test_event_horizons")
+
+
+def test_event_close_time_ignores_settled_early_closers():
+    # Regression (live bug, 2026-10-18): the production KXIPO-26 card said
+    # "the most recent listed event closed 2026-08-24; no further market was
+    # listed" because event_close_time took the MIN over nested markets —
+    # one confirmed-IPO company had settled in August — while 27 company
+    # markets still traded to Jan 1, 2027. The event trades until its LAST
+    # market closes.
+    ev = {"event_ticker": "KXIPO-26", "markets": [
+        {"ticker": "KXIPO-26-SHEIN", "close_time": "2026-08-24T15:00:15Z"},
+        {"ticker": "KXIPO-26-STRIPE", "close_time": "2027-01-01T04:59:00Z"},
+    ]}
+    assert event_close_time(ev) == dt.datetime(
+        2027, 1, 1, 4, 59, tzinfo=dt.timezone.utc)
+    now = dt.datetime(2026, 10, 18, tzinfo=dt.timezone.utc)
+    chart, closed = chart_events(INDICATORS["ipo_pipeline"], [ev], now)
+    assert not closed and chart[0]["event_ticker"] == "KXIPO-26"
+    assert front_gap_note(INDICATORS["ipo_pipeline"], chart[0], closed,
+                          now) is None
+    print("ok test_event_close_time_ignores_settled_early_closers")
 
 
 def test_merge_incremental():
@@ -303,12 +347,19 @@ def test_build_end_to_end():
         future = [e for e, c in zip(cpi_evs, closes) if c > now]
         expected_front = future[0] if future else cpi_evs[-1]
         assert cpi["event_ticker"] == expected_front["event_ticker"]
-        assert "≥3.0%" in cpi["strikes"] and "≥5.0%" in cpi["strikes"]
+        # ">X%" strict-inequality labels match the listed settlement rules
+        assert ">3.0%" in cpi["strikes"] and ">5.0%" in cpi["strikes"]
 
-        # recession ladder: both open years charted, year-end horizons
+        # recession ladder: both open years charted; horizons are each
+        # market's actual last trading day (late January of the following
+        # year, per the listed rules — not the covered calendar year)
         rec = by_key["recession"]
         assert rec["strikes"] == ["2026", "2027"]
-        assert [h["date"] for h in rec["horizons"]] == ["2026-12-31", "2027-12-31"]
+        rec_evs = [e for e in load_fixture("events_KXRECSSNBER.json")["events"]
+                   if e.get("event_ticker") in ("KXRECSSNBER-26", "KXRECSSNBER-27")]
+        exp_dates = [str(min(kalshi.parse_iso_z(m["close_time"])
+                              for m in e["markets"]).date()) for e in rec_evs]
+        assert [h["date"] for h in rec["horizons"]] == exp_dates
         assert set(rec["series"][0]) == {"date", "strike", "value"}
 
         # incremental rerun is idempotent: same rows, no duplicates
@@ -406,18 +457,313 @@ def test_paper_citations_present():
     print("ok test_paper_citations_present")
 
 
+# ------------------------------------------- definitions, links, realized
+
+def test_measures_and_kalshi_urls():
+    # Every indicator states exactly what it measures: quantity, reference
+    # period, source release, resolution semantics.
+    for key, reg in INDICATORS.items():
+        m = reg.get("measures")
+        assert m, key
+        for field in ("quantity", "reference", "source_release", "resolution"):
+            assert m.get(field), (key, field)
+    # The spec research carries its verification date.
+    dt.date.fromisoformat(SPEC_VERIFIED)
+    # URL pattern (verified 2026-10-19 via archived captures — see
+    # indicators.py): event pages are lowercase event tickers under /markets/.
+    assert kalshi_event_url("KXCPIYOY-26NOV") == \
+        "https://kalshi.com/markets/kxcpiyoy-26nov"
+    assert kalshi_event_url("KXRECSSNBER-26") == \
+        "https://kalshi.com/markets/kxrecssnber-26"
+    # Decision buckets map to target-range upper-bound changes; ">25bps"
+    # buckets take the smallest move in their family (documented choice).
+    assert set(FOMC_BUCKET_DELTAS) == {"Cut >25bps", "Cut 25bps", "Hike 0bps",
+                                       "Hike 25bps", "Hike >25bps"}
+    assert FOMC_BUCKET_DELTAS["Hike 25bps"] == 0.25
+    assert FOMC_BUCKET_DELTAS["Cut >25bps"] == -0.50
+    print("ok test_measures_and_kalshi_urls")
+
+
+def test_parse_level_strict_labels():
+    # Regression: legacy "≥X%" archive strikes and new ">X%" strikes both
+    # parse; stance labels still do not.
+    assert distmod.parse_level(">4.25%") == 4.25
+    assert distmod.parse_level("≥4.25%") == 4.25
+    assert distmod.parse_level("4.25%") == 4.25
+    assert distmod.parse_level("3.1") == 3.1
+    assert distmod.parse_level("Hike 25bps") is None
+    print("ok test_parse_level_strict_labels")
+
+
+def test_fred_series_math():
+    # CPI YoY from a 13-month synthetic index: 300.0 -> 309.6 is +3.2%,
+    # one decimal, matching the rate the contracts settle on.
+    idx = pl.DataFrame({
+        "date": [dt.date(2025, m, 1).isoformat() for m in range(1, 13)]
+                + ["2026-01-01"],
+        "value": [300.0] * 12 + [309.6],
+    })
+    yoy = fredmod.cpi_yoy_from_index(idx)
+    assert yoy.height == 1
+    assert yoy.row(0, named=True) == {"date": "2026-01", "value": 3.2}
+    # Fixture FRED feeds parse; YoY matches the series' own math.
+    cpi = fredmod.parse_fred_csv(
+        (FIXTURES / "fred" / "CPIAUCSL.csv").read_text(), "CPIAUCSL")
+    fyoy = fredmod.cpi_yoy_from_index(cpi)
+    assert fyoy.height == 9 and all(3.15 < v < 3.25
+                                    for v in fyoy["value"].to_list())
+    try:
+        fredmod.parse_fred_csv("garbage,columns\n", "CPIAUCSL")
+        raise AssertionError("malformed FRED body accepted")
+    except RuntimeError:
+        pass
+    # GDP release day -> priced quarter for the four verified KXGDP
+    # release days (28-31 days after quarter end).
+    assert fredmod.quarter_of_release(dt.date(2026, 10, 30)) == "2026Q3"
+    assert fredmod.quarter_of_release(dt.date(2027, 1, 28)) == "2026Q4"
+    assert fredmod.quarter_of_release(dt.date(2027, 4, 29)) == "2027Q1"
+    assert fredmod.quarter_of_release(dt.date(2027, 7, 29)) == "2027Q2"
+    assert fredmod.quarter_of_release(dt.date(2026, 6, 15)) is None
+    # Fed funds around a meeting: hike, hold, future, missing feed.
+    ffr = pl.DataFrame({"date": ["2026-09-14", "2026-09-15", "2026-09-16",
+                                "2026-09-17"],
+                       "value": [4.50, 4.50, 4.75, 4.75]})
+    assert fredmod.fed_funds_around(ffr, dt.date(2026, 9, 16)) == (4.50, 4.75)
+    hold = pl.DataFrame({"date": ["2026-09-14", "2026-09-15"],
+                         "value": [4.50, 4.50]})
+    assert fredmod.fed_funds_around(hold, dt.date(2026, 9, 15)) == (4.50, 4.50)
+    assert fredmod.fed_funds_around(hold, dt.date(2026, 9, 16)) == (4.50, None)
+    assert fredmod.fed_funds_around(pl.DataFrame(),
+                                    dt.date(2026, 9, 16)) == (None, None)
+    # Exchange recession rule: two consecutive negative quarters, adjacency
+    # enforced by date so a data gap never fakes a pair.
+    pair = pl.DataFrame({"date": ["2026-01-01", "2026-04-01"],
+                         "value": [-0.4, -0.6]})
+    rec = fredmod.technical_recession_quarters(pair)
+    assert [r["date"] for r in rec.iter_rows(named=True)
+            if r["rec_flag"]] == ["2026Q2"]
+    gappy = pl.DataFrame({"date": ["2026-01-01", "2026-07-01"],
+                           "value": [-0.4, -0.6]})
+    assert fredmod.technical_recession_quarters(gappy).height == 0
+    print("ok test_fred_series_math")
+
+
+def test_realized_row_builders():
+    # CPI: event tickers map to periods; unpublished prints stay null.
+    yoy = pl.DataFrame({"date": ["2026-05", "2026-09"],
+                        "value": [3.1, 3.2]})
+    cpi_frame = pl.DataFrame({"event": ["KXCPIYOY-26MAY", "KXCPIYOY-26NOV"]})
+    rows = {r["event"]: r for r in realized_mod.cpi_realized_rows(cpi_frame, yoy)}
+    assert rows["KXCPIYOY-26MAY"]["value"] == 3.1
+    assert rows["KXCPIYOY-26MAY"]["period"] == "2026-05"
+    assert rows["KXCPIYOY-26MAY"]["kind"] == "print"
+    assert rows["KXCPIYOY-26NOV"]["value"] is None
+    # Unemployment: same shape from the UNRATE print.
+    unrate = pl.DataFrame({"date": ["2026-05-01", "2026-09-01"],
+                           "value": [4.2, 4.3]})
+    u3_frame = pl.DataFrame({"event": ["KXU3-26MAY", "KXU3-26NOV"]})
+    rows = {r["event"]: r for r in realized_mod.u3_realized_rows(u3_frame, unrate)}
+    assert rows["KXU3-26MAY"]["value"] == 4.2
+    assert rows["KXU3-26NOV"]["value"] is None
+    # GDP: release day in the ticker prices the prior quarter; a non-release
+    # ticker shape yields no row (withheld, not guessed).
+    gdp_q = pl.DataFrame({"date": ["2026Q3", "2026Q4"],
+                           "value": [2.6, 2.4]})
+    gdp_frame = pl.DataFrame({"event": ["KXGDP-26OCT30", "KXGDP-27JAN28",
+                                        "KXGDP-26JUN15"]})
+    rows = {r["event"]: r for r in realized_mod.gdp_realized_rows(gdp_frame, gdp_q)}
+    assert rows["KXGDP-26OCT30"]["value"] == 2.6
+    assert rows["KXGDP-26OCT30"]["period"] == "2026Q3"
+    assert rows["KXGDP-27JAN28"]["value"] == 2.4
+    assert "KXGDP-26JUN15" not in rows
+    assert "ADVANCE" in rows["KXGDP-26OCT30"]["note"]
+    # FOMC: resolved meeting -> post-meeting upper bound; future meeting ->
+    # null with the prevailing base recorded.
+    ffr = pl.DataFrame({"date": ["2026-09-14", "2026-09-15", "2026-09-16",
+                                "2026-10-01"],
+                        "value": [4.50, 4.50, 4.75, 4.75]})
+    frame = pl.DataFrame({"event": ["KXFEDDECISION-26SEP",
+                                    "KXFEDDECISION-26OCT"]})
+    ct = {"KXFEDDECISION-26SEP": dt.datetime(2026, 9, 16, 17, 59,
+                                             tzinfo=dt.timezone.utc),
+          "KXFEDDECISION-26OCT": dt.datetime(2026, 10, 28, 17, 59,
+                                             tzinfo=dt.timezone.utc)}
+    rows = {r["event"]: r for r in realized_mod.fomc_realized_rows(
+        frame, ct, ffr, "fomc_decision")}
+    assert rows["KXFEDDECISION-26SEP"]["value"] == 4.75
+    assert "pre-meeting base 4.50%" in rows["KXFEDDECISION-26SEP"]["note"]
+    assert rows["KXFEDDECISION-26OCT"]["value"] is None
+    assert "not yet held" in rows["KXFEDDECISION-26OCT"]["note"]
+    # Recession: exchange rule status per open market; undocumented windows
+    # are withheld.
+    rec_q = pl.DataFrame({"date": ["2026Q1", "2026Q2"],
+                          "value": [-0.4, -0.6],
+                          "rec_flag": [False, True]})
+    rec_frame = pl.DataFrame({"event": ["KXRECSSNBER-26", "KXRECSSNBER-28"]})
+    rows = {r["event"]: r for r in realized_mod.recession_realized_rows(
+        rec_frame, rec_q)}
+    assert rows["KXRECSSNBER-26"]["kind"] == "status"
+    assert rows["KXRECSSNBER-26"]["value"] == 1.0
+    assert "Occurred" in rows["KXRECSSNBER-26"]["note"]
+    assert rows["KXRECSSNBER-26"]["period"] == "2026"
+    assert rows["KXRECSSNBER-28"]["value"] is None
+    # IPO: the exchange's own settlement counts confirmed companies.
+    ipo_event = {"event_ticker": "KXIPO-26", "markets": [
+        {"ticker": "KXIPO-26-BEAS", "result": None, "rules_primary": None},
+        {"ticker": "KXIPO-26-CHIME", "result": "yes",
+         "rules_primary": "If Chime confirms an IPO before January 1st, "
+                         "2027, 12:00:00 AM ET, the market resolves Yes."},
+    ]}
+    assert realized_mod.company_name_of(ipo_event["markets"][1]) == "Chime"
+    rows = realized_mod.ipo_realized_rows(ipo_event)
+    assert len(rows) == 1 and rows[0]["value"] == 1.0
+    assert rows[0]["kind"] == "status" and rows[0]["period"] == "2026"
+    assert "Chime" in rows[0]["note"] and "2 named companies" in rows[0]["note"]
+    print("ok test_realized_row_builders")
+
+
+def test_merge_realized_freeze():
+    def row(ind, period, event, kind, value, note="n"):
+        return {"indicator": ind, "period": period, "event": event,
+                "kind": kind, "value": value, "source": "s", "note": note}
+
+    d1 = [row("cpi_yoy", "2026-05", "KXCPIYOY-26MAY", "print", 3.1),
+          row("fomc_decision", "2026-10-28", "KXFEDDECISION-26OCT", "print",
+              None),
+          row("ipo_pipeline", "2026", "KXIPO-26", "status", 1.0)]
+    df1 = realized_mod.merge_realized(
+        None, d1, dt.datetime(2026, 10, 20, tzinfo=dt.timezone.utc))
+    assert df1.height == 3
+    # Later run: a GDP-style revision arrives (3.3), the meeting resolves
+    # (4.75), the IPO count grows (2.0).
+    now = dt.datetime(2026, 10, 29, tzinfo=dt.timezone.utc)
+    d2 = [row("cpi_yoy", "2026-05", "KXCPIYOY-26MAY", "print", 3.3, "revised"),
+          row("fomc_decision", "2026-10-28", "KXFEDDECISION-26OCT", "print",
+              4.75),
+          row("ipo_pipeline", "2026", "KXIPO-26", "status", 2.0)]
+    df2 = realized_mod.merge_realized(df1, d2, now)
+    look = {(r["indicator"], r["event"]): r for r in df2.iter_rows(named=True)}
+    # Prints are FROZEN at first observation — the revision is not spliced.
+    assert look[("cpi_yoy", "KXCPIYOY-26MAY")]["value"] == 3.1
+    # A null placeholder never freezes; the first observed print wins.
+    assert look[("fomc_decision", "KXFEDDECISION-26OCT")]["value"] == 4.75
+    # Statuses always refresh.
+    assert look[("ipo_pipeline", "KXIPO-26")]["value"] == 2.0
+    # Provenance: first_seen survives, last_checked refreshes.
+    assert look[("cpi_yoy", "KXCPIYOY-26MAY")]["first_seen"] == "2026-10-20"
+    assert look[("cpi_yoy", "KXCPIYOY-26MAY")]["last_checked"] == "2026-10-29"
+    # Rows absent from a later run are retained (archived events keep prints).
+    df3 = realized_mod.merge_realized(df2, [], now)
+    assert df3.height == 3
+    print("ok test_merge_realized_freeze")
+
+
+def test_fomc_fan_and_distribution_track():
+    now = dt.datetime(2026, 10, 18, tzinfo=dt.timezone.utc)
+    # Resolved Sep meeting (hike 25bps) + open Oct meeting, day-before and
+    # current ladders over a 4.50->4.75 target-range path.
+    fomc = pl.DataFrame({
+        "date": ["2026-09-15", "2026-09-15", "2026-09-15",
+                 "2026-10-16", "2026-10-16", "2026-10-16"],
+        "value": [0.05, 0.90, 0.05, 0.10, 0.85, 0.05],
+        "event": ["KXFEDDECISION-26SEP"] * 3 + ["KXFEDDECISION-26OCT"] * 3,
+        "ticker": ["a", "b", "c", "d", "e", "f"],
+        "strike": ["Cut 25bps", "Hike 25bps", "Hike 0bps",
+                   "Cut 25bps", "Hike 0bps", "Hike 25bps"],
+        "volume": [1.0] * 6,
+    })
+    ct = {"KXFEDDECISION-26SEP": dt.datetime(2026, 9, 16, 17, 59,
+                                             tzinfo=dt.timezone.utc),
+          "KXFEDDECISION-26OCT": dt.datetime(2026, 10, 28, 17, 59,
+                                             tzinfo=dt.timezone.utc)}
+    ffr = pl.DataFrame({"date": ["2026-09-14", "2026-09-15", "2026-09-16",
+                                "2026-10-16"],
+                        "value": [4.50, 4.50, 4.75, 4.75]})
+    fan = build_fomc_fan(fomc, "KXFEDDECISION-26OCT", ct, ffr, now)
+    # Front meeting: per-meeting base from the daily series (4.75 after the
+    # September hike), never a single hardcoded base.
+    assert fan["base_rate"] == 4.75
+    assert fan["meeting"] == "2026-10-28"
+    assert "UPPER BOUND" in fan["level_note"]
+    oct_row = next(r for r in fan["rows"] if r["date"] == "2026-10-16")
+    assert oct_row["q50"] == 4.75   # H0 at 85% -> median stays at the base
+    assert oct_row["q05"] == 4.50 and oct_row["q95"] == 5.00
+    # Resolved meeting: realized post-meeting mark with hit flags.
+    sep = next(r for r in fan["realized"] if r["event"] == "KXFEDDECISION-26SEP")
+    assert sep["post_meeting_upper"] == 4.75 and sep["base_rate"] == 4.50
+    assert sep["hit_50"] is True and sep["hit_90"] is True
+    assert sep["as_of"] == "2026-09-15"
+    # With no funds-rate feed the fan is withheld, never guessed.
+    none_fan = build_fomc_fan(fomc, "KXFEDDECISION-26OCT", ct,
+                              pl.DataFrame(), now)
+    assert none_fan["rows"] == [] and none_fan["base_rate"] is None
+    assert "withheld" in none_fan["note"]
+
+    # Distributional track record: resolved CPI event vs its FRED print.
+    cpi = pl.DataFrame({
+        "date": ["2026-10-14", "2026-10-14", "2026-10-14",
+                 "2026-11-20", "2026-11-20"],
+        "value": [0.95, 0.60, 0.10, 0.90, 0.30],
+        "event": ["KXCPIYOY-26SEP"] * 3 + ["KXCPIYOY-26NOV"] * 2,
+        "ticker": ["a", "b", "c", "d", "e"],
+        "strike": [">3.0%", ">3.2%", ">3.4%", ">3.0%", ">3.2%"],
+        "volume": [1.0] * 5,
+    })
+    cpi_ct = {"KXCPIYOY-26SEP": dt.datetime(2026, 10, 15, 13, 29,
+                                            tzinfo=dt.timezone.utc),
+              "KXCPIYOY-26NOV": dt.datetime(2026, 12, 10, 13, 29,
+                                            tzinfo=dt.timezone.utc)}
+    rz = realized_mod.merge_realized(None, [{
+        "indicator": "cpi_yoy", "period": "2026-09",
+        "event": "KXCPIYOY-26SEP", "kind": "print", "value": 3.2,
+        "source": "s", "note": "n"}], now)
+    tr = build_distribution_track_record("cpi_yoy", cpi, cpi_ct, rz, now)
+    assert len(tr) == 1   # the November event is unresolved -> excluded
+    got = tr[0]
+    assert got["event"] == "KXCPIYOY-26SEP" and got["realized"] == 3.2
+    assert got["period"] == "2026-09" and got["as_of"] == "2026-10-14"
+    assert got["hit_50"] is True and got["hit_90"] is True
+    # Missing realized print -> honest null, no hit claimed.
+    tr2 = build_distribution_track_record("cpi_yoy", cpi, cpi_ct,
+                                           pl.DataFrame(), now)
+    assert tr2[0]["realized"] is None and tr2[0]["hit_50"] is False
+    assert "not yet available" in tr2[0]["note"]
+    print("ok test_fomc_fan_and_distribution_track")
+
+
+def test_app_renders_definitions_and_realized(tmp_path=None):
+    """Render smoke test: docs/predmarkets/app.js boots against the committed
+    bundle under stubbed DOM + Plot (node harness, zero network) and every
+    card shows its Measures definition, exchange links, as-of date, fan
+    charts with realized overlays where the bundle has them, the FOMC rate
+    fan (keeping the outcome bars), IPO precision, and recession quarters.
+    Skips when node is unavailable."""
+    node = shutil.which("node")
+    if node is None:
+        print("skip test_app_renders_definitions_and_realized: node not installed")
+        return
+    tmp = Path(tmp_path) if tmp_path is not None else Path(tempfile.mkdtemp())
+    r = subprocess.run(
+        [node, str(FIXTURES / "render-harness.mjs"),
+         str(REPO), str(tmp)],
+        capture_output=True, text=True, timeout=120,
+    )
+    assert r.returncode == 0, f"render harness failed:\n{r.stdout}\n{r.stderr}"
+    res = json.loads(r.stdout)
+    assert res["errors"] == [], res["errors"]
+    assert res["cards"] == len(INDICATORS), res
+    assert res["tocAnchors"] == len(INDICATORS), res
+    # 8 series charts + 4 fan/heatmap pairs + FOMC rate fan + recession bars.
+    assert res["figures"] >= 14, res
+    assert res["tapeItems"] >= 1, res
+    print("ok test_app_renders_definitions_and_realized")
+
+
 if __name__ == "__main__":
-    test_candle_close_extraction()
-    test_candle_trading_date()
-    test_open_and_front_events()
-    test_strike_labels()
-    test_gap_notes()
-    test_event_horizons()
-    test_merge_incremental()
-    test_validate_bounds()
-    test_sequential_colors()
-    test_distribution_recovery()
-    test_tail_risks_and_track_record()
-    test_paper_citations_present()
-    test_build_end_to_end()
-    print("all predmarkets tests pass")
+    # Auto-discovered so the daily workflow (python3 tests/test_predmarkets.py)
+    # runs every test defined here, including ones added later.
+    tests = [(n, f) for n, f in sorted(globals().items())
+             if n.startswith("test_") and callable(f)]
+    for name, fn in tests:
+        fn()
+    print(f"all {len(tests)} predmarkets tests pass")
