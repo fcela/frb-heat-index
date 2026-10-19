@@ -179,6 +179,32 @@ for (const card of root._children) {
   if (ind.track_record && ind.track_record.length && !html.includes("day-before mode"))
     results.errors.push(`${tag}: FOMC track-record table missing`);
   results.figures += slotFigs(card, ".pulse-chart").length + slotFigs(card, ".pulse-dist").length;
+
+  // Prediction accuracy: per-card section (convention always; resolved
+  // rows when recorded; pending wording when nothing is scored).
+  const a = ind.accuracy;
+  if (a) {
+    if (!html.includes("Prediction accuracy: forecast vs realized outcome"))
+      results.errors.push(`${tag}: accuracy section missing`);
+    if (!html.includes(esc(a.convention)))
+      results.errors.push(`${tag}: accuracy convention missing`);
+    for (const r of a.rows || []) {
+      if (!html.includes(esc(r.event)))
+        results.errors.push(`${tag}: accuracy row ${r.event} missing`);
+      if (r.predicted_label != null && !html.includes(esc(r.predicted_label)))
+        results.errors.push(`${tag}: accuracy row ${r.event} predicted missing`);
+      if (r.actual_label != null && !html.includes(esc(r.actual_label)))
+        results.errors.push(`${tag}: accuracy row ${r.event} actual missing`);
+    }
+    if ((a.summary || {}).n_scored === 0 && !html.includes("pending"))
+      results.errors.push(`${tag}: unscored accuracy must read as pending`);
+    for (const p of a.pending || [])
+      if (!html.includes(esc(p.event)))
+        results.errors.push(`${tag}: pending event ${p.event} missing`);
+  } else if (["fomc_decision", "fed_funds", "cpi_yoy", "gdp_quarterly",
+              "unemployment", "recession", "ipo_pipeline"].includes(ind.key)) {
+    results.errors.push(`${tag}: accuracy-covered indicator has no accuracy section`);
+  }
 }
 
 // TOC and tape populated from the same bundle.
@@ -187,6 +213,30 @@ results.tapeItems = (byId["tape"]._html.match(/tape-item/g) || []).length;
 if (results.tocAnchors !== bundle.indicators.length)
   results.errors.push(`TOC anchors ${results.tocAnchors} != ${bundle.indicators.length}`);
 if (results.tapeItems < 1) results.errors.push("tape empty");
+
+// Scorecard: one row per accuracy-covered indicator, side by side.
+const acc = bundle.accuracy;
+if (!acc || !(acc.cards || []).length) {
+  results.errors.push("accuracy scorecard missing from bundle");
+} else {
+  const sc = byId["predmarkets-accuracy"]._html;
+  if (!sc.includes("Prediction accuracy — scorecard"))
+    results.errors.push("scorecard section not rendered");
+  if (!sc.includes(esc(acc.note)))
+    results.errors.push("scorecard note missing");
+  for (const c of acc.cards) {
+    if (!sc.includes(esc(c.title)))
+      results.errors.push(`scorecard row missing for ${c.key}`);
+    if (!sc.includes(esc(c.convention)))
+      results.errors.push(`scorecard convention missing for ${c.key}`);
+    const s = c.summary || {};
+    if (s.n_scored === 0 && !sc.includes("pending"))
+      results.errors.push(`scorecard ${c.key}: unscored must read as pending`);
+  }
+  results.scorecardRows = (sc.match(/<tr>/g) || []).length - 1;  // minus header
+  if (results.scorecardRows !== acc.cards.length)
+    results.errors.push(`scorecard rows ${results.scorecardRows} != ${acc.cards.length}`);
+}
 
 // Theme toggle: re-render must rebuild the same card set (no doubling).
 byId["theme-toggle"].click();
