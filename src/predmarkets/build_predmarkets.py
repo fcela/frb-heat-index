@@ -8,14 +8,23 @@ For each indicator series (see indicators.py):
   5. emit the site bundle (front event chart, or the annual ladder for
      the recession series) and per-indicator provenance in _meta.json.
 
+Realized outcomes (work item 3): every run also refreshes the keyless
+FRED feeds (fred.py), rebuilds data/predmarkets/realized.csv (prints
+frozen at first observation, statuses updating — see realized.py), and
+attaches realized markers, per-indicator track records, and the FOMC
+decision->rate fan chart to the site bundle.
+
 Outputs:
   data/predmarkets/<key>.csv     date,value,event,ticker,strike,volume
+  data/predmarkets/realized.csv  indicator,period,event,kind,value,...
+  data/predmarkets/fred/*.csv    raw FRED responses, preserved verbatim
   data/predmarkets/_meta.json    per-indicator status + market metadata
   docs/data/predmarkets.json     site bundle (strict JSON, NaN rejected)
 
 Honesty rules: listed-print gaps are marked in notes, never interpolated;
 days without trades carry the exchange's previous close (volume = 0 marks
-them); settled events stay in the CSV archive but drop out of discovery.
+them); settled events stay in the CSV archive but drop out of discovery;
+realized vintages are stated, never silently spliced.
 
 Run: python3 -m src.predmarkets.build_predmarkets [--incremental]
 """
@@ -32,13 +41,20 @@ import polars as pl
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from src.predmarkets import distribution as distmod
+from src.predmarkets import fred
 from src.predmarkets import kalshi
+from src.predmarkets import realized as realized_mod
 from src.predmarkets.indicators import (
+    FOMC_BUCKET_DELTAS,
+    FOMC_FAN_LEVEL_NOTE,
     FOMC_STRIKE_ORDER,
     INDICATORS,
+    KALSHI_MARKET_URL,
     MONTH_CODES,
     PAPER_DOI,
     RELEASE_GAP_DAYS,
+    SPEC_VERIFIED,
+    kalshi_event_url,
 )
 
 REPO = Path(__file__).resolve().parents[2]
@@ -97,9 +113,13 @@ def open_events(events: list[dict]) -> list[dict]:
 
 
 def event_close_time(event: dict) -> dt.datetime:
+    """The event's last trading session: the LATEST close among its nested
+    markets. A settled early-closer inside a live event (e.g. a confirmed
+    IPO company) must not make the open event look expired — the event
+    trades until its last market closes."""
     times = [kalshi.parse_iso_z(m["close_time"]) for m in event["markets"]
              if m.get("close_time")]
-    return min(times) if times else dt.datetime.max.replace(tzinfo=dt.timezone.utc)
+    return max(times) if times else dt.datetime.max.replace(tzinfo=dt.timezone.utc)
 
 
 def event_year(event: dict) -> int | None:
@@ -175,7 +195,115 @@ def front_gap_note(reg: dict, front: dict | None, front_closed: bool,
             f"listed market closes {close}. Gaps are marked, not interpolated.")
 
 
-# ----------------------------------------------------------- strike handling
+# --------------------------------------------------- measures / references
+
+def _fmt_day(d: dt.date) -> str:
+    return f"{d:%B} {d.day}, {d.year}"
+
+
+def _month_name(y: int, m: int) -> str:
+    return f"{dt.date(y, m, 1):B} {y}"
+
+
+def _front_reference(key: str, ev: dict | None,
+                     close_times: dict[str, dt.datetime],
+                     now: dt.datetime) -> tuple[str | None, dt.date | None]:
+    """(reference-period text, resolution date) for an indicator's front
+    event, derived from the event ticker and the exchange's close time —
+    never a hardcoded calendar."""
+    if ev is None:
+        return None, None
+    ticker = ev["event_ticker"]
+    close = close_times.get(ticker)
+    if key in ("fomc_decision", "fed_funds"):
+        if close is None:
+            return None, None
+        return _fmt_day(close.date()), close.date()
+    m = re.match(r"KXCPIYOY-(\d{2})([A-Z]{3})$", ticker)
+    if m and key == "cpi_yoy":
+        mon = MONTH_CODES.get(m.group(2))
+        if mon:
+            y = 2000 + int(m.group(1))
+            return (_month_name(y, mon),
+                    close.date() if close else None)
+    m = re.match(r"KXU3-(\d{2})([A-Z]{3})$", ticker)
+    if m and key == "unemployment":
+        mon = MONTH_CODES.get(m.group(2))
+        if mon:
+            y = 2000 + int(m.group(1))
+            return (_month_name(y, mon),
+                    close.date() if close else None)
+    m = re.match(r"KXGDP-(\d{2})([A-Z]{3})(\d{2})$", ticker)
+    if m and key == "gdp_quarterly":
+        mon = MONTH_CODES.get(m.group(2))
+        if mon:
+            release = dt.date(2000 + int(m.group(1)), mon, int(m.group(3)))
+            quarter = fred.quarter_of_release(release)
+            if quarter:
+                return quarter, release
+    m = re.match(r"KXIPO-(\d{2}|\d{4})$", ticker)
+    if m and key == "ipo_pipeline":
+        y = int(m.group(1)) if len(m.group(1)) == 4 else 2000 + int(m.group(1))
+        return (f"calendar year {y}", dt.date(y, 12, 31))
+    return None, None
+
+
+def _measures_text(m: dict) -> str:
+    """One-line card text from the measures fields."""
+    if not m.get("quantity"):
+        return ""
+    parts = [m["quantity"]]
+    if m.get("reference"):
+        parts.append(f"Reference: {m['reference']}.")
+    if m.get("source_release"):
+        parts.append(f"Source: {m['source_release']}.")
+    if m.get("resolution"):
+        parts.append(f"Resolution: {m['resolution']}.")
+    return " ".join(parts)
+
+
+def _measures_block(key: str, reg: dict, ev: dict | None,
+                    close_times: dict[str, dt.datetime],
+                    now: dt.datetime) -> dict:
+    """Card-ready definition: exact quantity, reference period, source
+    release, resolution date — static text verified against the exchange's
+    listed contract rules (SPEC_VERIFIED), with the reference/resolution
+    filled dynamically from the front event."""
+    spec = reg.get("measures") or {}
+    ref, res_date = _front_reference(key, ev, close_times, now)
+    if key == "recession":
+        # Ladder: reference text covers every charted year's rule window.
+        bits = []
+        for e in (ev if isinstance(ev, list) else [ev] if ev else []):
+            w = realized_mod.RECESSION_WINDOWS.get(e["event_ticker"])
+            if w:
+                bits.append(f"{e['event_ticker'].rsplit('-', 1)[-1]}: "
+                            f"{w[0]}\u2013{w[1]}")
+        ref = ("two consecutive negative real-GDP quarters within "
+               + ("; ".join(bits) if bits
+                  else "the windows stated in each listed market's rules"))
+        res_date = None
+    if ref is None:
+        ref = f"no open market listed as of {now.date().isoformat()}"
+    res_txt = spec.get("resolution", "")
+    if res_date is not None:
+        res_txt = (f"{res_txt} — expected {res_date.isoformat()}"
+                   if res_txt else f"expected {res_date.isoformat()}")
+    text = (f"{spec.get('quantity', '')} Reference: {ref}. "
+            f"Source: {spec.get('source_release', '')}. "
+            f"Resolution: {res_txt}." if spec.get("quantity") else "")
+    return {
+        "quantity": spec.get("quantity"),
+        "reference": ref,
+        "source_release": spec.get("source_release"),
+        "resolution": res_txt,
+        "resolution_date": res_date.isoformat() if res_date else None,
+        "verified": SPEC_VERIFIED,
+        "text": text,
+    }
+
+
+# ------------------------------------------------------------ strike handling
 
 def _subtitle_core(subtitle: str) -> str:
     s = subtitle.strip()
@@ -189,7 +317,10 @@ def strike_label(market: dict, event: dict, reg: dict) -> str:
     sub = (market.get("subtitle") or "").strip()
     if order == "numeric" and market.get("strike_type") == "greater":
         core = _subtitle_core(sub) or str(market.get("floor_strike") or "?")
-        return f"≥{core}%"
+        # ">" not ">=": the listed rules settle on strict inequalities
+        # ("increases by more than X%", "above X%"), so an exact X.0
+        # print resolves the strike to No.
+        return f">{core}%"
     if order == "year":
         year = event_year(event)
         return str(year) if year else (sub or market["ticker"])
@@ -497,6 +628,31 @@ FOMC_EVENT_DATES = {
     "KXFEDDECISION-26DEC": "2026-12-09",
 }
 
+# The KXFED level events price the same meetings as the decision events;
+# resolved level events lose their API close times just like the decision
+# events do, so the same public-record calendar fills their archive gaps.
+FOMC_LEVEL_EVENT_DATES = {
+    f"KXFED-{k.rsplit('-', 1)[-1]}": v for k, v in FOMC_EVENT_DATES.items()
+}
+
+
+def archive_close_times(key: str,
+                        live: dict[str, dt.datetime]) -> dict[str, dt.datetime]:
+    """Live close times plus the public-record meeting calendar for FOMC
+    series. Resolved events stop being listed with nested markets, so their
+    close times vanish from the API; the public FOMC calendar (already the
+    track record's source) fills those gaps. Live API times always win."""
+    if key not in ("fomc_decision", "fed_funds"):
+        return live
+    out = dict(live)
+    table = (FOMC_EVENT_DATES if key == "fomc_decision"
+             else FOMC_LEVEL_EVENT_DATES)
+    for ev_t, day in table.items():
+        out.setdefault(ev_t,
+                       dt.datetime.fromisoformat(day).replace(
+                           tzinfo=dt.timezone.utc))
+    return out
+
 
 def build_fomc_track_record(df: pl.DataFrame) -> list[dict]:
     """Day-before mode bucket vs realized decision, per resolved meeting.
@@ -536,14 +692,191 @@ def build_fomc_track_record(df: pl.DataFrame) -> list[dict]:
     return sorted(out, key=lambda r: r["meeting"])
 
 
+def _day_before_rows(df: pl.DataFrame, event: str,
+                     horizon: dt.date) -> pl.DataFrame:
+    """Rows on the last trading day with data strictly before the
+    resolution morning (markets close 8:29 AM ET on release day, so the
+    release-day candle is the prior session's; data always stops at or
+    before the horizon, which keeps this honest even when the exact
+    close time is only proxied)."""
+    days = [d for d in df.filter(pl.col("event") == event)["date"]
+            .unique().to_list() if d < horizon.isoformat()]
+    if not days:
+        return df.clear()
+    return df.filter((pl.col("event") == event)
+                     & (pl.col("date") == max(days)))
+
+
+def build_distribution_track_record(key: str, df: pl.DataFrame,
+                                    close_times: dict[str, dt.datetime],
+                                    realized_df: pl.DataFrame,
+                                    now: dt.datetime) -> list[dict]:
+    """For every RESOLVED event in the archive: the market's last-day
+    implied distribution (median + 50%/90% interval) vs the realized
+    value from the realized dataset (FRED prints frozen at first
+    observation). Extends the FOMC track-record pattern to the
+    distributional indicators (CPI, GDP, unemployment, fed funds)."""
+    out = []
+    if df is None or df.height == 0:
+        return out
+    for event in sorted(df["event"].unique().to_list()):
+        ct = close_times.get(event)
+        horizon = ct.date() if ct is not None else _infer_horizon(event)
+        if horizon is None or dt.datetime.combine(
+                horizon, dt.time.min, tzinfo=dt.timezone.utc) > now:
+            continue  # not resolved yet
+        day = _day_before_rows(df, event, horizon)
+        if day.height < 2:
+            continue
+        ladder = [(lv, p) for lv, p in
+                  ((distmod.parse_level(r["strike"]), r["value"])
+                   for r in day.iter_rows(named=True))
+                  if lv is not None]
+        if len(ladder) < 2:
+            continue
+        bins = distmod.recover_threshold_bins([l for l, _ in ladder],
+                                              [p for _, p in ladder])
+        qs = distmod.distribution_quantiles(bins, DIST_QUANTILES)
+        if any(v is None for v in qs.values()):
+            continue
+        rz = realized_mod.realized_lookup(realized_df, key, event)
+        realized_value = rz["value"] if rz else None
+        out.append({
+            "event": event,
+            "period": rz["period"] if rz else None,
+            "as_of": max(day["date"].to_list()),
+            "q05": qs[0.05], "q25": qs[0.25], "q50": qs[0.50],
+            "q75": qs[0.75], "q95": qs[0.95],
+            "realized": realized_value,
+            "hit_50": (realized_value is not None
+                       and qs[0.25] <= realized_value <= qs[0.75]),
+            "hit_90": (realized_value is not None
+                       and qs[0.05] <= realized_value <= qs[0.95]),
+            "note": (rz["note"] if rz else
+                     "Realized print not yet available — marked, "
+                     "not guessed."),
+        })
+    return out
+
+
+# FOMC fan chart: translate the decision buckets into implied post-
+# meeting target-range upper bounds. Levels are upper bounds (the
+# quantity the KXFED family settles on), the pre-meeting base is read
+# per meeting from the daily target-range series, and ">25bps" buckets
+# map to the smallest move in their family (see FOMC_FAN_LEVEL_NOTE).
+def _bucket_probs_on(df: pl.DataFrame, event: str, date: str) -> list[tuple[str, float]]:
+    rows = df.filter((pl.col("event") == event) & (pl.col("date") == date))
+    return [(r["strike"].strip(), r["value"]) for r in rows.iter_rows(named=True)]
+
+
+def _discrete_quantiles(points: list[tuple[float, float]]) -> dict | None:
+    """Quantiles of a finite distribution over exact levels."""
+    pts = sorted((lv, p) for lv, p in points if p and p > 0)
+    if not pts:
+        return None
+    total = sum(p for _, p in pts)
+    if total <= 0:
+        return None
+    pts = [(lv, p / total) for lv, p in pts]
+    bins = [{"low": lv, "high": lv, "mass": p} for lv, p in pts]
+    return distmod.distribution_quantiles(bins, DIST_QUANTILES)
+
+
+def build_fomc_fan(df: pl.DataFrame, front_event: str | None,
+                   close_times: dict[str, dt.datetime],
+                   ffr: pl.DataFrame, now: dt.datetime) -> dict | None:
+    """Market-implied post-meeting rate: daily median + 50%/90% bands
+    for the FRONT meeting, plus realized post-meeting marks for every
+    resolved meeting in the archive. Returns None (and the card notes
+    why) when the base rate cannot be established."""
+    if front_event is None:
+        return None
+    ct = close_times.get(front_event)
+    meeting = ct.date() if ct is not None else None
+    if meeting is None:
+        return {"note": "Meeting date unavailable — fan withheld.", "rows": [],
+                "realized": [], "base_rate": None}
+    base, _ = fred.fed_funds_around(ffr, meeting)
+    if base is None:
+        return {"note": ("Pre-meeting target-range base unavailable from "
+                         "the daily series — fan withheld rather than "
+                         "guessed."), "rows": [], "realized": [],
+                "base_rate": None}
+    rows = []
+    for date in sorted(df.filter(pl.col("event") == front_event)["date"]
+                       .unique().to_list()):
+        probs = _bucket_probs_on(df, front_event, date)
+        points = []
+        for bucket, p in probs:
+            delta = FOMC_BUCKET_DELTAS.get(bucket)
+            if delta is not None:
+                points.append((round(base + delta, 2), float(p)))
+        qs = _discrete_quantiles(points)
+        if qs is None or any(v is None for v in qs.values()):
+            continue
+        rows.append({"date": date, "event": front_event,
+                     "q05": qs[0.05], "q25": qs[0.25], "q50": qs[0.50],
+                     "q75": qs[0.75], "q95": qs[0.95]})
+    realized = []
+    for event in sorted(df["event"].unique().to_list()):
+        rct = close_times.get(event)
+        rmeeting = rct.date() if rct is not None else None
+        if rmeeting is None or dt.datetime.combine(
+                rmeeting, dt.time.min, tzinfo=dt.timezone.utc) > now:
+            continue
+        rbase, post = fred.fed_funds_around(ffr, rmeeting)
+        if post is None:
+            continue
+        day = _day_before_rows(df, event, rmeeting)
+        entry = {"meeting": rmeeting.isoformat(), "event": event,
+                 "post_meeting_upper": post, "base_rate": rbase}
+        if day.height and rbase is not None:
+            probs = _bucket_probs_on(df, event, max(day["date"].to_list()))
+            points = [(round(rbase + FOMC_BUCKET_DELTAS[b], 2), float(p))
+                      for b, p in probs if b in FOMC_BUCKET_DELTAS]
+            qs = _discrete_quantiles(points)
+            if qs and all(v is not None for v in qs.values()):
+                entry.update({"as_of": max(day["date"].to_list()),
+                              "q05": qs[0.05], "q25": qs[0.25],
+                              "q50": qs[0.50], "q75": qs[0.75],
+                              "q95": qs[0.95],
+                              "hit_50": qs[0.25] <= post <= qs[0.75],
+                              "hit_90": qs[0.05] <= post <= qs[0.95]})
+        realized.append(entry)
+    return {
+        "meeting": meeting.isoformat(),
+        "base_rate": base,
+        "level_note": FOMC_FAN_LEVEL_NOTE,
+        "rows": rows,
+        "realized": realized,
+        "note": ("Post-meeting target-range upper bound implied by the "
+                 f"decision buckets, with the pre-meeting base {base:.2f}% "
+                 "recorded per meeting."),
+    }
+
+
 def _company_of(ticker: str) -> str:
     return ticker.rsplit("-", 1)[-1]
 
 
 def build_ipo_expected(df: pl.DataFrame,
-                       close_times: dict[str, dt.datetime]) -> pl.DataFrame:
-    """Expected IPO count per day: sum of company probabilities for the
-    front (current-year) event."""
+                       close_times: dict[str, dt.datetime],
+                       settled_yes_tickers: set[str] | None = None
+                       ) -> pl.DataFrame:
+    """Expected IPO count per day: the sum of company Yes prices for the
+    front (current-year) event PLUS 1.0 for every already-confirmed
+    company (its market settled Yes and stopped trading, so it is no
+    longer in the day's price sum — counting it at 1.0 keeps the
+    construction 'sum of Yes prices across the named companies' intact
+    across settlements; without this the series would step down on
+    every confirmation, misreading a confirmation as decay)."""
+    settled_yes_tickers = settled_yes_tickers or set()
+    last_dates = {}
+    if settled_yes_tickers and df.height:
+        for t, d in df.filter(pl.col("ticker").is_in(sorted(settled_yes_tickers))
+                              ).group_by("ticker").agg(
+                pl.col("date").max().alias("d")).iter_rows():
+            last_dates[t] = str(d)
     rows = []
     for date in sorted(df["date"].unique().to_list()):
         ev = _front_event_on(df, date, close_times)
@@ -553,6 +886,9 @@ def build_ipo_expected(df: pl.DataFrame,
         if day.height == 0:
             continue
         exp_n = float(day["value"].sum())
+        confirmed_by_then = sum(1 for t, ld in last_dates.items()
+                                if ld < date)
+        exp_n += confirmed_by_then
         top = day.sort("value", descending=True).head(5)
         rows.append({
             "date": date, "value": exp_n, "event": ev,
@@ -597,6 +933,10 @@ def _derived_entry(key: str, reg: dict, df: pl.DataFrame,
         "event_ticker": None,
         "event_scope": reg["event_scope"],
         "horizons": [],
+        "measures": _measures_block(key, reg, None, {}, now),
+        "kalshi_url": None,
+        "kalshi_urls": {},
+        "market_data_through": str(df["date"].max()) if df.height else None,
         "strikes": strikes,
         "strike_colors": strike_colors_map,
         "last_observation": str(df["date"].max()) if df.height else None,
@@ -613,16 +953,37 @@ def _derived_entry(key: str, reg: dict, df: pl.DataFrame,
 def _build_derived(site_indicators: list, meta_indicators: dict,
                    frames: dict[str, pl.DataFrame],
                    close_times: dict[str, dict[str, dt.datetime]],
-                   data_dir: Path, now: dt.datetime) -> None:
-    """Derived indicators and distribution views. Mutates the site/meta lists
-    in place. All inputs are committed CSV frames; no network."""
+                   data_dir: Path, now: dt.datetime,
+                   realized_df: pl.DataFrame | None = None,
+                   fred_frames: dict[str, pl.DataFrame] | None = None,
+                   payloads: dict[str, list[dict]] | None = None,
+                   realized_err: str | None = None) -> None:
+    """Derived indicators, distribution views, and realized-outcome views.
+    Mutates the site/meta lists in place. Market inputs are committed CSV
+    frames; realized inputs are the FRED-derived dataset; no network."""
+    realized_df = realized_df if realized_df is not None else pl.DataFrame()
+    fred_frames = fred_frames or {}
+    payloads = payloads or {}
+    ffr = fred_frames.get("DFEDTARU")
     dist_note = ("Implied distributions are recovered from each day's strike "
                  "ladder following Diercks/Katz/Wright (2026), FEDS 2026-010, "
                  "Section 3: bin probabilities by strike differencing with "
                  "mode-outward monotonicity. These are risk-neutral (Q-measure) "
                  "probabilities, not physical ones; thin tail contracts can be stale.")
+    realized_note = ("Realized outcomes are pipeline-built from keyless FRED "
+                     "feeds (data/predmarkets/realized.csv). Prints are frozen "
+                     "at first observation — GDP at the advance-estimate "
+                     "vintage the contract settles on, CPI/unemployment at "
+                     "the release print — so later revisions are never "
+                     "spliced silently; see the realized-dataset notes per row.")
 
-    # ---- implied-distribution views for the threshold indicators ----
+    def entry_of(key: str) -> dict | None:
+        for e in site_indicators:
+            if e["key"] == key:
+                return e
+        return None
+
+    # ---- implied-distribution views + realized track records ----
     for key in DIST_GRIDS:
         df = frames.get(key)
         if df is None or df.height == 0:
@@ -638,6 +999,34 @@ def _build_derived(site_indicators: list, meta_indicators: dict,
                     "heatmap": heatmap,
                     "note": dist_note,
                 }
+                # Realized marker on the front fan once the front event
+                # has a print (usually only in the front_closed case).
+                rz = realized_mod.realized_lookup(realized_df, key,
+                                                  entry.get("event_ticker")) \
+                    if entry.get("event_ticker") else None
+                if rz and rz["value"] is not None:
+                    entry["distribution"]["realized"] = {
+                        "event": entry["event_ticker"],
+                        "date": (entry["measures"]["resolution_date"]
+                                 or entry["horizons"][0]["date"]
+                                 if entry.get("horizons") else None),
+                        "value": rz["value"],
+                        "note": rz["note"],
+                    }
+                # Companion track record: day-before median and 50%/90%
+                # interval vs the realized print, for every resolved
+                # event in the archive.
+                tr = build_distribution_track_record(
+                    key, df, close_times.get(key, {}), realized_df, now)
+                entry["realized_track"] = tr
+                h50 = sum(1 for r in tr if r["hit_50"])
+                h90 = sum(1 for r in tr if r["hit_90"])
+                n_known = sum(1 for r in tr if r["realized"] is not None)
+                entry["realized_track_note"] = (
+                    f"Last-day implied distribution vs the realized print "
+                    f"for each resolved event in the archive: realized "
+                    f"inside the 50% interval {h50}/{n_known}, inside the "
+                    f"90% interval {h90}/{n_known}. " + realized_note)
                 # Daily moments double as an uncertainty gauge (paper Sec. 7).
                 entry["moments"] = [
                     {"date": r["date"], "mean": r["mean"],
@@ -647,6 +1036,9 @@ def _build_derived(site_indicators: list, meta_indicators: dict,
                 ]
                 break
         meta_indicators[key]["distribution_days"] = dist_df.height
+        e = entry_of(key)
+        if e:
+            meta_indicators[key]["realized_track"] = e.get("realized_track", [])
 
     # ---- tail risks (paper Figure 13) ----
     tail_reg = INDICATORS["tail_risks"]
@@ -654,29 +1046,86 @@ def _build_derived(site_indicators: list, meta_indicators: dict,
     if tail_df.height:
         tail_df.write_csv(data_dir / "tail_risks.csv")
     entry, meta_entry = _derived_entry("tail_risks", tail_reg, tail_df, now)
+    # Tail measures reference the CPI/GDP front events their ladders price.
+    cpi_e, gdp_e = entry_of("cpi_yoy"), entry_of("gdp_quarterly")
+    refs = []
+    urls = {}
+    for src in (cpi_e, gdp_e):
+        if src and src.get("measures"):
+            ref = src["measures"]["reference"] or ""
+            if ref and not ref.startswith("no open market"):
+                refs.append(ref)
+            if src.get("event_ticker"):
+                urls[src["event_ticker"]] = kalshi_event_url(
+                    src["event_ticker"])
+    m = entry["measures"]
+    if refs:
+        m["reference"] = ("CPI tails price " + refs[0]
+                          + (f"; GDP tails price {refs[1]}"
+                             if len(refs) > 1 else ""))
+    m["resolution"] = ("inherits the underlying CPI and GDP events' "
+                       "resolution days")
+    m["text"] = _measures_text(m)
+    entry["kalshi_url"] = (kalshi_event_url(cpi_e["event_ticker"])
+                           if cpi_e and cpi_e.get("event_ticker") else None)
+    entry["kalshi_urls"] = urls
     strict_json(entry["series"])
     site_indicators.append(entry)
     meta_indicators["tail_risks"] = meta_entry
 
-    # ---- FOMC track record: day-before mode vs realized decision ----
+    # ---- FOMC: bucket track record (kept) + decision->rate fan (new) ----
     fomc_df = frames.get("fomc_decision")
     if fomc_df is not None and fomc_df.height:
         record = build_fomc_track_record(fomc_df)
-        for entry in site_indicators:
-            if entry["key"] == "fomc_decision":
-                entry["track_record"] = record
-                hits = sum(1 for r in record if r["hit"])
-                entry["track_record_note"] = (
-                    f"Day-before mode matched the realized decision in "
-                    f"{hits}/{len(record)} past meetings in the archive. "
-                    f"Realized decisions are public record (FOMC statements).")
-                break
-        meta_indicators["fomc_decision"]["track_record"] = record
+        fomc_entry = entry_of("fomc_decision")
+        if fomc_entry is not None:
+            fomc_entry["track_record"] = record
+            hits = sum(1 for r in record if r["hit"])
+            fomc_entry["track_record_note"] = (
+                f"Day-before mode matched the realized decision in "
+                f"{hits}/{len(record)} past meetings in the archive. "
+                f"Realized decisions are public record (FOMC statements).")
+            fan = build_fomc_fan(fomc_df, fomc_entry.get("event_ticker"),
+                                 close_times.get("fomc_decision", {}),
+                                 ffr, now)
+            if fan:
+                fomc_entry["fomc_fan"] = fan
+                r_hits = fan.get("realized") or []
+                n_in50 = sum(1 for r in r_hits if r.get("hit_50"))
+                fomc_entry["fomc_fan"]["track_note"] = (
+                    f"Post-meeting rate fell inside the day-before 50% "
+                    f"interval in {n_in50}/{len(r_hits)} resolved meetings "
+                    f"in the archive." if r_hits else
+                    "No resolved meetings with realized rates yet.")
+            meta_indicators["fomc_decision"]["track_record"] = record
+            meta_indicators["fomc_decision"]["fomc_fan_days"] = \
+                len((fan or {}).get("rows", []))
 
     # ---- IPO pipeline: expected count replaces the company lines ----
     ipo_df = frames.get("ipo_pipeline")
+    ipo_entry = entry_of("ipo_pipeline")
+    ipo_events = payloads.get("ipo_pipeline") or []
+    ipo_event = None
+    if ipo_entry and ipo_entry.get("event_ticker"):
+        ipo_event = next((e for e in ipo_events
+                          if (e.get("event_ticker") == ipo_entry["event_ticker"]
+                              and e.get("markets"))), None)
+    if ipo_event is None:
+        ipo_event = next((e for e in ipo_events if e.get("markets")), None)
+    settled_yes = set()
+    names = []
+    if ipo_event:
+        for mk in ipo_event["markets"]:
+            code = _company_of(mk["ticker"])
+            nm = realized_mod.company_name_of(mk) or code
+            names.append({"code": code, "name": nm,
+                         "confirmed": mk.get("result") == "yes"})
+            if mk.get("result") == "yes":
+                settled_yes.add(mk["ticker"])
+        names.sort(key=lambda n: n["code"])
     if ipo_df is not None and ipo_df.height:
-        exp_df = build_ipo_expected(ipo_df, close_times.get("ipo_pipeline", {}))
+        exp_df = build_ipo_expected(ipo_df, close_times.get("ipo_pipeline", {}),
+                                   settled_yes)
         if exp_df.height:
             exp_df.write_csv(data_dir / "ipo_expected.csv")
         for entry in site_indicators:
@@ -700,11 +1149,64 @@ def _build_derived(site_indicators: list, meta_indicators: dict,
                         ).iter_rows(named=True):
                     top5[_company_of(r["ticker"])] = round(float(r["value"]), 3)
                 entry["top5"] = top5
+                # Precision block: the named companies + realized count.
+                entry["ipo_names"] = names
+                entry["n_named"] = len(names)
+                rz = realized_mod.realized_lookup(realized_df, "ipo_pipeline",
+                                                  entry.get("event_ticker")) \
+                    if entry.get("event_ticker") else None
+                confirmed_names = [n["name"] for n in names if n["confirmed"]]
+                entry["realized_ipo"] = {
+                    "confirmed_count": len(confirmed_names),
+                    "confirmed": sorted(confirmed_names),
+                    "note": (rz["note"] if rz else
+                             "Realized count unavailable this run."),
+                }
+                m = entry["measures"]
+                m["reference"] = (
+                    f"calendar {realized_mod._ipo_year(entry['event_ticker'])} "
+                    f"— {len(names)} named companies listed as of "
+                    f"{entry['market_data_through']}; expected number of "
+                    f"them to confirm an IPO in calendar "
+                    f"{realized_mod._ipo_year(entry['event_ticker'])}")
+                m["text"] = _measures_text(m)
                 strict_json(entry["series"])
                 meta_indicators["ipo_pipeline"]["strikes"] = ["expected IPOs"]
                 meta_indicators["ipo_pipeline"]["top5"] = top5
+                meta_indicators["ipo_pipeline"]["n_named"] = len(names)
+                meta_indicators["ipo_pipeline"]["ipo_names"] = names
                 break
         meta_indicators["ipo_pipeline"]["n_expected_series"] = exp_df.height
+
+    # ---- recession realized overlay: quarterly growth + rule status ----
+    rec_q = fred.technical_recession_quarters(
+        fred_frames.get("A191RL1Q225SBEA"))
+    rec_entry = entry_of("recession")
+    if rec_entry is not None and rec_q.height:
+        quarters = [r for r in rec_q.sort("date").tail(12).iter_rows(named=True)]
+        statuses = []
+        for ev_t in (rec_entry.get("kalshi_urls") or {}):
+            rz = realized_mod.realized_lookup(realized_df, "recession", ev_t)
+            if rz:
+                statuses.append({"event": ev_t, "value": rz["value"],
+                                 "note": rz["note"]})
+        rec_entry["recession_realized"] = {
+            "quarters": quarters,
+            "statuses": statuses,
+            "note": ("Realized overlay applies the exchange's own rule "
+                     "(two consecutive negative BEA quarters within the "
+                     "covered window — not NBER committee calls). GDP "
+                     "growth is the latest published estimate; flagged "
+                     "quarters are shaded where they fall in range."),
+        }
+        meta_indicators["recession"]["recession_realized"] = \
+            rec_entry["recession_realized"]
+
+    if realized_err:
+        for e in site_indicators:
+            if e.get("status") == "live":
+                e["note"] = (e.get("note", "") + " Realized-outcome refresh "
+                             f"failed this run: {realized_err}").strip()
 
 
 # ---------------------------------------------------------------- build
@@ -748,7 +1250,8 @@ def _fetch_all_candles(starts: dict[str, int], now: dt.datetime, transport):
 
 
 def _site_entry(key: str, reg: dict, evs: list[dict], chart_evs: list[dict],
-                df: pl.DataFrame) -> tuple[dict, dict]:
+                df: pl.DataFrame, close_times: dict[str, dt.datetime],
+                now: dt.datetime) -> tuple[dict, dict]:
     """Assemble the site-bundle entry and the _meta entry for one indicator."""
     chart_markets = []
     for ev in chart_evs:
@@ -774,8 +1277,11 @@ def _site_entry(key: str, reg: dict, evs: list[dict], chart_evs: list[dict],
             last_value[label] = value
 
     if reg["event_scope"] == "ladder":
+        # Ladder horizons mark each market's last trading day (the annual
+        # recession markets close in late January of the following year,
+        # per their listed rules — not at the calendar year they cover).
         horizons = [{
-            "label": f"{strike_label(ev['markets'][0], ev, reg)} year-end",
+            "label": strike_label(ev['markets'][0], ev, reg),
             "date": str(event_horizon(ev, reg)),
             "event_ticker": ev["event_ticker"],
         } for ev in chart_evs]
@@ -785,6 +1291,12 @@ def _site_entry(key: str, reg: dict, evs: list[dict], chart_evs: list[dict],
             "date": str(event_horizon(chart_evs[0], reg)),
             "event_ticker": chart_evs[0]["event_ticker"],
         }] if chart_evs else []
+
+    measures = _measures_block(
+        key, reg,
+        chart_evs if reg["event_scope"] == "ladder"
+        else (chart_evs[0] if chart_evs else None),
+        close_times, now)
 
     entry = {
         "key": key,
@@ -799,6 +1311,12 @@ def _site_entry(key: str, reg: dict, evs: list[dict], chart_evs: list[dict],
         "event_ticker": chart_evs[0]["event_ticker"] if chart_evs else None,
         "event_scope": reg["event_scope"],
         "horizons": horizons,
+        "measures": measures,
+        "kalshi_url": (kalshi_event_url(chart_evs[0]["event_ticker"])
+                       if chart_evs else None),
+        "kalshi_urls": {ev["event_ticker"]: kalshi_event_url(ev["event_ticker"])
+                        for ev in chart_evs},
+        "market_data_through": str(df["date"].max()) if df.height else None,
         "strikes": strikes,
         "strike_colors": strike_colors_map,
         "last_observation": str(df["date"].max()) if df.height else None,
@@ -829,6 +1347,50 @@ def _site_entry(key: str, reg: dict, evs: list[dict], chart_evs: list[dict],
     return entry, meta_entry
 
 
+def _refresh_realized(frames: dict[str, pl.DataFrame],
+                      close_times: dict[str, dict[str, dt.datetime]],
+                      payloads: dict[str, list[dict]], data_dir: Path,
+                      now: dt.datetime, transport) -> tuple[pl.DataFrame, dict, str | None]:
+    """Fetch the keyless FRED feeds and rebuild realized.csv.
+
+    Raw FRED responses are preserved verbatim under data/predmarkets/fred/
+    before derivation. Any failure degrades to (empty, {}, err): the bundle
+    still builds, cards carry the error note, and last good realized data
+    stays committed — never a silent splice or a missing bundle.
+    """
+    try:
+        raw_dir = data_dir / "fred"
+        fred_frames = {sid: fred.fetch_fred_series(sid, raw_dir, transport)
+                       for sid in fred.FRED_SERIES}
+        cpi_yoy = fred.cpi_yoy_from_index(fred_frames["CPIAUCSL"])
+        gdp_q = fred_frames["A191RL1Q225SBEA"]
+        unrate = fred_frames["UNRATE"]
+        ffr = fred_frames["DFEDTARU"]
+        rec_q = fred.technical_recession_quarters(gdp_q)
+        ipo_events = payloads.get("ipo_pipeline") or []
+        ipo_event = next((e for e in ipo_events if e.get("markets")), None)
+        rows: list[dict] = []
+        rows += realized_mod.cpi_realized_rows(frames.get("cpi_yoy"), cpi_yoy)
+        rows += realized_mod.u3_realized_rows(frames.get("unemployment"), unrate)
+        rows += realized_mod.gdp_realized_rows(frames.get("gdp_quarterly"), gdp_q)
+        rows += realized_mod.fomc_realized_rows(
+            frames.get("fomc_decision"),
+            close_times.get("fomc_decision", {}), ffr, "fomc_decision")
+        rows += realized_mod.fomc_realized_rows(
+            frames.get("fed_funds"),
+            close_times.get("fed_funds", {}), ffr, "fed_funds")
+        rows += realized_mod.recession_realized_rows(
+            frames.get("recession"), rec_q)
+        rows += realized_mod.ipo_realized_rows(ipo_event)
+        realized_df = realized_mod.merge_realized(
+            realized_mod.load_realized(data_dir / "realized.csv"), rows, now)
+        if realized_df.height:
+            realized_df.write_csv(data_dir / "realized.csv")
+        return realized_df, fred_frames, None
+    except Exception as e:
+        return pl.DataFrame(), {}, str(e)[:200]
+
+
 def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
           site_json: Path = SITE_JSON) -> dict:
     data_dir.mkdir(parents=True, exist_ok=True)
@@ -837,6 +1399,7 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
     site_indicators, meta_indicators = [], {}
     frames: dict[str, pl.DataFrame] = {}
     close_times: dict[str, dict[str, dt.datetime]] = {}
+    payloads: dict[str, list[dict]] = {}
 
     for key, reg in INDICATORS.items():
         if reg.get("series_ticker") is None:
@@ -845,6 +1408,7 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
             continue
         try:
             events = kalshi.fetch_events(reg["series_ticker"], transport)
+            payloads[key] = events
             evs = open_events(events)
             chart_evs, front_closed = chart_events(reg, evs, now)
             existing = load_existing(data_dir, key)
@@ -865,10 +1429,12 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
                 validate_frame(df, key)
                 df.write_csv(data_dir / f"{key}.csv")
             frames[key] = df
-            close_times[key] = {ev["event_ticker"]: event_close_time(ev)
-                                for ev in evs}
+            close_times[key] = archive_close_times(
+                key, {ev["event_ticker"]: event_close_time(ev)
+                      for ev in evs})
 
-            entry, meta_entry = _site_entry(key, reg, evs, chart_evs, df)
+            entry, meta_entry = _site_entry(key, reg, evs, chart_evs, df,
+                                            close_times[key], now)
             entry["paper"] = reg.get("paper")
             entry["paper_doi"] = PAPER_DOI
             meta_entry["paper"] = reg.get("paper")
@@ -893,6 +1459,9 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
                 "paper": reg.get("paper"), "paper_doi": PAPER_DOI,
                 "event_title": "", "event_ticker": None,
                 "event_scope": reg["event_scope"], "horizons": [],
+                "measures": _measures_block(key, reg, None, {}, now),
+                "kalshi_url": None, "kalshi_urls": {},
+                "market_data_through": None,
                 "strikes": [], "strike_colors": {},
                 "last_observation": None, "first_observation": None,
                 "n_observations": 0, "last_value": {}, "series": [],
@@ -903,9 +1472,15 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
             site_indicators.append(entry)
             meta_indicators[key] = meta_entry
 
+    # ---- realized outcomes: keyless FRED feeds -> realized.csv ----
+    realized_df, fred_frames, realized_err = _refresh_realized(
+        frames, close_times, payloads, data_dir, now, transport)
+
     # ---- derived indicators & distribution views (no fetching) ----
     _build_derived(site_indicators, meta_indicators, frames, close_times,
-                   data_dir, now)
+                   data_dir, now, realized_df=realized_df,
+                   fred_frames=fred_frames, payloads=payloads,
+                   realized_err=realized_err)
 
     built = now.isoformat(timespec="seconds")
     meta = {
