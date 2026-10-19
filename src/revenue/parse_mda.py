@@ -1169,20 +1169,31 @@ _FY_RE = re.compile(
 def _instance_fiscal_year(cik: str, accession: str) -> int | None:
     """Fiscal year from the accession's XBRL instance filename.
 
-    e.g. "c-20251231_htm.xml" -> 2025. R-files and FilingSummary.xml
-    carry no date and are skipped.
+    Filers name instances in both orders: "c-20251231_htm.xml" is
+    YYYYMMDD, but Citi's older "c-12312019x10k_htm.xml" is MMDDYYYY.
+    The reading that yields a plausible calendar year and month/day
+    wins; R-files and FilingSummary.xml carry no date and are skipped.
     """
     d = RAW_ROOT / cik / accession
     if not d.is_dir():
         return None
+
+    def _plausible(y: int, mo: int, dy: int) -> bool:
+        return 1990 <= y <= 2100 and 1 <= mo <= 12 and 1 <= dy <= 31
+
     for p in sorted(d.iterdir()):
         if p.name.startswith("R") or p.name == "FilingSummary.xml":
             continue
         if p.suffix.lower() not in (".xbrl", ".xml"):
             continue
-        m = re.search(r"(\d{4})(\d{2})(\d{2})", p.name)
-        if m:
-            return int(m.group(1))
+        m = re.search(r"\d{8}", p.name)
+        if not m:
+            continue
+        run = m.group(0)
+        if _plausible(int(run[:4]), int(run[4:6]), int(run[6:8])):
+            return int(run[:4])
+        if _plausible(int(run[4:]), int(run[:2]), int(run[2:4])):
+            return int(run[4:])
     return None
 
 
@@ -1211,6 +1222,14 @@ def parse_filing(firm: str, cik: str, accession: str,
     warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
     soup = BeautifulSoup(html_path.read_bytes(), "lxml")
     fiscal_year = filing_fiscal_year(soup, cik, accession)
+    if fiscal_year is not None and not 1990 <= fiscal_year <= 2100:
+        # A garbage year (e.g. filename misread) silently skipped every
+        # spec once; treat it as unknown so specs apply and mismatches
+        # fail loudly instead of contributing nothing.
+        log.warning("%s %s: implausible fiscal year %s from filing "
+                    "metadata; treating as unknown", firm, accession,
+                    fiscal_year)
+        fiscal_year = None
     records = []
     for spec in FIRM_SPECS[firm]:
         if spec.fiscal_years is not None:

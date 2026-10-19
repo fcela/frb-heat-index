@@ -56,6 +56,46 @@ REORGS = [
     # Lazard, Moelis, PJT Partners: no reorgs in scope.
 ]
 
+# Firms whose fiscal year does not end December 31 (verified in each
+# firm's 10-K DocumentFiscalYearEnd; all other covered firms are 12-31).
+# A fiscal year is labeled by the calendar year of its END date, so
+# Houlihan Lokey FY2024 = Apr 2023-Mar 2024 and Jefferies FY2020 =
+# Dec 2019-Nov 2020. Regime boundaries must compare a reorg's effective
+# date against that fiscal year end, never against Dec 31: the Jefferies
+# reorg effective 2019-12-01 lands in fiscal 2020, so fiscal 2019 (which
+# ended 2019-11-30) belongs to the old regime. Jefferies moved to a
+# Nov 30 year end in 2019; that fiscal-calendar choice is documented
+# here and the data is not restated onto a December calendar.
+FISCAL_YEAR_ENDS = {
+    "Houlihan Lokey": "-03-31",
+    "Jefferies": "-11-30",
+}
+
+# Fiscal quarter-end month-days for firms in FISCAL_YEAR_ENDS whose
+# quarters are not calendar quarters (Jefferies: Q1 ends late February,
+# ..., Q4 ends November 30). Firms not listed here use calendar
+# quarter ends (Houlihan Lokey's quarters end Dec/Mar/Jun/Sep, which
+# are calendar quarter ends).
+FISCAL_QUARTER_ENDS = {
+    "Jefferies": {1: "02-28", 2: "05-31", 3: "08-31", 4: "11-30"},
+}
+
+
+def fiscal_year_end(firm, year):
+    """ISO date of the firm's fiscal-year end for the labeled year."""
+    suffix = FISCAL_YEAR_ENDS.get(firm, "-12-31")
+    return f"{int(year)}{suffix}"
+
+
+def fiscal_quarter_end(firm, year, quarter):
+    """ISO date of the firm's quarter end for the labeled quarter."""
+    month_end = FISCAL_QUARTER_ENDS.get(firm, {}).get(int(quarter))
+    if month_end is None:
+        month_end = {1: "03-31", 2: "06-30", 3: "09-30",
+                     4: "12-31"}[int(quarter)]
+    return f"{int(year)}-{month_end}"
+
+
 # Firms expected to have zero registry entries (asserted in tests).
 NO_REORG_FIRMS = ["Lazard", "Moelis", "PJT Partners"]
 
@@ -93,9 +133,16 @@ def _breaks_for(firm):
 
 
 def regime_for(firm, year):
-    """Regime label for a fiscal year, e.g. 'r0', 'r1', ... Breaks increment."""
+    """Regime label for a fiscal year, e.g. 'r0', 'r1', ... Breaks increment.
+
+    A reorg takes effect for the first fiscal year whose END date falls on
+    or after the effective date (fiscal_year_end, not Dec 31): the
+    Jefferies reorg of 2019-12-01 lands in fiscal 2020, so fiscal 2019
+    (ended 2019-11-30) stays in the old regime.
+    """
     breaks = _breaks_for(firm)
-    idx = sum(1 for b in breaks if b["effective"] <= f"{int(year)}-12-31")
+    idx = sum(1 for b in breaks
+              if b["effective"] <= fiscal_year_end(firm, year))
     return f"r{idx}"
 
 
@@ -104,10 +151,10 @@ def regime_for_quarter(firm, year, quarter):
 
     Reorgs land in specific quarters (e.g. JPM 2024-04-01 -> Q2 2024 is
     the first quarter of the new regime); values are never spliced
-    across the break. The quarter's end date decides the regime.
+    across the break. The quarter's end date decides the regime; for
+    firms in FISCAL_QUARTER_ENDS that is the fiscal quarter end.
     """
-    month_end = {1: "03-31", 2: "06-30", 3: "09-30", 4: "12-31"}[int(quarter)]
-    q_end = f"{int(year)}-{month_end}"
+    q_end = fiscal_quarter_end(firm, year, quarter)
     breaks = _breaks_for(firm)
     idx = sum(1 for b in breaks if b["effective"] <= q_end)
     return f"r{idx}"

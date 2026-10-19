@@ -60,7 +60,15 @@ _MAPPINGS = {
         ("Global Wealth", "awm", "D", "GWIM"),
     ],
     "Citigroup": [
-        ("=Banking", "advisory", "A", "advisory+underwriting; splits from MD&A"),
+        # The post-reorg Banking division total mixes investment-banking
+        # fees with Corporate Lending net-interest revenue and
+        # Services/Markets revenue share (FY2025 10-K: $8,215M division
+        # total vs $1,908M advisory fees in the MD&A IB-fees table), so
+        # the division total is not a business-line value. The advisory /
+        # ECM / DCM split comes from that MD&A table instead (parse_mda).
+        ("=Banking", None, "U",
+         "division total; includes corporate lending and revenue share, "
+         "not a business line"),
         ("Markets", None, "U", "FI/Equities from MD&A"),
         ("Wealth", "awm", "D", ""),
         ("Services", None, "U", "not in taxonomy"),
@@ -118,10 +126,17 @@ _MAPPINGS = {
         ("Placement Fees", "placement_fees", "D", "explicit line outside taxonomy"),
     ],
     "Houlihan Lokey": [
+        # The advisory cell tracks the Corporate Finance segment only.
+        # The other two segments are advisory-type businesses with no
+        # standard taxonomy cell of their own; leaving them unmapped (U)
+        # keeps them from clobbering the Corporate Finance value in the
+        # build's quality-dedupe (D beats A).
         ("Corporate Finance", "advisory", "A", "mixes M&A with capital-markets advisory, split undisclosed"),
         ("Financial Advisory Services", "advisory", "A", "pre-FY2020 name for Corporate Finance"),
-        ("Financial Restructuring", "advisory", "D", ""),
-        ("Financial and Valuation Advisory", "advisory", "D", ""),
+        ("Financial Restructuring", None, "U",
+         "restructuring advisory; no standard taxonomy cell"),
+        ("Financial and Valuation Advisory", None, "U",
+         "valuation advisory; no standard taxonomy cell"),
     ],
     "Jefferies": [
         ("Investment Banking", "advisory", "A", "IB+capital markets combined; splits partial"),
