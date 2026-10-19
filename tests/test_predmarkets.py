@@ -9,6 +9,8 @@ tests make zero live calls and stay deterministic.
 
 import datetime as dt
 import json
+import shutil
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -50,6 +52,7 @@ from src.predmarkets.indicators import (
 )
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures" / "predmarkets"
+REPO = Path(__file__).resolve().parents[1]
 
 
 def fixture_transport(url: str) -> str:
@@ -728,18 +731,39 @@ def test_fomc_fan_and_distribution_track():
     print("ok test_fomc_fan_and_distribution_track")
 
 
+def test_app_renders_definitions_and_realized(tmp_path=None):
+    """Render smoke test: docs/predmarkets/app.js boots against the committed
+    bundle under stubbed DOM + Plot (node harness, zero network) and every
+    card shows its Measures definition, exchange links, as-of date, fan
+    charts with realized overlays where the bundle has them, the FOMC rate
+    fan (keeping the outcome bars), IPO precision, and recession quarters.
+    Skips when node is unavailable."""
+    node = shutil.which("node")
+    if node is None:
+        print("skip test_app_renders_definitions_and_realized: node not installed")
+        return
+    tmp = Path(tmp_path) if tmp_path is not None else Path(tempfile.mkdtemp())
+    r = subprocess.run(
+        [node, str(FIXTURES / "render-harness.mjs"),
+         str(REPO), str(tmp)],
+        capture_output=True, text=True, timeout=120,
+    )
+    assert r.returncode == 0, f"render harness failed:\n{r.stdout}\n{r.stderr}"
+    res = json.loads(r.stdout)
+    assert res["errors"] == [], res["errors"]
+    assert res["cards"] == len(INDICATORS), res
+    assert res["tocAnchors"] == len(INDICATORS), res
+    # 8 series charts + 4 fan/heatmap pairs + FOMC rate fan + recession bars.
+    assert res["figures"] >= 14, res
+    assert res["tapeItems"] >= 1, res
+    print("ok test_app_renders_definitions_and_realized")
+
+
 if __name__ == "__main__":
-    test_candle_close_extraction()
-    test_candle_trading_date()
-    test_open_and_front_events()
-    test_strike_labels()
-    test_gap_notes()
-    test_event_horizons()
-    test_merge_incremental()
-    test_validate_bounds()
-    test_sequential_colors()
-    test_distribution_recovery()
-    test_tail_risks_and_track_record()
-    test_paper_citations_present()
-    test_build_end_to_end()
-    print("all predmarkets tests pass")
+    # Auto-discovered so the daily workflow (python3 tests/test_predmarkets.py)
+    # runs every test defined here, including ones added later.
+    tests = [(n, f) for n, f in sorted(globals().items())
+             if n.startswith("test_") and callable(f)]
+    for name, fn in tests:
+        fn()
+    print(f"all {len(tests)} predmarkets tests pass")

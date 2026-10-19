@@ -327,11 +327,11 @@ function measuresHTML(ind) {
   if (ind.kalshi_url) pushLink(ind.event_ticker, ind.kalshi_url);
   for (const [t, u] of Object.entries(ind.kalshi_urls || {})) pushLink(t, u);
   const metaBits = [];
-  if (ind.market_data_through) metaBits.push(`market data through ${esc(ind.market_data_through)}`);
-  if (m.verified) metaBits.push(`contract specs verified ${esc(m.verified)}`);
-  const meta = (metaBits.map(b => `<span>${b}</span>`).join('<span class="sep">·</span>') + (links.length ? '<span class="sep">·</span>' : "") + links.join(""))
-    ? `<p class="pulse-def-meta">${metaBits.map(b => `<span>${b}</span>`).join('<span class="sep">·</span>')}${links.length ? '<span class="sep">·</span>' : ""}${links.join("")}</p>`
-    : "");
+  if (ind.market_data_through) metaBits.push(`<span>market data through ${esc(ind.market_data_through)}</span>`);
+  if (m.verified) metaBits.push(`<span>contract specs verified ${esc(m.verified)}</span>`);
+  const meta = metaBits.concat(links).length
+    ? `<p class="pulse-def-meta">${metaBits.concat(links).join('<span class="sep">·</span>')}</p>`
+    : "";
   return `<div class="pulse-def"><b>Measures:</b> ${esc(m.text)}${meta}</div>`;
 }
 
@@ -534,12 +534,12 @@ function renderMarkets(pm) {
       }
       // Recession ladder: quarterly growth bars with flagged runs.
       if (ind.recession_realized) {
-        const h = document.createElement("h4");
-        h.className = "pulse-subhead";
-        h.textContent = "Realized quarterly real-GDP growth (published BEA estimates; negative two-quarter runs flagged)";
         const fig3 = recessionQuartersChart(ind.recession_realized);
         if (fig3) {
-          ind.recession_realized && dw.appendChild(h);
+          const h = document.createElement("h4");
+          h.className = "pulse-subhead";
+          h.textContent = "Realized quarterly real-GDP growth (published BEA estimates; negative two-quarter runs flagged)";
+          dw.appendChild(h);
           dw.appendChild(fig3);
         }
       }
