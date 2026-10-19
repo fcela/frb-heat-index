@@ -343,12 +343,19 @@ def test_build_end_to_end():
         future = [e for e, c in zip(cpi_evs, closes) if c > now]
         expected_front = future[0] if future else cpi_evs[-1]
         assert cpi["event_ticker"] == expected_front["event_ticker"]
-        assert "≥3.0%" in cpi["strikes"] and "≥5.0%" in cpi["strikes"]
+        # ">X%" strict-inequality labels match the listed settlement rules
+        assert ">3.0%" in cpi["strikes"] and ">5.0%" in cpi["strikes"]
 
-        # recession ladder: both open years charted, year-end horizons
+        # recession ladder: both open years charted; horizons are each
+        # market's actual last trading day (late January of the following
+        # year, per the listed rules — not the covered calendar year)
         rec = by_key["recession"]
         assert rec["strikes"] == ["2026", "2027"]
-        assert [h["date"] for h in rec["horizons"]] == ["2026-12-31", "2027-12-31"]
+        rec_evs = [e for e in load_fixture("events_KXRECSSNBER.json")["events"]
+                   if e.get("event_ticker") in ("KXRECSSNBER-26", "KXRECSSNBER-27")]
+        exp_dates = [str(min(kalshi.parse_iso_z(m["close_time"])
+                              for m in e["markets"]).date()) for e in rec_evs]
+        assert [h["date"] for h in rec["horizons"]] == exp_dates
         assert set(rec["series"][0]) == {"date", "strike", "value"}
 
         # incremental rerun is idempotent: same rows, no duplicates

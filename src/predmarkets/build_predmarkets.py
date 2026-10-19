@@ -270,7 +270,10 @@ def _measures_block(key: str, reg: dict, ev: dict | None,
     listed contract rules (SPEC_VERIFIED), with the reference/resolution
     filled dynamically from the front event."""
     spec = reg.get("measures") or {}
-    ref, res_date = _front_reference(key, ev, close_times, now)
+    # Ladder indicators (recession) receive the whole charted-event list;
+    # their reference is built from the per-year rule windows below.
+    ref, res_date = ((None, None) if key == "recession"
+                     else _front_reference(key, ev, close_times, now))
     if key == "recession":
         # Ladder: reference text covers every charted year's rule window.
         bits = []
@@ -770,7 +773,14 @@ def _bucket_probs_on(df: pl.DataFrame, event: str, date: str) -> list[tuple[str,
 
 
 def _discrete_quantiles(points: list[tuple[float, float]]) -> dict | None:
-    """Quantiles of a finite distribution over exact levels."""
+    """Quantiles of a finite distribution over exact levels.
+
+    Strict convention: the q-quantile is the smallest level x with
+    P(X <= x) > q. A >= comparison would hide a priced tail that lands
+    exactly at the band edge (e.g. 5% on Hike 25bps would leave q95 at
+    the base and the band would silently drop the hike), so the fan
+    bands always show every outcome carrying at least the tail mass.
+    """
     pts = sorted((lv, p) for lv, p in points if p and p > 0)
     if not pts:
         return None
@@ -778,8 +788,20 @@ def _discrete_quantiles(points: list[tuple[float, float]]) -> dict | None:
     if total <= 0:
         return None
     pts = [(lv, p / total) for lv, p in pts]
-    bins = [{"low": lv, "high": lv, "mass": p} for lv, p in pts]
-    return distmod.distribution_quantiles(bins, DIST_QUANTILES)
+    out = {}
+    cum = 0.0
+    cum_at = []  # (level, cumulative mass strictly through that level)
+    for lv, p in pts:
+        cum += p
+        cum_at.append((lv, cum))
+    for q in DIST_QUANTILES:
+        level = cum_at[-1][0]
+        for lv, c in cum_at:
+            if c > q:
+                level = lv
+                break
+        out[q] = level
+    return out
 
 
 def build_fomc_fan(df: pl.DataFrame, front_event: str | None,
