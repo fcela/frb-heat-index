@@ -301,6 +301,23 @@
 }
 .pm-hit { font-weight: 600; color: var(--ink, #1b1a16); }
 .pm-miss { font-weight: 600; color: var(--faint, #a8a294); }
+
+/* Prediction-accuracy scorecard: one row per accuracy-covered market. */
+.pm-scorecard { margin-top: 1.25rem; }
+.pm-scorecard .pulse-table td { font-size: 0.82rem; }
+.pm-conv summary {
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: var(--muted, #75705f);
+  white-space: nowrap;
+}
+.pm-conv[open] summary { color: var(--ink, #1b1a16); }
+.pm-conv {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--muted, #75705f);
+  max-width: 58ch;
+}
 .pm-names summary {
   cursor: pointer;
   font-size: 0.85rem;

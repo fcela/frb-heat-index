@@ -17,6 +17,8 @@ decision->rate fan chart to the site bundle.
 Outputs:
   data/predmarkets/<key>.csv     date,value,event,ticker,strike,volume
   data/predmarkets/realized.csv  indicator,period,event,kind,value,...
+  data/predmarkets/accuracy.csv  per-resolved-event predicted-vs-actual
+                                records (append-only; see accuracy.py)
   data/predmarkets/fred/*.csv    raw FRED responses, preserved verbatim
   data/predmarkets/_meta.json    per-indicator status + market metadata
   docs/data/predmarkets.json     site bundle (strict JSON, NaN rejected)
@@ -40,6 +42,7 @@ from pathlib import Path
 import polars as pl
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from src.predmarkets import accuracy as accuracy_mod
 from src.predmarkets import distribution as distmod
 from src.predmarkets import fred
 from src.predmarkets import kalshi
@@ -60,6 +63,14 @@ from src.predmarkets.indicators import (
 REPO = Path(__file__).resolve().parents[2]
 DATA_DIR = REPO / "data" / "predmarkets"
 SITE_JSON = REPO / "docs" / "data" / "predmarkets.json"
+
+# Shared public-record FOMC tables and event-horizon helpers live in
+# realized.py (no circular imports); these aliases keep the build's own
+# references stable.
+REALIZED_FOMC = realized_mod.REALIZED_FOMC
+FOMC_EVENT_DATES = realized_mod.FOMC_EVENT_DATES
+_infer_horizon = realized_mod.infer_event_horizon
+_day_before_rows = realized_mod.day_before_rows
 
 CATEGORICAL_COLORS = ["#1d4ed8", "#b45309", "#059669", "#7c3aed", "#be185d", "#0369a1"]
 SEQUENTIAL_ANCHORS = [(0x1D, 0x4E, 0xD8), (0xB4, 0x53, 0x09), (0xB2, 0x18, 0x2B)]
@@ -365,21 +376,6 @@ TAIL_STRIKE_ORDER = {
     "GDP < 0%": 3,
 }
 
-# Realized FOMC decisions, meeting date -> decision bucket (Kalshi wording).
-# Public record (FOMC statements); verified 2026-10-18 against the Fed's
-# 2026 meeting chronology. "Hike 0bps" is Kalshi's label for no change.
-REALIZED_FOMC = {
-    "2025-09-17": "Cut 25bps",
-    "2025-10-29": "Cut 25bps",
-    "2025-12-10": "Cut 25bps",
-    "2026-01-28": "Hike 0bps",
-    "2026-03-18": "Hike 0bps",
-    "2026-04-29": "Hike 0bps",
-    "2026-06-17": "Hike 0bps",
-    "2026-07-29": "Hike 0bps",
-    "2026-09-16": "Hike 25bps",
-}
-
 
 # ------------------------------------------------------------ frame handling
 
@@ -500,49 +496,6 @@ def _front_event_on(df: pl.DataFrame, date: str,
     return best
 
 
-def _infer_horizon(event_ticker: str) -> dt.date | None:
-    """Horizon date inferred from the event ticker, for ordering events.
-
-    Proxies are month-accurate (good for front-event ordering); exact
-    meeting/release days come from the API's close_time where available.
-    """
-    # FOMC decision / fed funds level: KXFED(DECISION)-YYMON. Meetings fall in
-    # the latter half of the month; month-end is the ordering-safe proxy
-    # (the API's close_time is used where available).
-    m = re.match(r"KXFED(?:DECISION)?-(\d{2})([A-Z]{3})$", event_ticker)
-    if m:
-        mon = MONTH_CODES.get(m.group(2))
-        if mon:
-            y = 2000 + int(m.group(1))
-            last = (dt.date(y + (mon == 12), mon % 12 + 1, 1)
-                    - dt.timedelta(days=1)).day
-            return dt.date(y, mon, last)
-        return None
-    # CPI / unemployment: KX(CPIYOY|U3)-YYMON -> release ~mid following month
-    m = re.match(r"KX(?:CPIYOY|U3)-(\d{2})([A-Z]{3})$", event_ticker)
-    if m:
-        mon = MONTH_CODES.get(m.group(2))
-        if mon:
-            y, mo = 2000 + int(m.group(1)), mon + 1
-            if mo > 12:
-                y, mo = y + 1, 1
-            return dt.date(y, mo, 15)
-        return None
-    # GDP: KXGDP-YYMONDD -> release date is in the ticker
-    m = re.match(r"KXGDP-(\d{2})([A-Z]{3})(\d{2})$", event_ticker)
-    if m:
-        mon = MONTH_CODES.get(m.group(2))
-        if mon:
-            return dt.date(2000 + int(m.group(1)), mon, int(m.group(3)))
-        return None
-    # Annual ladders: KXRECSSNBER-YY(YY), KXIPO-YY(YY) -> year end
-    m = re.match(r"KX(?:RECSSNBER|IPO)-(\d{2}|\d{4})$", event_ticker)
-    if m:
-        y = m.group(1)
-        return dt.date(2000 + int(y) if len(y) == 2 else int(y), 12, 31)
-    return None
-
-
 def build_distribution_views(key: str, df: pl.DataFrame,
                              close_times: dict[str, dt.datetime]
                              ) -> tuple[pl.DataFrame, list[dict], dict]:
@@ -624,13 +577,6 @@ def build_tail_risks(frames: dict[str, pl.DataFrame],
     return df.select(CSV_COLUMNS).sort(["date", "strike"])
 
 
-# FOMC meeting dates by event ticker (decision day; public FOMC calendar).
-FOMC_EVENT_DATES = {
-    "KXFEDDECISION-26SEP": "2026-09-16",
-    "KXFEDDECISION-26OCT": "2026-10-28",
-    "KXFEDDECISION-26DEC": "2026-12-09",
-}
-
 # The KXFED level events price the same meetings as the decision events;
 # resolved level events lose their API close times just like the decision
 # events do, so the same public-record calendar fills their archive gaps.
@@ -697,17 +643,7 @@ def build_fomc_track_record(df: pl.DataFrame) -> list[dict]:
 
 def _day_before_rows(df: pl.DataFrame, event: str,
                      horizon: dt.date) -> pl.DataFrame:
-    """Rows on the last trading day with data strictly before the
-    resolution morning (markets close 8:29 AM ET on release day, so the
-    release-day candle is the prior session's; data always stops at or
-    before the horizon, which keeps this honest even when the exact
-    close time is only proxied)."""
-    days = [d for d in df.filter(pl.col("event") == event)["date"]
-            .unique().to_list() if d < horizon.isoformat()]
-    if not days:
-        return df.clear()
-    return df.filter((pl.col("event") == event)
-                     & (pl.col("date") == max(days)))
+    return realized_mod.day_before_rows(df, event, horizon)
 
 
 def build_distribution_track_record(key: str, df: pl.DataFrame,
@@ -879,6 +815,29 @@ def build_fomc_fan(df: pl.DataFrame, front_event: str | None,
 
 def _company_of(ticker: str) -> str:
     return ticker.rsplit("-", 1)[-1]
+
+
+def _ipo_front_event(payloads: dict[str, list[dict]],
+                     prefer_ticker: str | None = None) -> dict | None:
+    """The live KXIPO event with nested markets — the front event's
+    ticker when it still lists markets, else the first that does."""
+    events = payloads.get("ipo_pipeline") or []
+    if prefer_ticker:
+        hit = next((e for e in events
+                    if (e.get("event_ticker") == prefer_ticker
+                        and e.get("markets"))), None)
+        if hit is not None:
+            return hit
+    return next((e for e in events if e.get("markets")), None)
+
+
+def _ipo_settled_yes(ipo_event: dict | None) -> set[str]:
+    """Tickers of the constituent company markets already settled Yes
+    (the exchange's record of a confirmed IPO)."""
+    if not ipo_event:
+        return set()
+    return {mk["ticker"] for mk in ipo_event["markets"]
+            if mk.get("result") == "yes"}
 
 
 def build_ipo_expected(df: pl.DataFrame,
@@ -1134,15 +1093,10 @@ def _build_derived(site_indicators: list, meta_indicators: dict,
     # ---- IPO pipeline: expected count replaces the company lines ----
     ipo_df = frames.get("ipo_pipeline")
     ipo_entry = entry_of("ipo_pipeline")
-    ipo_events = payloads.get("ipo_pipeline") or []
-    ipo_event = None
-    if ipo_entry and ipo_entry.get("event_ticker"):
-        ipo_event = next((e for e in ipo_events
-                          if (e.get("event_ticker") == ipo_entry["event_ticker"]
-                              and e.get("markets"))), None)
-    if ipo_event is None:
-        ipo_event = next((e for e in ipo_events if e.get("markets")), None)
-    settled_yes = set()
+    ipo_event = _ipo_front_event(payloads,
+                                 ipo_entry.get("event_ticker")
+                                 if ipo_entry else None)
+    settled_yes = _ipo_settled_yes(ipo_event)
     names = []
     if ipo_event:
         for mk in ipo_event["markets"]:
@@ -1237,6 +1191,90 @@ def _build_derived(site_indicators: list, meta_indicators: dict,
             if e.get("status") == "live":
                 e["note"] = (e.get("note", "") + " Realized-outcome refresh "
                              f"failed this run: {realized_err}").strip()
+
+
+# ------------------------------------------------- accuracy track record
+
+ACCURACY_KEYS = ("fomc_decision", "fed_funds", "cpi_yoy", "gdp_quarterly",
+                 "unemployment", "recession", "ipo_pipeline")
+
+
+def _build_accuracy(site_indicators: list, meta_indicators: dict,
+                    frames: dict[str, pl.DataFrame],
+                    close_times: dict[str, dict[str, dt.datetime]],
+                    realized_df: pl.DataFrame,
+                    payloads: dict[str, list[dict]], data_dir: Path,
+                    now: dt.datetime) -> dict | None:
+    """Extend the prediction-accuracy record and attach it to the bundle.
+
+    Computes this run's accuracy rows for every newly resolved event
+    (day-before / final-session forecasts from the committed market
+    archive vs realized outcomes), merges them append-only into
+    data/predmarkets/accuracy.csv (history is never recomputed), and
+    attaches per-card accuracy sections plus the cross-indicator
+    scorecard. Returns the scorecard block for the site bundle (or None
+    when no accuracy-covered indicator is present).
+    """
+    ipo_frame = frames.get("ipo_pipeline")
+    ipo_exp_df = pl.DataFrame()
+    if ipo_frame is not None and ipo_frame.height:
+        ipo_exp_df = build_ipo_expected(
+            ipo_frame, close_times.get("ipo_pipeline", {}),
+            _ipo_settled_yes(_ipo_front_event(payloads)))
+
+    new_rows: list[dict] = []
+    for key in ACCURACY_KEYS:
+        new_rows += accuracy_mod.accuracy_rows_for(
+            key, frames.get(key), close_times.get(key, {}),
+            realized_df, now, ipo_exp_df=ipo_exp_df)
+    merged = accuracy_mod.merge_accuracy(
+        accuracy_mod.load_accuracy(data_dir / "accuracy.csv"), new_rows, now)
+    if merged.height:
+        merged.write_csv(data_dir / "accuracy.csv")
+
+    rows_by_key: dict[str, list[dict]] = {}
+    for r in merged.iter_rows(named=True):
+        rows_by_key.setdefault(r["indicator"], []).append(r)
+
+    today = now.date().isoformat()
+    cards = []
+    for entry in site_indicators:
+        key = entry["key"]
+        if key not in ACCURACY_KEYS:
+            continue
+        rows = rows_by_key.get(key, [])
+        pending = [{"event": h["event_ticker"], "resolves": h["date"]}
+                   for h in entry.get("horizons", []) if h["date"] >= today]
+        summary = accuracy_mod.summarize_indicator(rows)
+        summary["n_pending"] = len(pending)
+        entry["accuracy"] = {
+            "convention": accuracy_mod.ACCURACY_CONVENTIONS[key],
+            "rows": rows,
+            "summary": summary,
+            "pending": pending,
+        }
+        meta_indicators[key]["accuracy_summary"] = summary
+        metric, metric_label = accuracy_mod.PRIMARY_METRIC[key]
+        cards.append({
+            "key": key, "title": entry["title"],
+            "metric": metric, "metric_label": metric_label,
+            "summary": summary,
+            "convention": accuracy_mod.ACCURACY_CONVENTIONS[key],
+        })
+    if not cards:
+        return None
+    return {
+        "note": ("Per resolved event: the market's forecast at a fixed, "
+                 "documented lead time vs the realized outcome — the "
+                 "day-before close for FOMC meetings (the statement lands "
+                 "mid-session), the final pre-release close for morning "
+                 "data releases, the final close for annual events. "
+                 "Records are append-only: predictions freeze at first "
+                 "record and each daily run only adds newly resolved "
+                 "events and fills outcomes still pending. Nothing "
+                 "resolved yet reads as pending, never as 0/0."),
+        "cards": cards,
+    }
 
 
 # ---------------------------------------------------------------- build
@@ -1512,6 +1550,11 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
                    fred_frames=fred_frames, payloads=payloads,
                    realized_err=realized_err)
 
+    # ---- accuracy track record: append resolved events, attach sections ----
+    accuracy_summary = _build_accuracy(site_indicators, meta_indicators,
+                                       frames, close_times, realized_df,
+                                       payloads, data_dir, now)
+
     built = now.isoformat(timespec="seconds")
     meta = {
         "built_at_utc": built,
@@ -1520,13 +1563,15 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
         "n_indicators": len(meta_indicators),
         "n_live": sum(1 for v in meta_indicators.values() if v["status"] == "live"),
         "n_no_open_market": sum(1 for v in meta_indicators.values()
-                                if v["status"] == "no-open-market"),
+                                 if v["status"] == "no-open-market"),
         "n_error": sum(1 for v in meta_indicators.values() if v["status"] == "error"),
         "indicators": meta_indicators,
     }
     (data_dir / "_meta.json").write_text(strict_json(meta) + "\n")
 
     site = {"meta": {"built_at_utc": built}, "indicators": site_indicators}
+    if accuracy_summary:
+        site["accuracy"] = accuracy_summary
     site_json.write_text(strict_json(site) + "\n")
     json.loads(site_json.read_text())  # strict re-parse of what the site serves
     return meta

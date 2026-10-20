@@ -3,8 +3,10 @@
    site: straight polylines (no smoothing — a close is a close), dashed ruleX
    event markers, square corners, and one fixed 0-1 probability axis on every
    probability chart. Realized overlays (fan markers, track records, FOMC
-   rate fan, IPO counts, recession quarters) come from the pipeline-built
-   realized dataset — never hand-entered. */
+   rate fan, IPO counts, recession quarters) and the prediction-accuracy
+   records (per-card forecast-vs-actual sections + the cross-indicator
+   scorecard) come from the pipeline-built realized and accuracy datasets —
+   never hand-entered. */
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+esm";
 
 /* ---------------- theme (same tokens as the main site) ---------------- */
@@ -415,6 +417,107 @@ function recessionRealizedHTML(ind) {
     ${rec.note ? `<p class="pulse-note">${esc(rec.note)}</p>` : ""}</div>`;
 }
 
+/* Prediction accuracy: the market's recorded forecast at the documented
+   lead time vs the realized outcome, per resolved event. Records are
+   append-only (pipeline-built from the committed archive + realized
+   dataset); unresolved outcomes and events read as pending, never 0/0. */
+function accuracyHeadline(ind, a) {
+  const s = a.summary || {};
+  if (!s.n_scored) {
+    const next = (a.pending || []).map(p => fmtDate(p.resolves)).sort()[0];
+    return `pending — no scored events yet` + (next ? `; next resolves ${next}` : "");
+  }
+  if (ind.key === "fomc_decision") {
+    const hr = s.hit_rate == null ? "n/a" : `${pct(s.hit_rate, 0)} (${s.n_hits}/${s.n_scored})`;
+    return `${hr} of meetings called` + (s.brier_mean != null ? ` · mean Brier ${Number(s.brier_mean).toFixed(3)}` : "");
+  }
+  if (ind.key === "recession") {
+    return s.brier_mean == null ? "n/a" : `mean Brier ${Number(s.brier_mean).toFixed(3)} over ${s.n_scored} settled market${s.n_scored === 1 ? "" : "s"}`;
+  }
+  const unit = ind.key === "ipo_pipeline" ? " IPOs" : "pp";
+  return `MAE ${fmtRate(s.mae)}${unit} over ${s.n_scored} resolved event${s.n_scored === 1 ? "" : "s"}`;
+}
+
+function accuracyRowsHTML(ind, rows) {
+  return rows.map(r => {
+    const ref = r.period || fmtDate(r.event_date);
+    const lead = r.lead_days === 0 ? "final close" : `${r.lead_days}d before`;
+    const asOf = `${fmtDate(r.as_of)} (${lead})`;
+    let pred, act, score;
+    if (ind.key === "fomc_decision") {
+      pred = `${esc(r.predicted_label)} (${pct(r.predicted_probability, 0)})`;
+      act = r.actual_label != null ? esc(r.actual_label) : "pending";
+      score = r.hit == null ? "pending"
+        : (r.hit ? '<span class="pm-hit">✓</span>' : '<span class="pm-miss">✗</span>');
+      if (r.brier != null) score += ` · Brier ${Number(r.brier).toFixed(3)}`;
+    } else if (ind.key === "recession") {
+      pred = pct(r.predicted, 0) + " Yes";
+      act = r.actual_label != null ? esc(r.actual_label) : "pending";
+      score = r.abs_error != null ? `|err| ${pct(r.abs_error, 0)}` : "pending";
+      if (r.brier != null) score += ` · Brier ${Number(r.brier).toFixed(3)}`;
+    } else if (ind.key === "ipo_pipeline") {
+      pred = Number.isFinite(r.predicted) ? `${Math.round(r.predicted * 10) / 10} expected` : "n/a";
+      act = Number.isFinite(r.actual) ? `${Math.round(r.actual)} confirmed` : "pending";
+      score = r.abs_error != null ? `|err| ${fmtRate(r.abs_error)}` : "pending";
+    } else {
+      pred = Number.isFinite(r.predicted) ? `${fmtRate(r.predicted)}%` : "n/a";
+      act = Number.isFinite(r.actual) ? `${fmtRate(r.actual)}%` : "pending";
+      score = r.abs_error != null ? `|err| ${fmtRate(r.abs_error)}pp` : "pending";
+    }
+    const tip = `${esc(r.event)} — ${esc(r.note || "")}`;
+    return `<tr><td title="${tip}">${esc(ref)}</td><td>${esc(asOf)}</td><td>${pred}</td><td>${act}</td><td>${score}</td></tr>`;
+  }).join("");
+}
+
+function accuracyHTML(ind) {
+  const a = ind.accuracy;
+  if (!a) return "";
+  const rows = a.rows || [];
+  const pending = (a.pending || [])
+    .map(p => `${esc(p.event)} resolves ${fmtDate(p.resolves)}`).join("; ");
+  const table = rows.length
+    ? `<table class="pulse-table"><thead><tr><th>Event</th><th>Forecast as of</th><th>Predicted</th><th>Actual</th><th>Score</th></tr></thead>
+      <tbody>${accuracyRowsHTML(ind, rows)}</tbody></table>`
+    : "";
+  return `<div class="pulse-sub"><h4>Prediction accuracy: forecast vs realized outcome</h4>
+    <p class="pulse-note"><b>${esc(accuracyHeadline(ind, a))}</b>${pending ? ` · pending: ${pending}` : ""}</p>
+    ${table}
+    <p class="pulse-note">${esc(a.convention)}</p></div>`;
+}
+
+/* Cross-indicator scorecard: every accuracy-covered market's track
+   record side by side. */
+function renderScorecard(pm) {
+  const el = document.getElementById("predmarkets-accuracy");
+  if (!el) return;
+  const acc = pm.accuracy;
+  if (!acc || !(acc.cards || []).length) { el.innerHTML = ""; return; }
+  const rows = acc.cards.map(c => {
+    const s = c.summary || {};
+    let val = "pending";
+    if (s.n_scored) {
+      if (c.metric === "hit_rate")
+        val = `${pct(s.hit_rate, 0)} (${s.n_hits}/${s.n_scored})`;
+      else if (c.metric === "mae")
+        val = `MAE ${fmtRate(s.mae)}${c.key === "ipo_pipeline" ? " IPOs" : "pp"}`;
+      else
+        val = `Brier ${Number(s.brier_mean).toFixed(3)}`;
+    }
+    const nPending = s.n_pending != null ? s.n_pending : 0;
+    return `<tr><td><a href="#ind-${esc(c.key)}">${esc(c.title)}</a></td>
+      <td>${esc(val)}</td><td>${s.n_scored}</td><td>${s.n_events}</td><td>${nPending}</td>
+      <td><details class="pm-conv"><summary>lead-time convention</summary>${esc(c.convention)}</details></td></tr>`;
+  }).join("");
+  el.innerHTML = `<div class="pulse-card pm-scorecard">
+    <div class="pulse-head"><div><strong>Prediction accuracy — scorecard</strong></div>
+      <div class="pulse-src">market forecast vs realized outcome · append-only record</div></div>
+    <p class="blurb">${esc(acc.note)}</p>
+    <table class="pulse-table"><thead><tr><th>Indicator</th><th>Track record</th><th>Scored</th><th>Recorded</th><th>Pending</th><th>Convention</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+    <p class="pulse-note">Scored = resolved with the outcome on record. Recorded = entered the append-only archive (an outcome can still be pending). Pending = listed events still trading. Records freeze at first write; the daily run only adds newly resolved events and fills outcomes still pending.</p>
+  </div>`;
+}
+
 function renderTape(inds) {
   const el = document.getElementById("tape");
   el.innerHTML = inds.map(ind => {
@@ -446,6 +549,7 @@ function renderMarkets(pm) {
       paperHTML(ind),
       trackRecordHTML(ind),
       realizedTrackHTML(ind),
+      accuracyHTML(ind),
       ipoPrecisionHTML(ind),
       recessionRealizedHTML(ind),
       top5HTML(ind),
@@ -563,6 +667,7 @@ async function boot() {
   renderTape(pm.indicators);
   renderToc(pm.indicators);
   renderMarkets(pm);
+  renderScorecard(pm);
   document.getElementById("predmarkets").dataset.done = "1";
   window.__predBooted = true;
 }

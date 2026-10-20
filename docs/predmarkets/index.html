@@ -84,6 +84,18 @@
       against the realized print. Realized values are pipeline-built from keyless public
       feeds (BLS/BEA/Fed series via FRED) and frozen at first observation, so later revisions
       are never spliced silently; any vintage mismatch is stated on the card.</p>
+      <p><strong>Prediction accuracy.</strong> Every card also carries an accuracy
+      record: the market's forecast at a fixed, documented lead time versus the realized
+      outcome, per resolved event. The lead time is stated per series — the day-before close
+      for FOMC meetings (the statement lands mid-session), the final pre-release close for
+      the morning data releases (trading stops 8:29 AM ET, ahead of the 8:30 AM print), the
+      final close for the annual recession and IPO events. FOMC decisions are scored
+      hit/miss against the realized decision bucket plus the multiclass Brier score over
+      the five buckets; the distributional series are scored by absolute error of the
+      recovered distribution's median against the FRED print; the annual markets are scored
+      at settlement. The record is append-only — predictions freeze at first write, the
+      daily run only adds newly resolved events and fills outcomes still pending, and
+      nothing resolved yet reads as pending, never as zero.</p>
       <p>These markets are documented as a high-frequency, continuously updated, distributionally
       rich benchmark of macroeconomic expectations in Finance and Economics Discussion Series
       2026-010, “Kalshi and the Rise of Macro Markets”, Board of Governors of the Federal Reserve
@@ -97,6 +109,7 @@
 <main>
   <nav class="pulse-toc" id="predmarkets-toc" aria-label="Tracked series"></nav>
   <div id="predmarkets" style="max-width:1180px;margin:0 auto;padding:0 1.25rem"><p class="pulse-stamp">loading data…</p></div>
+  <div id="predmarkets-accuracy" style="max-width:1180px;margin:0 auto;padding:0 1.25rem" aria-label="Prediction accuracy scorecard"></div>
   <div class="pulse-foot">
     <p>Prediction Markets is a market-based companion to
       <a href="../">frb-heat-index</a> — alongside the
