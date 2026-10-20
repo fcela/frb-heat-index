@@ -249,6 +249,13 @@ def build(incremental: bool = False) -> dict:
                 "title": ind["title"],
                 "why": ind["why"],
                 "source": ind["source"],
+                # Provenance block (PR #36 standard): canonical link,
+                # series identifier, one-line definition. Emitted for
+                # every indicator; empty string where not applicable
+                # (never fabricated — see segments.py).
+                "source_url": ind.get("source_url", ""),
+                "series_id": ind.get("series_id", ""),
+                "definition": ind.get("definition", ""),
                 "frequency": ind["frequency"],
                 "status": ind["status"],
                 "note": ind.get("note", ""),

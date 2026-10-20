@@ -118,6 +118,34 @@ function statusBadge(status) {
   return `<span class="status-badge status-${esc(status)}">${esc(label)}</span>`;
 }
 
+/* Source text as a working link (provenance standard: institution +
+   dataset name, linked — never text only). Falls back to plain text
+   when the feed has no verified canonical URL. */
+function sourceHTML(ind) {
+  if (!ind.source_url) return esc(ind.source);
+  return `<a href="${esc(ind.source_url)}" target="_blank" rel="noopener">${esc(ind.source)}</a>`;
+}
+
+/* Provenance block (PR #36 standard): series identifier, one-line
+   definition, frequency, last observation date, source link. Pipeline-
+   generated fields only — nothing hardcoded here. */
+function provenanceHTML(ind) {
+  const bits = [];
+  if (ind.series_id) bits.push(`<b>Series:</b> ${esc(ind.series_id)}`);
+  if (ind.definition) bits.push(esc(ind.definition));
+  if (!bits.length) return "";
+  const meta = [];
+  if (ind.frequency) meta.push(`<span>${esc(ind.frequency)}</span>`);
+  const last = ind.last_observation ? String(ind.last_observation).slice(0, 10) : null;
+  meta.push(`<span>last observation: ${last ? esc(last) : "none"}</span>`);
+  if (ind.source_url) {
+    let host = "";
+    try { host = new URL(ind.source_url).hostname.replace(/^www\./, ""); } catch (e) {}
+    meta.push(`<a href="${esc(ind.source_url)}" target="_blank" rel="noopener">${esc(host || ind.source_url)} ↗</a>`);
+  }
+  return `<div class="pulse-def">${bits.join(" — ")}<p class="pulse-def-meta">${meta.join('<span class="sep">·</span>')}</p></div>`;
+}
+
 function lastValueHTML(ind) {
   // Returns {head, date} where head goes in the card header.
   if (ind.subseries && ind.subseries.length && ind.group_by) {
@@ -182,9 +210,10 @@ function renderPulse(pulse) {
           <div class="pulse-head">
             <div><strong>${esc(ind.title)}</strong>${statusBadge(ind.status)}
               ${lastValueHTML(ind)}</div>
-            <div class="pulse-src">${esc(ind.source)} · ${esc(ind.frequency)}</div>
+            <div class="pulse-src">${sourceHTML(ind)} · ${esc(ind.frequency)}</div>
           </div>
           <p class="blurb">${esc(ind.why)}</p>
+          ${provenanceHTML(ind)}
           <div class="pulse-chart"></div>
           ${ind.note ? `<p class="pulse-note">${esc(ind.note)}</p>` : ""}`;
         const fig = (ind.subseries && ind.subseries.length && ind.group_by)
@@ -195,9 +224,10 @@ function renderPulse(pulse) {
         card.innerHTML = `
           <div class="pulse-head">
             <div><strong>${esc(ind.title)}</strong>${statusBadge(ind.status)}</div>
-            <div class="pulse-src">${esc(ind.source)} · ${esc(ind.frequency)}</div>
+            <div class="pulse-src">${sourceHTML(ind)} · ${esc(ind.frequency)}</div>
           </div>
           <p class="blurb">${esc(ind.why)}</p>
+          ${provenanceHTML(ind)}
           ${ind.note ? `<p class="pulse-note">${esc(ind.note)}</p>` : ""}`;
       }
       sec.appendChild(card);
