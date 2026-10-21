@@ -129,9 +129,41 @@ def test_build_preserves_pipeline_staleness_flags():
         assert meta["stale_sources"] == ["FRED"]
 
 
+def test_build_writes_clustered_bundle():
+    """When indicators_standardized.csv exists, the build must also ship
+    docs/data/clustered.json: strict JSON, every indicator present exactly
+    once in the row order, and the merge tree sized n-1."""
+    import math as _math
+    with tempfile.TemporaryDirectory() as td:
+        data = Path(td) / "data"
+        out = Path(td) / "out"
+        data.mkdir()
+        _fixture(data)
+        T = 40  # enough quarters for the pairwise-complete overlap guard
+        quarters = [f"2020Q{i + 1}" for i in range(T)]
+        pl.DataFrame({
+            "quarter": quarters,
+            "Alpha": [_math.sin(0.2 * i) for i in range(T)],
+            "Beta": [_math.sin(0.2 * i) + 0.1 * _math.cos(i) for i in range(T)],
+            "Gamma": [_math.cos(0.25 * i) for i in range(T)],
+        }).write_csv(data / "indicators_standardized.csv")
+
+        make_site.build(data, out)
+
+        text = (out / "clustered.json").read_text()
+        _strict_loads(text)  # raises on any NaN/Inf literal
+        b = json.loads(text)
+        assert set(b["leaves"]) == {"Alpha", "Beta", "Gamma"}
+        assert sorted(b["order"]) == [0, 1, 2], "order must be a permutation"
+        assert len(b["merges"]) == 2  # n - 1 merges
+        assert sorted(l for g in b["cut"] for l in g) == [0, 1, 2]
+        assert isinstance(b["method"], str) and b["method"]
+
+
 if __name__ == "__main__":
     test_sanitize_json_replaces_nonfinite()
     test_dumps_strict_fails_loudly_on_missed_nan()
     test_build_emits_strict_json_with_nulls_for_missing()
     test_build_preserves_pipeline_staleness_flags()
+    test_build_writes_clustered_bundle()
     print("all make_site regression tests passed")

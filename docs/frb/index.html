@@ -63,14 +63,20 @@
 </header>
 
 <main>
-  <section class="card" id="aggregate-card">
+  <div class="view-switch" id="view-switch" aria-label="Heat map view">
+    <span class="vs-label">Heat map view</span>
+    <button class="vs-btn active" id="vs-hierarchy" aria-pressed="true">Hierarchy</button>
+    <button class="vs-btn" id="vs-clustered" aria-pressed="false">Clustered</button>
+  </div>
+
+  <section class="card view-hierarchy" id="aggregate-card">
     <h2>Aggregate vulnerability index</h2>
     <p class="sub">The mean of the fourteen component quantiles, passed through a kernel CDF once
       more, so the index lives on 0–1. The 2007–2008 episodes are shaded for reference.</p>
     <figure id="aggchart" role="img" aria-label="Aggregate financial vulnerability index time series"></figure>
   </section>
 
-  <section class="card" id="hierarchy-card">
+  <section class="card view-hierarchy" id="hierarchy-card">
     <h2>The full picture, top down</h2>
     <p class="sub">One aggregate ← three vulnerability categories ← fourteen components.
       Read downward: each category chart is the mean of its components' quantiles
@@ -79,7 +85,7 @@
     <div id="hierarchy"></div>
   </section>
 
-  <section class="card" id="heatmap-card">
+  <section class="card view-hierarchy" id="heatmap-card">
     <h2>The heat map</h2>
     <p class="sub">Fourteen components × quarters. Colors are quantiles of each component's own
       historical distribution — a red cell means "hotter than most of this component's history,"
@@ -89,6 +95,29 @@
       vulnerability reading on record for that component (deep blue); 1.00 is the highest
       (deep red). Low values are information, not errors — gray cells are the ones with
       no observation.</p>
+  </section>
+
+  <section class="card view-clustered" id="clustered-card">
+    <h2>The heat map, clustered</h2>
+    <p class="sub">The same heat, resolved to its 46 indicators and re-ordered by shape:
+      rows are the indicators, columns are every quarter in order — time is never
+      re-shuffled. The row order comes from hierarchical clustering of the score
+      trajectories, so indicators that heat up and cool down together sit next to each
+      other; the dendrogram at the left shows the merge tree. The chip on each label is
+      the indicator's component — compare it across rows to see where the clustering
+      recovers the paper's fourteen components and where it cuts across them. Hover any
+      cell for the component, sub-index, and exact value.</p>
+    <div class="heatmap-scroll"><figure id="clustermap" role="img" aria-label="Clustered heat map: 46 indicators over time with dendrogram and component chips"></figure></div>
+    <div class="cluster-legend" id="cluster-legend"></div>
+    <p class="legend-note"><strong>Method:</strong> what is clustered is the 46 indicator
+      score series (each indicator's 0–1 heat quantile in its own history, per quarter).
+      Distance is correlation distance (1&nbsp;−&nbsp;Pearson&nbsp;r) computed on
+      pairwise-complete observations — at least 24 shared quarters, no imputation, no
+      zero-filling; linkage is average (UPGMA), because Ward's objective requires
+      complete raw vectors and cannot take the ragged sample. Adjacent rows mean
+      similar vulnerability <em>trajectories</em>, not similar levels. The order and
+      merge tree are computed deterministically in the data pipeline and shipped with
+      the site data, never in the browser.</p>
   </section>
 
   <section class="card" id="methodology">

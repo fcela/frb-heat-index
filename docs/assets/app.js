@@ -60,9 +60,34 @@ async function loadJSON(name) {
   return r.json();
 }
 
-let AGG, COMP, IND, HIER, META;
+let AGG, COMP, IND, HIER, META, CLUSTER;
 let quarters = [], qIndex = {};
 let yearTicks = [], decadeTicks = [];
+
+// Categorical palette for the 14 components (index = meta.json's components
+// order). Deliberately disjoint from the blue->red heat scale that fills the
+// cells: the chips only tag membership, never a value.
+const COMPONENT_COLORS = [
+  "#E69F00", "#56B4E9", "#009E73", "#C9B200", "#0072B2", "#D55E00", "#CC79A7",
+  "#17BECF", "#8C564B", "#999999", "#E377C2", "#BCBD22", "#9467BD", "#525252",
+];
+
+function componentColor(name) {
+  const i = (META.components || []).indexOf(name);
+  return i >= 0 ? COMPONENT_COLORS[i % COMPONENT_COLORS.length] : T().muted;
+}
+
+// full indicator name -> {short, comp, cat} from hierarchy.json
+function indicatorMeta() {
+  if (indicatorMeta._cache) return indicatorMeta._cache;
+  const map = {};
+  for (const cat of HIER.categories)
+    for (const comp of cat.components)
+      for (const ind of comp.indicators)
+        map[ind.name] = { short: ind.short, comp: comp.name, cat: cat.name };
+  indicatorMeta._cache = map;
+  return map;
+}
 
 function equantile(sortedVals, z) {
   // Empirical quantile of z in its own history (sorted ascending).
@@ -159,6 +184,137 @@ function renderHeatmap() {
     ],
   });
   el.appendChild(fig);
+}
+
+/* ---------------- clustered view ---------------- */
+/* 46 indicator rows x all quarters, rows ordered by pipeline-computed
+   hierarchical clustering (docs/data/clustered.json). One figure holds the
+   dendrogram (left, negative x), the row labels + component chips, and the
+   matrix (x = quarter index), so all three share the same y scale and can
+   never drift apart. Time is never reordered. */
+
+function renderClustered() {
+  const el = document.getElementById("clustermap");
+  if (!el || !CLUSTER) return;
+  el.innerHTML = "";
+  const nQ = quarters.length;
+  const n = CLUSTER.leaves.length;
+  const meta = indicatorMeta();
+
+  // Rows in the shipped clustered order, with heat-quantile cells computed
+  // from the same z-scores the drill-down view uses (equantile in own history).
+  const rows = CLUSTER.order.map((leafId, p) => {
+    const name = CLUSTER.leaves[leafId];
+    const m = meta[name] || { short: name, comp: "?", cat: "?" };
+    const zs = (IND[name] || []).map(d => d.z);
+    const sorted = zs.filter(Number.isFinite).sort((a, b) => a - b);
+    return { p, name, ...m, zs, sorted };
+  });
+
+  const cells = [], missing = [];
+  for (const r of rows) {
+    (IND[r.name] || []).forEach((d, xi) => {
+      const v = equantile(r.sorted, d.z);
+      const cell = { p: r.p, xi, q: d.q, v, short: r.short, comp: r.comp, cat: r.cat };
+      if (v == null) missing.push(cell);
+      else cells.push(cell);
+    });
+  }
+
+  // Dendrogram geometry: x(h) = -(L + D * h / hmax), leaves toward the labels.
+  const L = 34, D = 20;                     // label + dendrogram widths, in quarter units
+  const hmax = Math.max(...CLUSTER.merges.map(m => m[2]), 1e-9);
+  const xAt = h => -(L + D * h / hmax);
+  const rowPos = {};
+  CLUSTER.order.forEach((leaf, p) => { rowPos[leaf] = p; });
+  const spanOf = id => {
+    if (id < n) return [rowPos[id], rowPos[id]];
+    const [a, b, h] = CLUSTER.merges[id - n];
+    const sa = spanOf(a), sb = spanOf(b);
+    return [Math.min(sa[0], sb[0]), Math.max(sa[1], sb[1])];
+  };
+  const vsegs = [], hsegs = [];
+  CLUSTER.merges.forEach(([a, b, h], t) => {
+    const id = n + t;
+    const sa = spanOf(a), sb = spanOf(b);
+    const midA = (sa[0] + sa[1]) / 2, midB = (sb[0] + sb[1]) / 2;
+    const xNode = xAt(h);
+    const xA = a < n ? xAt(0) : xAt(CLUSTER.merges[a - n][2]);
+    const xB = b < n ? xAt(0) : xAt(CLUSTER.merges[b - n][2]);
+    hsegs.push({ y: midA, x1: xA, x2: xNode }, { y: midB, x1: xB, x2: xNode });
+    vsegs.push({ x: xNode, y1: midA, y2: midB });
+  });
+
+  // Restrained rules at the top-level cluster boundaries (from the bundle's cut).
+  const cutRules = [];
+  const bounds = CLUSTER.cut.slice(0, -1).map(g => Math.max(...g.map(l => rowPos[l])) + 0.5);
+  for (const y of bounds) cutRules.push({ y });
+
+  const chips = rows.map(r => ({ p: r.p, color: componentColor(r.comp) }));
+  const labels = rows.map(r => ({ p: r.p, text: r.short }));
+  const RH = 21;
+  const width = 1280;
+
+  const fig = basePlot({
+    width,
+    height: n * RH + 34,
+    marginLeft: 6, marginRight: 14, marginTop: 6, marginBottom: 28,
+    padding: 0,
+    x: {
+      domain: [-(L + D) - 0.5, nQ - 0.5], ticks: yearTicks,
+      tickFormat: i => quarters[i].slice(0, 4), label: null, tickSize: 0,
+    },
+    y: { domain: [-0.5, n - 0.5], axis: null },
+    color: {
+      type: "linear", domain: [0, 1], range: HEAT, legend: true,
+      label: "Quantile in own history →", ticks: [0, 0.25, 0.5, 0.75, 1],
+      tickFormat: d => d.toFixed(2),
+    },
+    marks: [
+      // dendrogram: merge tree, aligned to the rows
+      Plot.ruleX(vsegs, { x: "x", y1: "y1", y2: "y2", stroke: T().faint, strokeWidth: 1 }),
+      Plot.ruleY(hsegs, { y: "y", x1: "x1", x2: "x2", stroke: T().faint, strokeWidth: 1 }),
+      // top-level cluster boundaries
+      Plot.ruleY(cutRules, {
+        y: "y", x1: -(L + D), x2: nQ - 0.5,
+        stroke: T().line, strokeWidth: 1,
+      }),
+      // row labels + component chips
+      Plot.text(labels, {
+        x: -1.9, y: "p", text: "text", textAnchor: "end",
+        fontSize: 10.5, fill: T().ink, dy: 3.5,
+      }),
+      Plot.rect(chips, {
+        x1: -1.5, x2: -0.6, y1: d => d.p - 0.46, y2: d => d.p + 0.46,
+        fill: "color", stroke: T().card, strokeWidth: 0.7,
+      }),
+      // the matrix: heat quantile per indicator per quarter (square corners,
+      // same scale and grays as the component heat map)
+      Plot.rect(cells, {
+        x1: d => d.xi - 0.48, x2: d => d.xi + 0.48,
+        y1: d => d.p - 0.48, y2: d => d.p + 0.48,
+        fill: "v", stroke: T().card, strokeWidth: 0.7,
+      }),
+      Plot.rect(missing, {
+        x1: d => d.xi - 0.48, x2: d => d.xi + 0.48,
+        y1: d => d.p - 0.48, y2: d => d.p + 0.48,
+        fill: T().missing, stroke: T().card, strokeWidth: 0.7,
+      }),
+      Plot.tip(cells, Plot.pointer({
+        x: "xi", y: "p",
+        title: d => `${d.short}\n${d.comp} — ${d.cat}\n${d.q} — ${d.v.toFixed(2)}\nHotter than ${Math.round(d.v * 100)}% of its history`,
+      })),
+    ],
+  });
+  el.appendChild(fig);
+
+  // Component chip legend (built once per render; colors are theme-stable)
+  const legend = document.getElementById("cluster-legend");
+  if (legend) {
+    legend.innerHTML = (META.components || []).map(c =>
+      `<span class="cl-item"><i class="cl-chip" style="background:${componentColor(c)}"></i>${esc(c)}</span>`
+    ).join("");
+  }
 }
 
 /* ---------------- aggregate ---------------- */
@@ -385,10 +541,42 @@ function renderComponentDetail(name) {
   // which fires hashchange -> routeHash() -> renderHierarchy().
 }
 
+/* ---------------- view switch (hierarchy <-> clustered) ---------------- */
+/* The hierarchy view stays the default and exactly as it was; the toggle
+   only flips which section is visible. "#clustered" deep-links and survives
+   back/forward; other anchors never change the view. */
+
+function setView(view, { updateHash = true } = {}) {
+  document.body.dataset.view = view;
+  for (const [id, active] of [["vs-hierarchy", view === "hierarchy"],
+                               ["vs-clustered", view === "clustered"]]) {
+    const btn = document.getElementById(id);
+    if (!btn) continue;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-pressed", String(active));
+  }
+  if (view === "clustered") {
+    renderClustered();  // idempotent redraw; nothing renders in the old view
+    if (updateHash && location.hash !== "#clustered") location.hash = "#clustered";
+  } else if (updateHash && location.hash === "#clustered" &&
+             typeof history !== "undefined" && history.replaceState) {
+    // drop the view hash without adding a history entry
+    history.replaceState(null, "", location.pathname + location.search);
+  }
+}
+
 function routeHash() {
+  if (location.hash === "#clustered") {
+    setView("clustered", { updateHash: false });
+    return;
+  }
   const m = /^#component\/(.+)$/.exec(location.hash);
-  if (m) renderComponentDetail(decodeURIComponent(m[1]));
-  else renderHierarchy();
+  if (m) {
+    setView("hierarchy", { updateHash: false });
+    renderComponentDetail(decodeURIComponent(m[1]));
+    return;
+  }
+  renderHierarchy();
 }
 
 function renderHierarchy() {
@@ -462,7 +650,7 @@ function renderMeta() {
 
 function fail(err) {
   const msg = `<p class="err">Could not load chart data (${esc(err.message)}).</p>`;
-  for (const id of ["heatmap", "aggchart"]) {
+  for (const id of ["heatmap", "aggchart", "clustermap"]) {
     const el = document.getElementById(id);
     if (el && !el.dataset.done) el.innerHTML = msg;
   }
@@ -479,11 +667,12 @@ function renderAll() {
 }
 
 async function boot() {
-  const [agg, comp, ind, hier, meta] = await Promise.all([
+  const [agg, comp, ind, hier, meta, clustered] = await Promise.all([
     loadJSON("aggregate.json"), loadJSON("components.json"),
     loadJSON("indicators.json"), loadJSON("hierarchy.json"), loadJSON("meta.json"),
+    loadJSON("clustered.json"),
   ]);
-  AGG = agg; COMP = comp; IND = ind; HIER = hier; META = meta;
+  AGG = agg; COMP = comp; IND = ind; HIER = hier; META = meta; CLUSTER = clustered;
   quarters = AGG.map(d => d.q);
   quarters.forEach((q, i) => { qIndex[q] = i; });
   yearTicks = quarters.map((q, i) => i).filter(i => quarters[i].endsWith("Q1") && parseInt(quarters[i]) % 5 === 0);
@@ -499,6 +688,12 @@ document.getElementById("theme-toggle").addEventListener("click", () => {
   try { localStorage.setItem("frb-heat-theme", themeName); } catch (e) {}
   if (window.__frbBooted) renderAll();
 });
+
+for (const [id, view] of [["vs-hierarchy", "hierarchy"], ["vs-clustered", "clustered"]]) {
+  document.getElementById(id).addEventListener("click", () => {
+    if (window.__frbBooted) setView(view);
+  });
+}
 
 window.addEventListener("hashchange", () => {
   if (window.__frbBooted) routeHash();
