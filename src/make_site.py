@@ -7,6 +7,8 @@ Outputs (under --out, default <repo>/docs/data):
   indicators.json  {"<full indicator name>": [{"q": ..., "z": ...}, ...], ...}
                    (z = oriented standardized value; higher = more vulnerable)
   hierarchy.json   categories -> components -> indicators (+ short names)
+  clustered.json   row order + dendrogram structure for the clustered
+                   heat-map view (src/cluster_indicators.py computes it)
   meta.json        data/_meta.json + site-contract fields
 
 Missing or non-finite values are emitted as null. JSON is serialized with
@@ -35,6 +37,7 @@ from pathlib import Path
 import polars as pl
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from cluster_indicators import compute_bundle  # noqa: E402
 from run_pipeline import SPEC  # noqa: E402  (indicator -> (component, sign, transform))
 
 HERE = Path(__file__).resolve().parent.parent
@@ -167,6 +170,15 @@ def build(data: Path, out: Path) -> dict:
                            for q, v in ind.select(["quarter", c]).iter_rows()]
         (out / "indicators.json").write_text(dumps_strict(ind_json, indent=1))
         print(f"Wrote {out / 'indicators.json'} ({len(ind_json)} indicators)")
+
+        # Clustered-view bundle: row order + dendrogram structure computed
+        # by the pipeline (never in the browser). Computed from the same
+        # standardized frame the site ships; loud failure by design.
+        clustered = compute_bundle(ind)
+        (out / "clustered.json").write_text(dumps_strict(clustered, indent=1) + "\n")
+        print(f"Wrote {out / 'clustered.json'} "
+              f"({len(clustered['leaves'])} indicators, "
+              f"{len(clustered['cut'])} top-level groups)")
 
     # Hierarchy: categories -> components -> indicators (+ short names).
     # Category assignment mirrors the paper's three broad vulnerability

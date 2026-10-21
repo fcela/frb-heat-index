@@ -1,0 +1,380 @@
+{
+ "leaves": [
+  "Ratio of Total Assets Held by Top 5 Holding Companies to Total Bank Holding Company Assets",
+  "Broker Dealer Leverage (Dealer financing)",
+  "Short Term Wholesale Funding (Ratio of Gross Short-Term Wholesale Debt of the Financial Sector to GDP)",
+  "Illiquidity Conventration Indicator",
+  "Maturity Mismatch (Loans as a percent of deposits)",
+  "Weighted Average Maturity Gap at Commerical Banks",
+  "Broker Dealer Leverage (Broker dealer leverage ratio)",
+  "Maturity Mismatch (Ratio of net short-term wholesale debt of the financial sector to GDP)",
+  "Ratio of U.S. Non Agency Securitization Issuance to GDP",
+  "Short-term Wholesale Funding (Ratio of total runnable money -like liabilities to GDP)",
+  "Short-Term Wholesale Funding (Short-term money as a share of assets at BHCs)",
+  "Bank Leverage (Total common equity to total assets)",
+  "Bank Leverage (Tier 1 common equity ratio)",
+  "Bank Leverage (Total Capital Ratio)",
+  "Ratio of Total Financial Sector Liabilities to GDP",
+  "Ratio of Nonfinancial Business Savings to GDP",
+  "Comsumer Credit of Riskier Borrowers (Ratio of consumer credit debt owed by riskier borrowers to DPI)",
+  "Consumer Credit (Consumer credit ratio to GDP)",
+  "Consumer Credit (Consumer credit debt service ratio to DPI)",
+  "Debt Burden of Nonfinancial Businesses (Debt-to-Income ratio)",
+  "Real Debt Growth of Nonfinancial Businesses",
+  "Ratio of Household Savings to GDP",
+  "Debt Burden of Nonfinancial Business (Interest expenses)",
+  "Risky Debt of Nonfinancial Businesses (Deep junk Issuance Share)",
+  "Home Mortage Debt (Ratio of mortgage debt owed by riskier borrowers to DPI)",
+  "Home Mortage Debt (Ratio of total mortgage debt to GDP)",
+  "Home Mortgage Debt (Total mortgage debt service ratio to DPI)",
+  "Risky Debt of Nonfinancial Businesses",
+  "Mortgage Borrowing by Riskier Borrowers (Incidence of piggy-back mortgages by riskier borrowers)",
+  "Consumer Credit of Riskier Borrowers (Incidence of very rapid consumer borrowing by riskier borrowers)",
+  "Mortgage Borrowing by Riskier Borrowers (Incidence of very rapid mortgage borrowing by riskier borrowers)",
+  "Spread of Corporate Bonds (over Treasury Securities) (BBB)",
+  "Indicators of Volitility (Credit Default Swap premium)",
+  "Equity Valuations (Ratro minus 10 Yr. Tres. Yeild)",
+  "Equity Valuations (Earnings/Price ratio )",
+  "Mortage Lending and FICO Scores (FICO scores)",
+  "National House Prices Relative to Rents",
+  "Spread of Corporate Bonds (over Treasury Securities) (High Yield)",
+  "Investor Appetite for Risky Corporate Debt (Issuance of Junk Bonds and Leverage Loans)",
+  "Prices for Commercial Real Estate (CRE)",
+  "Change in Lending Standards, CRE Loans",
+  "Mortage Lending and FICO Scores (Change in Lending Standards)",
+  "Investor Appetite for Risky Corporate Debt (Change in Bank Lending Standards C&I Loans)",
+  "Indicators of Volitility (VIX)",
+  "SRISK (Total capital shortfall relative to total assets)",
+  "Granger-causality connections among large financial institutions"
+ ],
+ "order": [
+  0,
+  5,
+  24,
+  1,
+  4,
+  6,
+  18,
+  26,
+  28,
+  12,
+  16,
+  10,
+  3,
+  13,
+  11,
+  25,
+  14,
+  45,
+  21,
+  2,
+  9,
+  7,
+  8,
+  30,
+  17,
+  35,
+  36,
+  39,
+  19,
+  22,
+  27,
+  15,
+  20,
+  34,
+  23,
+  40,
+  42,
+  43,
+  41,
+  29,
+  32,
+  33,
+  31,
+  37,
+  38,
+  44
+ ],
+ "merges": [
+  [
+   18,
+   26,
+   0.030836
+  ],
+  [
+   28,
+   46,
+   0.049439
+  ],
+  [
+   11,
+   25,
+   0.066841
+  ],
+  [
+   2,
+   9,
+   0.06956
+  ],
+  [
+   12,
+   16,
+   0.077067
+  ],
+  [
+   31,
+   37,
+   0.078395
+  ],
+  [
+   4,
+   6,
+   0.080416
+  ],
+  [
+   47,
+   52,
+   0.121174
+  ],
+  [
+   5,
+   24,
+   0.125175
+  ],
+  [
+   50,
+   53,
+   0.129485
+  ],
+  [
+   7,
+   49,
+   0.146369
+  ],
+  [
+   38,
+   51,
+   0.148187
+  ],
+  [
+   8,
+   30,
+   0.155437
+  ],
+  [
+   1,
+   55,
+   0.16288
+  ],
+  [
+   14,
+   48,
+   0.183538
+  ],
+  [
+   40,
+   42,
+   0.188599
+  ],
+  [
+   32,
+   33,
+   0.211013
+  ],
+  [
+   3,
+   13,
+   0.220554
+  ],
+  [
+   56,
+   58,
+   0.231266
+  ],
+  [
+   60,
+   63,
+   0.242948
+  ],
+  [
+   10,
+   59,
+   0.265357
+  ],
+  [
+   36,
+   39,
+   0.29128
+  ],
+  [
+   17,
+   35,
+   0.297762
+  ],
+  [
+   29,
+   62,
+   0.307786
+  ],
+  [
+   65,
+   66,
+   0.328939
+  ],
+  [
+   15,
+   20,
+   0.366189
+  ],
+  [
+   23,
+   61,
+   0.370038
+  ],
+  [
+   0,
+   54,
+   0.407941
+  ],
+  [
+   64,
+   68,
+   0.432088
+  ],
+  [
+   22,
+   27,
+   0.475299
+  ],
+  [
+   57,
+   69,
+   0.49306
+  ],
+  [
+   34,
+   71,
+   0.51414
+  ],
+  [
+   45,
+   70,
+   0.530245
+  ],
+  [
+   43,
+   72,
+   0.538626
+  ],
+  [
+   67,
+   74,
+   0.544056
+  ],
+  [
+   21,
+   78,
+   0.577597
+  ],
+  [
+   19,
+   75,
+   0.593359
+  ],
+  [
+   41,
+   79,
+   0.636621
+  ],
+  [
+   80,
+   81,
+   0.654734
+  ],
+  [
+   76,
+   83,
+   0.803482
+  ],
+  [
+   73,
+   84,
+   0.873196
+  ],
+  [
+   82,
+   86,
+   0.902729
+  ],
+  [
+   77,
+   85,
+   0.90812
+  ],
+  [
+   87,
+   88,
+   1.049115
+  ],
+  [
+   44,
+   89,
+   1.359471
+  ]
+ ],
+ "cut": [
+  [
+   19,
+   22,
+   27,
+   0,
+   5,
+   24,
+   36,
+   39,
+   7,
+   2,
+   9,
+   8,
+   30,
+   17,
+   35,
+   21,
+   45,
+   14,
+   11,
+   25,
+   3,
+   13,
+   10,
+   1,
+   12,
+   16,
+   28,
+   18,
+   26,
+   4,
+   6
+  ],
+  [
+   34,
+   15,
+   20,
+   38,
+   31,
+   37,
+   29,
+   32,
+   33,
+   41,
+   43,
+   23,
+   40,
+   42
+  ],
+  [
+   44
+  ]
+ ],
+ "method": "Hierarchical clustering (average linkage / UPGMA) of the 46 indicator score series over all quarters, using correlation distance (1 - Pearson r) on pairwise-complete observations (>= 24 common quarters required). Row order is deterministic: distances are rounded to 12 decimals and merge ties break by smallest leaf index."
+}
