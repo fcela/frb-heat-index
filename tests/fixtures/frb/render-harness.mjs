@@ -83,6 +83,80 @@ if (byId["hierarchy"]?._children.length !== HIER.categories.length)
 if ((byId["clustermap"]?._children.length ?? 0) !== 0)
   err("clustered figure must not render before the view is switched");
 
+/* --- 1b. indicator heat map: all 46 indicators, hierarchy groups marked --- */
+const ifig = byId["indmap"]?._children[0];
+if (!ifig || !ifig.__figure) err("indicator heat map did not render a figure");
+const indRowsExp = [];
+const compNamesExp = [], catNamesExp = [];
+for (const cat of HIER.categories) {
+  catNamesExp.push(cat.name);
+  for (const comp of cat.components) {
+    compNamesExp.push(comp.name);
+    for (const ind of comp.indicators) indRowsExp.push(ind.short);
+  }
+}
+let iCells = [], iMissing = [], iCompRules = 0, iCatRules = 0;
+if (ifig) {
+  if (ifig.options.width !== 1280) err("unexpected indicator figure width");
+  const nSlots = indRowsExp.length + HIER.categories.length;
+  if (ifig.options.height !== nSlots * 16 + 34)
+    err(`unexpected indicator figure height ${ifig.options.height}`);
+  const imarks = (kind) => ifig.marks.filter(m => m.__mark === kind);
+  const irects = imarks("rect");
+  if (irects.length !== 2) err(`expected 2 rect marks (cells, missing) in indicator map, got ${irects.length}`);
+  const icm = irects.find(m => m.data.every(c => c.v != null));
+  const imm = irects.find(m => m.data.every(c => c.v == null));
+  if (!icm || !imm) err("could not tell indicator cells from missing cells");
+  iCells = icm ? icm.data : [];
+  iMissing = imm ? imm.data : [];
+  if (iCells.length + iMissing.length !== indRowsExp.length * META.n_quarters)
+    err(`expected ${indRowsExp.length * META.n_quarters} indicator cells, got ${iCells.length} + ${iMissing.length} missing`);
+  const iseen = new Set(iCells.concat(iMissing).map(c => `${c.p}:${c.q}`));
+  if (iseen.size !== indRowsExp.length * META.n_quarters)
+    err("duplicate or absent (row, quarter) cells in indicator map");
+  for (const c of iCells)
+    if (!(c.v >= 0 && c.v <= 1)) err(`indicator cell value out of [0,1]: ${c.v}`);
+  // text marks: 46 row labels in hierarchy order, 14 component labels, 3 category headers
+  const itexts = imarks("text");
+  const byLen = (n) => itexts.filter(m => m.data.length === n);
+  if (byLen(indRowsExp.length).length !== 1) err("indicator map: row-label mark not found");
+  else {
+    const got = byLen(indRowsExp.length)[0].data.map(d => d.text);
+    for (let i = 0; i < indRowsExp.length; i++)
+      if (got[i] !== indRowsExp[i]) err(`indicator row ${i} label "${got[i]}" != hierarchy order "${indRowsExp[i]}"`);
+  }
+  if (byLen(compNamesExp.length).length !== 1) err("indicator map: component-label mark not found");
+  else {
+    const got = byLen(compNamesExp.length)[0].data.map(d => d.text);
+    for (let i = 0; i < compNamesExp.length; i++)
+      if (got[i] !== compNamesExp[i]) err(`component label ${i} "${got[i]}" != "${compNamesExp[i]}"`);
+  }
+  if (byLen(catNamesExp.length).length !== 1) err("indicator map: category-header mark not found");
+  else {
+    const got = byLen(catNamesExp.length)[0].data.map(d => d.text);
+    for (let i = 0; i < catNamesExp.length; i++)
+      if (got[i] !== catNamesExp[i]) err(`category header ${i} "${got[i]}" != "${catNamesExp[i]}"`);
+  }
+  // rules: one at every component boundary (13), stronger ones at the
+  // two interior category boundaries
+  const irules = imarks("ruleY");
+  const compRuleMark = irules.find(m => m.data.length === compNamesExp.length - 1);
+  const catRuleMark = irules.find(m => m.data.length === catNamesExp.length - 1);
+  if (!compRuleMark) err("indicator map: component boundary rules not found");
+  if (!catRuleMark) err("indicator map: category boundary rules not found");
+  iCompRules = compRuleMark ? compRuleMark.data.length : 0;
+  iCatRules = catRuleMark ? catRuleMark.data.length : 0;
+  const itips = imarks("tip");
+  if (itips.length !== 1) err("indicator map: expected one tip mark");
+  else {
+    const tOpts = itips[0].opts.opts ?? itips[0].opts;
+    const s = iCells[Math.floor(iCells.length / 2)];
+    const t = tOpts.title(s);
+    for (const part of [s.comp, s.cat, s.q, s.v.toFixed(2)])
+      if (!t.includes(part)) err(`indicator tooltip missing "${part}": ${t}`);
+  }
+}
+
 /* --- 2. flip the toggle to Clustered --- */
 byId["vs-clustered"].click();
 if (document.body.dataset.view !== "clustered") err("toggle did not set clustered view");
@@ -213,5 +287,10 @@ console.log(JSON.stringify({
   dendroH: dendroH[0].data.length,
   cutRules: cutRuleMark.data.length,
   legendComponents: META.components.length,
+  indRows: indRowsExp.length,
+  indCells: iCells.length,
+  indMissing: iMissing.length,
+  indCompRules: iCompRules,
+  indCatRules: iCatRules,
 }));
 if (results.errors.length) process.exit(1);
