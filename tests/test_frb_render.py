@@ -51,6 +51,16 @@ def test_clustered_view_renders(tmp_path):
     assert res["dendroH"] == 2 * (n - 1)
     assert res["cutRules"] == len(cluster["cut"]) - 1
     assert res["legendComponents"] == meta["n_components"]
+    # indicator heat map (hierarchy view): every indicator in hierarchy
+    # order, full grid, group markings for every component + category
+    hier = json.loads((REPO / "docs/data/hierarchy.json").read_text())
+    n_ind = sum(len(comp["indicators"])
+                for cat in hier["categories"] for comp in cat["components"])
+    n_comp = sum(len(cat["components"]) for cat in hier["categories"])
+    assert res["indRows"] == n_ind
+    assert res["indCells"] + res["indMissing"] == n_ind * meta["n_quarters"]
+    assert res["indCompRules"] == n_comp - 1
+    assert res["indCatRules"] == len(hier["categories"]) - 1
 
 
 if __name__ == "__main__":

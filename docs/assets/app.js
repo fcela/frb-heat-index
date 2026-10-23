@@ -186,6 +186,127 @@ function renderHeatmap() {
   el.appendChild(fig);
 }
 
+/* ---------------- indicator heat map (hierarchy view) ---------------- */
+/* All 46 indicators x all quarters, rows in HIERARCHY order (category,
+   then component, then the component's indicators as shipped in
+   hierarchy.json) -- the component heat map above, resolved one level
+   down. The hierarchy's groups are marked in the figure itself: a bold
+   category header row above each category's block, the component name
+   centered on its row span in the left lane, a rule at every component
+   boundary, and a stronger full-width rule above the second and third
+   category headers. Cells are each indicator's heat quantile in its
+   own full history (the drill-down semantics); quarters before a
+   series begins are missing-gray, as in the component map. */
+
+function renderIndicatorHeatmap() {
+  const el = document.getElementById("indmap");
+  if (!el || !HIER) return;
+  el.innerHTML = "";
+  const nQ = quarters.length;
+
+  // Lay out row slots: one header slot per category, then its
+  // indicators in hierarchy order. p counts indicator rows only.
+  const rows = [], compLabels = [], catLabels = [], compRules = [], catRules = [];
+  let slot = 0;
+  const cats = HIER.categories;
+  cats.forEach((cat, ci) => {
+    if (ci > 0) catRules.push({ y: slot - 0.5 });
+    catLabels.push({ y: slot, text: cat.name });
+    slot += 1;
+    cat.components.forEach(comp => {
+      const start = slot;
+      for (const ind of comp.indicators) {
+        const entries = IND[ind.name] || [];
+        const sorted = entries.map(d => d.z).filter(Number.isFinite).sort((a, b) => a - b);
+        rows.push({ p: rows.length, slot, name: ind.name, short: ind.short,
+                    comp: comp.name, cat: cat.name, entries, sorted });
+        slot += 1;
+      }
+      compLabels.push({ y: (start + slot - 1) / 2, text: comp.name });
+      compRules.push({ y: slot - 0.5 });
+    });
+  });
+  compRules.pop();  // no boundary rule below the last component
+  const nSlots = slot;
+
+  const cells = [], missing = [];
+  for (const r of rows) {
+    r.entries.forEach(d => {
+      const xi = qIndex[d.q];
+      const v = equantile(r.sorted, d.z);
+      const cell = { p: r.p, slot: r.slot, xi, q: d.q, v,
+                     short: r.short, comp: r.comp, cat: r.cat };
+      if (v == null) missing.push(cell);
+      else cells.push(cell);
+    });
+  }
+
+  const IL = 27, CL = 31;                 // indicator + component label lanes, in quarter units
+  const labels = rows.map(r => ({ slot: r.slot, text: r.short }));
+  const RH = 16;
+
+  const fig = basePlot({
+    width: 1280,
+    height: nSlots * RH + 34,
+    marginLeft: 6, marginRight: 14, marginTop: 6, marginBottom: 28,
+    padding: 0,
+    x: {
+      domain: [-(IL + CL) - 0.5, nQ - 0.5], ticks: yearTicks,
+      tickFormat: i => quarters[i].slice(0, 4), label: null, tickSize: 0,
+    },
+    y: { domain: [-0.5, nSlots - 0.5], axis: null },
+    color: {
+      type: "linear", domain: [0, 1], range: HEAT, legend: true,
+      label: "Quantile in own history →", ticks: [0, 0.25, 0.5, 0.75, 1],
+      tickFormat: d => d.toFixed(2),
+    },
+    marks: [
+      // stronger full-width rules above the 2nd and 3rd category headers
+      Plot.ruleY(catRules, {
+        y: "y", x1: -(IL + CL) - 0.5, x2: nQ - 0.5,
+        stroke: T().ink, strokeWidth: 1.4,
+      }),
+      // a rule at every component boundary, across the matrix
+      Plot.ruleY(compRules, {
+        y: "y", x1: -0.5, x2: nQ - 0.5,
+        stroke: T().line, strokeWidth: 1,
+      }),
+      // category headers, bold, at the left edge of the label lanes
+      Plot.text(catLabels, {
+        x: -(IL + CL) + 0.2, y: "y", text: "text", textAnchor: "start",
+        fontSize: 11.5, fontWeight: 700, fill: T().ink, dy: 4,
+      }),
+      // component names, centered on each component's row span
+      Plot.text(compLabels, {
+        x: -IL - 0.8, y: "y", text: "text", textAnchor: "end",
+        fontSize: 10, fill: T().ink, dy: 3.5,
+      }),
+      // indicator short names, one per row
+      Plot.text(labels, {
+        x: -0.8, y: "slot", text: "text", textAnchor: "end",
+        fontSize: 10.5, fill: T().ink, dy: 3.5,
+      }),
+      // the matrix: heat quantile per indicator per quarter (square
+      // corners, same scale and grays as the component heat map)
+      Plot.rect(cells, {
+        x1: d => d.xi - 0.48, x2: d => d.xi + 0.48,
+        y1: d => d.slot - 0.48, y2: d => d.slot + 0.48,
+        fill: "v", stroke: T().card, strokeWidth: 0.7,
+      }),
+      Plot.rect(missing, {
+        x1: d => d.xi - 0.48, x2: d => d.xi + 0.48,
+        y1: d => d.slot - 0.48, y2: d => d.slot + 0.48,
+        fill: T().missing, stroke: T().card, strokeWidth: 0.7,
+      }),
+      Plot.tip(cells, Plot.pointer({
+        x: "xi", y: "slot",
+        title: d => `${d.short}\n${d.comp} — ${d.cat}\n${d.q} — ${d.v.toFixed(2)}\nHotter than ${Math.round(d.v * 100)}% of its history`,
+      })),
+    ],
+  });
+  el.appendChild(fig);
+}
+
 /* ---------------- clustered view ---------------- */
 /* 46 indicator rows x all quarters, rows ordered by pipeline-computed
    hierarchical clustering (docs/data/clustered.json). One figure holds the
@@ -650,7 +771,7 @@ function renderMeta() {
 
 function fail(err) {
   const msg = `<p class="err">Could not load chart data (${esc(err.message)}).</p>`;
-  for (const id of ["heatmap", "aggchart", "clustermap"]) {
+  for (const id of ["heatmap", "indmap", "aggchart", "clustermap"]) {
     const el = document.getElementById(id);
     if (el && !el.dataset.done) el.innerHTML = msg;
   }
@@ -660,9 +781,11 @@ function fail(err) {
 
 function renderAll() {
   renderHeatmap();
+  renderIndicatorHeatmap();
   renderAggregate();
   routeHash();
   document.getElementById("heatmap").dataset.done = "1";
+  document.getElementById("indmap").dataset.done = "1";
   document.getElementById("aggchart").dataset.done = "1";
 }
 

@@ -97,6 +97,22 @@
       no observation.</p>
   </section>
 
+  <section class="card view-hierarchy" id="indmap-card">
+    <h2>The heat map, by indicator</h2>
+    <p class="sub">The same heat, resolved to all 46 indicators in hierarchy order:
+      rows are grouped by the hierarchy's three categories and fourteen components —
+      each category has a bold header row, each component's name sits beside its rows,
+      and a rule marks every component boundary — so the groups that make up the
+      index are visible in the map itself. Columns are every quarter in order; gray
+      cells are quarters before a series begins. Hover any cell for the component,
+      category, and exact value.</p>
+    <div class="heatmap-scroll"><figure id="indmap" role="img" aria-label="Heat map of all 46 indicators over time, grouped by category and component"></figure></div>
+    <p class="legend-note"><strong>Method:</strong> each cell is the indicator's 0–1 heat
+      quantile in its own history, the same scores the indicator drill-downs show.
+      Rows are never re-ordered — for a data-driven ordering of the same 46 series,
+      see the clustered view.</p>
+  </section>
+
   <section class="card view-clustered" id="clustered-card">
     <h2>The heat map, clustered</h2>
     <p class="sub">The same heat, resolved to its 46 indicators and re-ordered by shape:
