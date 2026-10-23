@@ -62,9 +62,17 @@ def test_analysis_math_against_bundles():
         assert v["nFirms"] >= 1
     # Spot-check known edges: trailing stubs are dropped, ramps detected.
     assert d["a/advisory"]["nDroppedTrailing"] == 1  # 2026: HL only
-    assert d["a/advisory"]["stableStart"] == 2017
+    # 2014, not 2017: the Jefferies annual advisory backfill closed the
+    # 2014-2016 hole (and replaced the bogus 2013/2017 division-total
+    # cells), so Jefferies' series is contiguous from 2013 and the
+    # balanced advisory window starts with the last firm to reach full
+    # coverage (2014).
+    assert d["a/advisory"]["stableStart"] == 2014
     assert d["q/advisory"]["nDroppedTrailing"] == 1  # 2026Q3: 1 firm
-    assert d["a/ficc"]["stableStart"] == 2013
+    # 2012, not 2013: PR #35 restored Citigroup's annual FICC back to
+    # 2012, so 2012 onward carries 5 of the 6 firms (>= 80% of maxC=6;
+    # Jefferies FICC starts 2017).
+    assert d["a/ficc"]["stableStart"] == 2012
 
 
 @pytest.mark.skipif(NODE is None, reason="node not installed")
@@ -86,14 +94,30 @@ def test_hhi_matches_hand_computation():
 
 @pytest.mark.skipif(NODE is None, reason="node not installed")
 def test_balanced_panel_identification():
-    """GS quarterly FICC exits after 2019 (real reporting change: GS moved to
-    3 segments in XBRL) — it must NOT appear in the balanced set, and the
-    Sankey must carry it as an explicit exit, not a share loss."""
+    """The balanced quarterly FICC set after the GS quarterly backfill.
+
+    GS quarterly 2020-2026 was deliberately backfilled from the
+    four-segment Global Banking & Markets MD&A tables (243afdd), so GS
+    is now present in every window: it belongs IN the balanced set (the
+    pre-backfill expectation had it exit after 2019). Morgan Stanley's
+    quarterly FICC series only starts 2020Q2 -- its 10-Q S&T tables
+    before that are not in the quarterly layer -- so MS enters the pool
+    late and must be carried as an explicit Sankey ENTRANT in 2020, not
+    counted balanced and not a share loss.
+    Citigroup's balanced membership rests on its 2022Q3/2023Q1 toehold
+    quarters: its 2022Q1/Q2/Q4 and 2023Q2/Q3/Q4 10-Q "Revenue Details"
+    tables are not yet parsed by the quarterly MD&A specs -- documented
+    as a known gap in the PR summary, never silently averaged over.
+    """
     out = run_node(FIX / "analysis-check.mjs", REPO)
     d = json.loads(out)
     bal = d["q/ficc"]["balanced"]
-    assert "Goldman Sachs" not in bal
-    assert set(bal) == {"JPMorgan", "Bank of America", "Morgan Stanley"}
+    assert set(bal) == {"JPMorgan", "Bank of America", "Citigroup",
+                        "Goldman Sachs"}, bal
+    assert "Morgan Stanley" not in bal
+    # The pool's stable coverage starts 2018; MS enters inside the
+    # 2020-2022 window, so it is absent from the earliest windows.
+    assert d["q/ficc"]["stableStart"] == 2018
 
 
 @pytest.mark.skipif(NODE is None, reason="node not installed")

@@ -48,6 +48,8 @@ from typing import Iterable
 import polars as pl
 from bs4 import BeautifulSoup
 
+from src.revenue.taxonomy import accession_order_key, accession_order_exprs  # noqa: E402
+
 log = logging.getLogger("parse_mda")
 
 REPO = Path(__file__).resolve().parents[2]
@@ -114,6 +116,12 @@ class RowSpec:
     # income" appear under both underwriting and sales & trading; the
     # sales & trading rows come last).
     occurrence: str = "first"
+    # When True the row only PINS the table (its presence is required so
+    # locate_tables can reject near-miss tables that share the extracted
+    # rows' labels); no record is emitted for it. E.g. Morgan Stanley's
+    # S&T "By Business" table is told from the investment-banking summary
+    # (same bare "Equity"/"Fixed income" rows) by its "Other" row.
+    pin_only: bool = False
 
     # Matches "<pattern>" or "<pattern> (<anything>)" at label start.
     _TAIL = r"(\s*\(.*\))?\s*$"
@@ -173,6 +181,24 @@ class TableSpec:
     # leads with Global Banking; the firmwide Total Corporation block
     # is second (segment_block=1).
     segment_block: int = 0
+    # When True, only the annual scraper (parse_mda) runs this spec;
+    # the quarterly scraper (parse_mda_q) skips it. Used for Jefferies'
+    # ASC 606 disaggregation note: the annual advisory cell comes from
+    # it, but the quarterly advisory scrape is advisory-only by scope
+    # (underwriting/equities/fixed income stay annual until a separate
+    # quarterly line is spec'd).
+    annual_only: bool = False
+    # Column mapping by header grid instead of positional slots. The
+    # first header row carrying 2+ year labels pins each year to a
+    # colspan-accumulated grid-column range; a data row's value for a
+    # year is the first parseable money cell inside that range. For
+    # inline-XBRL "Amount / % of Net Revenues" tables whose percent
+    # cells carry no "%" marker in some rows (Jefferies FY2022+ net
+    # revenues summaries): positional slotting leaks the percent into
+    # the value stream (or collapses the whole flat row to one slot),
+    # while the header grid stays correct because the percent column
+    # always follows its year's Amount column.
+    grid_columns: bool = False
 
 
 # ---------------------------------------------------------------------------
@@ -199,16 +225,76 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
             # results" table; older filings may split them -- either way
             # both specs resolve.
             description="Investment banking fees",
-            anchors=[r"investment banking fees"],
+            # 2022+ filings title the table "Investment banking fees";
+            # the 2019-2021 filings (four-segment regime) title it
+            # "Investment Banking" but keep the same fee rows, so fall
+            # back to the generic "net revenues" heading there.
+            # require_text pins the equity-underwriting row so the anchor
+            # cannot drift onto an unrelated net-revenues table.
+            anchors=[r"investment banking fees", r"net revenues"],
+            require_text=[r"equity underwriting"],
             rows=[
-                RowSpec("advisory", [r"advisory"]),
+                # 2019-2021 filings label the row "Financial advisory";
+                # 2022+ filings "Advisory".
+                RowSpec("advisory", [r"advisory", r"financial advisory"]),
                 RowSpec("ecm", [r"equity underwriting"]),
                 RowSpec("dcm", [r"debt underwriting"]),
             ],
         ),
         TableSpec(
+            # Four-segment regime (Investment Banking / Global Markets /
+            # Asset Management / Consumer & Wealth Management), reported
+            # from Q1 2020; the segment's MD&A table carries the
+            # FICC / Equities rows. The FY2019 10-K (filed February
+            # 2020) ALREADY presented the realigned structure with
+            # restated 2017-2019 comparatives -- it is the realignment's
+            # first annual filing -- so fiscal 2019 is in the window and
+            # supplies the restated 2017/2018 cells. The FY2020/FY2021
+            # 10-Ks keep the same table, so this spec also supplies the
+            # annual 2020-2021 comparatives their tables carry. 2022+
+            # filings use the Global Banking & Markets spec below.
+            #
+            # The heading phrase is not always within reach of the table
+            # (the FY2020 10-K's table sits well below its heading), and
+            # the anchor "global markets" alone also lands on the
+            # point-in-time inventory table, so the generic "net revenues"
+            # heading plus the FICC/Equities-intermediation require_text
+            # is what selects the net-revenues table.
+            description="Global Markets net revenues",
+            anchors=[r"global markets", r"net revenues"],
+            require_text=[r"intermediation"],
+            fiscal_years=(2019, 2021),
+            rows=[
+                RowSpec("ficc", [r"ficc"]),
+                RowSpec("equities", [r"equities"]),
+            ],
+        ),
+        TableSpec(
+            # Four-segment regime only: through the FY2021 10-K the IB
+            # operating results table carries a total "Underwriting" row
+            # (equity + debt underwriting), which is the restated-basis
+            # ecm_dcm_combined. The restated 2017-2018 comparatives
+            # ($3,915M / $3,986M) replace the pre-reorg XBRL rows
+            # ($4,183M / $4,355M) in the panel; the GBM regime (2022+)
+            # stops disclosing the combined row (only "Investment
+            # banking fees"), so the line is era-bounded at the
+            # registered 2022-10 reorg. require_text pins the IB
+            # operating results table (its "Corporate lending" row is
+            # unique to this regime's layout).
+            description="Investment Banking underwriting "
+                        "(four-segment era)",
+            anchors=[r"investment banking fees", r"net revenues"],
+            require_text=[r"corporate lending"],
+            fiscal_years=(2019, 2021),
+            rows=[
+                RowSpec("ecm_dcm_combined", [r"underwriting"]),
+            ],
+        ),
+        TableSpec(
             description="Global Banking & Markets net revenues",
-            anchors=[r"global banking.+markets"],
+            anchors=[r"global banking.+markets", r"net revenues"],
+            require_text=[r"intermediation"],
+            fiscal_years=(2022, 2100),
             rows=[
                 RowSpec("ficc", [r"ficc"]),
                 RowSpec("equities", [r"equities"]),
@@ -220,9 +306,18 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
             description="Institutional Securities income statement",
             anchors=[r"institutional securities",
                      r"income statement information"],
-            # Validated 2015+; the 2010-2014 10-Ks split S&T and IB into
-            # separate tables (see pre-2015 specs below).
-            fiscal_years=(2015, 2100),
+            # Validated FY2021+ filings: the income statement table
+            # carries the sales & trading "Equity (1)"/"Fixed income (1)"
+            # rows after the underwriting rows. Earlier filings split S&T
+            # into standalone tables (fiscal 2018-2020 filings: "By
+            # Business"; 2016-2017: GAAP/non-GAAP; <=2015: "Fixed income
+            # and commodities") and this spec would land on the
+            # investment-banking summary fragment, whose bare
+            # "Equity"/"Fixed income" rows are the UNDERWRITING split --
+            # the equities/ECM and FICC/DCM clone failure mode. The
+            # fiscal-2020 filing raises here (fragmented layout) and is
+            # skipped; its comparatives come from the fiscal-2021 filing.
+            fiscal_years=(2021, 2100),
             rows=[
                 # "Equity"/"Fixed income" label BOTH the underwriting and
                 # the sales & trading rows; the sales & trading rows come
@@ -234,15 +329,19 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
             ],
         ),
         TableSpec(
-            # The same IS income statement table: the FIRST "Equity" /
-            # "Fixed income" rows are the underwriting splits (the
-            # investment-banking section precedes sales & trading), and
-            # "Advisory" appears once. Validated 2015-2025; older filings
-            # use the pre-2015 specs below.
-            description="Institutional Securities investment banking",
+            # The investment-banking fee rows of the IS income statement,
+            # fragment era (fiscal 2017-2018 filings): the MD&A summary
+            # fragment carries "Advisory" plus BARE "Equity"/"Fixed
+            # income" underwriting rows. Fiscal 2015-2016 filings use
+            # suffixed labels ("Equity underwriting revenues") and are
+            # served by the pre-2015 IB spec's window; fiscal 2019-2020
+            # filings fragment the income statement so no spec applies
+            # (their cells come from later filings' comparatives).
+            description="Institutional Securities investment banking "
+                        "(fragment era)",
             anchors=[r"institutional securities",
                      r"income statement information"],
-            fiscal_years=(2015, 2100),
+            fiscal_years=(2017, 2018),
             rows=[
                 RowSpec("advisory", [r"advisory"]),
                 RowSpec("ecm", [r"equity"], occurrence="first"),
@@ -250,16 +349,80 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
             ],
         ),
         TableSpec(
-            # Pre-2015 era (FY2010-FY2014 filings): Sales & Trading net
-            # revenues are in a standalone table titled e.g. "Sales and
-            # Trading Net Revenues" with rows "Equity" and "Fixed income
-            # and commodities". Validated on FY2012 10-K.
+            # The same fee rows in the full income statement table
+            # (fiscal 2021+ filings): the FIRST "Equity"/"Fixed income"
+            # rows are the underwriting splits (the investment-banking
+            # section precedes sales & trading), and "Advisory" appears
+            # once.
+            description="Institutional Securities investment banking",
+            anchors=[r"institutional securities",
+                     r"income statement information"],
+            fiscal_years=(2021, 2100),
+            rows=[
+                RowSpec("advisory", [r"advisory"]),
+                RowSpec("ecm", [r"equity"], occurrence="first"),
+                RowSpec("dcm", [r"fixed income"], occurrence="first"),
+            ],
+        ),
+        TableSpec(
+            # S&T by asset class. Four layout eras, one spec each below:
+            #   <= FY2015 filings: "Sales and Trading Net Revenues by
+            #     Business" table, rows "Equity" / "Fixed income and
+            #     commodities" (this spec; validated FY2012 and FY2015).
+            #   FY2016-FY2017 filings: GAAP/non-GAAP table, rows
+            #     "Equity—U.S. GAAP" / "Fixed income—U.S. GAAP".
+            #   FY2018-FY2020 filings: "By Business" summary, bare
+            #     "Equity"/"Fixed income" rows plus an "Other" pin.
+            # FY2021+ filings put the asset-class split in the income
+            # statement table (first spec above).
             description="Institutional Securities sales and trading (pre-2015)",
             anchors=[r"sales and trading net revenues"],
-            fiscal_years=(2010, 2014),
+            fiscal_years=(2010, 2015),
             rows=[
                 RowSpec("ficc", [r"fixed income and commodities"]),
                 RowSpec("equities", [r"^equity$"]),
+            ],
+        ),
+        TableSpec(
+            # FY2016-FY2017 filings: S&T net revenues by asset class in a
+            # GAAP/non-GAAP table ("Equity—U.S. GAAP" 8,037 = the same
+            # number the FY2018 filing's By-Business table carries for
+            # 2016, so the eras chain without a jump). The GAAP rows are
+            # taken; the non-GAAP rows (DVA/FVA-adjusted) never match the
+            # patterns. Validated on the FY2016 and FY2017 10-Ks.
+            description="Institutional Securities sales and trading "
+                        "(GAAP/non-GAAP)",
+            anchors=[r"u\.s\.\s*gaap", r"sales and trading"],
+            fiscal_years=(2016, 2017),
+            rows=[
+                # \W* separator: lxml decodes these filings' em-dash as
+                # the control char U+0097 (declared-charset quirk), so a
+                # literal dash class misses the rows.
+                RowSpec("ficc", [r"fixed income\W*u\.s\.\s*gaap"]),
+                RowSpec("equities", [r"equity\W*u\.s\.\s*gaap"]),
+            ],
+        ),
+        TableSpec(
+            # FY2018-FY2020 filings: S&T by asset class in the "By
+            # Business" summary table (bare "Equity"/"Fixed income" rows,
+            # "$ in millions"). The investment-banking summary fragment
+            # in the same filings carries the same bare "Equity"/"Fixed
+            # income" labels for the UNDERWRITING split, so the "Other"
+            # pin row (present only in the S&T table) and the
+            # millions-unit require_text keep this spec off it -- the
+            # pin also keeps it off the "$ in billions" AUM tables, whose
+            # rows are Equity/Fixed income/Alternative/Other/Liquidity
+            # (the "Other" there is a suffix, never a bare row).
+            # Validated on the FY2018, FY2019 and FY2020 10-Ks.
+            description="Institutional Securities sales and trading "
+                        "(By Business)",
+            anchors=[r"by business", r"sales and trading", r"in\s+millions"],
+            require_text=[r"in\s+millions"],
+            fiscal_years=(2018, 2020),
+            rows=[
+                RowSpec("ficc", [r"^fixed income$"]),
+                RowSpec("equities", [r"^equity$"]),
+                RowSpec("_st_other_pin", [r"^other$"], pin_only=True),
             ],
         ),
         TableSpec(
@@ -283,8 +446,15 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
             description="Banking business metrics - investment banking fees",
             # "Business metrics" phrasing is FY2021-2023; the FY2024+
             # five-segment 10-Ks title the table "Investment banking fees"
-            # and omit year headers (columns are FY, FY-1, FY-2).
-            anchors=[r"business metrics", r"investment banking fees"],
+            # and omit year headers (columns are FY, FY-1, FY-2). From the
+            # 2026-Q2 10-Q on, the metric was renamed "Investment banking
+            # revenues" (adds other fee revenue, principal transactions
+            # and loan NII to the fee components); the Advisory / ECM /
+            # DCM rows continue, and the prior-year comparatives moved by
+            # under 1% (FY2025-Q2 advisory fees $408M vs restated $407M),
+            # so the same rows remain the advisory/ECM/DCM source.
+            anchors=[r"business metrics", r"investment banking fees",
+                     r"investment banking revenues"],
             fiscal_years=(2023, 2100),
             implied_years=True,
             rows=[
@@ -349,12 +519,17 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
             # The FIRST block is the consolidated total (require_text pins
             # it); "Financial advisory services" is the firmwide advisory
             # line and "Underwriting income" the combined ECM+DCM line
-            # (BofA does not split underwriting further). Validated 2016+.
+            # (BofA does not split underwriting further). The table was
+            # introduced in the FY2018 10-K (its columns reach back to
+            # 2016); the FY2016/FY2017 10-Ks do not carry it, and an
+            # in-window miss aborted those filings wholesale, taking
+            # their sales-and-trading rows with it (the 2016 FICC /
+            # equities hole). Window = filing years, 2018+.
             description="Noninterest income by business segment",
             anchors=[r"noninterest income by business segment"],
             require_text=[r"total corporation"],
             column_layout="segment_major",
-            fiscal_years=(2016, 2100),
+            fiscal_years=(2018, 2100),
             rows=[
                 RowSpec("advisory", [r"financial advisory services"]),
                 RowSpec("ecm_dcm_combined", [r"underwriting income"]),
@@ -386,14 +561,56 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
     ],
     "JEF": [
         TableSpec(
-            # Jefferies discloses the split in the segment note's ASC 606
-            # revenue disaggregation (year band rows, $ in thousands), not
-            # in a year-column MD&A table. Underwriting is ECM+DCM
-            # combined; Fixed income is the only separately disclosed FICC
-            # line (single-digit $M; the rest is buried).
+            # Leucadia-era 10-Ks (FY2014-FY2017, CIK 0000096223 was
+            # Leucadia National Corp until the 2018 Jefferies Financial
+            # Group rename) summarize the Jefferies segment's net
+            # revenues by source in an MD&A table with an explicit
+            # "Advisory" row: "The following provides a summary of net
+            # revenues by source ... (in thousands)". This is the only
+            # advisory disclosure covering FY2013-FY2017 -- the ASC 606
+            # disaggregation note first appears in the FY2019 10-K and
+            # reaches back only to the 2018 transition period -- so this
+            # spec backfills 2013-2017 (2013 is the stub period from the
+            # Jefferies acquisition through December 31, 2013). The
+            # "total investment banking" anchor phrase is the table's
+            # own row text, for vintages whose nearby heading differs.
+            description="Jefferies net revenues by source - advisory",
+            anchors=[r"net revenues by source",
+                     r"total\s+investment\s+banking"],
+            # FY2013+ filings carry the table (Leucadia's 2010-2012 10-Ks
+            # predate the Jefferies acquisition and do not). In JFG-era
+            # 10-Ks this duplicates the ASC 606 note's years; dedupe
+            # keeps the note's cells (spec listed later, same accession),
+            # so this spec effectively supplies the years the note does
+            # not reach: 2013-2017.
+            fiscal_years=(2013, 2100),
+            # 10-Qs carry the same table twice (three- and nine-month
+            # periods); the quarterly scraper takes the QTD one and its
+            # YTD-declaring twin is skipped by the 6/9/12-month guard.
+            multi=True,
+            rows=[
+                RowSpec("advisory", [r"^advisory$"]),
+            ],
+        ),
+        TableSpec(
+            # Jefferies discloses advisory and underwriting splits in
+            # the segment note's ASC 606 revenue disaggregation (year
+            # band rows, $ in thousands), not in a year-column MD&A
+            # table. Underwriting is ECM+DCM combined. Advisory and
+            # underwriting fees are ASC 606 revenue in full, so the
+            # note's rows carry the whole business line. The note's
+            # "Equities"/"Fixed income" rows do NOT: trading revenue is
+            # mostly fair-value (non-606), leaving a few $M of
+            # contract revenue -- extracting them once understated both
+            # lines by ~10-100x (the FY2020 note shows Equities $806M
+            # vs the MD&A's $1,129M and Fixed income $16M vs
+            # $1,341M). Those two lines come from the MD&A summary spec
+            # below; this spec keeps only the fee rows. Annual only.
             description="Investment Banking and Capital Markets "
                         "revenues by source",
             anchors=[r"investment banking"],
+            fiscal_years=(2019, 2100),
+            annual_only=True,
             # Jefferies repeats the disaggregation once per fiscal year;
             # extract from every matching table.
             multi=True,
@@ -402,6 +619,33 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
                         [r"investment banking\s*[–—-]\s*advisory"]),
                 RowSpec("ecm_dcm_combined",
                         [r"investment banking\s*[–—-]\s*underwriting"]),
+            ],
+        ),
+        TableSpec(
+            # The MD&A "net revenues" summary table is the only
+            # disclosure of Jefferies' FULL Equities and Fixed income
+            # sales-and-trading revenue (the note spec above carries
+            # only their contract-revenue subset). Two layouts:
+            # FY2019-FY2021 10-Ks introduce the table with "The
+            # following provides a summary of net revenues by source";
+            # FY2022+ 10-Ks drop the phrase and style the columns
+            # "Amount / % of Net Revenues". The ASC 606 note contains
+            # neither phrase, so the anchors cannot land on it. Listed
+            # after the note spec, so on any same-key overlap the
+            # summary table's values win. The FY2019 10-K's table also
+            # carries a 2017 comparative on the JFG/ICBM basis; it is
+            # extracted (the panel has no pre-2017 Jefferies equities/
+            # FICC cells -- the Leucadia-era summary is the Jefferies
+            # segment of Leucadia National, a different basis that
+            # would splice across the 2018 transition). Annual only.
+            description="Investment Banking and Capital Markets "
+                        "net revenues summary",
+            anchors=[r"% of net revenues", r"net revenues by source"],
+            fiscal_years=(2019, 2100),
+            annual_only=True,
+            multi=True,
+            grid_columns=True,
+            rows=[
                 RowSpec("equities", [r"equities"]),
                 RowSpec("ficc", [r"fixed income"]),
             ],
@@ -511,13 +755,27 @@ class RateLimiter:
         self._last = time.monotonic()
 
 
+def _request_headers(url: str) -> dict[str, str]:
+    """Request headers; the Host override only when it matches the host.
+
+    The explicit Host header exists for the archive mirror behind
+    some proxies; sending it for a different host (the old code sent
+    Host: web.archive.org for every non-sec.gov URL) is a protocol
+    violation that efts.sec.gov answers with HTTP 400.
+    """
+    headers = {"User-Agent": USER_AGENT, "Accept-Encoding": "gzip"}
+    if "www.sec.gov" in url:
+        headers["Host"] = "www.sec.gov"
+    elif "web.archive.org" in url:
+        headers["Host"] = "web.archive.org"
+    return headers
+
+
 def _http_get(url: str, limiter: RateLimiter, retries: int = 6) -> bytes:
     import requests
     # requests (not urllib): EDGAR's WAF 403s urllib's fingerprint on
     # some paths (verified 2026-10-17). Headers mirror download.py.
-    headers = {"User-Agent": USER_AGENT, "Accept-Encoding": "gzip",
-               "Host": "www.sec.gov" if "www.sec.gov" in url
-                       else "web.archive.org"}
+    headers = _request_headers(url)
     for attempt in range(retries):
         limiter.wait()
         try:
@@ -891,6 +1149,37 @@ def detect_year_columns(table) -> dict[int, int]:
     return cols
 
 
+def detect_year_grid(table) -> dict[int, tuple[int, int]]:
+    """Year -> (start_col, end_col) from the first multi-year header row.
+
+    Grid columns accumulate colspans, so a year header spanning an
+    "Amount + % of Net Revenues" block covers both its value and its
+    percent cells. Raises YearColumnError when no header row carries
+    two or more year labels (grid_columns specs require the header).
+    Rowspans are not tracked: the tables this serves carry their
+    rowspan cells (e.g. a "% Change from Prior Year" corner cell) to
+    the right of every year column, so flat accumulation stays
+    aligned for the columns that matter.
+    """
+    for tr in table.find_all("tr")[:10]:
+        cells = tr.find_all(["th", "td"])
+        years: list[tuple[int, int, int]] = []  # (year, start, span)
+        col = 0
+        for cell in cells:
+            span = max(int(cell.get("colspan") or 1), 1)
+            m = _YEAR.search(cell.get_text(" ", strip=True))
+            if m and 1990 <= int(m.group(0)) <= 2100:
+                years.append((int(m.group(0)), col, span))
+            col += span
+        if len(years) >= 2:
+            return {y: (c, c + s) for y, c, s in years}
+    raise YearColumnError(
+        "grid_columns spec found no header row with two or more year "
+        "labels; first rows: " + " | ".join(
+            tr.get_text(" ", strip=True)[:80]
+            for tr in table.find_all("tr")[:3]))
+
+
 _UNIT_RES = [
     (re.compile(r"\$\s*in\s+millions", re.I), 1.0),
     (re.compile(r"in\s+millions", re.I), 1.0),
@@ -1053,7 +1342,15 @@ def _row_slots(cells: list) -> list[list[str]]:
 
 
 def _slot_value(slot: list[str]) -> float | None:
-    """Value of one slot: first money cell, or None if explicitly missing."""
+    """Value of one slot: first money cell, or None if explicitly missing.
+
+    A slot holding a lone "%" marker cell is a percentage column (inline
+    XBRL splits "36.8" and "%" into separate cells, e.g. Jefferies'
+    "% of Net Revenues" columns), not a money value: the whole slot is
+    skipped, not just the marker.
+    """
+    if any(t == "%" for t in slot):
+        return None
     for t in slot:
         if t in {"$", ""} or "%" in t:
             continue
@@ -1067,9 +1364,35 @@ def _slot_value(slot: list[str]) -> float | None:
     return None
 
 
-def _value_slots(cells: list) -> list[float | None]:
-    """One entry per slot (see _row_slots); None = explicitly missing."""
-    return [_slot_value(s) for s in _row_slots(cells)]
+def _money_slots(cells: list) -> list[float | None]:
+    """Value slots with percent columns dropped (see _slot_value).
+
+    Inline-XBRL tables interleave "% of Net Revenues" / "% Change"
+    columns between the period value columns (Jefferies' revenues-by-
+    source tables); a percent slot would push the following period's
+    value out of the positional zip. Two layouts:
+
+    - Split cells ("$ | 36.8 | %"): the percent is its own slot; a
+      percent-tainted slot with at most one money cell is a percent
+      column -- dropped entirely.
+    - Separator-free rows ("$ 397,780 | 25.0 % | $ 338,567 | 19.5 %"):
+      no "$"/empty split cells, so the whole row slots into one group
+      holding values AND percent cells; there the percent cells are
+      dropped and the money cells kept, or every period after the
+      first would lose its value.
+    """
+    out: list[float | None] = []
+    for s in _row_slots(cells):
+        if not any("%" in t for t in s):
+            out.append(_slot_value(s))
+            continue
+        monies = [parse_money(t) for t in s
+                  if "%" not in t and not re.fullmatch(r"\d{1,2}", t)]
+        monies = [m for m in monies if m is not None]
+        if len(monies) > 1:
+            out.extend(monies)  # separator-free row: keep the values
+        # else: a percent column -- never a money value; dropped
+    return out
 
 
 def extract_spec_rows(table, spec: TableSpec,
@@ -1104,7 +1427,24 @@ def extract_spec_rows(table, spec: TableSpec,
             f"{missing}. Labels seen (first col): "
             + str(_row_labels(table)[:25]))
     out = []
+    # Header-grid column mapping (grid_columns specs): year -> column
+    # range from the header row's colspans; see TableSpec.grid_columns.
+    grid = None
+    if spec.grid_columns:
+        if band_mode:
+            raise YearColumnError(
+                f"table '{spec.description}': grid_columns spec on a "
+                "year-band table (no year header row)")
+        grid = detect_year_grid(table)
     for rs in spec.rows:
+        if rs.pin_only:
+            # Presence already enforced above (locate_tables/missing check
+            # below); pins never emit records.
+            if not found[rs.line]:
+                raise TableNotFoundError(
+                    f"table '{spec.description}': pin row '{rs.line}' "
+                    "vanished between locate and extract")
+            continue
         tr = found[rs.line][-1] if rs.occurrence == "last" else found[rs.line][0]
         cells = tr.find_all(["th", "td"])
         if band_mode:
@@ -1120,7 +1460,28 @@ def extract_spec_rows(table, spec: TableSpec,
                 out.append({"taxonomy_line": rs.line, "year": year,
                             "net_revenue_m": round(val * unit_mult, 3)})
             continue
-        slots = _value_slots(cells[1:])
+        if grid is not None:
+            # Grid mode: each year's value is the first parseable money
+            # cell within the year's header column range. The "$" split
+            # cells and percent cells inside the range parse as None or
+            # sit after the Amount cell, so the first hit is the value.
+            for year in sorted(grid, key=lambda y: grid[y][0]):
+                c0, c1 = grid[year]
+                val = None
+                col = 0
+                for idx, cell in enumerate(cells):
+                    span = max(int(cell.get("colspan") or 1), 1)
+                    if idx > 0 and c0 <= col < c1:
+                        v = parse_money(cell.get_text(" ", strip=True))
+                        if v is not None:
+                            val = v
+                            break
+                    col += span
+                if val is not None:
+                    out.append({"taxonomy_line": rs.line, "year": year,
+                                "net_revenue_m": round(val * unit_mult, 3)})
+            continue
+        slots = _money_slots(cells[1:])
         if len(slots) < len(years):
             log.warning("table '%s': row '%s' has %d slots for %d years %s; "
                         "skipping row (not force-fitting)",
@@ -1165,6 +1526,70 @@ _FY_RE = re.compile(
     r"for the fiscal year ended\s+[a-z]+\s+\d{1,2},?\s+(\d{4})"
     r"|for the year ended\s+[a-z]+\s+\d{1,2},?\s+(\d{4})", re.I)
 
+# 10-Q covers: "For the quarterly period ended June 30, 2026". Without
+# this, a 10-Q's fiscal year falls back to the instance filename, which
+# is None for filing-agent instance names (GS's "d105283d10q_htm.xml"),
+# and fiscal-year windows are then bypassed ("applied anyway") instead of
+# enforced.
+_FQ_RE = re.compile(
+    r"quarterly period ended\s+[a-z]+\s+\d{1,2},?\s+(\d{4})", re.I)
+
+_DT_RE = re.compile(rb"<dei:DocumentType[^>]*>\s*([^<]+?)\s*</")
+_DPE_RE = re.compile(
+    rb"<dei:DocumentPeriodEndDate[^>]*>\s*([^<]+?)\s*</")
+
+
+def _instance_field(acc_dir, rx: re.Pattern) -> str | None:
+    """First match of `rx` across an accession's XBRL instances.
+
+    Scans instance files (skipping the R*.htm rendering files and
+    FilingSummary.xml) and returns the first captured value, decoded.
+    """
+    acc_dir = Path(acc_dir)
+    if not acc_dir.is_dir():
+        return None
+    for p in sorted(acc_dir.iterdir()):
+        if p.name.startswith("R") or p.name == "FilingSummary.xml":
+            continue
+        if p.suffix.lower() not in (".xml", ".xbrl"):
+            continue
+        try:
+            m = rx.search(p.read_bytes())
+        except OSError:
+            continue
+        if m:
+            return m.group(1).decode("utf-8", "replace").strip()
+    return None
+
+
+def dir_form_type(acc_dir) -> str | None:
+    """'10-Q', '10-K', '10-Q/A'... from an accession directory.
+
+    Reads dei:DocumentType from the accession's XBRL instance files
+    (the first instance that states it). This is the definitive form
+    type: instance *filenames* are not (Goldman Sachs's 2019-2022
+    filings via a filing agent name instances "d105283d10q_htm.xml",
+    with no period date, so filename heuristics cannot classify them).
+    Returns None when no instance states a document type (e.g.
+    pre-XBRL-era filings).
+    """
+    return _instance_field(acc_dir, _DT_RE)
+
+
+def dir_period_end(acc_dir) -> str | None:
+    """'2020-03-31' from an accession's dei:DocumentPeriodEndDate.
+
+    The definitive period end for the filing; unlike instance filenames
+    it survives filing-agent naming conventions. None for pre-XBRL-era
+    accessions.
+    """
+    return _instance_field(acc_dir, _DPE_RE)
+
+
+def instance_form_type(cik: str, accession: str) -> str | None:
+    """dir_form_type for a (cik, accession) under RAW_ROOT."""
+    return dir_form_type(RAW_ROOT / cik / accession)
+
 
 def _instance_fiscal_year(cik: str, accession: str) -> int | None:
     """Fiscal year from the accession's XBRL instance filename.
@@ -1199,17 +1624,28 @@ def _instance_fiscal_year(cik: str, accession: str) -> int | None:
 
 def filing_fiscal_year(soup: BeautifulSoup, cik: str = "",
                        accession: str = "") -> int | None:
-    """The 10-K's fiscal year.
+    """The filing's fiscal year.
 
-    From the cover ("For the fiscal year ended December 31, 2025"),
-    falling back to the accession's XBRL instance filename. Returns None
-    when neither yields a year.
+    From the cover ("For the fiscal year ended December 31, 2025" for a
+    10-K; "For the quarterly period ended March 31, 2026" for a 10-Q).
+    The 10-K phrase is matched in the first 6,000 characters (its cover
+    is near the top); 10-Q covers are matched over the whole document
+    because front-loaded TOC/XBRL blocks can push them far down (GS's
+    2020-2022 10-Q cover pages start ~200k characters in). Falls back to
+    the accession's dei:DocumentPeriodEndDate year, then to the XBRL
+    instance filename. Returns None when none yields a year.
     """
-    text = soup.get_text(" ", strip=True)[:6000]
-    m = _FY_RE.search(text)
+    text = soup.get_text(" ", strip=True)
+    m = _FY_RE.search(text[:6000])
     if m:
         return int(m.group(1) or m.group(2))
+    m = _FQ_RE.search(text)
+    if m:
+        return int(m.group(1))
     if cik and accession:
+        pe = dir_period_end(RAW_ROOT / cik / accession)
+        if pe and len(pe) >= 4 and pe[:4].isdigit():
+            return int(pe[:4])
         return _instance_fiscal_year(cik, accession)
     return None
 
@@ -1307,30 +1743,72 @@ def parse_filing(firm: str, cik: str, accession: str,
 # Filing enumeration + dedupe + output
 # ---------------------------------------------------------------------------
 
+def _enumerate_10k_submissions(cik: str, since: str,
+                               limiter: RateLimiter) -> list[dict] | None:
+    """List 10-K accessions for a CIK via the data.sec.gov submissions API.
+
+    Returns None on any fetch/parse failure (caller falls back to
+    full-text search). The API's `filings.recent` block holds only the
+    latest ~1000 filings; older ones live in the continuation files
+    listed under `filings.files`, which are fetched and merged.
+    """
+    try:
+        data = json.loads(_http_get(
+            f"https://data.sec.gov/submissions/CIK{cik}.json",
+            limiter).decode("utf-8"))
+        pages = [data["filings"]["recent"]]
+        for extra in data["filings"].get("files", []):
+            pages.append(json.loads(_http_get(
+                "https://data.sec.gov/submissions/" + extra["name"],
+                limiter).decode("utf-8")))
+    except Exception as e:  # noqa: BLE001 -- fall back, don't crash the run
+        log.warning("submissions API failed for %s (%s); "
+                    "falling back to full-text search", cik, e)
+        return None
+    out = []
+    for page in pages:
+        for acc, form, fdate, period in zip(
+                page.get("accessionNumber", []),
+                page.get("form", []),
+                page.get("filingDate", []),
+                page.get("reportDate", [])):
+            if form != "10-K" or fdate < since:
+                continue
+            out.append({"accession": acc, "file_date": fdate,
+                        "period_ending": period})
+    return out
+
+
 def enumerate_10k(cik: str, since: str = "2011-01-01",
                   limiter: RateLimiter | None = None) -> list[dict]:
-    """List 10-K accessions for a CIK via EDGAR full-text search.
+    """List 10-K accessions for a CIK.
 
-    Used instead of the submissions API so environments without
-    data.sec.gov access can still enumerate filings.
+    Primary source: the data.sec.gov submissions API (complete and
+    exact per-CIK form lists). Fallback: EDGAR full-text search by
+    company name, for environments without data.sec.gov access. The
+    fallback is a relevance-ranked name query capped at 100 hits --
+    broad names ("Citigroup") drown the firm's own 10-Ks under
+    same-named trusts' filings, so it must never be the primary.
     """
-    import urllib.request
-    import urllib.parse
     limiter = limiter or RateLimiter()
-    q = urllib.parse.quote(f'"{FIRMS[[k for k, v in FIRMS.items() if v["cik"] == cik][0]]["name"]}"')
-    url = ("https://efts.sec.gov/LATEST/search-index?q=" + q
-           + "&dateRange=custom&startdt=" + since
-           + "&enddt=2100-01-01&forms=10-K&size=100")
-    data = json.loads(_http_get(url, limiter).decode("utf-8"))
-    out = []
-    for h in data["hits"]["hits"]:
-        s = h["_source"]
-        if s.get("form") != "10-K":
-            continue
-        if cik.lstrip("0") not in [c.lstrip("0") for c in s.get("ciks", [])]:
-            continue
-        out.append({"accession": s["adsh"], "file_date": s["file_date"],
-                    "period_ending": s.get("period_ending")})
+    out = _enumerate_10k_submissions(cik, since, limiter)
+    if out is None:
+        import urllib.request
+        import urllib.parse
+        q = urllib.parse.quote(f'"{FIRMS[[k for k, v in FIRMS.items() if v["cik"] == cik][0]]["name"]}"')
+        url = ("https://efts.sec.gov/LATEST/search-index?q=" + q
+               + "&dateRange=custom&startdt=" + since
+               + "&enddt=2100-01-01&forms=10-K&size=100")
+        data = json.loads(_http_get(url, limiter).decode("utf-8"))
+        out = []
+        for h in data["hits"]["hits"]:
+            s = h["_source"]
+            if s.get("form") != "10-K":
+                continue
+            if cik.lstrip("0") not in [c.lstrip("0") for c in s.get("ciks", [])]:
+                continue
+            out.append({"accession": s["adsh"], "file_date": s["file_date"],
+                        "period_ending": s.get("period_ending")})
     seen, uniq = set(), []
     for r in sorted(out, key=lambda r: r["file_date"]):
         if r["accession"] not in seen:
@@ -1343,12 +1821,15 @@ def dedupe_records(records: list[dict]) -> list[dict]:
     """Dedupe (firm, line, year) across overlapping filings.
 
     The later filing's restated value wins; every override is logged.
+    "Later" is the accession's (filing year, sequence) — accession
+    strings do not sort chronologically across filing-agent prefixes.
     """
     best: dict[tuple, dict] = {}
     for r in records:
         key = (r["firm"], r["taxonomy_line"], r["year"])
         prev = best.get(key)
-        if prev is None or (r["accession"],) >= (prev["accession"],):
+        if prev is None or (accession_order_key(r["accession"])
+                            >= accession_order_key(prev["accession"])):
             if prev is not None and prev["net_revenue_m"] != r["net_revenue_m"]:
                 log.info("restatement: %s %s %s %s -> %s (%s supersedes %s)",
                          r["firm"], r["taxonomy_line"], r["year"],
@@ -1362,7 +1843,8 @@ def dedupe_records(records: list[dict]) -> list[dict]:
 def build_csv(firms: Iterable[str], accessions: dict[str, list[str]] | None,
               out_csv: Path = OUT_CSV,
               raw_root: Path = RAW_ROOT,
-              mirror: str = "edgar") -> pl.DataFrame:
+              mirror: str = "edgar",
+              since: str = "2010-01-01") -> pl.DataFrame:
     """Fetch, parse, dedupe and write the MD&A subsplits CSV."""
     base = EDGAR_ARCHIVES if mirror == "edgar" else ARCHIVE_BASE
     limiter = RateLimiter()
@@ -1374,7 +1856,8 @@ def build_csv(firms: Iterable[str], accessions: dict[str, list[str]] | None,
             continue
         cik = FIRMS[firm]["cik"]
         accs = (accessions[firm] if accessions and firm in accessions
-                else [f["accession"] for f in enumerate_10k(cik, limiter=limiter)])
+                else [f["accession"] for f in
+                      enumerate_10k(cik, since=since, limiter=limiter)])
         for acc in accs:
             try:
                 html_path = fetch_filing(cik, acc, raw_root, limiter, base)
@@ -1404,7 +1887,13 @@ def main(argv: list[str] | None = None) -> int:
                     help="comma-separated firm codes (default: all spec'd)")
     ap.add_argument("--accessions", default=None,
                     help="JSON file mapping firm -> [accessions]; "
-                         "default: enumerate via EDGAR full-text search")
+                         "default: enumerate via the data.sec.gov "
+                         "submissions API")
+    ap.add_argument("--since", default="2010-01-01",
+                    help="earliest filing date to enumerate (default "
+                         "2010-01-01: the FY2009 10-Ks filed in early "
+                         "2010 carry the restated 2007-2009 cells in "
+                         "the committed panel)")
     ap.add_argument("--out", default=str(OUT_CSV))
     ap.add_argument("--raw-root", default=str(RAW_ROOT))
     ap.add_argument("--mirror", choices=["edgar", "archive"], default="edgar",

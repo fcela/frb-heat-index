@@ -1,9 +1,9 @@
 {
   "n_firms": 12,
   "n_lines": 11,
-  "year_min": 2006,
+  "year_min": 2007,
   "year_max": 2026,
-  "n_cells": 638,
+  "n_cells": 661,
   "taxonomy_lines": [
     "advisory",
     "ecm",
@@ -19,31 +19,17 @@
   ],
   "unmapped_segments": [
     {
-      "firm": "Citigroup",
-      "segment_native": "Citicorp | Asia",
-      "taxonomy_line_attempt": null,
-      "year": 2016,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Houlihan Lokey",
-      "segment_native": "Financial Restructuring",
-      "taxonomy_line_attempt": null,
-      "year": 2026,
-      "layer": "xbrl"
-    },
-    {
       "firm": "Goldman Sachs",
-      "segment_native": "Global Markets",
+      "segment_native": "Americas",
       "taxonomy_line_attempt": null,
-      "year": 2019,
+      "year": 2012,
       "layer": "xbrl"
     },
     {
-      "firm": "Lazard",
-      "segment_native": "Corporate",
+      "firm": "Bank of America",
+      "segment_native": "All Other",
       "taxonomy_line_attempt": null,
-      "year": 2014,
+      "year": 2020,
       "layer": "xbrl"
     },
     {
@@ -54,59 +40,17 @@
       "layer": "xbrl"
     },
     {
-      "firm": "Bank of America",
-      "segment_native": "ALM activities",
+      "firm": "Morgan Stanley",
+      "segment_native": "Institutional Securities",
       "taxonomy_line_attempt": null,
       "year": 2012,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Bank of America",
-      "segment_native": "ALM activities",
-      "taxonomy_line_attempt": null,
-      "year": 2017,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2013,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Morgan Stanley",
-      "segment_native": "Morgan Stanley",
-      "taxonomy_line_attempt": null,
-      "year": 2010,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Citigroup",
-      "segment_native": "Citi Holdings",
-      "taxonomy_line_attempt": null,
-      "year": 2014,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Wells Fargo",
-      "segment_native": "Commercial Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2018,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Bank of America",
-      "segment_native": "All Other",
-      "taxonomy_line_attempt": null,
-      "year": 2025,
       "layer": "xbrl"
     },
     {
       "firm": "Morgan Stanley",
       "segment_native": "Institutional Securities",
       "taxonomy_line_attempt": null,
-      "year": 2019,
+      "year": 2018,
       "layer": "xbrl"
     },
     {
@@ -117,45 +61,80 @@
       "layer": "xbrl"
     },
     {
-      "firm": "Morgan Stanley",
-      "segment_native": "Institutional Securities",
+      "firm": "Goldman Sachs",
+      "segment_native": "Corporate",
       "taxonomy_line_attempt": null,
-      "year": 2020,
+      "year": 2010,
       "layer": "xbrl"
     },
     {
-      "firm": "Bank of America",
-      "segment_native": "All Other",
+      "firm": "Houlihan Lokey",
+      "segment_native": "Financial Restructuring",
       "taxonomy_line_attempt": null,
       "year": 2023,
       "layer": "xbrl"
     },
     {
-      "firm": "Goldman Sachs",
-      "segment_native": "Americas",
+      "firm": "JPMorgan",
+      "segment_native": "Commercial & Investment Bank",
       "taxonomy_line_attempt": null,
-      "year": 2016,
+      "year": 2025,
       "layer": "xbrl"
     },
     {
-      "firm": "Goldman Sachs",
-      "segment_native": "Global Banking & Markets",
+      "firm": "Citigroup",
+      "segment_native": "Citicorp | Asia",
       "taxonomy_line_attempt": null,
-      "year": 2022,
+      "year": 2019,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "Asia",
+      "taxonomy_line_attempt": null,
+      "year": 2020,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Community Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2014,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Bank of America",
+      "segment_native": "ALM activities",
+      "taxonomy_line_attempt": null,
+      "year": 2015,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Bank of America",
+      "segment_native": "ALM activities",
+      "taxonomy_line_attempt": null,
+      "year": 2018,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "PJT Partners",
+      "segment_native": "Interest Income from Placement Fees and Other",
+      "taxonomy_line_attempt": null,
+      "year": 2024,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Lazard",
+      "segment_native": "Corporate",
+      "taxonomy_line_attempt": null,
+      "year": 2011,
       "layer": "xbrl"
     },
     {
       "firm": "Wells Fargo",
       "segment_native": "Commercial Banking",
       "taxonomy_line_attempt": null,
-      "year": 2025,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2019,
+      "year": 2024,
       "layer": "xbrl"
     },
     {
@@ -167,16 +146,37 @@
     },
     {
       "firm": "Lazard",
-      "segment_native": "Corporate",
+      "segment_native": "Incentive Fees",
       "taxonomy_line_attempt": null,
-      "year": 2013,
+      "year": 2025,
       "layer": "xbrl"
     },
     {
-      "firm": "Jefferies",
-      "segment_native": "All other",
+      "firm": "Evercore",
+      "segment_native": "Evercore",
       "taxonomy_line_attempt": null,
-      "year": 2015,
+      "year": 2012,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Goldman Sachs",
+      "segment_native": "Global Banking & Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2022,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Bank of America",
+      "segment_native": "ALM activities",
+      "taxonomy_line_attempt": null,
+      "year": 2012,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Goldman Sachs",
+      "segment_native": "Americas",
+      "taxonomy_line_attempt": null,
+      "year": 2014,
       "layer": "xbrl"
     },
     {
@@ -187,22 +187,134 @@
       "layer": "xbrl"
     },
     {
-      "firm": "Jefferies",
-      "segment_native": "Reportable Segments:",
+      "firm": "JPMorgan",
+      "segment_native": "Commercial Banking",
       "taxonomy_line_attempt": null,
-      "year": 2019,
+      "year": 2018,
       "layer": "xbrl"
     },
     {
       "firm": "Bank of America",
-      "segment_native": "ALM activities",
+      "segment_native": "All Other Company Segments",
+      "taxonomy_line_attempt": null,
+      "year": 2010,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Goldman Sachs",
+      "segment_native": "Global Banking & Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2025,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "JPMorgan",
+      "segment_native": "Commercial Banking",
       "taxonomy_line_attempt": null,
       "year": 2014,
       "layer": "xbrl"
     },
     {
+      "firm": "Bank of America",
+      "segment_native": "All Other",
+      "taxonomy_line_attempt": null,
+      "year": 2021,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "JPMorgan",
+      "segment_native": "Commercial & Investment Bank",
+      "taxonomy_line_attempt": null,
+      "year": 2022,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Community Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2016,
+      "layer": "xbrl"
+    },
+    {
       "firm": "Morgan Stanley",
       "segment_native": "Institutional Securities",
+      "taxonomy_line_attempt": null,
+      "year": 2022,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Jefferies",
+      "segment_native": "Investment Banking And Capital Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2022,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "Citicorp | Asia",
+      "taxonomy_line_attempt": null,
+      "year": 2018,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Lazard",
+      "segment_native": "Corporate",
+      "taxonomy_line_attempt": null,
+      "year": 2017,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Evercore",
+      "segment_native": "Evercore",
+      "taxonomy_line_attempt": null,
+      "year": 2010,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Lazard",
+      "segment_native": "Corporate",
+      "taxonomy_line_attempt": null,
+      "year": 2021,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Community Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2013,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Lazard",
+      "segment_native": "Corporate",
+      "taxonomy_line_attempt": null,
+      "year": 2022,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "JPMorgan",
+      "segment_native": "Commercial Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2012,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Jefferies",
+      "segment_native": "Investment Banking And Capital Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2020,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Lazard",
+      "segment_native": "Corporate",
+      "taxonomy_line_attempt": null,
+      "year": 2014,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "JPMorgan",
+      "segment_native": "Commercial Banking",
       "taxonomy_line_attempt": null,
       "year": 2013,
       "layer": "xbrl"
@@ -211,21 +323,196 @@
       "firm": "Bank of America",
       "segment_native": "All Other",
       "taxonomy_line_attempt": null,
-      "year": 2024,
+      "year": 2022,
       "layer": "xbrl"
     },
     {
       "firm": "Houlihan Lokey",
       "segment_native": "Financial Restructuring",
       "taxonomy_line_attempt": null,
+      "year": 2019,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "PJT Partners",
+      "segment_native": "Interest Income from Placement Fees and Other",
+      "taxonomy_line_attempt": null,
+      "year": 2025,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Morgan Stanley",
+      "segment_native": "Institutional Securities",
+      "taxonomy_line_attempt": null,
+      "year": 2014,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Jefferies",
+      "segment_native": "Investment Banking And Capital Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2024,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Goldman Sachs",
+      "segment_native": "Global Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2019,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Houlihan Lokey",
+      "segment_native": "Financial Restructuring",
+      "taxonomy_line_attempt": null,
+      "year": 2025,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Goldman Sachs",
+      "segment_native": "Global Banking & Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2024,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Goldman Sachs",
+      "segment_native": "Global Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2017,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "JPMorgan",
+      "segment_native": "Commercial Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2011,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Houlihan Lokey",
+      "segment_native": "Financial Restructuring",
+      "taxonomy_line_attempt": null,
+      "year": 2020,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "Asia",
+      "taxonomy_line_attempt": null,
+      "year": 2012,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Morgan Stanley",
+      "segment_native": "Institutional Securities",
+      "taxonomy_line_attempt": null,
+      "year": 2017,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Houlihan Lokey",
+      "segment_native": "Financial Restructuring",
+      "taxonomy_line_attempt": null,
+      "year": 2016,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Jefferies",
+      "segment_native": "All other",
+      "taxonomy_line_attempt": null,
+      "year": 2014,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Lazard",
+      "segment_native": "Corporate",
+      "taxonomy_line_attempt": null,
+      "year": 2012,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Goldman Sachs",
+      "segment_native": "Americas",
+      "taxonomy_line_attempt": null,
+      "year": 2015,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Bank of America",
+      "segment_native": "All Other",
+      "taxonomy_line_attempt": null,
+      "year": 2023,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Houlihan Lokey",
+      "segment_native": "Financial Restructuring",
+      "taxonomy_line_attempt": null,
+      "year": 2021,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Houlihan Lokey",
+      "segment_native": "Financial Restructuring",
+      "taxonomy_line_attempt": null,
+      "year": 2018,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "JPMorgan",
+      "segment_native": "Commercial Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2020,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "Citicorp | Asia",
+      "taxonomy_line_attempt": null,
+      "year": 2016,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "JPMorgan",
+      "segment_native": "Commercial & Investment Bank",
+      "taxonomy_line_attempt": null,
       "year": 2023,
       "layer": "xbrl"
     },
     {
       "firm": "Jefferies",
-      "segment_native": "Operating Segments",
+      "segment_native": "Investment Banking And Capital Markets",
       "taxonomy_line_attempt": null,
-      "year": 2023,
+      "year": 2025,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "JPMorgan",
+      "segment_native": "Commercial Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2017,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Jefferies",
+      "segment_native": "All other",
+      "taxonomy_line_attempt": null,
+      "year": 2015,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Lazard",
+      "segment_native": "Corporate",
+      "taxonomy_line_attempt": null,
+      "year": 2010,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Morgan Stanley",
+      "segment_native": "Morgan Stanley",
+      "taxonomy_line_attempt": null,
+      "year": 2010,
       "layer": "xbrl"
     },
     {
@@ -243,31 +530,10 @@
       "layer": "xbrl"
     },
     {
-      "firm": "Wells Fargo",
-      "segment_native": "Community Banking",
+      "firm": "Goldman Sachs",
+      "segment_native": "Americas",
       "taxonomy_line_attempt": null,
-      "year": 2015,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Lazard",
-      "segment_native": "Corporate",
-      "taxonomy_line_attempt": null,
-      "year": 2010,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Wells Fargo",
-      "segment_native": "Community Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2014,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Wells Fargo",
-      "segment_native": "Card interchange and network revenue",
-      "taxonomy_line_attempt": null,
-      "year": 2022,
+      "year": 2013,
       "layer": "xbrl"
     },
     {
@@ -278,24 +544,10 @@
       "layer": "xbrl"
     },
     {
-      "firm": "Wells Fargo",
-      "segment_native": "Commercial Banking",
+      "firm": "PJT Partners",
+      "segment_native": "Interest Income from Placement Fees and Other",
       "taxonomy_line_attempt": null,
-      "year": 2023,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Citigroup",
-      "segment_native": "All Other",
-      "taxonomy_line_attempt": null,
-      "year": 2023,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Goldman Sachs",
-      "segment_native": "Americas",
-      "taxonomy_line_attempt": null,
-      "year": 2012,
+      "year": 2021,
       "layer": "xbrl"
     },
     {
@@ -306,15 +558,50 @@
       "layer": "xbrl"
     },
     {
-      "firm": "Citigroup",
-      "segment_native": "All Other",
+      "firm": "Morgan Stanley",
+      "segment_native": "Institutional Securities",
       "taxonomy_line_attempt": null,
-      "year": 2025,
+      "year": 2015,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "Citi Holdings",
+      "taxonomy_line_attempt": null,
+      "year": 2013,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Jefferies",
+      "segment_native": "Investment Banking And Capital Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2021,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "Citicorp | Asia",
+      "taxonomy_line_attempt": null,
+      "year": 2015,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "Citigroup",
+      "taxonomy_line_attempt": null,
+      "year": 2011,
       "layer": "xbrl"
     },
     {
       "firm": "JPMorgan",
       "segment_native": "Commercial Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2010,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Bank of America",
+      "segment_native": "ALM activities",
       "taxonomy_line_attempt": null,
       "year": 2014,
       "layer": "xbrl"
@@ -327,372 +614,22 @@
       "layer": "xbrl"
     },
     {
-      "firm": "Lazard",
-      "segment_native": "Corporate",
-      "taxonomy_line_attempt": null,
-      "year": 2017,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Goldman Sachs",
-      "segment_native": "Global Markets",
-      "taxonomy_line_attempt": null,
-      "year": 2017,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Wells Fargo",
-      "segment_native": "Community Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2016,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Lazard",
-      "segment_native": "Corporate",
-      "taxonomy_line_attempt": null,
-      "year": 2012,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Morgan Stanley",
-      "segment_native": "Institutional Securities",
-      "taxonomy_line_attempt": null,
-      "year": 2015,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Bank of America",
-      "segment_native": "ALM activities",
-      "taxonomy_line_attempt": null,
-      "year": 2018,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Citigroup",
-      "segment_native": "All Other",
-      "taxonomy_line_attempt": null,
-      "year": 2024,
-      "layer": "xbrl"
-    },
-    {
       "firm": "Houlihan Lokey",
       "segment_native": "Financial Restructuring",
       "taxonomy_line_attempt": null,
-      "year": 2015,
+      "year": 2022,
       "layer": "xbrl"
     },
     {
-      "firm": "Houlihan Lokey",
-      "segment_native": "Financial Restructuring",
-      "taxonomy_line_attempt": null,
-      "year": 2024,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Morgan Stanley",
-      "segment_native": "Institutional Securities",
-      "taxonomy_line_attempt": null,
-      "year": 2021,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Evercore",
-      "segment_native": "Evercore",
-      "taxonomy_line_attempt": null,
-      "year": 2011,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Bank of America",
-      "segment_native": "Asset And Liability Management Activities",
-      "taxonomy_line_attempt": null,
-      "year": 2011,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Bank of America",
-      "segment_native": "All Other Company Segments",
-      "taxonomy_line_attempt": null,
-      "year": 2010,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Goldman Sachs",
-      "segment_native": "Americas",
-      "taxonomy_line_attempt": null,
-      "year": 2014,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Goldman Sachs",
-      "segment_native": "Global Markets",
-      "taxonomy_line_attempt": null,
-      "year": 2020,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Houlihan Lokey",
-      "segment_native": "Financial Restructuring",
-      "taxonomy_line_attempt": null,
-      "year": 2020,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Houlihan Lokey",
-      "segment_native": "Financial Restructuring",
-      "taxonomy_line_attempt": null,
-      "year": 2016,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2017,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Wells Fargo",
-      "segment_native": "Card interchange and network revenue",
-      "taxonomy_line_attempt": null,
-      "year": 2020,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Wells Fargo",
-      "segment_native": "Commercial Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2024,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Bank of America",
-      "segment_native": "All Other",
-      "taxonomy_line_attempt": null,
-      "year": 2021,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Goldman Sachs",
-      "segment_native": "Americas",
-      "taxonomy_line_attempt": null,
-      "year": 2013,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Jefferies",
-      "segment_native": "Operating Segments",
-      "taxonomy_line_attempt": null,
-      "year": 2024,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Citigroup",
-      "segment_native": "Citigroup",
-      "taxonomy_line_attempt": null,
-      "year": 2012,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Morgan Stanley",
-      "segment_native": "Institutional Securities",
-      "taxonomy_line_attempt": null,
-      "year": 2017,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Goldman Sachs",
-      "segment_native": "Americas",
-      "taxonomy_line_attempt": null,
-      "year": 2015,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Houlihan Lokey",
-      "segment_native": "Financial Restructuring",
-      "taxonomy_line_attempt": null,
-      "year": 2017,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Citigroup",
-      "segment_native": "Citicorp | Asia",
-      "taxonomy_line_attempt": null,
-      "year": 2019,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Houlihan Lokey",
-      "segment_native": "Financial Restructuring",
-      "taxonomy_line_attempt": null,
-      "year": 2021,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Jefferies",
-      "segment_native": "Operating Segments",
-      "taxonomy_line_attempt": null,
-      "year": 2021,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Wells Fargo",
-      "segment_native": "Community Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2010,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial & Investment Bank",
-      "taxonomy_line_attempt": null,
-      "year": 2025,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Lazard",
-      "segment_native": "Corporate",
-      "taxonomy_line_attempt": null,
-      "year": 2024,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Goldman Sachs",
-      "segment_native": "Global Markets",
-      "taxonomy_line_attempt": null,
-      "year": 2021,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Jefferies",
-      "segment_native": "Minimum",
-      "taxonomy_line_attempt": null,
-      "year": 2025,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2016,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Lazard",
-      "segment_native": "Corporate",
-      "taxonomy_line_attempt": null,
-      "year": 2020,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial & Investment Bank",
+      "firm": "PJT Partners",
+      "segment_native": "Interest Income from Placement Fees and Other",
       "taxonomy_line_attempt": null,
       "year": 2023,
       "layer": "xbrl"
     },
     {
-      "firm": "Citigroup",
-      "segment_native": "Citicorp | Asia",
-      "taxonomy_line_attempt": null,
-      "year": 2015,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2020,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Citigroup",
-      "segment_native": "Citigroup",
-      "taxonomy_line_attempt": null,
-      "year": 2011,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Houlihan Lokey",
-      "segment_native": "Financial Restructuring",
-      "taxonomy_line_attempt": null,
-      "year": 2019,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Lazard",
-      "segment_native": "Corporate",
-      "taxonomy_line_attempt": null,
-      "year": 2019,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2011,
-      "layer": "xbrl"
-    },
-    {
       "firm": "Bank of America",
       "segment_native": "All Other",
-      "taxonomy_line_attempt": null,
-      "year": 2020,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2021,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Lazard",
-      "segment_native": "Corporate",
-      "taxonomy_line_attempt": null,
-      "year": 2018,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial & Investment Bank",
-      "taxonomy_line_attempt": null,
-      "year": 2024,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Jefferies",
-      "segment_native": "All other",
-      "taxonomy_line_attempt": null,
-      "year": 2014,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Bank of America",
-      "segment_native": "ALM activities",
-      "taxonomy_line_attempt": null,
-      "year": 2015,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Goldman Sachs",
-      "segment_native": "Global Banking & Markets",
-      "taxonomy_line_attempt": null,
-      "year": 2023,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Houlihan Lokey",
-      "segment_native": "Financial Restructuring",
-      "taxonomy_line_attempt": null,
-      "year": 2025,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Morgan Stanley",
-      "segment_native": "Institutional Securities",
       "taxonomy_line_attempt": null,
       "year": 2025,
       "layer": "xbrl"
@@ -705,241 +642,10 @@
       "layer": "xbrl"
     },
     {
-      "firm": "Citigroup",
-      "segment_native": "Citigroup",
-      "taxonomy_line_attempt": null,
-      "year": 2010,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Jefferies",
-      "segment_native": "Operating Segments",
-      "taxonomy_line_attempt": null,
-      "year": 2022,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Bank of America",
-      "segment_native": "All Other",
-      "taxonomy_line_attempt": null,
-      "year": 2022,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2015,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Morgan Stanley",
-      "segment_native": "Institutional Securities",
-      "taxonomy_line_attempt": null,
-      "year": 2018,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Citigroup",
-      "segment_native": "Asia",
+      "firm": "PJT Partners",
+      "segment_native": "Interest Income from Placement Fees and Other",
       "taxonomy_line_attempt": null,
       "year": 2020,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2018,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Jefferies",
-      "segment_native": "All other",
-      "taxonomy_line_attempt": null,
-      "year": 2016,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Wells Fargo",
-      "segment_native": "Card interchange and network revenues",
-      "taxonomy_line_attempt": null,
-      "year": 2019,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Citigroup",
-      "segment_native": "Citigroup",
-      "taxonomy_line_attempt": null,
-      "year": 2013,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Citigroup",
-      "segment_native": "All Other",
-      "taxonomy_line_attempt": null,
-      "year": 2022,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Jefferies",
-      "segment_native": "Operating Segments",
-      "taxonomy_line_attempt": null,
-      "year": 2020,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Card Services",
-      "taxonomy_line_attempt": null,
-      "year": 2010,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Evercore",
-      "segment_native": "Evercore",
-      "taxonomy_line_attempt": null,
-      "year": 2012,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Wells Fargo",
-      "segment_native": "Card interchange and network revenue",
-      "taxonomy_line_attempt": null,
-      "year": 2021,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Jefferies",
-      "segment_native": "Corporate",
-      "taxonomy_line_attempt": null,
-      "year": 2011,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Lazard",
-      "segment_native": "Corporate",
-      "taxonomy_line_attempt": null,
-      "year": 2022,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Goldman Sachs",
-      "segment_native": "Global Markets",
-      "taxonomy_line_attempt": null,
-      "year": 2018,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Jefferies",
-      "segment_native": "Consolidation adjustments",
-      "taxonomy_line_attempt": null,
-      "year": 2017,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Lazard",
-      "segment_native": "Corporate",
-      "taxonomy_line_attempt": null,
-      "year": 2021,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Wells Fargo",
-      "segment_native": "Community Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2013,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Goldman Sachs",
-      "segment_native": "Global Banking & Markets",
-      "taxonomy_line_attempt": null,
-      "year": 2025,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Goldman Sachs",
-      "segment_native": "Corporate",
-      "taxonomy_line_attempt": null,
-      "year": 2011,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Morgan Stanley",
-      "segment_native": "Institutional Securities",
-      "taxonomy_line_attempt": null,
-      "year": 2016,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Houlihan Lokey",
-      "segment_native": "Financial Restructuring",
-      "taxonomy_line_attempt": null,
-      "year": 2022,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial & Investment Bank",
-      "taxonomy_line_attempt": null,
-      "year": 2022,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Morgan Stanley",
-      "segment_native": "Institutional Securities",
-      "taxonomy_line_attempt": null,
-      "year": 2023,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Houlihan Lokey",
-      "segment_native": "Financial Restructuring",
-      "taxonomy_line_attempt": null,
-      "year": 2018,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Morgan Stanley",
-      "segment_native": "Institutional Securities",
-      "taxonomy_line_attempt": null,
-      "year": 2014,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Citigroup",
-      "segment_native": "Citicorp | Asia",
-      "taxonomy_line_attempt": null,
-      "year": 2018,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Citigroup",
-      "segment_native": "Citicorp | Asia",
-      "taxonomy_line_attempt": null,
-      "year": 2017,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Evercore",
-      "segment_native": "Evercore",
-      "taxonomy_line_attempt": null,
-      "year": 2010,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Goldman Sachs",
-      "segment_native": "Global Banking & Markets",
-      "taxonomy_line_attempt": null,
-      "year": 2024,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Lazard",
-      "segment_native": "Incentive Fees",
-      "taxonomy_line_attempt": null,
-      "year": 2025,
       "layer": "xbrl"
     },
     {
@@ -950,38 +656,290 @@
       "layer": "xbrl"
     },
     {
-      "firm": "Goldman Sachs",
-      "segment_native": "Corporate",
+      "firm": "PJT Partners",
+      "segment_native": "Interest Income from Placement Fees and Other",
       "taxonomy_line_attempt": null,
-      "year": 2010,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Lazard",
-      "segment_native": "Corporate",
-      "taxonomy_line_attempt": null,
-      "year": 2011,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Wells Fargo",
-      "segment_native": "Community Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2012,
-      "layer": "xbrl"
-    },
-    {
-      "firm": "Wells Fargo",
-      "segment_native": "Community Banking",
-      "taxonomy_line_attempt": null,
-      "year": 2011,
+      "year": 2018,
       "layer": "xbrl"
     },
     {
       "firm": "Morgan Stanley",
       "segment_native": "Institutional Securities",
       "taxonomy_line_attempt": null,
-      "year": 2012,
+      "year": 2025,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Goldman Sachs",
+      "segment_native": "Corporate",
+      "taxonomy_line_attempt": null,
+      "year": 2011,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "Citi Holdings",
+      "taxonomy_line_attempt": null,
+      "year": 2014,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Evercore",
+      "segment_native": "Evercore",
+      "taxonomy_line_attempt": null,
+      "year": 2011,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Goldman Sachs",
+      "segment_native": "Global Banking & Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2021,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Jefferies",
+      "segment_native": "Consolidation adjustments",
+      "taxonomy_line_attempt": null,
+      "year": 2017,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "JPMorgan",
+      "segment_native": "Commercial Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2016,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Lazard",
+      "segment_native": "Corporate",
+      "taxonomy_line_attempt": null,
+      "year": 2013,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Card interchange and network revenue",
+      "taxonomy_line_attempt": null,
+      "year": 2020,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Jefferies",
+      "segment_native": "Reportable Segments:",
+      "taxonomy_line_attempt": null,
+      "year": 2019,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Community Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2010,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Morgan Stanley",
+      "segment_native": "Institutional Securities",
+      "taxonomy_line_attempt": null,
+      "year": 2021,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "All Other",
+      "taxonomy_line_attempt": null,
+      "year": 2025,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Morgan Stanley",
+      "segment_native": "Institutional Securities",
+      "taxonomy_line_attempt": null,
+      "year": 2023,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Bank of America",
+      "segment_native": "All Other Company Segments",
+      "taxonomy_line_attempt": null,
+      "year": 2011,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "Citicorp | Asia",
+      "taxonomy_line_attempt": null,
+      "year": 2017,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Community Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2011,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "Citigroup",
+      "taxonomy_line_attempt": null,
+      "year": 2010,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "PJT Partners",
+      "segment_native": "Interest Income from Placement Fees and Other",
+      "taxonomy_line_attempt": null,
+      "year": 2022,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Lazard",
+      "segment_native": "Corporate",
+      "taxonomy_line_attempt": null,
+      "year": 2019,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Commercial Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2023,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Lazard",
+      "segment_native": "Corporate",
+      "taxonomy_line_attempt": null,
+      "year": 2020,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Lazard",
+      "segment_native": "Incentive Fees",
+      "taxonomy_line_attempt": null,
+      "year": 2024,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Morgan Stanley",
+      "segment_native": "Institutional Securities",
+      "taxonomy_line_attempt": null,
+      "year": 2020,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Morgan Stanley",
+      "segment_native": "Institutional Securities",
+      "taxonomy_line_attempt": null,
+      "year": 2016,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "JPMorgan",
+      "segment_native": "Commercial Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2015,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "All Other",
+      "taxonomy_line_attempt": null,
+      "year": 2024,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Goldman Sachs",
+      "segment_native": "Global Banking & Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2020,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Houlihan Lokey",
+      "segment_native": "Financial Restructuring",
+      "taxonomy_line_attempt": null,
+      "year": 2026,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Lazard",
+      "segment_native": "Incentive Fees",
+      "taxonomy_line_attempt": null,
+      "year": 2023,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Card interchange and network revenue",
+      "taxonomy_line_attempt": null,
+      "year": 2022,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Houlihan Lokey",
+      "segment_native": "Financial Restructuring",
+      "taxonomy_line_attempt": null,
+      "year": 2015,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Community Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2015,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "PJT Partners",
+      "segment_native": "Interest Income from Placement Fees and Other",
+      "taxonomy_line_attempt": null,
+      "year": 2019,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Commercial Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2025,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Lazard",
+      "segment_native": "Corporate",
+      "taxonomy_line_attempt": null,
+      "year": 2018,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Bank of America",
+      "segment_native": "ALM activities",
+      "taxonomy_line_attempt": null,
+      "year": 2017,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Jefferies",
+      "segment_native": "Investment Banking And Capital Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2023,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "All Other",
+      "taxonomy_line_attempt": null,
+      "year": 2023,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Goldman Sachs",
+      "segment_native": "Global Banking & Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2023,
       "layer": "xbrl"
     },
     {
@@ -992,24 +950,122 @@
       "layer": "xbrl"
     },
     {
-      "firm": "JPMorgan",
-      "segment_native": "Commercial Banking",
+      "firm": "Morgan Stanley",
+      "segment_native": "Institutional Securities",
       "taxonomy_line_attempt": null,
-      "year": 2012,
+      "year": 2019,
       "layer": "xbrl"
     },
     {
-      "firm": "Lazard",
+      "firm": "Jefferies",
+      "segment_native": "All other",
+      "taxonomy_line_attempt": null,
+      "year": 2016,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "JPMorgan",
+      "segment_native": "Commercial Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2019,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "JPMorgan",
+      "segment_native": "Commercial & Investment Bank",
+      "taxonomy_line_attempt": null,
+      "year": 2024,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Goldman Sachs",
+      "segment_native": "Global Markets",
+      "taxonomy_line_attempt": null,
+      "year": 2018,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Bank of America",
+      "segment_native": "All Other",
+      "taxonomy_line_attempt": null,
+      "year": 2024,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Card interchange and network revenues",
+      "taxonomy_line_attempt": null,
+      "year": 2019,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Card interchange and network revenue",
+      "taxonomy_line_attempt": null,
+      "year": 2021,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Jefferies",
       "segment_native": "Corporate",
       "taxonomy_line_attempt": null,
-      "year": 2023,
+      "year": 2011,
       "layer": "xbrl"
     },
     {
       "firm": "Morgan Stanley",
       "segment_native": "Institutional Securities",
       "taxonomy_line_attempt": null,
+      "year": 2013,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Goldman Sachs",
+      "segment_native": "Americas",
+      "taxonomy_line_attempt": null,
+      "year": 2016,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Community Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2012,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Houlihan Lokey",
+      "segment_native": "Financial Restructuring",
+      "taxonomy_line_attempt": null,
+      "year": 2024,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Citigroup",
+      "segment_native": "All Other",
+      "taxonomy_line_attempt": null,
       "year": 2022,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "JPMorgan",
+      "segment_native": "Commercial Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2021,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Wells Fargo",
+      "segment_native": "Commercial Banking",
+      "taxonomy_line_attempt": null,
+      "year": 2018,
+      "layer": "xbrl"
+    },
+    {
+      "firm": "Houlihan Lokey",
+      "segment_native": "Financial Restructuring",
+      "taxonomy_line_attempt": null,
+      "year": 2017,
       "layer": "xbrl"
     }
   ],
@@ -1018,18 +1074,11 @@
   "reconciliation": {
     "tolerance": "5% or $25M, whichever is larger",
     "n_checks": 93,
-    "n_pass": 81,
-    "n_flag": 0,
-    "n_no_parent": 12,
-    "match_rate": 1.0,
+    "n_pass": 87,
+    "n_flag": 1,
+    "n_no_parent": 5,
+    "match_rate": 0.9886,
     "checks": [
-      {
-        "firm": "JPMorgan",
-        "year": 2006,
-        "group": "advisory|ecm|dcm|ficc|equities",
-        "parent": null,
-        "status": "no_parent"
-      },
       {
         "firm": "JPMorgan",
         "year": 2007,
@@ -1057,7 +1106,7 @@
         "group": "advisory|ecm|dcm|ficc|equities",
         "parent": "Corporate & Investment Bank",
         "parent_total_m": 33477.0,
-        "splits_sum_m": 25974.0,
+        "splits_sum_m": 25506.0,
         "status": "pass"
       },
       {
@@ -1242,7 +1291,7 @@
         "group": "advisory|ecm|dcm|ficc|equities",
         "parent": "Institutional Securities",
         "parent_total_m": 17953.0,
-        "splits_sum_m": 8049.0,
+        "splits_sum_m": 18054.0,
         "status": "pass"
       },
       {
@@ -1251,7 +1300,7 @@
         "group": "advisory|ecm|dcm|ficc|equities",
         "parent": "Institutional Securities",
         "parent_total_m": 17459.0,
-        "splits_sum_m": 6732.0,
+        "splits_sum_m": 17630.0,
         "status": "pass"
       },
       {
@@ -1260,7 +1309,7 @@
         "group": "advisory|ecm|dcm|ficc|equities",
         "parent": "Institutional Securities",
         "parent_total_m": 18813.0,
-        "splits_sum_m": 8997.0,
+        "splits_sum_m": 18447.0,
         "status": "pass"
       },
       {
@@ -1269,7 +1318,7 @@
         "group": "advisory|ecm|dcm|ficc|equities",
         "parent": "Institutional Securities",
         "parent_total_m": 20582.0,
-        "splits_sum_m": 9740.0,
+        "splits_sum_m": 20069.0,
         "status": "pass"
       },
       {
@@ -1340,7 +1389,7 @@
         "year": 2011,
         "group": "advisory|ecm_dcm_combined",
         "parent": "Global Banking",
-        "parent_total_m": 17312.0,
+        "parent_total_m": 15594.0,
         "splits_sum_m": 5585.0,
         "status": "pass"
       },
@@ -1349,7 +1398,7 @@
         "year": 2011,
         "group": "ficc|equities",
         "parent": "Global Markets",
-        "parent_total_m": 14798.0,
+        "parent_total_m": 15575.0,
         "splits_sum_m": 12854.0,
         "status": "pass"
       },
@@ -1358,7 +1407,7 @@
         "year": 2012,
         "group": "advisory|ecm_dcm_combined",
         "parent": "Global Banking",
-        "parent_total_m": 17207.0,
+        "parent_total_m": 15669.0,
         "splits_sum_m": 5454.0,
         "status": "pass"
       },
@@ -1367,51 +1416,63 @@
         "year": 2012,
         "group": "ficc|equities",
         "parent": "Global Markets",
-        "parent_total_m": 13519.0,
+        "parent_total_m": 9174.0,
         "splits_sum_m": 11826.0,
+        "status": "flag"
+      },
+      {
+        "firm": "Bank of America",
+        "year": 2013,
+        "group": "advisory|ecm_dcm_combined",
+        "parent": "Global Banking",
+        "parent_total_m": 17436.0,
+        "splits_sum_m": 6401.0,
         "status": "pass"
       },
       {
         "firm": "Bank of America",
         "year": 2013,
-        "group": "advisory|ecm_dcm_combined",
-        "parent": null,
-        "status": "no_parent"
-      },
-      {
-        "firm": "Bank of America",
-        "year": 2013,
         "group": "ficc|equities",
-        "parent": null,
-        "status": "no_parent"
+        "parent": "Global Markets",
+        "parent_total_m": 15458.0,
+        "splits_sum_m": 12411.0,
+        "status": "pass"
       },
       {
         "firm": "Bank of America",
         "year": 2014,
         "group": "advisory|ecm_dcm_combined",
-        "parent": null,
-        "status": "no_parent"
+        "parent": "Global Banking",
+        "parent_total_m": 18266.0,
+        "splits_sum_m": 6278.0,
+        "status": "pass"
       },
       {
         "firm": "Bank of America",
         "year": 2014,
         "group": "ficc|equities",
-        "parent": null,
-        "status": "no_parent"
+        "parent": "Global Markets",
+        "parent_total_m": 16130.0,
+        "splits_sum_m": 12946.0,
+        "status": "pass"
       },
       {
         "firm": "Bank of America",
         "year": 2015,
         "group": "advisory|ecm_dcm_combined",
-        "parent": null,
-        "status": "no_parent"
+        "parent": "Global Banking",
+        "parent_total_m": 17621.0,
+        "splits_sum_m": 5772.0,
+        "status": "pass"
       },
       {
         "firm": "Bank of America",
         "year": 2015,
         "group": "ficc|equities",
-        "parent": null,
-        "status": "no_parent"
+        "parent": "Global Markets",
+        "parent_total_m": 15013.0,
+        "splits_sum_m": 12204.0,
+        "status": "pass"
       },
       {
         "firm": "Bank of America",
@@ -1420,6 +1481,15 @@
         "parent": "Global Banking",
         "parent_total_m": 18445.0,
         "splits_sum_m": 3853.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "year": 2016,
+        "group": "ficc|equities",
+        "parent": "Global Markets",
+        "parent_total_m": 16090.0,
+        "splits_sum_m": 13390.0,
         "status": "pass"
       },
       {

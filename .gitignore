@@ -5,3 +5,4 @@ __pycache__/
 # Raw SEC filing downloads (preserved locally, not committed).
 # Location: data/revenue/raw/<cik>/<accession>/
 data/revenue/raw/
+data/revenue/raw

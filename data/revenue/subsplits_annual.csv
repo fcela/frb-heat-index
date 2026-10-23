@@ -33,7 +33,8 @@ BAC,0000070858,equities,2011,3957.0,mda:Global Markets sales and trading revenue
 BAC,0000070858,equities,2012,3014.0,mda:Global Markets sales and trading revenue,0000070858-14-000012
 BAC,0000070858,equities,2013,4180.0,mda:Global Markets sales and trading revenue,0000070858-15-000008
 BAC,0000070858,equities,2014,4194.0,mda:Global Markets sales and trading revenue,0000070858-16-000137
-BAC,0000070858,equities,2015,4335.0,mda:Global Markets sales and trading revenue,0000070858-16-000137
+BAC,0000070858,equities,2015,4335.0,mda:Global Markets sales and trading revenue,0000070858-17-000013
+BAC,0000070858,equities,2016,4017.0,mda:Global Markets sales and trading revenue,0000070858-18-000009
 BAC,0000070858,equities,2017,4120.0,mda:Global Markets sales and trading revenue,0000070858-19-000012
 BAC,0000070858,equities,2018,4900.0,mda:Global Markets sales and trading revenue,0000070858-20-000011
 BAC,0000070858,equities,2019,4493.0,mda:Global Markets sales and trading revenue,0000070858-21-000023
@@ -47,7 +48,8 @@ BAC,0000070858,ficc,2011,8897.0,mda:Global Markets sales and trading revenue,000
 BAC,0000070858,ficc,2012,8812.0,mda:Global Markets sales and trading revenue,0000070858-14-000012
 BAC,0000070858,ficc,2013,8231.0,mda:Global Markets sales and trading revenue,0000070858-15-000008
 BAC,0000070858,ficc,2014,8752.0,mda:Global Markets sales and trading revenue,0000070858-16-000137
-BAC,0000070858,ficc,2015,7923.0,mda:Global Markets sales and trading revenue,0000070858-16-000137
+BAC,0000070858,ficc,2015,7869.0,mda:Global Markets sales and trading revenue,0000070858-17-000013
+BAC,0000070858,ficc,2016,9373.0,mda:Global Markets sales and trading revenue,0000070858-18-000009
 BAC,0000070858,ficc,2017,8657.0,mda:Global Markets sales and trading revenue,0000070858-19-000012
 BAC,0000070858,ficc,2018,8271.0,mda:Global Markets sales and trading revenue,0000070858-20-000011
 BAC,0000070858,ficc,2019,8189.0,mda:Global Markets sales and trading revenue,0000070858-21-000023
@@ -145,75 +147,142 @@ EVR,0001360901,ecm_dcm_combined,2017,45.827,mda:Investment Banking & Equities re
 EVR,0001360901,ecm_dcm_combined,2018,71.691,mda:Investment Banking & Equities revenues,0001360901-21-000005
 EVR,0001360901,ecm_dcm_combined,2019,89.681,mda:Investment Banking & Equities revenues,0001360901-21-000005
 EVR,0001360901,ecm_dcm_combined,2020,276.191,mda:Investment Banking & Equities revenues,0001360901-21-000005
+GS,0000886982,advisory,2007,4222.0,mda:Investment banking fees,0000950123-10-018464
+GS,0000886982,advisory,2008,2663.0,mda:Investment banking fees,0000950123-11-020067
+GS,0000886982,advisory,2009,1897.0,mda:Investment banking fees,0001193125-12-085822
+GS,0000886982,advisory,2010,2062.0,mda:Investment banking fees,0001193125-13-085474
+GS,0000886982,advisory,2011,1987.0,mda:Investment banking fees,0001193125-14-073792
+GS,0000886982,advisory,2012,1975.0,mda:Investment banking fees,0001193125-15-056785
+GS,0000886982,advisory,2013,1978.0,mda:Investment banking fees,0001193125-16-470289
+GS,0000886982,advisory,2014,2474.0,mda:Investment banking fees,0001193125-17-056804
+GS,0000886982,advisory,2015,3470.0,mda:Investment banking fees,0001193125-18-056383
+GS,0000886982,advisory,2016,2932.0,mda:Investment banking fees,0001193125-19-050198
+GS,0000886982,advisory,2017,3161.0,mda:Investment banking fees,0001193125-20-043853
+GS,0000886982,advisory,2018,3444.0,mda:Investment banking fees,0001193125-21-049380
+GS,0000886982,advisory,2019,3197.0,mda:Investment banking fees,0001193125-22-052682
 GS,0000886982,advisory,2020,3064.0,mda:Investment banking fees,0000886982-23-000003
 GS,0000886982,advisory,2021,5654.0,mda:Investment banking fees,0000886982-24-000006
 GS,0000886982,advisory,2022,4704.0,mda:Investment banking fees,0000886982-25-000005
 GS,0000886982,advisory,2023,3299.0,mda:Investment banking fees,0000886982-26-000091
 GS,0000886982,advisory,2024,3534.0,mda:Investment banking fees,0000886982-26-000091
 GS,0000886982,advisory,2025,4726.0,mda:Investment banking fees,0000886982-26-000091
+GS,0000886982,dcm,2007,1951.0,mda:Investment banking fees,0000950123-10-018464
+GS,0000886982,dcm,2008,1375.0,mda:Investment banking fees,0000950123-11-020067
+GS,0000886982,dcm,2009,1290.0,mda:Investment banking fees,0001193125-12-085822
+GS,0000886982,dcm,2010,1286.0,mda:Investment banking fees,0001193125-13-085474
+GS,0000886982,dcm,2011,1283.0,mda:Investment banking fees,0001193125-14-073792
+GS,0000886982,dcm,2012,1964.0,mda:Investment banking fees,0001193125-15-056785
+GS,0000886982,dcm,2013,2367.0,mda:Investment banking fees,0001193125-16-470289
+GS,0000886982,dcm,2014,2240.0,mda:Investment banking fees,0001193125-17-056804
+GS,0000886982,dcm,2015,2011.0,mda:Investment banking fees,0001193125-18-056383
+GS,0000886982,dcm,2016,2450.0,mda:Investment banking fees,0001193125-19-050198
+GS,0000886982,dcm,2017,2680.0,mda:Investment banking fees,0001193125-20-043853
+GS,0000886982,dcm,2018,2358.0,mda:Investment banking fees,0001193125-21-049380
+GS,0000886982,dcm,2019,2119.0,mda:Investment banking fees,0001193125-22-052682
 GS,0000886982,dcm,2020,2660.0,mda:Investment banking fees,0000886982-23-000003
 GS,0000886982,dcm,2021,3497.0,mda:Investment banking fees,0000886982-24-000006
 GS,0000886982,dcm,2022,1808.0,mda:Investment banking fees,0000886982-25-000005
 GS,0000886982,dcm,2023,1763.0,mda:Investment banking fees,0000886982-26-000091
 GS,0000886982,dcm,2024,2521.0,mda:Investment banking fees,0000886982-26-000091
 GS,0000886982,dcm,2025,2829.0,mda:Investment banking fees,0000886982-26-000091
+GS,0000886982,ecm,2007,1382.0,mda:Investment banking fees,0000950123-10-018464
+GS,0000886982,ecm,2008,1415.0,mda:Investment banking fees,0000950123-11-020067
+GS,0000886982,ecm,2009,1797.0,mda:Investment banking fees,0001193125-12-085822
+GS,0000886982,ecm,2010,1462.0,mda:Investment banking fees,0001193125-13-085474
+GS,0000886982,ecm,2011,1085.0,mda:Investment banking fees,0001193125-14-073792
+GS,0000886982,ecm,2012,987.0,mda:Investment banking fees,0001193125-15-056785
+GS,0000886982,ecm,2013,1659.0,mda:Investment banking fees,0001193125-16-470289
+GS,0000886982,ecm,2014,1750.0,mda:Investment banking fees,0001193125-17-056804
+GS,0000886982,ecm,2015,1546.0,mda:Investment banking fees,0001193125-18-056383
+GS,0000886982,ecm,2016,891.0,mda:Investment banking fees,0001193125-19-050198
+GS,0000886982,ecm,2017,1235.0,mda:Investment banking fees,0001193125-20-043853
+GS,0000886982,ecm,2018,1628.0,mda:Investment banking fees,0001193125-21-049380
+GS,0000886982,ecm,2019,1482.0,mda:Investment banking fees,0001193125-22-052682
 GS,0000886982,ecm,2020,3376.0,mda:Investment banking fees,0000886982-23-000003
 GS,0000886982,ecm,2021,4985.0,mda:Investment banking fees,0000886982-24-000006
 GS,0000886982,ecm,2022,848.0,mda:Investment banking fees,0000886982-25-000005
 GS,0000886982,ecm,2023,1153.0,mda:Investment banking fees,0000886982-26-000091
 GS,0000886982,ecm,2024,1677.0,mda:Investment banking fees,0000886982-26-000091
 GS,0000886982,ecm,2025,1784.0,mda:Investment banking fees,0000886982-26-000091
+GS,0000886982,ecm_dcm_combined,2017,3915.0,mda:Investment Banking underwriting (four-segment era),0001193125-20-043853
+GS,0000886982,ecm_dcm_combined,2018,3986.0,mda:Investment Banking underwriting (four-segment era),0001193125-21-049380
+GS,0000886982,ecm_dcm_combined,2019,3601.0,mda:Investment Banking underwriting (four-segment era),0001193125-22-052682
+GS,0000886982,ecm_dcm_combined,2020,6076.0,mda:Investment Banking underwriting (four-segment era),0001193125-22-052682
+GS,0000886982,ecm_dcm_combined,2021,8515.0,mda:Investment Banking underwriting (four-segment era),0001193125-22-052682
+GS,0000886982,equities,2017,6077.0,mda:Global Markets net revenues,0001193125-20-043853
+GS,0000886982,equities,2018,7453.0,mda:Global Markets net revenues,0001193125-21-049380
+GS,0000886982,equities,2019,7391.0,mda:Global Markets net revenues,0001193125-22-052682
 GS,0000886982,equities,2020,9884.0,mda:Global Banking & Markets net revenues,0000886982-23-000003
 GS,0000886982,equities,2021,11722.0,mda:Global Banking & Markets net revenues,0000886982-24-000006
 GS,0000886982,equities,2022,10988.0,mda:Global Banking & Markets net revenues,0000886982-25-000005
 GS,0000886982,equities,2023,11549.0,mda:Global Banking & Markets net revenues,0000886982-26-000091
 GS,0000886982,equities,2024,13432.0,mda:Global Banking & Markets net revenues,0000886982-26-000091
 GS,0000886982,equities,2025,16535.0,mda:Global Banking & Markets net revenues,0000886982-26-000091
+GS,0000886982,ficc,2017,6218.0,mda:Global Markets net revenues,0001193125-20-043853
+GS,0000886982,ficc,2018,6985.0,mda:Global Markets net revenues,0001193125-21-049380
+GS,0000886982,ficc,2019,7388.0,mda:Global Markets net revenues,0001193125-22-052682
 GS,0000886982,ficc,2020,11453.0,mda:Global Banking & Markets net revenues,0000886982-23-000003
 GS,0000886982,ficc,2021,10611.0,mda:Global Banking & Markets net revenues,0000886982-24-000006
 GS,0000886982,ficc,2022,14676.0,mda:Global Banking & Markets net revenues,0000886982-25-000005
 GS,0000886982,ficc,2023,12150.0,mda:Global Banking & Markets net revenues,0000886982-26-000091
 GS,0000886982,ficc,2024,13342.0,mda:Global Banking & Markets net revenues,0000886982-26-000091
 GS,0000886982,ficc,2025,14522.0,mda:Global Banking & Markets net revenues,0000886982-26-000091
+HL,0001302215,advisory,2014,260.035,mda:Revenues by segment,0001302215-16-000050
+HL,0001302215,advisory,2015,367.632,mda:Revenues by segment,0001302215-17-000027
+HL,0001302215,advisory,2016,371.79,mda:Revenues by segment,0001302215-18-000015
+HL,0001302215,advisory,2017,434.558,mda:Revenues by segment,0001302215-19-000044
+HL,0001302215,advisory,2018,528.643,mda:Revenues by segment,0001302215-20-000074
+HL,0001302215,advisory,2019,607.333,mda:Revenues by segment,0001302215-21-000027
+HL,0001302215,advisory,2020,646.788,mda:Revenues by segment,0001302215-21-000027
+HL,0001302215,advisory,2021,802.853,mda:Revenues by segment,0001302215-22-000029
+HL,0001302215,advisory,2022,1593.083,mda:Revenues by segment,0001302215-23-000031
+HL,0001302215,advisory,2023,1127.126,mda:Revenues by segment,0001302215-24-000028
+HL,0001302215,advisory,2024,1106.826,mda:Revenues by segment,0001302215-25-000024
 HL,0001302215,advisory,2025,1526.756,mda:Revenues by segment,0001302215-26-000053
 HL,0001302215,advisory,2026,1744.634,mda:Revenues by segment,0001302215-26-000053
+JEF,0000096223,advisory,2013,369.191,mda:Jefferies net revenues by source - advisory,0000096223-16-000049
+JEF,0000096223,advisory,2014,559.418,mda:Jefferies net revenues by source - advisory,0000096223-17-000009
+JEF,0000096223,advisory,2015,632.354,mda:Jefferies net revenues by source - advisory,0000096223-18-000009
+JEF,0000096223,advisory,2016,654.19,mda:Jefferies net revenues by source - advisory,0000096223-18-000009
+JEF,0000096223,advisory,2017,770.092,mda:Jefferies net revenues by source - advisory,0000096223-20-000008
 JEF,0000096223,advisory,2018,820.042,mda:Investment Banking and Capital Markets revenues by source,0000096223-21-000009
 JEF,0000096223,advisory,2019,767.421,mda:Investment Banking and Capital Markets revenues by source,0000096223-22-000006
 JEF,0000096223,advisory,2020,1053.5,mda:Investment Banking and Capital Markets revenues by source,0000096223-23-000009
 JEF,0000096223,advisory,2021,1873.56,mda:Investment Banking and Capital Markets revenues by source,0000096223-24-000006
 JEF,0000096223,advisory,2022,1778.003,mda:Investment Banking and Capital Markets revenues by source,0001628280-25-002833
-JEF,0000096223,advisory,2023,1198.915,mda:Investment Banking and Capital Markets revenues by source,0001628280-25-002833
-JEF,0000096223,advisory,2024,1811.633,mda:Investment Banking and Capital Markets revenues by source,0001628280-25-002833
+JEF,0000096223,advisory,2023,1198.915,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
+JEF,0000096223,advisory,2024,1811.633,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
 JEF,0000096223,advisory,2025,2145.422,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
 JEF,0000096223,ecm_dcm_combined,2018,1090.161,mda:Investment Banking and Capital Markets revenues by source,0000096223-21-000009
 JEF,0000096223,ecm_dcm_combined,2019,761.308,mda:Investment Banking and Capital Markets revenues by source,0000096223-22-000006
 JEF,0000096223,ecm_dcm_combined,2020,1447.994,mda:Investment Banking and Capital Markets revenues by source,0000096223-23-000009
 JEF,0000096223,ecm_dcm_combined,2021,2492.139,mda:Investment Banking and Capital Markets revenues by source,0000096223-24-000006
 JEF,0000096223,ecm_dcm_combined,2022,1029.819,mda:Investment Banking and Capital Markets revenues by source,0001628280-25-002833
-JEF,0000096223,ecm_dcm_combined,2023,970.451,mda:Investment Banking and Capital Markets revenues by source,0001628280-25-002833
-JEF,0000096223,ecm_dcm_combined,2024,1491.03,mda:Investment Banking and Capital Markets revenues by source,0001628280-25-002833
+JEF,0000096223,ecm_dcm_combined,2023,970.451,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
+JEF,0000096223,ecm_dcm_combined,2024,1491.03,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
 JEF,0000096223,ecm_dcm_combined,2025,1641.897,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
-JEF,0000096223,equities,2018,649.631,mda:Investment Banking and Capital Markets revenues by source,0000096223-21-000009
-JEF,0000096223,equities,2019,662.804,mda:Investment Banking and Capital Markets revenues by source,0000096223-22-000006
-JEF,0000096223,equities,2020,806.34,mda:Investment Banking and Capital Markets revenues by source,0000096223-23-000009
-JEF,0000096223,equities,2021,881.66,mda:Investment Banking and Capital Markets revenues by source,0000096223-24-000006
-JEF,0000096223,equities,2022,910.254,mda:Investment Banking and Capital Markets revenues by source,0001628280-25-002833
-JEF,0000096223,equities,2023,894.602,mda:Investment Banking and Capital Markets revenues by source,0001628280-25-002833
-JEF,0000096223,equities,2024,1074.666,mda:Investment Banking and Capital Markets revenues by source,0001628280-25-002833
-JEF,0000096223,equities,2025,1293.944,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
-JEF,0000096223,ficc,2018,13.839,mda:Investment Banking and Capital Markets revenues by source,0000096223-21-000009
-JEF,0000096223,ficc,2019,13.505,mda:Investment Banking and Capital Markets revenues by source,0000096223-22-000006
-JEF,0000096223,ficc,2020,15.908,mda:Investment Banking and Capital Markets revenues by source,0000096223-23-000009
-JEF,0000096223,ficc,2021,14.355,mda:Investment Banking and Capital Markets revenues by source,0000096223-24-000006
-JEF,0000096223,ficc,2022,15.24,mda:Investment Banking and Capital Markets revenues by source,0001628280-25-002833
-JEF,0000096223,ficc,2023,10.577,mda:Investment Banking and Capital Markets revenues by source,0001628280-25-002833
-JEF,0000096223,ficc,2024,8.859,mda:Investment Banking and Capital Markets revenues by source,0001628280-25-002833
-JEF,0000096223,ficc,2025,7.005,mda:Investment Banking and Capital Markets revenues by source,0000096223-26-000009
-JPM,0000019617,advisory,2006,1659.0,mda:Investment banking fees,0000950123-09-003840
+JEF,0000096223,equities,2017,674.424,mda:Investment Banking and Capital Markets net revenues summary,0000096223-20-000008
+JEF,0000096223,equities,2018,665.557,mda:Investment Banking and Capital Markets net revenues summary,0000096223-21-000009
+JEF,0000096223,equities,2019,773.979,mda:Investment Banking and Capital Markets net revenues summary,0000096223-22-000006
+JEF,0000096223,equities,2020,1128.91,mda:Investment Banking and Capital Markets net revenues summary,0000096223-23-000009
+JEF,0000096223,equities,2021,1294.392,mda:Investment Banking and Capital Markets net revenues summary,0000096223-24-000006
+JEF,0000096223,equities,2022,1054.064,mda:Investment Banking and Capital Markets net revenues summary,0000096223-24-000006
+JEF,0000096223,equities,2023,1139.425,mda:Investment Banking and Capital Markets net revenues summary,0001628280-25-002833
+JEF,0000096223,equities,2024,1592.793,mda:Investment Banking and Capital Markets net revenues summary,0000096223-26-000009
+JEF,0000096223,equities,2025,1907.866,mda:Investment Banking and Capital Markets net revenues summary,0000096223-26-000009
+JEF,0000096223,ficc,2017,618.388,mda:Investment Banking and Capital Markets net revenues summary,0000096223-20-000008
+JEF,0000096223,ficc,2018,559.712,mda:Investment Banking and Capital Markets net revenues summary,0000096223-21-000009
+JEF,0000096223,ficc,2019,681.362,mda:Investment Banking and Capital Markets net revenues summary,0000096223-22-000006
+JEF,0000096223,ficc,2020,1340.792,mda:Investment Banking and Capital Markets net revenues summary,0000096223-23-000009
+JEF,0000096223,ficc,2021,984.54,mda:Investment Banking and Capital Markets net revenues summary,0000096223-24-000006
+JEF,0000096223,ficc,2022,800.492,mda:Investment Banking and Capital Markets net revenues summary,0000096223-24-000006
+JEF,0000096223,ficc,2023,1092.736,mda:Investment Banking and Capital Markets net revenues summary,0001628280-25-002833
+JEF,0000096223,ficc,2024,1166.761,mda:Investment Banking and Capital Markets net revenues summary,0000096223-26-000009
+JEF,0000096223,ficc,2025,909.869,mda:Investment Banking and Capital Markets net revenues summary,0000096223-26-000009
 JPM,0000019617,advisory,2007,2273.0,mda:Investment banking fees,0000950123-10-016029
 JPM,0000019617,advisory,2008,2008.0,mda:Investment banking fees,0000950123-11-019773
-JPM,0000019617,advisory,2009,1867.0,mda:Investment banking fees,0000950123-11-019773
-JPM,0000019617,advisory,2010,1469.0,mda:Investment banking fees,0000950123-11-019773
+JPM,0000019617,advisory,2009,1867.0,mda:Investment banking fees,0000019617-12-000163
+JPM,0000019617,advisory,2010,1469.0,mda:Investment banking fees,0000019617-13-000221
 JPM,0000019617,advisory,2011,1792.0,mda:Investment banking fees,0000019617-14-000289
 JPM,0000019617,advisory,2012,1491.0,mda:Investment banking fees,0000019617-15-000272
 JPM,0000019617,advisory,2013,1315.0,mda:Investment banking fees,0000019617-16-000902
@@ -229,11 +298,10 @@ JPM,0000019617,advisory,2022,3051.0,mda:Investment banking fees,0000019617-25-00
 JPM,0000019617,advisory,2023,2814.0,mda:Investment banking fees,0001628280-26-008131
 JPM,0000019617,advisory,2024,3290.0,mda:Investment banking fees,0001628280-26-008131
 JPM,0000019617,advisory,2025,3497.0,mda:Investment banking fees,0001628280-26-008131
-JPM,0000019617,dcm,2006,2700.0,mda:Investment banking fees,0000950123-09-003840
 JPM,0000019617,dcm,2007,2630.0,mda:Investment banking fees,0000950123-10-016029
 JPM,0000019617,dcm,2008,2150.0,mda:Investment banking fees,0000950123-11-019773
-JPM,0000019617,dcm,2009,2661.0,mda:Investment banking fees,0000950123-11-019773
-JPM,0000019617,dcm,2010,3128.0,mda:Investment banking fees,0000950123-11-019773
+JPM,0000019617,dcm,2009,2661.0,mda:Investment banking fees,0000019617-12-000163
+JPM,0000019617,dcm,2010,3128.0,mda:Investment banking fees,0000019617-13-000221
 JPM,0000019617,dcm,2011,2886.0,mda:Investment banking fees,0000019617-14-000289
 JPM,0000019617,dcm,2012,3252.0,mda:Investment banking fees,0000019617-15-000272
 JPM,0000019617,dcm,2013,3517.0,mda:Investment banking fees,0000019617-16-000902
@@ -249,11 +317,10 @@ JPM,0000019617,dcm,2022,2892.0,mda:Investment banking fees,0000019617-25-000270
 JPM,0000019617,dcm,2023,2666.0,mda:Investment banking fees,0001628280-26-008131
 JPM,0000019617,dcm,2024,4134.0,mda:Investment banking fees,0001628280-26-008131
 JPM,0000019617,dcm,2025,4506.0,mda:Investment banking fees,0001628280-26-008131
-JPM,0000019617,ecm,2006,1178.0,mda:Investment banking fees,0000950123-09-003840
 JPM,0000019617,ecm,2007,1713.0,mda:Investment banking fees,0000950123-10-016029
 JPM,0000019617,ecm,2008,1749.0,mda:Investment banking fees,0000950123-11-019773
-JPM,0000019617,ecm,2009,2641.0,mda:Investment banking fees,0000950123-11-019773
-JPM,0000019617,ecm,2010,1589.0,mda:Investment banking fees,0000950123-11-019773
+JPM,0000019617,ecm,2009,2641.0,mda:Investment banking fees,0000019617-12-000163
+JPM,0000019617,ecm,2010,1589.0,mda:Investment banking fees,0000019617-13-000221
 JPM,0000019617,ecm,2011,1181.0,mda:Investment banking fees,0000019617-14-000289
 JPM,0000019617,ecm,2012,1026.0,mda:Investment banking fees,0000019617-15-000272
 JPM,0000019617,ecm,2013,1499.0,mda:Investment banking fees,0000019617-16-000902
@@ -269,11 +336,10 @@ JPM,0000019617,ecm,2022,1034.0,mda:Investment banking fees,0000019617-25-000270
 JPM,0000019617,ecm,2023,1151.0,mda:Investment banking fees,0001628280-26-008131
 JPM,0000019617,ecm,2024,1692.0,mda:Investment banking fees,0001628280-26-008131
 JPM,0000019617,ecm,2025,1732.0,mda:Investment banking fees,0001628280-26-008131
-JPM,0000019617,equities,2006,3458.0,mda:CIB revenue by business,0000950123-09-003840
 JPM,0000019617,equities,2007,3903.0,mda:CIB revenue by business,0000950123-10-016029
 JPM,0000019617,equities,2008,3611.0,mda:CIB revenue by business,0000950123-11-019773
-JPM,0000019617,equities,2009,4393.0,mda:CIB revenue by business,0000950123-11-019773
-JPM,0000019617,equities,2010,4763.0,mda:CIB revenue by business,0000950123-11-019773
+JPM,0000019617,equities,2009,4393.0,mda:CIB revenue by business,0000019617-12-000163
+JPM,0000019617,equities,2010,4582.0,mda:CIB revenue by business,0000019617-13-000221
 JPM,0000019617,equities,2011,4476.0,mda:CIB revenue by business,0000019617-14-000289
 JPM,0000019617,equities,2012,4448.0,mda:CIB revenue by business,0000019617-15-000272
 JPM,0000019617,equities,2013,4994.0,mda:CIB revenue by business,0000019617-16-000902
@@ -289,11 +355,10 @@ JPM,0000019617,equities,2022,10088.0,mda:CIB revenue by business,0000019617-25-0
 JPM,0000019617,equities,2023,8784.0,mda:CIB revenue by business,0001628280-26-008131
 JPM,0000019617,equities,2024,9941.0,mda:CIB revenue by business,0001628280-26-008131
 JPM,0000019617,equities,2025,13250.0,mda:CIB revenue by business,0001628280-26-008131
-JPM,0000019617,ficc,2006,8736.0,mda:CIB revenue by business,0000950123-09-003840
 JPM,0000019617,ficc,2007,6339.0,mda:CIB revenue by business,0000950123-10-016029
 JPM,0000019617,ficc,2008,1957.0,mda:CIB revenue by business,0000950123-11-019773
-JPM,0000019617,ficc,2009,17564.0,mda:CIB revenue by business,0000950123-11-019773
-JPM,0000019617,ficc,2010,15025.0,mda:CIB revenue by business,0000950123-11-019773
+JPM,0000019617,ficc,2009,17564.0,mda:CIB revenue by business,0000019617-12-000163
+JPM,0000019617,ficc,2010,14738.0,mda:CIB revenue by business,0000019617-13-000221
 JPM,0000019617,ficc,2011,14784.0,mda:CIB revenue by business,0000019617-14-000289
 JPM,0000019617,ficc,2012,15701.0,mda:CIB revenue by business,0000019617-15-000272
 JPM,0000019617,ficc,2013,15976.0,mda:CIB revenue by business,0000019617-16-000902
@@ -309,6 +374,7 @@ JPM,0000019617,ficc,2022,19074.0,mda:CIB revenue by business,0000019617-25-00027
 JPM,0000019617,ficc,2023,19180.0,mda:CIB revenue by business,0001628280-26-008131
 JPM,0000019617,ficc,2024,20066.0,mda:CIB revenue by business,0001628280-26-008131
 JPM,0000019617,ficc,2025,22532.0,mda:CIB revenue by business,0001628280-26-008131
+LAZ,0001311370,advisory,2022,1666.156,mda:Financial Advisory adjusted operating results,0001628280-25-007441
 LAZ,0001311370,advisory,2023,1385.357,mda:Financial Advisory adjusted operating results,0001311370-26-000008
 LAZ,0001311370,advisory,2024,1756.183,mda:Financial Advisory adjusted operating results,0001311370-26-000008
 LAZ,0001311370,advisory,2025,1834.303,mda:Financial Advisory adjusted operating results,0001311370-26-000008
@@ -317,10 +383,10 @@ MS,0000895421,advisory,2011,1737.0,mda:Institutional Securities investment banki
 MS,0000895421,advisory,2012,1369.0,mda:Institutional Securities investment banking (pre-2015),0001193125-15-071980
 MS,0000895421,advisory,2013,1310.0,mda:Institutional Securities investment banking (pre-2015),0001193125-15-071980
 MS,0000895421,advisory,2014,1634.0,mda:Institutional Securities investment banking (pre-2015),0001193125-15-071980
-MS,0000895421,advisory,2015,1967.0,mda:Institutional Securities investment banking,0001193125-18-060831
-MS,0000895421,advisory,2016,2220.0,mda:Institutional Securities investment banking,0001193125-19-051943
-MS,0000895421,advisory,2017,2077.0,mda:Institutional Securities investment banking,0001193125-19-051943
-MS,0000895421,advisory,2018,2436.0,mda:Institutional Securities investment banking,0001193125-19-051943
+MS,0000895421,advisory,2015,1967.0,mda:Institutional Securities investment banking (fragment era),0001193125-18-060831
+MS,0000895421,advisory,2016,2220.0,mda:Institutional Securities investment banking (fragment era),0001193125-19-051943
+MS,0000895421,advisory,2017,2077.0,mda:Institutional Securities investment banking (fragment era),0001193125-19-051943
+MS,0000895421,advisory,2018,2436.0,mda:Institutional Securities investment banking (fragment era),0001193125-19-051943
 MS,0000895421,advisory,2019,2116.0,mda:Institutional Securities investment banking,0000895421-22-000400
 MS,0000895421,advisory,2020,2008.0,mda:Institutional Securities investment banking,0000895421-23-000284
 MS,0000895421,advisory,2021,3487.0,mda:Institutional Securities investment banking,0000895421-24-000300
@@ -333,10 +399,10 @@ MS,0000895421,dcm,2011,1359.0,mda:Institutional Securities investment banking (p
 MS,0000895421,dcm,2012,1669.0,mda:Institutional Securities investment banking (pre-2015),0001193125-15-071980
 MS,0000895421,dcm,2013,1805.0,mda:Institutional Securities investment banking (pre-2015),0001193125-15-071980
 MS,0000895421,dcm,2014,1956.0,mda:Institutional Securities investment banking (pre-2015),0001193125-15-071980
-MS,0000895421,dcm,2015,1643.0,mda:Institutional Securities investment banking,0001193125-18-060831
-MS,0000895421,dcm,2016,1369.0,mda:Institutional Securities investment banking,0001193125-19-051943
-MS,0000895421,dcm,2017,1976.0,mda:Institutional Securities investment banking,0001193125-19-051943
-MS,0000895421,dcm,2018,1926.0,mda:Institutional Securities investment banking,0001193125-19-051943
+MS,0000895421,dcm,2015,1643.0,mda:Institutional Securities investment banking (fragment era),0001193125-18-060831
+MS,0000895421,dcm,2016,1369.0,mda:Institutional Securities investment banking (fragment era),0001193125-19-051943
+MS,0000895421,dcm,2017,1976.0,mda:Institutional Securities investment banking (fragment era),0001193125-19-051943
+MS,0000895421,dcm,2018,1926.0,mda:Institutional Securities investment banking (fragment era),0001193125-19-051943
 MS,0000895421,dcm,2019,1910.0,mda:Institutional Securities investment banking,0000895421-22-000400
 MS,0000895421,dcm,2020,2104.0,mda:Institutional Securities investment banking,0000895421-23-000284
 MS,0000895421,dcm,2021,2348.0,mda:Institutional Securities investment banking,0000895421-24-000300
@@ -349,10 +415,10 @@ MS,0000895421,ecm,2011,1144.0,mda:Institutional Securities investment banking (p
 MS,0000895421,ecm,2012,892.0,mda:Institutional Securities investment banking (pre-2015),0001193125-15-071980
 MS,0000895421,ecm,2013,1262.0,mda:Institutional Securities investment banking (pre-2015),0001193125-15-071980
 MS,0000895421,ecm,2014,1613.0,mda:Institutional Securities investment banking (pre-2015),0001193125-15-071980
-MS,0000895421,ecm,2015,1398.0,mda:Institutional Securities investment banking,0001193125-18-060831
-MS,0000895421,ecm,2016,887.0,mda:Institutional Securities investment banking,0001193125-19-051943
-MS,0000895421,ecm,2017,1484.0,mda:Institutional Securities investment banking,0001193125-19-051943
-MS,0000895421,ecm,2018,1726.0,mda:Institutional Securities investment banking,0001193125-19-051943
+MS,0000895421,ecm,2015,1398.0,mda:Institutional Securities investment banking (fragment era),0001193125-18-060831
+MS,0000895421,ecm,2016,887.0,mda:Institutional Securities investment banking (fragment era),0001193125-19-051943
+MS,0000895421,ecm,2017,1484.0,mda:Institutional Securities investment banking (fragment era),0001193125-19-051943
+MS,0000895421,ecm,2018,1726.0,mda:Institutional Securities investment banking (fragment era),0001193125-19-051943
 MS,0000895421,ecm,2019,1708.0,mda:Institutional Securities investment banking,0000895421-22-000400
 MS,0000895421,ecm,2020,3092.0,mda:Institutional Securities investment banking,0000895421-23-000284
 MS,0000895421,ecm,2021,4437.0,mda:Institutional Securities investment banking,0000895421-24-000300
@@ -363,12 +429,12 @@ MS,0000895421,ecm,2025,1965.0,mda:Institutional Securities investment banking,00
 MS,0000895421,equities,2010,4840.0,mda:Institutional Securities sales and trading (pre-2015),0001193125-13-077191
 MS,0000895421,equities,2011,7263.0,mda:Institutional Securities sales and trading (pre-2015),0001193125-14-067354
 MS,0000895421,equities,2012,4811.0,mda:Institutional Securities sales and trading (pre-2015),0001193125-15-071980
-MS,0000895421,equities,2013,6529.0,mda:Institutional Securities sales and trading (pre-2015),0001193125-15-071980
-MS,0000895421,equities,2014,7135.0,mda:Institutional Securities sales and trading (pre-2015),0001193125-15-071980
-MS,0000895421,equities,2015,1398.0,mda:Institutional Securities income statement,0001193125-18-060831
-MS,0000895421,equities,2016,887.0,mda:Institutional Securities income statement,0001193125-19-051943
-MS,0000895421,equities,2017,1484.0,mda:Institutional Securities income statement,0001193125-19-051943
-MS,0000895421,equities,2018,1726.0,mda:Institutional Securities income statement,0001193125-19-051943
+MS,0000895421,equities,2013,6529.0,mda:Institutional Securities sales and trading (pre-2015),0001193125-16-473553
+MS,0000895421,equities,2014,7135.0,mda:Institutional Securities sales and trading (GAAP/non-GAAP),0001193125-17-059212
+MS,0000895421,equities,2015,8288.0,mda:Institutional Securities sales and trading (GAAP/non-GAAP),0001193125-18-060831
+MS,0000895421,equities,2016,8037.0,mda:Institutional Securities sales and trading (By Business),0001193125-19-051943
+MS,0000895421,equities,2017,7982.0,mda:Institutional Securities sales and trading (By Business),0000895421-20-000265
+MS,0000895421,equities,2018,8976.0,mda:Institutional Securities sales and trading (By Business),0000895421-21-000286
 MS,0000895421,equities,2019,8133.0,mda:Institutional Securities income statement,0000895421-22-000400
 MS,0000895421,equities,2020,9921.0,mda:Institutional Securities income statement,0000895421-23-000284
 MS,0000895421,equities,2021,11435.0,mda:Institutional Securities income statement,0000895421-24-000300
@@ -379,12 +445,12 @@ MS,0000895421,equities,2025,15631.0,mda:Institutional Securities income statemen
 MS,0000895421,ficc,2010,5895.0,mda:Institutional Securities sales and trading (pre-2015),0001193125-13-077191
 MS,0000895421,ficc,2011,7506.0,mda:Institutional Securities sales and trading (pre-2015),0001193125-14-067354
 MS,0000895421,ficc,2012,2358.0,mda:Institutional Securities sales and trading (pre-2015),0001193125-15-071980
-MS,0000895421,ficc,2013,3594.0,mda:Institutional Securities sales and trading (pre-2015),0001193125-15-071980
-MS,0000895421,ficc,2014,4214.0,mda:Institutional Securities sales and trading (pre-2015),0001193125-15-071980
-MS,0000895421,ficc,2015,1643.0,mda:Institutional Securities income statement,0001193125-18-060831
-MS,0000895421,ficc,2016,1369.0,mda:Institutional Securities income statement,0001193125-19-051943
-MS,0000895421,ficc,2017,1976.0,mda:Institutional Securities income statement,0001193125-19-051943
-MS,0000895421,ficc,2018,1926.0,mda:Institutional Securities income statement,0001193125-19-051943
+MS,0000895421,ficc,2013,3594.0,mda:Institutional Securities sales and trading (pre-2015),0001193125-16-473553
+MS,0000895421,ficc,2014,4214.0,mda:Institutional Securities sales and trading (GAAP/non-GAAP),0001193125-17-059212
+MS,0000895421,ficc,2015,4758.0,mda:Institutional Securities sales and trading (GAAP/non-GAAP),0001193125-18-060831
+MS,0000895421,ficc,2016,5117.0,mda:Institutional Securities sales and trading (By Business),0001193125-19-051943
+MS,0000895421,ficc,2017,4928.0,mda:Institutional Securities sales and trading (By Business),0000895421-20-000265
+MS,0000895421,ficc,2018,5005.0,mda:Institutional Securities sales and trading (By Business),0000895421-21-000286
 MS,0000895421,ficc,2019,5985.0,mda:Institutional Securities income statement,0000895421-22-000400
 MS,0000895421,ficc,2020,8847.0,mda:Institutional Securities income statement,0000895421-23-000284
 MS,0000895421,ficc,2021,7516.0,mda:Institutional Securities income statement,0000895421-24-000300
@@ -392,3 +458,9 @@ MS,0000895421,ficc,2022,9022.0,mda:Institutional Securities income statement,000
 MS,0000895421,ficc,2023,7673.0,mda:Institutional Securities income statement,0000895421-26-000086
 MS,0000895421,ficc,2024,8418.0,mda:Institutional Securities income statement,0000895421-26-000086
 MS,0000895421,ficc,2025,8716.0,mda:Institutional Securities income statement,0000895421-26-000086
+PJT,0001626115,advisory,2018,451.553,mda:Consolidated results of operations - revenues,0001564590-21-009465
+PJT,0001626115,advisory,2019,571.771,mda:Consolidated results of operations - revenues,0001564590-21-009465
+PJT,0001626115,advisory,2020,872.286,mda:Consolidated results of operations - revenues,0001564590-21-009465
+PJT,0001626115,placement_fees,2018,111.035,mda:Consolidated results of operations - revenues,0001564590-21-009465
+PJT,0001626115,placement_fees,2019,133.18,mda:Consolidated results of operations - revenues,0001564590-21-009465
+PJT,0001626115,placement_fees,2020,162.237,mda:Consolidated results of operations - revenues,0001564590-21-009465

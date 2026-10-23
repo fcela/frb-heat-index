@@ -24,7 +24,13 @@ from pathlib import Path
 import polars as pl
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from src.revenue.taxonomy import TAXONOMY_LINES, map_quality, canonical_firm  # noqa: E402
+from src.revenue.taxonomy import (  # noqa: E402
+    TAXONOMY_LINES,
+    map_quality,
+    canonical_firm,
+    accession_order_key,
+    accession_order_exprs,
+)
 from src.revenue.reorg_registry import REORGS, regime_for  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[2]
@@ -94,13 +100,16 @@ def build_panel(seg, sub):
     # layers. Direct (D) disclosures beat approximate (A) mappings of the
     # same line -- e.g. MD&A advisory fees beat the whole "Banking"
     # division mapped to advisory with quality A. Within a quality tier
-    # the later filing's restated value wins (`accession` sorts
-    # chronologically).
+    # the later filing's restated value wins (accession (filing year,
+    # sequence) order; raw accession strings do not sort chronologically
+    # across filing-agent prefixes).
     quality_rank = {"D": 0, "A": 1, "U": 2}
     df = df.with_columns(
         pl.col("map_quality").replace_strict(
             quality_rank, default=3).alias("_qrank"))
-    # Winner sorts first: best quality tier, then later accession
+    acc_y, acc_s = accession_order_exprs("accession")
+    df = df.with_columns(acc_y.alias("_acc_year"), acc_s.alias("_acc_seq"))
+    # Winner sorts first: best quality tier, then later filing
     # (restated value wins). maintain_order keeps polars' non-stable
     # sort from reshuffling rows that tie on every key -- several
     # segments can map to one line at the same quality from the same
@@ -108,11 +117,12 @@ def build_panel(seg, sub):
     # an unstable order made the surviving cell vary run to run.
     # Ties resolve to the first row in frame order (segment_native
     # ascending within a firm-year).
-    df = df.sort(["firm", "taxonomy_line", "year", "_qrank", "accession"],
-                 descending=[False, False, False, False, True],
+    df = df.sort(["firm", "taxonomy_line", "year", "_qrank", "_acc_year",
+                  "_acc_seq", "accession"],
+                 descending=[False, False, False, False, True, True, True],
                  maintain_order=True)
     df = df.unique(subset=["firm", "taxonomy_line", "year"], keep="first")
-    df = df.drop("_qrank")
+    df = df.drop(["_qrank", "_acc_year", "_acc_seq"])
 
     # Drop unmappable (null line) rows but record them in meta.
     unmapped = df.filter(pl.col("taxonomy_line").is_null())
@@ -206,8 +216,14 @@ def reconcile_splits(sub, seg):
                     continue
                 prow = fseg.filter(
                     (pl.col("year") == year)
-                    & (pl.col("segment_native") == parent)).sort("accession")
-                parent_total = prow["net_revenue_m"][-1]
+                    & (pl.col("segment_native") == parent))
+                # Latest filing's restated parent total, by (filing
+                # year, sequence) -- not raw accession-string order.
+                order = sorted(
+                    range(prow.height),
+                    key=lambda i: accession_order_key(
+                        prow["accession"][i]))
+                parent_total = prow["net_revenue_m"][order[-1]]
                 allowed = parent_total * (1 + RECONCILE_TOL_PCT) \
                     + RECONCILE_TOL_ABS
                 status = "pass" if splits_sum <= allowed else "flag"

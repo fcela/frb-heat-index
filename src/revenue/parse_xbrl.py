@@ -30,6 +30,8 @@ import polars as pl
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+from src.revenue.taxonomy import accession_order_exprs, cik_firm_map  # noqa: E402
+
 REPO = Path(__file__).resolve().parents[2]
 RAW_ROOT = REPO / "data" / "revenue" / "raw"
 OUT_CSV = REPO / "data" / "revenue" / "segments_annual.csv"
@@ -45,7 +47,17 @@ REVENUE_LABELS = ["total net revenues", "net revenues", "total net revenue",
                   "revenues", "total revenue", "total revenues",
                   "total revenue, net of interest expense",
                   "total revenues, net of interest expense",
-                  "revenues, net of interest expense"]
+                  "revenues, net of interest expense",
+                  # BofA's FY2013-FY2017 10-K segment notes present
+                  # revenue on an FTE basis under this label; without it
+                  # those filings yield no segment revenue at all (the
+                  # GWIM 2013-2015 hole). Lowest preference: it wins
+                  # only where no plain-basis label exists. For GWIM
+                  # the FTE values tie exactly to the FY2018 10-K's
+                  # plain-basis comparatives at the overlap years
+                  # (2016: 17,650; 2017: 18,590), so no basis seam is
+                  # introduced for the mapped line.
+                  "total revenue, net of interest expense (fte basis)"]
 
 # Firms whose segment revenue appears as named fee lines rather than a
 # "Total net revenues" row (single-segment filers). The fee-type header
@@ -678,11 +690,51 @@ def parse_segment_xml(xml_text, extra_labels=()):
 
 def _rfile_rank(short_name):
     s = short_name.lower()
+    # ASC 606 revenue-disaggregation notes ("Revenue from Contracts with
+    # Customers, Revenue by Operating Segment (Details)", "Disaggregation
+    # of Revenue") describe CONTRACT revenue, not segment revenue. Wells
+    # Fargo's FY2019 10-K carries both notes: the 606 note's WIM block has
+    # a "Net interest income" row but no bare "noninterest income" row,
+    # so the NII + noninterest-income sum collapsed to NII-only ($4,641M
+    # for 2017) while the true segment note sums to $17,072M. The two
+    # notes' short names tie at the generic rank, and the 606 note comes
+    # first in report order -- so it must rank below everything. (PJT's
+    # disaggregation has no segment-note competitor for its fee rows,
+    # so the demotion changes nothing there.)
+    if "contracts with customers" in s or "disaggregation" in s:
+        return 3
     if "operating results" in s or "(detail)" in s:
         return 0
     if s == "business segments":
         return 1
     return 2
+
+
+_DT_RE = re.compile(rb"<dei:DocumentType[^>]*>\s*([^<]+?)\s*</")
+
+
+def _dir_form_type(filing_dir):
+    """'10-K', '10-Q', ... from an accession dir's XBRL instance.
+
+    Reads dei:DocumentType from the first instance that states it
+    (mirrors parse_mda.dir_form_type without the bs4 import). Returns
+    None for pre-XBRL-era dirs (no instance) -- the annual walk keeps
+    those, since pre-2010 10-Ks have no XBRL but may carry FilingSummary
+    renderings from EDGAR's retro-fitted viewer.
+    """
+    filing_dir = Path(filing_dir)
+    for p in sorted(filing_dir.iterdir()):
+        if p.name.startswith("R") or p.name == "FilingSummary.xml":
+            continue
+        if p.suffix.lower() not in (".xml", ".xbrl"):
+            continue
+        try:
+            m = _DT_RE.search(p.read_bytes())
+        except OSError:
+            continue
+        if m:
+            return m.group(1).decode("utf-8", "replace").strip()
+    return None
 
 
 def parse_filing_dir(firm, cik, accession, filing_dir, segment_default=None):
@@ -743,18 +795,32 @@ def parse_filing_dir(firm, cik, accession, filing_dir, segment_default=None):
             prev = by_key.get(key)
             if prev is None or rank < prev["_rank"]:
                 by_key[key] = cand
-    # Prefer "Total net revenues" over "Net revenues" per (segment, year).
-    # Distinct fee lines (e.g. PJT's advisory vs placement fees) are kept
-    # separately: only the two generic revenue labels compete.
+    # Prefer the best generic revenue label per (segment, year): a segment
+    # note can carry several ("Revenues"/"Total revenues" gross rows next
+    # to "Net revenues"). Keep the record whose label ranks highest in
+    # REVENUE_LABELS ("total net revenues" first ... "total revenues"
+    # last), the same preference the extraction documents; insertion order
+    # must never decide it (Jefferies' FY2025 10-K segment note lists the
+    # gross "Revenues" row first, and first-inserted-wins put $1,113.7M /
+    # $368.4M gross figures into the Asset Management cells whose net
+    # revenues are $803.7M / $188.3M). R-file rank outranks label
+    # preference, mirroring the quarterly parser. Distinct fee lines
+    # (e.g. PJT's advisory vs placement fees) are kept separately: only
+    # the generic revenue labels compete.
+    def _label_rank(norm):
+        return REVENUE_LABELS.index(norm) if norm in REVENUE_LABELS \
+            else len(REVENUE_LABELS) + 1
+
     final = {}
     for (seg, year, label), cand in by_key.items():
         group = "revenue" if label in REVENUE_LABELS else label
         key = (seg, year, group)
+        cand_rank = (cand["_rank"], _label_rank(label))
         prev = final.get(key)
-        if prev is None or label == "total net revenues":
-            final[key] = cand
+        if prev is None or cand_rank < prev[1]:
+            final[key] = (cand, cand_rank)
     out = []
-    for cand in final.values():
+    for cand, _ in final.values():
         cand.pop("_rank", None)
         out.append(cand)
     return sorted(out, key=lambda r: (r["segment_native"], r["year"]))
@@ -762,7 +828,14 @@ def parse_filing_dir(firm, cik, accession, filing_dir, segment_default=None):
 
 def build_segments_csv(raw_root=RAW_ROOT, out_path=OUT_CSV,
                        firms_ciks=None, since_year=2010):
-    """Walk the raw download tree and write segments_annual.csv."""
+    """Walk the raw download tree and write segments_annual.csv.
+
+    Only 10-K / 10-K/A accession dirs are walked: the raw tree also
+    holds 10-Q downloads (quarterly pipeline), whose segment R-files can
+    leak quarterly values into annual columns (a Houlihan Lokey 10-Q
+    once contributed a single-quarter $37.4M "2020" cell). Dirs with no
+    XBRL instance (pre-2009 filings) are kept -- they predate XBRL.
+    """
     raw_root = Path(raw_root)
     records = []
     for cik_dir in sorted(raw_root.iterdir()):
@@ -774,6 +847,8 @@ def build_segments_csv(raw_root=RAW_ROOT, out_path=OUT_CSV,
         for acc_dir in sorted(cik_dir.iterdir()):
             if not acc_dir.is_dir():
                 continue
+            if _dir_form_type(acc_dir) not in (None, "10-K", "10-K/A"):
+                continue
             records.extend(
                 parse_filing_dir(firm, cik, acc_dir.name, acc_dir,
                                  segment_default=seg_default))
@@ -784,10 +859,15 @@ def build_segments_csv(raw_root=RAW_ROOT, out_path=OUT_CSV,
                     "r_file": pl.String, "source": pl.String})
     df = df.filter(pl.col("year") >= since_year)
     # Restatements: the same (firm, segment, year) appears in several
-    # filings; the later filing's value wins. Accession numbers sort
-    # chronologically.
-    df = df.sort(["firm", "segment_native", "year", "accession"])
+    # filings; the later filing's value wins. "Later" is the
+    # accession's (filing year, sequence) -- accession strings do not
+    # sort chronologically across filing-agent prefixes.
+    acc_y, acc_s = accession_order_exprs("accession")
+    df = df.with_columns(acc_y.alias("_acc_year"), acc_s.alias("_acc_seq"))
+    df = df.sort(["firm", "segment_native", "year", "_acc_year",
+                  "_acc_seq", "accession"], maintain_order=True)
     df = df.unique(subset=["firm", "segment_native", "year"], keep="last")
+    df = df.drop(["_acc_year", "_acc_seq"])
     df = df.sort(["firm", "segment_native", "year"])
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -800,9 +880,10 @@ def main():
     ap.add_argument("--raw", default=str(RAW_ROOT))
     ap.add_argument("--out", default=str(OUT_CSV))
     ap.add_argument("--firms", default="",
-                    help="JSON file mapping CIK -> firm display name")
+                    help="JSON file mapping CIK -> firm display name "
+                         "(default: the built-in taxonomy CIK map)")
     args = ap.parse_args()
-    firms_ciks = None
+    firms_ciks = cik_firm_map()
     if args.firms:
         import json
         firms_ciks = {v: k for k, v in json.load(open(args.firms)).items()}
