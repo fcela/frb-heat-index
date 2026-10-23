@@ -101,8 +101,8 @@ const ruleXs = marksOf("ruleX");
 const ruleYs = marksOf("ruleY");
 const tips = marksOf("tip");
 
-/* --- 3. matrix cells: every indicator x every quarter, values 0..1 --- */
-const nQ = META.n_quarters;
+/* --- 3. matrix cells: every indicator x every WINDOW quarter, values 0..1 --- */
+const nQ = CLUSTER.window.quarters.length;
 // distinguish the marks by data shape: chips have `color`; cell marks have
 // `xi` (cells all v != null, missing all v == null)
 const chipMark = rects.find(m => m.data.length && "color" in m.data[0]);
@@ -116,6 +116,13 @@ const cells = cellsMark ? cellsMark.data : [];
 const missing = missingMark ? missingMark.data : [];
 if (cells.length + missing.length !== nRows * nQ)
   err(`expected ${nRows * nQ} cells, got ${cells.length} + ${missing.length} missing`);
+// the clustered grid covers exactly the complete window and, by
+// construction of that window, contains no missing cells
+if (missing.length !== 0)
+  err(`clustered window must have no missing cells, got ${missing.length}`);
+for (const c of cells.concat(missing))
+  if (!CLUSTER.window.quarters.includes(c.q))
+    err(`cell outside the complete window: ${c.q}`);
 for (const c of cells)
   if (!(c.v >= 0 && c.v <= 1)) err(`cell value out of [0,1]: ${c.v}`);
 // every (row, quarter) pair present exactly once

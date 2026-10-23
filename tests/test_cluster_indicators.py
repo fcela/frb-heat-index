@@ -146,8 +146,8 @@ def test_bundle_deterministic_and_permutation():
     cols = {}
     for k in range(7):
         v = rng_vals + 0.1 * k * np.cos(np.arange(T) + k)
-        if k == 2:                     # ragged series with real gaps
-            v[::7] = np.nan
+        if k == 2:                     # leading gap only: the complete
+            v[:13] = np.nan            # window is quarters 13..49
         cols[f"ind{k}"] = [None if not np.isfinite(x) else float(x) for x in v]
     std = _frame(cols)
     b1 = ci.compute_bundle(std)
@@ -165,6 +165,65 @@ def test_bundle_deterministic_and_permutation():
     assert sorted(l for g in b1["cut"] for l in g) == list(range(n))
     spans = sorted((min(pos[l] for l in g), max(pos[l] for l in g)) for g in b1["cut"])
     assert all(spans[i][1] + 1 == spans[i + 1][0] for i in range(len(spans) - 1))
+
+
+def test_complete_window_is_the_all_observed_suffix():
+    # a starts at quarter 2, b at quarter 5, c is full: the window must
+    # start at quarter 5 (the last series to begin) and run to the end.
+    T = 40
+    base = np.sin(np.arange(T) * 0.3)
+    a = base.copy(); a[:2] = np.nan
+    b = base * 1.7 + 1.0; b[:5] = np.nan
+    cols = {"a": [None if not np.isfinite(x) else float(x) for x in a],
+            "b": [None if not np.isfinite(x) else float(x) for x in b],
+            "c": [float(x) for x in base + 2.0]}
+    std = _frame(cols)
+    start, qs = ci.complete_window(std, ["a", "b", "c"])
+    assert start == 5 and len(qs) == T - 5
+    bundle = ci.compute_bundle(std)
+    assert bundle["window"]["quarters"] == qs
+    assert bundle["window"]["start"] == qs[0] and bundle["window"]["end"] == qs[-1]
+    # the window slice of the source frame contains no nulls at all
+    win = std.slice(start, len(qs))
+    assert all(win[c].null_count() == 0 for c in ("a", "b", "c"))
+
+
+def test_trailing_hole_leaves_no_window_and_raises():
+    # a series still missing in the final quarter has no complete suffix;
+    # clustering must fail loudly rather than fall back to a ragged sample.
+    T = 40
+    base = np.sin(np.arange(T) * 0.3)
+    a = base.copy(); a[-1] = np.nan
+    cols = {"a": [None if not np.isfinite(x) else float(x) for x in a],
+            "b": [float(x) for x in base + 1.0]}
+    std = _frame(cols)
+    try:
+        ci.compute_bundle(std)
+    except ValueError as e:
+        assert "complete window" in str(e)
+    else:
+        raise AssertionError("expected ValueError when no complete window exists")
+
+
+def test_window_on_real_panel():
+    """On the committed panel the complete window is set by the
+    prime-mortgage lending-standards start: 2007Q2 through the last
+    quarter, and the shipped bundle's window slice has zero nulls."""
+    std_csv = HERE / "data" / "indicators_standardized.csv"
+    shipped_p = HERE / "docs" / "data" / "clustered.json"
+    if not std_csv.exists() or not shipped_p.exists():
+        print("skip test_window_on_real_panel: data files absent")
+        return
+    std = pl.read_csv(std_csv)
+    shipped = json.loads(shipped_p.read_text())
+    w = shipped["window"]
+    assert w["start"] == "2007Q2", f"window start moved: {w['start']}"
+    assert w["end"] == std["quarter"][-1]
+    assert w["quarters"] == std["quarter"].to_list()[-len(w["quarters"]):]
+    win = std.tail(len(w["quarters"]))
+    cols = [c for c in std.columns if c != "quarter"]
+    assert all(win[c].null_count() == 0 for c in cols), \
+        "the clustered window still contains empty cells"
 
 
 def test_shipped_bundle_equals_recomputation():

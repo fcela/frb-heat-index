@@ -46,7 +46,8 @@ def test_clustered_view_renders(tmp_path):
     cluster = json.loads((REPO / "docs/data/clustered.json").read_text())
     n = len(cluster["leaves"])
     assert res["rows"] == n
-    assert res["cells"] + res["missing"] == n * meta["n_quarters"]
+    assert res["cells"] + res["missing"] == n * len(cluster["window"]["quarters"])
+    assert res["missing"] == 0, "the complete window must render with no empty cells"
     assert res["dendroV"] == n - 1
     assert res["dendroH"] == 2 * (n - 1)
     assert res["cutRules"] == len(cluster["cut"]) - 1

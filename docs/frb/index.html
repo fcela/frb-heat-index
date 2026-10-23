@@ -100,24 +100,29 @@
   <section class="card view-clustered" id="clustered-card">
     <h2>The heat map, clustered</h2>
     <p class="sub">The same heat, resolved to its 46 indicators and re-ordered by shape:
-      rows are the indicators, columns are every quarter in order — time is never
-      re-shuffled. The row order comes from hierarchical clustering of the score
-      trajectories, so indicators that heat up and cool down together sit next to each
-      other; the dendrogram at the left shows the merge tree. The chip on each label is
-      the indicator's component — compare it across rows to see where the clustering
-      recovers the paper's fourteen components and where it cuts across them. Hover any
-      cell for the component, sub-index, and exact value.</p>
+      rows are the indicators, columns are quarters in order — time is never
+      re-shuffled. This view shows only the window in which every indicator is
+      observed (the window is computed from the panel; earlier quarters, where
+      some series have not yet begun, appear in the hierarchy view above), so the
+      grid has no empty cells. The row order comes from hierarchical clustering of
+      the score trajectories over that same window, so indicators that heat up and
+      cool down together sit next to each other; the dendrogram at the left shows
+      the merge tree. The chip on each label is the indicator's component — compare
+      it across rows to see where the clustering recovers the paper's fourteen
+      components and where it cuts across them. Hover any cell for the component,
+      sub-index, and exact value.</p>
     <div class="heatmap-scroll"><figure id="clustermap" role="img" aria-label="Clustered heat map: 46 indicators over time with dendrogram and component chips"></figure></div>
     <div class="cluster-legend" id="cluster-legend"></div>
     <p class="legend-note"><strong>Method:</strong> what is clustered is the 46 indicator
-      score series (each indicator's 0–1 heat quantile in its own history, per quarter).
-      Distance is correlation distance (1&nbsp;−&nbsp;Pearson&nbsp;r) computed on
-      pairwise-complete observations — at least 24 shared quarters, no imputation, no
-      zero-filling; linkage is average (UPGMA), because Ward's objective requires
-      complete raw vectors and cannot take the ragged sample. Adjacent rows mean
-      similar vulnerability <em>trajectories</em>, not similar levels. The order and
-      merge tree are computed deterministically in the data pipeline and shipped with
-      the site data, never in the browser.</p>
+      score series (each indicator's 0–1 heat quantile in its own history within the
+      window, per quarter), over the complete window only — the maximal run of
+      quarters, computed from the panel, in which all 46 indicators are observed.
+      Distance is correlation distance (1&nbsp;−&nbsp;Pearson&nbsp;r) over those
+      quarters — complete by construction, no imputation, no zero-filling; linkage
+      is average (UPGMA). Adjacent rows mean similar vulnerability
+      <em>trajectories</em>, not similar levels. The window, the order, and the
+      merge tree are computed deterministically in the data pipeline and shipped
+      with the site data, never in the browser.</p>
   </section>
 
   <section class="card" id="methodology">

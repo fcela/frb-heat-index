@@ -187,33 +187,44 @@ function renderHeatmap() {
 }
 
 /* ---------------- clustered view ---------------- */
-/* 46 indicator rows x all quarters, rows ordered by pipeline-computed
-   hierarchical clustering (docs/data/clustered.json). One figure holds the
-   dendrogram (left, negative x), the row labels + component chips, and the
-   matrix (x = quarter index), so all three share the same y scale and can
-   never drift apart. Time is never reordered. */
+/* 46 indicator rows x the complete window only -- the quarters in which
+   every indicator is observed (CLUSTER.window, computed from the panel
+   by the pipeline; the hierarchy view keeps the full history). Rows are
+   ordered by pipeline-computed hierarchical clustering over that same
+   window (docs/data/clustered.json), so the grid has no empty cells.
+   One figure holds the dendrogram (left, negative x), the row labels +
+   component chips, and the matrix (x = window-quarter index), so all
+   three share the same y scale and can never drift apart. Time is never
+   reordered. */
 
 function renderClustered() {
   const el = document.getElementById("clustermap");
   if (!el || !CLUSTER) return;
   el.innerHTML = "";
-  const nQ = quarters.length;
+  const wq = (CLUSTER.window && CLUSTER.window.quarters) || quarters;
+  const wIndex = {};
+  wq.forEach((q, i) => { wIndex[q] = i; });
+  const nQ = wq.length;
   const n = CLUSTER.leaves.length;
   const meta = indicatorMeta();
+  const winTicks = wq.map((q, i) => i)
+    .filter(i => wq[i].endsWith("Q1") && parseInt(wq[i]) % 5 === 0);
 
-  // Rows in the shipped clustered order, with heat-quantile cells computed
-  // from the same z-scores the drill-down view uses (equantile in own history).
+  // Rows in the shipped clustered order, with heat-quantile cells over
+  // the window only: the quantile reference set is the window history,
+  // matching the trajectories the pipeline clustered on.
   const rows = CLUSTER.order.map((leafId, p) => {
     const name = CLUSTER.leaves[leafId];
     const m = meta[name] || { short: name, comp: "?", cat: "?" };
-    const zs = (IND[name] || []).map(d => d.z);
-    const sorted = zs.filter(Number.isFinite).sort((a, b) => a - b);
-    return { p, name, ...m, zs, sorted };
+    const entries = (IND[name] || []).filter(d => wIndex[d.q] != null);
+    const sorted = entries.map(d => d.z).filter(Number.isFinite).sort((a, b) => a - b);
+    return { p, name, ...m, entries, sorted };
   });
 
   const cells = [], missing = [];
   for (const r of rows) {
-    (IND[r.name] || []).forEach((d, xi) => {
+    r.entries.forEach(d => {
+      const xi = wIndex[d.q];
       const v = equantile(r.sorted, d.z);
       const cell = { p: r.p, xi, q: d.q, v, short: r.short, comp: r.comp, cat: r.cat };
       if (v == null) missing.push(cell);
@@ -261,8 +272,8 @@ function renderClustered() {
     marginLeft: 6, marginRight: 14, marginTop: 6, marginBottom: 28,
     padding: 0,
     x: {
-      domain: [-(L + D) - 0.5, nQ - 0.5], ticks: yearTicks,
-      tickFormat: i => quarters[i].slice(0, 4), label: null, tickSize: 0,
+      domain: [-(L + D) - 0.5, nQ - 0.5], ticks: winTicks,
+      tickFormat: i => wq[i].slice(0, 4), label: null, tickSize: 0,
     },
     y: { domain: [-0.5, n - 0.5], axis: null },
     color: {
@@ -302,7 +313,7 @@ function renderClustered() {
       }),
       Plot.tip(cells, Plot.pointer({
         x: "xi", y: "p",
-        title: d => `${d.short}\n${d.comp} — ${d.cat}\n${d.q} — ${d.v.toFixed(2)}\nHotter than ${Math.round(d.v * 100)}% of its history`,
+        title: d => `${d.short}\n${d.comp} — ${d.cat}\n${d.q} — ${d.v.toFixed(2)}\nHotter than ${Math.round(d.v * 100)}% of its history in this window`,
       })),
     ],
   });

@@ -7,14 +7,22 @@ and cool down together end up adjacent, with the merge tree drawn beside
 the matrix as a dendrogram.
 
 Method (pipeline-computed, deterministic; NOT in the browser):
-  features  each indicator's quarterly 0-1 heat score over the full sample
-            (the same empirical quantile of its oriented z-score in its own
-            history that the site's indicator drill-down shows).
-  distance  correlation distance, 1 - Pearson r, computed on the
-            PAIRWISE-COMPLETE observations of each pair (no imputation, no
-            zero-filling). Pairs with fewer than MIN_OVERLAP common
-            quarters raise, so a ragged rebuild fails loudly instead of
-            silently clustering on thin overlap.
+  window    only the maximal suffix of quarters in which EVERY indicator
+            is observed (the complete window, computed from the panel --
+            never hardcoded). With the current panel that is 2007Q2 on,
+            set by the prime-mortgage lending-standards start; the
+            clustered view clusters on, and displays, exactly this
+            window, so its grid contains no empty cells. The hierarchy
+            view keeps the full history. A panel whose complete suffix
+            is shorter than MIN_OVERLAP quarters raises instead of
+            silently clustering a ragged sample.
+  features  each indicator's quarterly 0-1 heat score over the window
+            (the empirical quantile of its oriented z-score within the
+            window, matching what the clustered view draws).
+  distance  correlation distance, 1 - Pearson r, on the window's
+            quarters (complete by construction, so every pair shares
+            the full window; the pairwise-complete machinery remains
+            for direct callers of correlation_distance).
   linkage   average (UPGMA). Ward is NOT compatible here: Ward's objective
             needs complete raw vectors / squared Euclidean distances, which
             the ragged pairwise-complete design cannot provide.
@@ -207,6 +215,29 @@ def cut_groups(merges: list[tuple[int, int, float]], n: int, k: int) -> list[lis
     )
 
 
+def complete_window(std: pl.DataFrame, cols: list[str]) -> tuple[int, list[str]]:
+    """The maximal suffix of quarters in which every indicator is observed.
+
+    Returns (start_index, quarter labels). Computed from the frame, never
+    hardcoded: the window starts right after the last quarter in which
+    any indicator is null. Raises ValueError when no quarter is complete
+    (a trailing hole), since clustering must never fall back to a ragged
+    sample silently.
+    """
+    quarters = std["quarter"].to_list()
+    mat = np.column_stack([
+        std[c].cast(pl.Float64, strict=False).to_numpy() for c in cols
+    ])
+    complete = np.isfinite(mat).all(axis=1)
+    if not complete.any():
+        raise ValueError(
+            "no quarter has all indicators observed; there is no complete "
+            "window to cluster on")
+    last_hole = int(np.max(np.nonzero(~complete)[0])) if (~complete).any() else -1
+    start = last_hole + 1
+    return start, quarters[start:]
+
+
 def compute_bundle(std: pl.DataFrame, min_overlap: int = MIN_OVERLAP,
                    cut_k: int = CUT_K) -> dict:
     """std: the indicators_standardized frame ('quarter' + indicator
@@ -216,13 +247,24 @@ def compute_bundle(std: pl.DataFrame, min_overlap: int = MIN_OVERLAP,
       order    row order as leaf ids (permutation of 0..n-1)
       merges   [[a, b, height], ...] merge steps; internal node id = n + step
       cut      leaf-id partition into the top-level clusters, in row order
+      window   {start, end, quarters}: the complete window the clustering
+               ran on and the only quarters the view displays
       method   human-readable method note (also shown on the page)
     """
     cols = [c for c in std.columns if c != "quarter"]
     if not cols:
         raise ValueError("no indicator columns in standardized frame")
+    start, win_quarters = complete_window(std, cols)
+    if len(win_quarters) < min_overlap:
+        raise ValueError(
+            f"complete window is only {len(win_quarters)} quarters "
+            f"({win_quarters[0] if win_quarters else '-'}.."
+            f"{win_quarters[-1] if win_quarters else '-'}), fewer than "
+            f"the {min_overlap} required; refusing to cluster a window "
+            "that thin")
+    win = std.slice(start, len(win_quarters))
     mat = np.column_stack([
-        std[c].cast(pl.Float64, strict=False).to_numpy() for c in cols
+        win[c].cast(pl.Float64, strict=False).to_numpy() for c in cols
     ])
     scores = heat_scores(mat)
     D = correlation_distance(scores, min_overlap)
@@ -238,11 +280,17 @@ def compute_bundle(std: pl.DataFrame, min_overlap: int = MIN_OVERLAP,
         "order": order,
         "merges": [[a, b, round(h, 6)] for a, b, h in merges],
         "cut": cut_groups(merges, n, k),
+        "window": {
+            "start": win_quarters[0],
+            "end": win_quarters[-1],
+            "quarters": win_quarters,
+        },
         "method": (
             "Hierarchical clustering (average linkage / UPGMA) of the 46 "
-            "indicator score series over all quarters, using correlation "
-            "distance (1 - Pearson r) on pairwise-complete observations "
-            f"(>= {min_overlap} common quarters required). Row order is "
+            "indicator score series over the complete window "
+            f"{win_quarters[0]}-{win_quarters[-1]} -- the quarters in "
+            "which every indicator is observed, computed from the panel "
+            "-- using correlation distance (1 - Pearson r). Row order is "
             "deterministic: distances are rounded to 12 decimals and merge "
             "ties break by smallest leaf index."),
     }
