@@ -76,6 +76,18 @@ await new Promise(r => setTimeout(r, 50));  // let the async boot() land
 /* --- 1. default boot: hierarchy view, untouched --- */
 if (!window.__frbBooted) err("boot() did not complete");
 if (document.body.dataset.view) err("default view must stay hierarchy (unset)");
+
+/* --- 1a. freshness banner: build date + least-recent observed series --- */
+const bannerText = byId["fresh-banner"]?._html || "";
+if (!bannerText.includes("Page last updated")) err("freshness banner did not render");
+if (META.built_at_utc && !bannerText.includes(META.built_at_utc.slice(0, 10)))
+  err("freshness banner missing the build date");
+if (META.freshness) {
+  if (!bannerText.includes(META.freshness.observed_through))
+    err("freshness banner missing the observed-through quarter");
+  if (!bannerText.includes(esc(META.freshness.least_series)))
+    err("freshness banner missing the least-recent series name");
+}
 if (byId["heatmap"]?._children.length !== 1) err("component heat map did not render");
 if (byId["aggchart"]?._children.length !== 1) err("aggregate chart did not render");
 if (byId["hierarchy"]?._children.length !== HIER.categories.length)

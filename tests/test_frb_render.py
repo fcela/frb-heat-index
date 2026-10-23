@@ -38,6 +38,14 @@ def test_app_js_syntax():
 
 
 @pytest.mark.skipif(NODE is None, reason="node not installed")
+def test_subpage_app_js_syntax():
+    for rel in ("docs/pulse/app.js", "docs/predmarkets/app.js", "docs/revenue/app.js"):
+        r = subprocess.run([NODE, "--check", str(REPO / rel)],
+                           capture_output=True, text=True, timeout=60)
+        assert r.returncode == 0, f"node --check failed for {rel}:\n{r.stderr}"
+
+
+@pytest.mark.skipif(NODE is None, reason="node not installed")
 def test_clustered_view_renders(tmp_path):
     out = run_node(FIX / "render-harness.mjs", REPO, tmp_path)
     res = json.loads(out)
@@ -68,6 +76,7 @@ if __name__ == "__main__":
         print("skip frb render tests: node not installed")
     else:
         test_app_js_syntax()
+        test_subpage_app_js_syntax()
         import tempfile
         with tempfile.TemporaryDirectory() as td:
             test_clustered_view_renders(Path(td))

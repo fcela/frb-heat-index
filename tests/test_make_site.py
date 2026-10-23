@@ -22,6 +22,8 @@ import polars as pl
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 import make_site  # noqa: E402
 
+HERE = Path(__file__).resolve().parent.parent
+
 
 def _reject(constant: str):
     raise ValueError(f"non-strict JSON literal in output: {constant}")
@@ -160,10 +162,62 @@ def test_build_writes_clustered_bundle():
         assert isinstance(b["method"], str) and b["method"]
 
 
+def test_build_computes_freshness_from_raw_panel():
+    """meta.freshness = the least-recent OBSERVED series, from
+    panel_quarterly.csv (never from the nowcast-extended panel)."""
+    with tempfile.TemporaryDirectory() as td:
+        data = Path(td) / "data"
+        out = Path(td) / "out"
+        data.mkdir()
+        _fixture(data)
+        pl.DataFrame({
+            "quarter": ["2020Q1", "2020Q2", "2020Q3"],
+            "Alpha": [1.0, 2.0, None],     # observed through 2020Q2
+            "Beta": [1.0, None, None],     # observed through 2020Q1
+            "Gamma": [1.0, 2.0, 3.0],      # observed through 2020Q3
+            "Delta": [None, 5.0, None],    # observed through 2020Q2
+        }).write_csv(data / "panel_quarterly.csv")
+        meta = make_site.build(data, out)
+        f = meta["freshness"]
+        assert f["observed_through"] == "2020Q1"
+        assert f["least_series"] == "Beta"
+        assert f["least_count"] == 1
+        assert f["n_series"] == 4
+
+
+def test_shipped_meta_freshness_matches_raw_panel():
+    """The committed docs/data/meta.json freshness block must equal a
+    recomputation from the committed data/panel_quarterly.csv."""
+    raw_p = HERE / "data" / "panel_quarterly.csv"
+    meta_p = HERE / "docs" / "data" / "meta.json"
+    if not raw_p.exists() or not meta_p.exists():
+        print("skip test_shipped_meta_freshness: data files absent")
+        return
+    raw = pl.read_csv(raw_p)
+    qs = raw["quarter"].to_list()
+    ends = {}
+    for c in raw.columns:
+        if c == "quarter":
+            continue
+        vals = raw[c].to_list()
+        obs = [i for i, v in enumerate(vals) if v is not None]
+        if obs:
+            ends[c] = qs[max(obs)]
+    least_q = min(ends.values())
+    least = [c for c, q in ends.items() if q == least_q]
+    f = json.loads(meta_p.read_text())["freshness"]
+    assert f["observed_through"] == least_q
+    assert f["least_series"] == least[0]
+    assert f["least_count"] == len(least)
+    assert f["n_series"] == len(ends)
+
+
 if __name__ == "__main__":
     test_sanitize_json_replaces_nonfinite()
     test_dumps_strict_fails_loudly_on_missed_nan()
     test_build_emits_strict_json_with_nulls_for_missing()
     test_build_preserves_pipeline_staleness_flags()
     test_build_writes_clustered_bundle()
+    test_build_computes_freshness_from_raw_panel()
+    test_shipped_meta_freshness_matches_raw_panel()
     print("all make_site regression tests passed")

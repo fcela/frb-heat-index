@@ -23,5 +23,11 @@
  "last_updated_quarter": "2026Q2",
  "start_quarter": "1990Q1",
  "n_quarters": 146,
- "stale_sources": []
+ "stale_sources": [],
+ "freshness": {
+  "observed_through": "2025Q4",
+  "least_series": "Broker Dealer Leverage (Dealer financing)",
+  "least_count": 30,
+  "n_series": 46
+ }
 }

@@ -462,14 +462,50 @@ function tocHTML(lines) {
   ).join("");
 }
 
+const bundleCache = {};
+
+function freshnessBanner() {
+  // Page-level freshness across BOTH bundles (annual + quarterly):
+  // last build stamp, and the least recent series anywhere on the page.
+  let built = null, least = null;
+  for (const f of ["a", "q"]) {
+    const b = bundleCache[f];
+    if (!b) continue;
+    const ba = b.meta && b.meta.built_at_utc;
+    if (ba && (!built || ba > built)) built = ba;
+    for (const ln of b.lines)
+      for (const fm of ln.firms) {
+        const vals = (fm.series || []).filter(e => e.value != null);
+        if (!vals.length) continue;
+        const e = vals[vals.length - 1];
+        const key = e.year * 4 + (f === "a" ? 4 : e.quarter);
+        if (!least || key < least.key)
+          least = {
+            key,
+            period: f === "a" ? `${e.year}` : `${e.year}Q${e.quarter}`,
+            name: `${fm.firm} — ${LINE_LABELS[ln.line] || ln.line} (${f === "a" ? "annual" : "quarterly"})`,
+          };
+      }
+  }
+  if (!built) return "";
+  return `<div class="fresh-banner">Page last updated: <strong>${esc(built.slice(0, 10))}</strong>` +
+    (least ? ` · Data through: <strong>${esc(least.period)}</strong> — least recent series: ${esc(least.name)}` : "") +
+    `.</div>`;
+}
+
 async function main() {
   const el = document.getElementById("revenue");
   try {
-    const bundle = await loadJSON(BUNDLE_FOR[freq]);
+    if (!bundleCache[freq]) bundleCache[freq] = await loadJSON(BUNDLE_FOR[freq]);
+    const bundle = bundleCache[freq];
+    const other = freq === "a" ? "q" : "a";
+    if (!bundleCache[other]) {
+      try { bundleCache[other] = await loadJSON(BUNDLE_FOR[other]); } catch (e) { /* banner degrades to one bundle */ }
+    }
     const unit = bundle.meta.unit || "USD millions";
     document.getElementById("revenue-toc").innerHTML = tocHTML(bundle.lines);
     const sections = bundle.lines.map(l => lineSection(l, unit, freq));
-    el.innerHTML = "";
+    el.innerHTML = freshnessBanner();
     for (const s of sections) el.appendChild(s);
   } catch (err) {
     el.innerHTML = `<p class="pulse-stamp">failed to load revenue data: ${esc(err.message)}</p>`;

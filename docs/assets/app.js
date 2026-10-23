@@ -754,6 +754,23 @@ function renderMeta() {
   const first = META.start_quarter || "?";
   const n = META.n_quarters || "?";
   const built = META.built_at_utc ? META.built_at_utc.replace("T", " ").replace("Z", " UTC") : "unknown";
+  const fb = document.getElementById("fresh-banner");
+  if (fb) {
+    const builtD = META.built_at_utc ? META.built_at_utc.slice(0, 10) : "unknown";
+    const f = META.freshness;
+    if (f) {
+      const others = f.least_count > 1
+        ? ` (with ${f.least_count - 1} other series)` : "";
+      fb.innerHTML =
+        `Page last updated: <strong>${esc(builtD)}</strong> · Data through: ` +
+        `<strong>${esc(f.observed_through)}</strong> observed — least recent series: ` +
+        `${esc(f.least_series)}${others}. Nowcast extensions carry the displayed ` +
+        `panel to ${esc(q)} (see Methodology).`;
+    } else {
+      fb.innerHTML =
+        `Page last updated: <strong>${esc(builtD)}</strong> · Data through: <strong>${esc(q)}</strong>.`;
+    }
+  }
   document.getElementById("stamp").innerHTML =
     `Data through <strong>${esc(q)}</strong> · ${esc(n)} quarters (${esc(first)}–${esc(q)}) · panel built ${esc(built)}.`;
   document.getElementById("stat-quarters").textContent = n;
