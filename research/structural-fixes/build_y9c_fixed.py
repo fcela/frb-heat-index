@@ -2,14 +2,23 @@
 """Y-9C panel 1990Q1-2026Q2 with Fix 1 (CET1 splice) and Fix 2 (total capital from Y-9C).
 Polars only. Old format (csv) 1990Q1-2021Q1, NPW (^) 2021Q2-2026Q2.
 Capital ratios restricted to HC-R reporters (non-missing BHCAP859 post-2014).
+
+NPW files are caret-delimited with NO quoting convention: embedded double
+quotes in free-text memo items are literal data. Reading them with a CSV
+quote character makes the parser swallow carets/newlines inside a "..." span,
+which corrupts the row structure -- this is what silently dropped 2023Q4
+(the only quarter whose memo items contain a leading-quote field). All NPW
+reads therefore pass quote_char=None.
 """
 import re
+from pathlib import Path
+
 import polars as pl
 
 Y9C_RAW = "/home/hatch/workspace/fedheat_r2_work/y9c_raw"
 Y9C_NPW = "/home/hatch/workspace/fedheat_r2_work/y9c_npw"
 Y9C_NEW = "/home/hatch/workspace/fedheat_r2_work/y9c_new"
-OUT = "/home/hatch/workspace/frb-work/fix/y9c_panel_full.csv"
+OUT = str(Path(__file__).resolve().parent / "y9c_panel_full.csv")
 
 def pq(s):
     m = re.match(r"(\d{4})Q([1-4])", s); return int(m.group(1)), int(m.group(2))
@@ -72,14 +81,14 @@ def agg_old(q):
 def agg_npw(q):
     fn = f"{Y9C_NPW}/bhcf_npw_{q}.txt"
     try: hdr = pl.read_csv(fn, n_rows=0, separator="^", encoding="utf8-lossy",
-                           truncate_ragged_lines=True).columns
+                           truncate_ragged_lines=True, quote_char=None).columns
     except Exception: return None
     cmap = {c.lower(): c for c in hdr}
     use = [cmap[i] for i in ITEMS_NPW if i in cmap]
     try:
         d = pl.read_csv(fn, columns=[cmap["rssd9001"]]+use, separator="^",
                         encoding="utf8-lossy", infer_schema_length=8000,
-                        truncate_ragged_lines=True)
+                        truncate_ragged_lines=True, quote_char=None)
     except Exception: return None
     d = d.filter(to_num(use[0]) > 0)
     rec = {"quarter": q, "n_filers": float(d.height), "src": "npw"}
