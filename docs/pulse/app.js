@@ -192,9 +192,20 @@ function renderToc(segments) {
 function renderPulse(pulse) {
   const el = document.getElementById("pulse");
   el.innerHTML = "";
+  const builtD = pulse.meta && pulse.meta.built_at_utc
+    ? pulse.meta.built_at_utc.slice(0, 10) : null;
+  let least = null;
+  for (const seg of pulse.segments)
+    for (const ind of seg.indicators)
+      if (ind.last_observation && (!least || ind.last_observation < least.last_observation))
+        least = ind;
+  const banner = builtD
+    ? `<div class="fresh-banner">Page last updated: <strong>${esc(builtD)}</strong>` +
+      (least ? ` · Data through: <strong>${esc(least.last_observation)}</strong> — least recent series: ${esc(least.title)}` : "") +
+      `.</div>` : "";
   const stamp = pulse.meta && pulse.meta.built_at_utc
     ? `<p class="pulse-stamp">Refreshed ${esc(pulse.meta.built_at_utc.slice(0, 10))} (UTC) · weekly cadence · raw market series in their own units, not heat quantiles</p>` : "";
-  el.innerHTML = stamp;
+  el.innerHTML = banner + stamp;
   for (const seg of pulse.segments) {
     const sec = document.createElement("div");
     sec.className = "pulse-seg";

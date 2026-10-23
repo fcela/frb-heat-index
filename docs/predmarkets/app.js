@@ -538,9 +538,19 @@ function renderToc(inds) {
 function renderMarkets(pm) {
   const el = document.getElementById("predmarkets");
   el.innerHTML = "";
+  const builtD = pm.meta && pm.meta.built_at_utc
+    ? pm.meta.built_at_utc.slice(0, 10) : null;
+  let least = null;
+  for (const ind of pm.indicators)
+    if (ind.last_observation && (!least || ind.last_observation < least.last_observation))
+      least = ind;
+  const banner = builtD
+    ? `<div class="fresh-banner">Page last updated: <strong>${esc(builtD)}</strong>` +
+      (least ? ` · Data through: <strong>${esc(least.last_observation)}</strong> — least recent series: ${esc(least.title)}` : "") +
+      `.</div>` : "";
   const stamp = pm.meta && pm.meta.built_at_utc
     ? `<p class="pulse-stamp">Refreshed ${esc(pm.meta.built_at_utc.slice(0, 10))} (UTC) · daily cadence · daily closes of $1 binary contracts read as probabilities · shared 0–1 axes</p>` : "";
-  el.innerHTML = stamp;
+  el.innerHTML = banner + stamp;
   for (const ind of pm.indicators) {
     const card = document.createElement("div");
     card.className = "pulse-card";

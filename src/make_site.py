@@ -212,6 +212,33 @@ def build(data: Path, out: Path) -> dict:
     meta["start_quarter"] = quarters[0] if quarters else None
     meta["n_quarters"] = len(quarters)
     meta.setdefault("stale_sources", [])
+    # Freshness for the page banner: the least-recent OBSERVED series.
+    # Computed from the raw quarterly panel -- the standardized panel
+    # carries nowcast extensions to the panel end for most series, which
+    # would mask real staleness (observed ends are what a reader means
+    # by "data through").
+    meta["freshness"] = None
+    raw_p = data / "panel_quarterly.csv"
+    if raw_p.exists():
+        raw = pl.read_csv(raw_p)
+        raw_qs = raw["quarter"].to_list()
+        ends = {}
+        for c in raw.columns:
+            if c == "quarter":
+                continue
+            vals = raw[c].to_list()
+            obs = [i for i, v in enumerate(vals) if v is not None]
+            if obs:
+                ends[c] = raw_qs[max(obs)]
+        if ends:
+            least_q = min(ends.values())
+            least = [c for c, q in ends.items() if q == least_q]
+            meta["freshness"] = {
+                "observed_through": least_q,
+                "least_series": least[0],
+                "least_count": len(least),
+                "n_series": len(ends),
+            }
     (out / "meta.json").write_text(dumps_strict(meta, indent=1))
 
     return meta

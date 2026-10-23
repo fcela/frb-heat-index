@@ -27,6 +27,7 @@ Run: python3 -m src.revenue.build_revenue_q
 import json
 import math
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 import polars as pl
@@ -486,6 +487,7 @@ def main():
             "unit": "USD millions",
             "frequency": "quarterly",
             "lines": TAXONOMY_LINES,
+            "built_at_utc": datetime.now(timezone.utc).isoformat(),
         },
         "lines": bundle_lines,
     }

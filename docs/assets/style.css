@@ -763,6 +763,18 @@ body[data-view="clustered"] .view-hierarchy { display: none; }
 
 .fdesc { color: var(--muted); font-size: 0.88rem; margin-left: auto; text-align: right; }
 
+.fresh-banner {
+  margin: 0 0 1rem;
+  padding: 0.8rem 1.1rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid rgb(178, 24, 43);
+  background: rgba(178, 24, 43, 0.05);
+  font-size: 0.98rem;
+  color: var(--muted);
+}
+
+.fresh-banner strong { color: var(--ink); }
+
 .stamp {
   font-size: 0.9rem;
   color: var(--muted);
