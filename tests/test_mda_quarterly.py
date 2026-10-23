@@ -81,6 +81,78 @@ def test_ms_quarterly_splits():
     assert by_line[("advisory", 2026, 2)] == pytest.approx(798.0)
 
 
+def test_gs_quarterly_gb_markets_and_ib_fees():
+    """GS 2026Q2 10-Q MD&A (GBM regime): FICC/Equities + IB fee rows.
+
+    Values verified against the filing's GBM results table
+    (gs-20260630.htm): current Q2 2026 and comparative Q2 2025 columns.
+    """
+    p = _fixture("0000886982", "0000886982-26-000297", "gs-20260630")
+    recs = parse_filing_q("GS", "0000886982", "0000886982-26-000297", p)
+    by_line = {}
+    for r in recs:
+        by_line.setdefault(
+            (r["taxonomy_line"], r["year"], r["quarter"]),
+            r["net_revenue_m"])
+    assert by_line[("advisory", 2026, 2)] == pytest.approx(1378.0)
+    assert by_line[("ecm", 2026, 2)] == pytest.approx(985.0)
+    assert by_line[("dcm", 2026, 2)] == pytest.approx(1032.0)
+    assert by_line[("ficc", 2026, 2)] == pytest.approx(4592.0)
+    assert by_line[("equities", 2026, 2)] == pytest.approx(7416.0)
+    # Comparative column: prior-year quarter from the same table.
+    assert by_line[("advisory", 2025, 2)] == pytest.approx(1174.0)
+    assert by_line[("ficc", 2025, 2)] == pytest.approx(3487.0)
+    assert by_line[("equities", 2025, 2)] == pytest.approx(4301.0)
+
+
+def test_gs_quarterly_restated_comparative_wins():
+    """GS Q1 2023 10-Q: the comparative Q1 2022 column carries the
+    GBM-restated FICC ($4,730M), not the originally-filed $4,723M.
+
+    This is the restated-vintage preference that keeps a year's Q1-Q3
+    on the same presentation basis as the annual sub-split the Q4
+    derivation subtracts from (FY2022 10-K restated FICC $14,676M).
+    The stale-intermediate regression this pins: Q1 2022 filed as
+    $4,723M under the pre-reorg four-segment regime.
+    """
+    p = _fixture("0000886982", "0000886982-23-000005", "gs-20230331")
+    recs = parse_filing_q("GS", "0000886982", "0000886982-23-000005", p)
+    by_line = {}
+    for r in recs:
+        by_line.setdefault(
+            (r["taxonomy_line"], r["year"], r["quarter"]),
+            r["net_revenue_m"])
+    assert by_line[("ficc", 2022, 1)] == pytest.approx(4730.0)
+    assert by_line[("equities", 2022, 1)] == pytest.approx(3239.0)
+    assert by_line[("advisory", 2022, 1)] == pytest.approx(1127.0)
+    # Current quarter from the same filing.
+    assert by_line[("ficc", 2023, 1)] == pytest.approx(3931.0)
+
+
+def test_gs_enumerate_10q_form_type_based():
+    """enumerate_10q uses dei:DocumentType, not instance filenames.
+
+    GS's 2019Q2-2022Q2 10-Qs use filing-agent instance names
+    (d105283d10q_htm.xml -- no period date); filename heuristics
+    dropped them, which is why GS quarterly stopped at 2019Q1. The
+    fix must include those 10-Qs, keep post-2022 self-filed 10-Qs,
+    and exclude every 10-K.
+    """
+    from src.revenue.parse_mda import dir_form_type
+    from src.revenue.parse_mda_q import enumerate_10q
+    accs = enumerate_10q("0000886982")
+    # Filing-agent-named 10-Q previously missed by the heuristic.
+    assert "0001193125-21-148444" in accs, accs
+    # Self-filed 10-Qs.
+    assert "0000886982-23-000005" in accs, accs
+    assert "0000886982-26-000297" in accs, accs
+    # No 10-K may be classified as a 10-Q.
+    for acc in accs:
+        form = dir_form_type(RAW_ROOT / "0000886982" / acc)
+        assert form is not None and form.upper().startswith("10-Q"), \
+            (acc, form)
+
+
 def test_quarterly_dedupe_prefers_later_filing():
     """Overlapping 10-Qs: the later filing's restated value wins."""
     from src.revenue.parse_mda_q import dedupe_records
@@ -95,3 +167,27 @@ def test_quarterly_dedupe_prefers_later_filing():
     out = dedupe_records(recs)
     assert len(out) == 1
     assert out[0]["net_revenue_m"] == pytest.approx(4822.0)
+
+
+def test_quarterly_dedupe_cross_prefix_chronology():
+    """Later filing wins even when the accession string sorts earlier.
+
+    GS files 2019-2022 via an agent (0001193125-*) and 2022Q3+ under
+    its own CIK (0000886982-*); the self-filed prefix string-sorts
+    first, so a raw-string comparison kept the originally-filed Q1
+    2022 FICC ($4,723M) over the Q1 2023 10-Q's restated comparative
+    ($4,730M).
+    """
+    from src.revenue.parse_mda_q import dedupe_records
+    recs = [
+        {"firm": "GS", "cik": "0000886982", "taxonomy_line": "ficc",
+         "year": 2022, "quarter": 1, "net_revenue_m": 4723.0,
+         "source": "mda_q:t", "accession": "0001193125-22-134459"},
+        {"firm": "GS", "cik": "0000886982", "taxonomy_line": "ficc",
+         "year": 2022, "quarter": 1, "net_revenue_m": 4730.0,
+         "source": "mda_q:t", "accession": "0000886982-23-000005"},
+    ]
+    out = dedupe_records(recs)
+    assert len(out) == 1
+    assert out[0]["net_revenue_m"] == pytest.approx(4730.0)
+    assert out[0]["accession"] == "0000886982-23-000005"

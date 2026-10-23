@@ -38,6 +38,7 @@ from src.revenue.parse_xbrl import (  # noqa: E402
     parse_filing_summary,
     find_segment_reports,
     _parse_value,
+    _rfile_rank,
     _table_scale,
     _norm_label,
     _segment_name,
@@ -46,6 +47,8 @@ from src.revenue.parse_xbrl import (  # noqa: E402
     EXTRA_LABELS,
     REVENUE_SUMS,
 )
+from src.revenue.parse_mda import dir_form_type  # noqa: E402
+from src.revenue.taxonomy import accession_order_exprs, cik_firm_map  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[2]
 RAW_ROOT = REPO / "data" / "revenue" / "raw"
@@ -291,6 +294,15 @@ def parse_filing_dir_q(firm, cik, accession, filing_dir,
             continue
         recs = parse_segment_table_q(text, extra_labels=extra,
                                      sum_labels=sum_labels)
+        # ASC 606 revenue-disaggregation notes rank below every segment
+        # note (see parse_xbrl._rfile_rank): they describe contract
+        # revenue, not segment revenue. Wells Fargo's 10-Qs carry both
+        # notes; the 606 note's WIM block has "Net interest income" but
+        # no bare "noninterest income" row, so the sum collapsed to
+        # NII-only (~$1.1B/quarter) and beat the segment note's full
+        # NII + noninterest income (~$3.9B/quarter) on report order --
+        # the quarterly face of the 2017 annual hole.
+        rank = _rfile_rank(rep["short_name"])
         for r in recs:
             if r.get("consolidated"):
                 continue
@@ -309,13 +321,49 @@ def parse_filing_dir_q(firm, cik, accession, filing_dir,
                 "source": "XBRL R-file (10-Q)",
             }
             prev = by_key.get(key)
-            # Later R-files in the report list don't override; keep first.
-            if prev is None:
-                by_key[key] = cand
-    out = sorted(by_key.values(),
+            # Same (segment, duration, period, label) from two R-files:
+            # the better-ranked R-file wins (report order is not a
+            # preference).
+            if prev is None or rank < prev[1]:
+                by_key[key] = (cand, rank)
+    # Label preference: one (segment, duration, period) can carry
+    # several generic revenue labels from the same filing -- e.g.
+    # Jefferies' segment note reports both "Total revenues" and "Net
+    # revenues" rows (gross vs net of interest expense). Keep the
+    # record whose label ranks highest in REVENUE_LABELS ("total net
+    # revenues" first ... "total revenues" last), the same preference
+    # the extraction documents, so the global restatement dedupe never
+    # has to break a same-filing label tie arbitrarily. Synthesized
+    # sum-labels ("a + b") rank below every direct label. Distinct fee
+    # lines (PJT "Advisory Fees" vs "Placement Fees") sit under their
+    # own segment names and never compete here.
+    # R-file rank outranks label preference: a segment note's summed
+    # NII + noninterest income (the only form Wells Fargo's segment
+    # tables disclose revenue in) must beat a 606 note's bare
+    # "Revenues" row even though "revenues" labels earlier in
+    # REVENUE_LABELS. PJT-style fee rows keep coming from their
+    # disaggregation notes only because no better-ranked R-file
+    # produces the same key.
+    extra_norm = [_norm_label(e) for e in extra]
+
+    def _label_rank(norm):
+        if norm in REVENUE_LABELS:
+            return REVENUE_LABELS.index(norm)
+        if norm in extra_norm:
+            return len(REVENUE_LABELS)
+        return len(REVENUE_LABELS) + 1
+
+    best: dict[tuple, tuple] = {}
+    for (seg, dur, end, norm), (cand, rank) in by_key.items():
+        key = (seg, dur, end)
+        prev = best.get(key)
+        if prev is None or (rank, _label_rank(norm)) < prev[1]:
+            best[key] = (cand, (rank, _label_rank(norm)))
+    out = sorted((cand for cand, _ in best.values()),
                  key=lambda r: (r["segment_native"], r["period_end"]))
     # Restatements: same (firm, segment, duration, period) in several
-    # filings; the later filing wins. Accession sorts chronologically.
+    # filings; the later filing wins (see build_segments_quarterly_csv
+    # for the cross-filing ordering).
     return out
 
 
@@ -339,17 +387,29 @@ def build_segments_quarterly_csv(raw_root=RAW_ROOT, out_path=OUT_CSV,
         for acc_dir in sorted(cik_dir.iterdir()):
             if not acc_dir.is_dir():
                 continue
-            # 10-Q vs 10-K: instance date month-day != fiscal year-end.
-            is_q = False
-            for p in acc_dir.iterdir():
-                if p.suffix.lower() not in (".xbrl", ".xml"):
-                    continue
-                if p.name.startswith("R") or p.name == "FilingSummary.xml":
-                    continue
-                m = _re.search(r"(\d{4})(\d{2})(\d{2})", p.name)
-                if m and m.group(2) + m.group(3) != fye.get(cik, "1231"):
-                    is_q = True
-                    break
+            # 10-Q vs 10-K: the XBRL instance's dei:DocumentType is
+            # definitive. The historical fallback -- an 8-digit period
+            # date in the instance *filename* differing from the fiscal
+            # year-end -- misses whole filing-agent naming conventions
+            # (GS's 2019Q2-2022Q2 10-Qs are "d105283d10q_htm.xml"), which
+            # silently dropped those filings from the quarterly XBRL
+            # layer and is why GS's quarterly panel stopped at 2019Q1.
+            # Keep the fallback only for accessions whose instances
+            # state no document type (pre-XBRL-era filings).
+            form = dir_form_type(acc_dir)
+            if form is not None:
+                is_q = form.upper().startswith("10-Q")
+            else:
+                is_q = False
+                for p in acc_dir.iterdir():
+                    if p.suffix.lower() not in (".xbrl", ".xml"):
+                        continue
+                    if p.name.startswith("R") or p.name == "FilingSummary.xml":
+                        continue
+                    m = _re.search(r"(\d{4})(\d{2})(\d{2})", p.name)
+                    if m and m.group(2) + m.group(3) != fye.get(cik, "1231"):
+                        is_q = True
+                        break
             if not is_q:
                 continue
             records.extend(
@@ -374,11 +434,19 @@ def build_segments_quarterly_csv(raw_root=RAW_ROOT, out_path=OUT_CSV,
         )
     except ImportError:
         pass
+    # Restatements: the same (firm, segment, duration, period) appears
+    # in several filings; the later filing's value wins. "Later" is the
+    # accession's (filing year, sequence) -- accession strings do not
+    # sort chronologically across filing-agent prefixes.
+    acc_y, acc_s = accession_order_exprs("accession")
+    df = df.with_columns(acc_y.alias("_acc_year"), acc_s.alias("_acc_seq"))
     df = df.sort(["firm", "segment_native", "duration_months", "period_end",
-                  "accession"])
+                  "_acc_year", "_acc_seq", "accession"],
+                 maintain_order=True)
     df = df.unique(
         subset=["firm", "segment_native", "duration_months", "period_end"],
         keep="last")
+    df = df.drop(["_acc_year", "_acc_seq"])
     df = df.sort(["firm", "segment_native", "period_end"])
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -391,10 +459,11 @@ def main():
     ap.add_argument("--raw", default=str(RAW_ROOT))
     ap.add_argument("--out", default=str(OUT_CSV))
     ap.add_argument("--firms", default="",
-                    help="JSON file mapping CIK -> firm display name")
+                    help="JSON file mapping CIK -> firm display name "
+                         "(default: the built-in taxonomy CIK map)")
     ap.add_argument("--since", default="2010-01-01")
     args = ap.parse_args()
-    firms_ciks = None
+    firms_ciks = cik_firm_map()
     if args.firms:
         import json
         firms_ciks = {v: k for k, v in json.load(open(args.firms)).items()}

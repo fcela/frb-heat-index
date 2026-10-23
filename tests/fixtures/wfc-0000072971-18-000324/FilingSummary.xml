@@ -1,0 +1,1667 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<FilingSummary>
+  <Version>3.8.0.1</Version>
+  <ProcessingTime/>
+  <ReportFormat>html</ReportFormat>
+  <ContextCount>2843</ContextCount>
+  <ElementCount>862</ElementCount>
+  <EntityCount>1</EntityCount>
+  <FootnotesReported>true</FootnotesReported>
+  <SegmentCount>419</SegmentCount>
+  <ScenarioCount>0</ScenarioCount>
+  <TuplesReported>false</TuplesReported>
+  <UnitCount>9</UnitCount>
+  <MyReports>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R1.htm</HtmlFileName>
+      <LongName>0001000 - Document - Document and Entity Information</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/DocumentAndEntityInformation</Role>
+      <ShortName>Document and Entity Information</ShortName>
+      <MenuCategory>Cover</MenuCategory>
+      <Position>1</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R2.htm</HtmlFileName>
+      <LongName>1001000 - Statement - Consolidated Statement of Income (Unaudited)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/ConsolidatedStatementOfIncomeUnaudited</Role>
+      <ShortName>Consolidated Statement of Income (Unaudited)</ShortName>
+      <MenuCategory>Statements</MenuCategory>
+      <Position>2</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R3.htm</HtmlFileName>
+      <LongName>1001501 - Statement - Consolidated Statement of Income (Unaudited) (Parenthetical)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/ConsolidatedStatementOfIncomeUnauditedParenthetical</Role>
+      <ShortName>Consolidated Statement of Income (Unaudited) (Parenthetical)</ShortName>
+      <MenuCategory>Statements</MenuCategory>
+      <Position>3</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R4.htm</HtmlFileName>
+      <LongName>1002000 - Statement - Consolidated Statement of Comprehensive Income (Unaudited)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/ConsolidatedStatementOfComprehensiveIncomeUnaudited</Role>
+      <ShortName>Consolidated Statement of Comprehensive Income (Unaudited)</ShortName>
+      <MenuCategory>Statements</MenuCategory>
+      <Position>4</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R5.htm</HtmlFileName>
+      <LongName>1002001 - Statement - Consolidated Statement of Comprehensive Income (Unaudited) Consolidated Statement of Comprehensive Income (Unaudited) (Parenthetical)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/ConsolidatedStatementOfComprehensiveIncomeUnauditedConsolidatedStatementOfComprehensiveIncomeUnauditedParenthetical</Role>
+      <ShortName>Consolidated Statement of Comprehensive Income (Unaudited) Consolidated Statement of Comprehensive Income (Unaudited) (Parenthetical)</ShortName>
+      <MenuCategory>Statements</MenuCategory>
+      <Position>5</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R6.htm</HtmlFileName>
+      <LongName>1003000 - Statement - Consolidated Balance Sheet (Unaudited)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/ConsolidatedBalanceSheetUnaudited</Role>
+      <ShortName>Consolidated Balance Sheet (Unaudited)</ShortName>
+      <MenuCategory>Statements</MenuCategory>
+      <Position>6</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R7.htm</HtmlFileName>
+      <LongName>1003501 - Statement - Consolidated Balance Sheet (Parenthetical)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/ConsolidatedBalanceSheetParenthetical</Role>
+      <ShortName>Consolidated Balance Sheet (Parenthetical)</ShortName>
+      <MenuCategory>Statements</MenuCategory>
+      <Position>7</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R8.htm</HtmlFileName>
+      <LongName>1004000 - Statement - Consolidated Statement of Changes in Equity (Unaudited)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/ConsolidatedStatementOfChangesInEquityUnaudited</Role>
+      <ShortName>Consolidated Statement of Changes in Equity (Unaudited)</ShortName>
+      <MenuCategory>Statements</MenuCategory>
+      <Position>8</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R9.htm</HtmlFileName>
+      <LongName>1005000 - Statement - Consolidated Statement of Cash Flows (Unaudited)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/ConsolidatedStatementOfCashFlowsUnaudited</Role>
+      <ShortName>Consolidated Statement of Cash Flows (Unaudited)</ShortName>
+      <MenuCategory>Statements</MenuCategory>
+      <Position>9</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R10.htm</HtmlFileName>
+      <LongName>2101100 - Disclosure - Summary of Significant Accounting Policies</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/SummaryOfSignificantAccountingPolicies</Role>
+      <ShortName>Summary of Significant Accounting Policies</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>10</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R11.htm</HtmlFileName>
+      <LongName>2102100 - Disclosure - Business Combinations</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/BusinessCombinations</Role>
+      <ShortName>Business Combinations</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>11</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R12.htm</HtmlFileName>
+      <LongName>2105100 - Disclosure - Cash, Loan and Dividend Restrictions</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/CashLoanAndDividendRestrictions</Role>
+      <ShortName>Cash, Loan and Dividend Restrictions</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>12</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R13.htm</HtmlFileName>
+      <LongName>2106100 - Disclosure - Trading Activities</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/TradingActivities</Role>
+      <ShortName>Trading Activities</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>13</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R14.htm</HtmlFileName>
+      <LongName>2107100 - Disclosure - AFS and HTM Debt Securities</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/AfsAndHtmDebtSecurities</Role>
+      <ShortName>AFS and HTM Debt Securities</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>14</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R15.htm</HtmlFileName>
+      <LongName>2108100 - Disclosure - Loans and Allowance for Credit Losses</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLosses</Role>
+      <ShortName>Loans and Allowance for Credit Losses</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>15</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R16.htm</HtmlFileName>
+      <LongName>2109100 - Disclosure - Equity Securities</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/EquitySecurities</Role>
+      <ShortName>Equity Securities</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>16</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R17.htm</HtmlFileName>
+      <LongName>2110100 - Disclosure - Other Assets</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/OtherAssets</Role>
+      <ShortName>Other Assets</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>17</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R18.htm</HtmlFileName>
+      <LongName>2114100 - Disclosure - Securitizations and Variable Interest Entities</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/SecuritizationsAndVariableInterestEntities</Role>
+      <ShortName>Securitizations and Variable Interest Entities</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>18</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R19.htm</HtmlFileName>
+      <LongName>2115100 - Disclosure - Mortgage Banking Activities</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/MortgageBankingActivities</Role>
+      <ShortName>Mortgage Banking Activities</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>19</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R20.htm</HtmlFileName>
+      <LongName>2116100 - Disclosure - Intangible Assets</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/IntangibleAssets</Role>
+      <ShortName>Intangible Assets</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>20</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R21.htm</HtmlFileName>
+      <LongName>2117100 - Disclosure - Guarantees, Pledged Assets and Collateral</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/GuaranteesPledgedAssetsAndCollateral</Role>
+      <ShortName>Guarantees, Pledged Assets and Collateral</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>21</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R22.htm</HtmlFileName>
+      <LongName>2118100 - Disclosure - Legal Actions</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LegalActions</Role>
+      <ShortName>Legal Actions</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>22</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R23.htm</HtmlFileName>
+      <LongName>2120100 - Disclosure - Derivatives</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/Derivatives</Role>
+      <ShortName>Derivatives</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>23</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R24.htm</HtmlFileName>
+      <LongName>2122100 - Disclosure - Fair Values of Assets and Liabilities</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValuesOfAssetsAndLiabilities</Role>
+      <ShortName>Fair Values of Assets and Liabilities</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>24</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R25.htm</HtmlFileName>
+      <LongName>2123100 - Disclosure - Preferred Stock</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/PreferredStock</Role>
+      <ShortName>Preferred Stock</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>25</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R26.htm</HtmlFileName>
+      <LongName>2124100 - Disclosure - Revenue from Contracts with Customers</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/RevenueFromContractsWithCustomers</Role>
+      <ShortName>Revenue from Contracts with Customers</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>26</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R27.htm</HtmlFileName>
+      <LongName>2126100 - Disclosure - Employee Benefits</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/EmployeeBenefits</Role>
+      <ShortName>Employee Benefits</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>27</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R28.htm</HtmlFileName>
+      <LongName>2127100 - Disclosure - Earnings Per Common Share</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/EarningsPerCommonShare</Role>
+      <ShortName>Earnings Per Common Share</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>28</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R29.htm</HtmlFileName>
+      <LongName>2128100 - Disclosure - Other Comprehensive Income</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/OtherComprehensiveIncome</Role>
+      <ShortName>Other Comprehensive Income</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>29</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R30.htm</HtmlFileName>
+      <LongName>2129100 - Disclosure - Operating Segments</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/OperatingSegments</Role>
+      <ShortName>Operating Segments</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>30</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R31.htm</HtmlFileName>
+      <LongName>2130100 - Disclosure - Regulatory and Agency Capital Requirements</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/RegulatoryAndAgencyCapitalRequirements</Role>
+      <ShortName>Regulatory and Agency Capital Requirements</ShortName>
+      <MenuCategory>Notes</MenuCategory>
+      <Position>31</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R32.htm</HtmlFileName>
+      <LongName>2201201 - Disclosure - Summary of Significant Accounting Policies (Policies)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/SummaryOfSignificantAccountingPoliciesPolicies</Role>
+      <ShortName>Summary of Significant Accounting Policies (Policies)</ShortName>
+      <MenuCategory>Policies</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/SummaryOfSignificantAccountingPolicies</ParentRole>
+      <Position>32</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R33.htm</HtmlFileName>
+      <LongName>2301302 - Disclosure - Summary of Significant Accounting Policies (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/SummaryOfSignificantAccountingPoliciesTables</Role>
+      <ShortName>Summary of Significant Accounting Policies (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/SummaryOfSignificantAccountingPolicies</ParentRole>
+      <Position>33</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R34.htm</HtmlFileName>
+      <LongName>2305301 - Disclosure - Cash, Loan and Dividend Restrictions (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/CashLoanAndDividendRestrictionsTables</Role>
+      <ShortName>Cash, Loan and Dividend Restrictions (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/CashLoanAndDividendRestrictions</ParentRole>
+      <Position>34</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R35.htm</HtmlFileName>
+      <LongName>2306301 - Disclosure - Trading Activities (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/TradingActivitiesTables</Role>
+      <ShortName>Trading Activities (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/TradingActivities</ParentRole>
+      <Position>35</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R36.htm</HtmlFileName>
+      <LongName>2307301 - Disclosure - AFS and HTM Debt Securities (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/AfsAndHtmDebtSecuritiesTables</Role>
+      <ShortName>AFS and HTM Debt Securities (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/AfsAndHtmDebtSecurities</ParentRole>
+      <Position>36</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R37.htm</HtmlFileName>
+      <LongName>2308301 - Disclosure - Loans and Allowance for Credit Losses (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesTables</Role>
+      <ShortName>Loans and Allowance for Credit Losses (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLosses</ParentRole>
+      <Position>37</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R38.htm</HtmlFileName>
+      <LongName>2309301 - Disclosure - Equity Securities (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/EquitySecuritiesTables</Role>
+      <ShortName>Equity Securities (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/EquitySecurities</ParentRole>
+      <Position>38</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R39.htm</HtmlFileName>
+      <LongName>2310301 - Disclosure - Other Assets (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/OtherAssetsTables</Role>
+      <ShortName>Other Assets (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/OtherAssets</ParentRole>
+      <Position>39</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R40.htm</HtmlFileName>
+      <LongName>2314301 - Disclosure - Securitizations and Variable Interest Entities (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/SecuritizationsAndVariableInterestEntitiesTables</Role>
+      <ShortName>Securitizations and Variable Interest Entities (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/SecuritizationsAndVariableInterestEntities</ParentRole>
+      <Position>40</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R41.htm</HtmlFileName>
+      <LongName>2315301 - Disclosure - Mortgage Banking Activities (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/MortgageBankingActivitiesTables</Role>
+      <ShortName>Mortgage Banking Activities (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/MortgageBankingActivities</ParentRole>
+      <Position>41</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R42.htm</HtmlFileName>
+      <LongName>2316301 - Disclosure - Intangible Assets (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/IntangibleAssetsTables</Role>
+      <ShortName>Intangible Assets (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/IntangibleAssets</ParentRole>
+      <Position>42</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R43.htm</HtmlFileName>
+      <LongName>2317301 - Disclosure - Guarantees, Pledged Assets and Collateral (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/GuaranteesPledgedAssetsAndCollateralTables</Role>
+      <ShortName>Guarantees, Pledged Assets and Collateral (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/GuaranteesPledgedAssetsAndCollateral</ParentRole>
+      <Position>43</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R44.htm</HtmlFileName>
+      <LongName>2320301 - Disclosure - Derivatives (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/DerivativesTables</Role>
+      <ShortName>Derivatives (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/Derivatives</ParentRole>
+      <Position>44</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R45.htm</HtmlFileName>
+      <LongName>2322301 - Disclosure - Fair Values of Assets and Liabilities (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValuesOfAssetsAndLiabilitiesTables</Role>
+      <ShortName>Fair Values of Assets and Liabilities (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/FairValuesOfAssetsAndLiabilities</ParentRole>
+      <Position>45</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R46.htm</HtmlFileName>
+      <LongName>2323301 - Disclosure - Preferred Stock (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/PreferredStockTables</Role>
+      <ShortName>Preferred Stock (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/PreferredStock</ParentRole>
+      <Position>46</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R47.htm</HtmlFileName>
+      <LongName>2324301 - Disclosure - Revenue from Contracts with Customers (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/RevenueFromContractsWithCustomersTables</Role>
+      <ShortName>Revenue from Contracts with Customers (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/RevenueFromContractsWithCustomers</ParentRole>
+      <Position>47</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R48.htm</HtmlFileName>
+      <LongName>2326301 - Disclosure - Employee Benefits (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/EmployeeBenefitsTables</Role>
+      <ShortName>Employee Benefits (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/EmployeeBenefits</ParentRole>
+      <Position>48</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R49.htm</HtmlFileName>
+      <LongName>2327301 - Disclosure - Earnings Per Common Share (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/EarningsPerCommonShareTables</Role>
+      <ShortName>Earnings Per Common Share (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/EarningsPerCommonShare</ParentRole>
+      <Position>49</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R50.htm</HtmlFileName>
+      <LongName>2328301 - Disclosure - Other Comprehensive Income (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/OtherComprehensiveIncomeTables</Role>
+      <ShortName>Other Comprehensive Income (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/OtherComprehensiveIncome</ParentRole>
+      <Position>50</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R51.htm</HtmlFileName>
+      <LongName>2329301 - Disclosure - Operating Segments (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/OperatingSegmentsTables</Role>
+      <ShortName>Operating Segments (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/OperatingSegments</ParentRole>
+      <Position>51</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R52.htm</HtmlFileName>
+      <LongName>2330301 - Disclosure - Regulatory and Agency Capital Requirements (Tables)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/RegulatoryAndAgencyCapitalRequirementsTables</Role>
+      <ShortName>Regulatory and Agency Capital Requirements (Tables)</ShortName>
+      <MenuCategory>Tables</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/RegulatoryAndAgencyCapitalRequirements</ParentRole>
+      <Position>52</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R53.htm</HtmlFileName>
+      <LongName>2401403 - Disclosure - Summary of Significant Accounting Policies (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/SummaryOfSignificantAccountingPoliciesDetails</Role>
+      <ShortName>Summary of Significant Accounting Policies (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/SummaryOfSignificantAccountingPoliciesTables</ParentRole>
+      <Position>53</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R54.htm</HtmlFileName>
+      <LongName>2402401 - Disclosure - Business Combinations (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/BusinessCombinationsDetails</Role>
+      <ShortName>Business Combinations (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/BusinessCombinations</ParentRole>
+      <Position>54</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R55.htm</HtmlFileName>
+      <LongName>2405402 - Disclosure - Cash, Loan and Dividend Restrictions (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/CashLoanAndDividendRestrictionsDetails</Role>
+      <ShortName>Cash, Loan and Dividend Restrictions (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/CashLoanAndDividendRestrictionsTables</ParentRole>
+      <Position>55</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R56.htm</HtmlFileName>
+      <LongName>2406402 - Disclosure - Trading Assets and Liabilities (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/TradingAssetsAndLiabilitiesDetails</Role>
+      <ShortName>Trading Assets and Liabilities (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>56</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R57.htm</HtmlFileName>
+      <LongName>2406403 - Disclosure - Net Interest Income and Net Gains (Losses) on Trading Activities (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/NetInterestIncomeAndNetGainsLossesOnTradingActivitiesDetails</Role>
+      <ShortName>Net Interest Income and Net Gains (Losses) on Trading Activities (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>57</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R58.htm</HtmlFileName>
+      <LongName>2407402 - Disclosure - AFS and HTM Debt Securities, Major Categories (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/AfsAndHtmDebtSecuritiesMajorCategoriesDetails</Role>
+      <ShortName>AFS and HTM Debt Securities, Major Categories (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>58</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R59.htm</HtmlFileName>
+      <LongName>2407403 - Disclosure - AFS and HTM Debt Securities, Gross Unrealized Losses and Fair Value (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/AfsAndHtmDebtSecuritiesGrossUnrealizedLossesAndFairValueDetails</Role>
+      <ShortName>AFS and HTM Debt Securities, Gross Unrealized Losses and Fair Value (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>59</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R60.htm</HtmlFileName>
+      <LongName>2407404 - Disclosure - AFS and HTM Debt Securities, Unrealized Loss Position, by Credit Rating (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/AfsAndHtmDebtSecuritiesUnrealizedLossPositionByCreditRatingDetails</Role>
+      <ShortName>AFS and HTM Debt Securities, Unrealized Loss Position, by Credit Rating (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>60</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R61.htm</HtmlFileName>
+      <LongName>2407405 - Disclosure - AFS and HTM Debt Securities, Contractual Maturities (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/AfsAndHtmDebtSecuritiesContractualMaturitiesDetails</Role>
+      <ShortName>AFS and HTM Debt Securities, Contractual Maturities (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>61</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R62.htm</HtmlFileName>
+      <LongName>2407406 - Disclosure - AFS and HTM Debt Securities, Realized Gains and Losses (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/AfsAndHtmDebtSecuritiesRealizedGainsAndLossesDetails</Role>
+      <ShortName>AFS and HTM Debt Securities, Realized Gains and Losses (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>62</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R63.htm</HtmlFileName>
+      <LongName>2407407 - Disclosure - AFS and HTM Debt Securities, OTTI Included in Earnings (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/AfsAndHtmDebtSecuritiesOttiIncludedInEarningsDetails</Role>
+      <ShortName>AFS and HTM Debt Securities, OTTI Included in Earnings (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>63</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R64.htm</HtmlFileName>
+      <LongName>2407408 - Disclosure - AFS and HTM Debt Securities, OTTI Debt Securities (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/AfsAndHtmDebtSecuritiesOttiDebtSecuritiesDetails</Role>
+      <ShortName>AFS and HTM Debt Securities, OTTI Debt Securities (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>64</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R65.htm</HtmlFileName>
+      <LongName>2407409 - Disclosure - AFS and HTM Debt Securities, Credit Loss Component (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/AfsAndHtmDebtSecuritiesCreditLossComponentDetails</Role>
+      <ShortName>AFS and HTM Debt Securities, Credit Loss Component (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>65</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R66.htm</HtmlFileName>
+      <LongName>2408402 - Disclosure - Loans and Allowance for Credit Losses, Loans Outstanding (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesLoansOutstandingDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Loans Outstanding (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>66</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R67.htm</HtmlFileName>
+      <LongName>2408403 - Disclosure - Loans and Allowance for Credit Losses, Significant Activity (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesSignificantActivityDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Significant Activity (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>67</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R68.htm</HtmlFileName>
+      <LongName>2408404 - Disclosure - Loans and Allowance for Credit Losses, Commitments to Lend (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesCommitmentsToLendDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Commitments to Lend (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>68</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R69.htm</HtmlFileName>
+      <LongName>2408405 - Disclosure - Loans and Allowance for Credit Losses, Allowance for Credit Losses (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesAllowanceForCreditLossesDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Allowance for Credit Losses (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>69</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R70.htm</HtmlFileName>
+      <LongName>2408406 - Disclosure - Loans and Allowance for Credit Losses, Allowance Activity by Portfolio Segment (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesAllowanceActivityByPortfolioSegmentDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Allowance Activity by Portfolio Segment (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>70</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R71.htm</HtmlFileName>
+      <LongName>2408407 - Disclosure - Loans and Allowance for Credit Losses, Allowance by Credit Impairment Methodology (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesAllowanceByCreditImpairmentMethodologyDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Allowance by Credit Impairment Methodology (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>71</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R72.htm</HtmlFileName>
+      <LongName>2408408 - Disclosure - Loans and Allowance for Credit Losses, Loans by Credit Quality Indicator, Commercial (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesLoansByCreditQualityIndicatorCommercialDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Loans by Credit Quality Indicator, Commercial (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>72</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R73.htm</HtmlFileName>
+      <LongName>2408409 - Disclosure - Loans and Allowance for Credit Losses, Loans by Delinquency Status, Commercial (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesLoansByDelinquencyStatusCommercialDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Loans by Delinquency Status, Commercial (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>73</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R74.htm</HtmlFileName>
+      <LongName>2408410 - Disclosure - Loans and Allowance for Credit Losses, Loans by Delinquency Status, Consumer (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesLoansByDelinquencyStatusConsumerDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Loans by Delinquency Status, Consumer (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>74</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R75.htm</HtmlFileName>
+      <LongName>2408411 - Disclosure - Loans and Allowance for Credit Losses, Loans by FICO Score, Consumer (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesLoansByFicoScoreConsumerDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Loans by FICO Score, Consumer (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>75</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R76.htm</HtmlFileName>
+      <LongName>2408412 - Disclosure - Loans and Allowance for Credit Losses, Loans by Loan to Value Ratio, Consumer (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesLoansByLoanToValueRatioConsumerDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Loans by Loan to Value Ratio, Consumer (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>76</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R77.htm</HtmlFileName>
+      <LongName>2408413 - Disclosure - Loans and Allowance for Credit Losses, Nonaccrual (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesNonaccrualDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Nonaccrual (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>77</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R78.htm</HtmlFileName>
+      <LongName>2408414 - Disclosure - Loans and Allowance for Credit Losses, 90 Days or More Past Due and Still Accruing (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLosses90DaysOrMorePastDueAndStillAccruingDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, 90 Days or More Past Due and Still Accruing (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>78</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R79.htm</HtmlFileName>
+      <LongName>2408415 - Disclosure - Loans and Allowance for Credit Losses, Impaired Loans (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesImpairedLoansDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Impaired Loans (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>79</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R80.htm</HtmlFileName>
+      <LongName>2408416 - Disclosure - Loans and Allowance for Credit Losses, Impaired Loans, Average Recorded Investment and Interest Income (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesImpairedLoansAverageRecordedInvestmentAndInterestIncomeDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Impaired Loans, Average Recorded Investment and Interest Income (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>80</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R81.htm</HtmlFileName>
+      <LongName>2408417 - Disclosure - Loans and Allowance for Credit Losses, Troubled Debt Restructurings Modifications by Type (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesTroubledDebtRestructuringsModificationsByTypeDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Troubled Debt Restructurings Modifications by Type (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>81</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R82.htm</HtmlFileName>
+      <LongName>2408418 - Disclosure - Loans and Allowance for Credit Losses, Troubled Debt Restructurings, Current Defaults (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesTroubledDebtRestructuringsCurrentDefaultsDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, Troubled Debt Restructurings, Current Defaults (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>82</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R83.htm</HtmlFileName>
+      <LongName>2408419 - Disclosure - Loans and Allowance for Credit Losses, PCI Loans Outstanding (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesPciLoansOutstandingDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, PCI Loans Outstanding (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>83</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R84.htm</HtmlFileName>
+      <LongName>2408420 - Disclosure - Loans and Allowance for Credit Losses, PCI, Accretable Yield (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesPciAccretableYieldDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, PCI, Accretable Yield (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>84</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R85.htm</HtmlFileName>
+      <LongName>2408421 - Disclosure - Loans and Allowance for Credit Losses, PCI, by Credit Quality Indicator (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesPciByCreditQualityIndicatorDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, PCI, by Credit Quality Indicator (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>85</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R86.htm</HtmlFileName>
+      <LongName>2408422 - Disclosure - Loans and Allowance for Credit Losses, PCI, by Delinquency Status, Commercial (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesPciByDelinquencyStatusCommercialDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, PCI, by Delinquency Status, Commercial (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>86</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R87.htm</HtmlFileName>
+      <LongName>2408423 - Disclosure - Loans and Allowance for Credit Losses, PCI, by Delinquency Status, Consumer (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesPciByDelinquencyStatusConsumerDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, PCI, by Delinquency Status, Consumer (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>87</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R88.htm</HtmlFileName>
+      <LongName>2408424 - Disclosure - Loans and Allowance for Credit Losses, PCI, by FICO Score, Consumer (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesPciByFicoScoreConsumerDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, PCI, by FICO Score, Consumer (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>88</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R89.htm</HtmlFileName>
+      <LongName>2408425 - Disclosure - Loans and Allowance for Credit Losses, PCI, by Loan to Value Ratio, Consumer (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LoansAndAllowanceForCreditLossesPciByLoanToValueRatioConsumerDetails</Role>
+      <ShortName>Loans and Allowance for Credit Losses, PCI, by Loan to Value Ratio, Consumer (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>89</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R90.htm</HtmlFileName>
+      <LongName>2409402 - Disclosure - Equity Securities (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/EquitySecuritiesDetails</Role>
+      <ShortName>Equity Securities (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/EquitySecuritiesTables</ParentRole>
+      <Position>90</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R91.htm</HtmlFileName>
+      <LongName>2409403 - Disclosure - Net Gains (Losses) from Equity Securities (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/NetGainsLossesFromEquitySecuritiesDetails</Role>
+      <ShortName>Net Gains (Losses) from Equity Securities (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>91</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R92.htm</HtmlFileName>
+      <LongName>2409404 - Disclosure - Measurement Alternative (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/MeasurementAlternativeDetails</Role>
+      <ShortName>Measurement Alternative (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>92</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R93.htm</HtmlFileName>
+      <LongName>2410402 - Disclosure - Other Assets (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/OtherAssetsDetails</Role>
+      <ShortName>Other Assets (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/OtherAssetsTables</ParentRole>
+      <Position>93</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R94.htm</HtmlFileName>
+      <LongName>2414402 - Disclosure - Securitizations and Variable Interest Entities, Balance Sheet Transactions with VIEs (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/SecuritizationsAndVariableInterestEntitiesBalanceSheetTransactionsWithViesDetails</Role>
+      <ShortName>Securitizations and Variable Interest Entities, Balance Sheet Transactions with VIEs (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>94</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R95.htm</HtmlFileName>
+      <LongName>2414403 - Disclosure - Securitizations and Variable Interest Entities, Unconsolidated VIEs (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/SecuritizationsAndVariableInterestEntitiesUnconsolidatedViesDetails</Role>
+      <ShortName>Securitizations and Variable Interest Entities, Unconsolidated VIEs (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>95</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R96.htm</HtmlFileName>
+      <LongName>2414404 - Disclosure - Securitizations and Variable Interest Entities, Cash Flows From Sales and Securitization Activity (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/SecuritizationsAndVariableInterestEntitiesCashFlowsFromSalesAndSecuritizationActivityDetails</Role>
+      <ShortName>Securitizations and Variable Interest Entities, Cash Flows From Sales and Securitization Activity (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>96</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R97.htm</HtmlFileName>
+      <LongName>2414405 - Disclosure - Securitizations and Variable Interest Entities, Residential Mortgage Servicing Rights (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/SecuritizationsAndVariableInterestEntitiesResidentialMortgageServicingRightsDetails</Role>
+      <ShortName>Securitizations and Variable Interest Entities, Residential Mortgage Servicing Rights (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>97</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R98.htm</HtmlFileName>
+      <LongName>2414406 - Disclosure - Securitizations and Variable Interest Entities, Retained Interests from Unconsolidated VIEs (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/SecuritizationsAndVariableInterestEntitiesRetainedInterestsFromUnconsolidatedViesDetails</Role>
+      <ShortName>Securitizations and Variable Interest Entities, Retained Interests from Unconsolidated VIEs (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>98</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R99.htm</HtmlFileName>
+      <LongName>2414407 - Disclosure - Securitizations and Variable Interest Entities, Off-Balance Sheet Loans Sold or Securitized (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/SecuritizationsAndVariableInterestEntitiesOffBalanceSheetLoansSoldOrSecuritizedDetails</Role>
+      <ShortName>Securitizations and Variable Interest Entities, Off-Balance Sheet Loans Sold or Securitized (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>99</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R100.htm</HtmlFileName>
+      <LongName>2414408 - Disclosure - Securitizations and Variable Interest Entities, Transactions with Consolidated VIEs and Secured Borrowings (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/SecuritizationsAndVariableInterestEntitiesTransactionsWithConsolidatedViesAndSecuredBorrowingsDetails</Role>
+      <ShortName>Securitizations and Variable Interest Entities, Transactions with Consolidated VIEs and Secured Borrowings (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>100</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R101.htm</HtmlFileName>
+      <LongName>2415402 - Disclosure - Mortgage Banking Activities, Analysis of Changes in Fair Value MSRs (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/MortgageBankingActivitiesAnalysisOfChangesInFairValueMsrsDetails</Role>
+      <ShortName>Mortgage Banking Activities, Analysis of Changes in Fair Value MSRs (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>101</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R102.htm</HtmlFileName>
+      <LongName>2415403 - Disclosure - Mortgage Banking Activities, Analysis of Changes in Amortized MSRs (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/MortgageBankingActivitiesAnalysisOfChangesInAmortizedMsrsDetails</Role>
+      <ShortName>Mortgage Banking Activities, Analysis of Changes in Amortized MSRs (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>102</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R103.htm</HtmlFileName>
+      <LongName>2415404 - Disclosure - Mortgage Banking Activities, Managed Servicing Portfolio (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/MortgageBankingActivitiesManagedServicingPortfolioDetails</Role>
+      <ShortName>Mortgage Banking Activities, Managed Servicing Portfolio (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>103</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R104.htm</HtmlFileName>
+      <LongName>2415405 - Disclosure - Mortgage Banking Activities, Mortgage Banking Noninterest Income (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/MortgageBankingActivitiesMortgageBankingNoninterestIncomeDetails</Role>
+      <ShortName>Mortgage Banking Activities, Mortgage Banking Noninterest Income (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>104</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R105.htm</HtmlFileName>
+      <LongName>2415406 - Disclosure - Mortgage Banking Activities, Analysis of Changes in Liability for Mortgage Loan Repurchase Losses (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/MortgageBankingActivitiesAnalysisOfChangesInLiabilityForMortgageLoanRepurchaseLossesDetails</Role>
+      <ShortName>Mortgage Banking Activities, Analysis of Changes in Liability for Mortgage Loan Repurchase Losses (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>105</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R106.htm</HtmlFileName>
+      <LongName>2416402 - Disclosure - Intangible Assets (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/IntangibleAssetsDetails</Role>
+      <ShortName>Intangible Assets (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/IntangibleAssetsTables</ParentRole>
+      <Position>106</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R107.htm</HtmlFileName>
+      <LongName>2416403 - Disclosure - Intangible Assets, Amortization Expense (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/IntangibleAssetsAmortizationExpenseDetails</Role>
+      <ShortName>Intangible Assets, Amortization Expense (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>107</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R108.htm</HtmlFileName>
+      <LongName>2416404 - Disclosure - Intangible Assets, Allocation of Goodwill to Operating Segments (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/IntangibleAssetsAllocationOfGoodwillToOperatingSegmentsDetails</Role>
+      <ShortName>Intangible Assets, Allocation of Goodwill to Operating Segments (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>108</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R109.htm</HtmlFileName>
+      <LongName>2417402 - Disclosure - Guarantees, Pledged Assets and Collateral (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/GuaranteesPledgedAssetsAndCollateralDetails</Role>
+      <ShortName>Guarantees, Pledged Assets and Collateral (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/GuaranteesPledgedAssetsAndCollateralTables</ParentRole>
+      <Position>109</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R110.htm</HtmlFileName>
+      <LongName>2417403 - Disclosure - Guarantees, Offsetting of Resale and Repurchase Agreements and Securities Borrowing and Lending (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/GuaranteesOffsettingOfResaleAndRepurchaseAgreementsAndSecuritiesBorrowingAndLendingDetails</Role>
+      <ShortName>Guarantees, Offsetting of Resale and Repurchase Agreements and Securities Borrowing and Lending (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>110</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R111.htm</HtmlFileName>
+      <LongName>2417404 - Disclosure - Guarantees, Pledged Assets and Collateral Guarantees, Collateral Type and Contractual Maturities of Repurchase Agreements and Securities Lending Agreements (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/GuaranteesPledgedAssetsAndCollateralGuaranteesCollateralTypeAndContractualMaturitiesOfRepurchaseAgreementsAndSecuritiesLendingAgreementsDetails</Role>
+      <ShortName>Guarantees, Pledged Assets and Collateral Guarantees, Collateral Type and Contractual Maturities of Repurchase Agreements and Securities Lending Agreements (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>111</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R112.htm</HtmlFileName>
+      <LongName>2417405 - Disclosure - Guarantees, Pledged Assets and Collateral Guarantees, Pledged Assets and Collateral, and Other Commitments Guarantees, Other Commitments (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/GuaranteesPledgedAssetsAndCollateralGuaranteesPledgedAssetsAndCollateralAndOtherCommitmentsGuaranteesOtherCommitmentsDetails</Role>
+      <ShortName>Guarantees, Pledged Assets and Collateral Guarantees, Pledged Assets and Collateral, and Other Commitments Guarantees, Other Commitments (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>112</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R113.htm</HtmlFileName>
+      <LongName>2418401 - Disclosure - Legal Actions (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/LegalActionsDetails</Role>
+      <ShortName>Legal Actions (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/LegalActions</ParentRole>
+      <Position>113</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R114.htm</HtmlFileName>
+      <LongName>2420402 - Disclosure - Derivatives, Notional or Contractual Amounts and Fair Values of Derivatives (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/DerivativesNotionalOrContractualAmountsAndFairValuesOfDerivativesDetails</Role>
+      <ShortName>Derivatives, Notional or Contractual Amounts and Fair Values of Derivatives (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>114</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R115.htm</HtmlFileName>
+      <LongName>2420403 - Disclosure - Derivatives, Gross Fair Value of Derivative Assets and Liabilities (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/DerivativesGrossFairValueOfDerivativeAssetsAndLiabilitiesDetails</Role>
+      <ShortName>Derivatives, Gross Fair Value of Derivative Assets and Liabilities (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>115</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R116.htm</HtmlFileName>
+      <LongName>2420404 - Disclosure - Derivatives, Derivatives in Fair Value and Cash Flow Hedging Relationships (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/DerivativesDerivativesInFairValueAndCashFlowHedgingRelationshipsDetails</Role>
+      <ShortName>Derivatives, Derivatives in Fair Value and Cash Flow Hedging Relationships (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>116</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R117.htm</HtmlFileName>
+      <LongName>2420405 - Disclosure - Derivatives, Fair Value Hedging Basis Adjustment (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/DerivativesFairValueHedgingBasisAdjustmentDetails</Role>
+      <ShortName>Derivatives, Fair Value Hedging Basis Adjustment (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>117</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R118.htm</HtmlFileName>
+      <LongName>2420406 - Disclosure - Derivatives, Derivatives Not Designated as Hedging Instruments (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/DerivativesDerivativesNotDesignatedAsHedgingInstrumentsDetails</Role>
+      <ShortName>Derivatives, Derivatives Not Designated as Hedging Instruments (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>118</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R119.htm</HtmlFileName>
+      <LongName>2420407 - Disclosure - Derivatives, Sold and Purchased Credit Derivatives (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/DerivativesSoldAndPurchasedCreditDerivativesDetails</Role>
+      <ShortName>Derivatives, Sold and Purchased Credit Derivatives (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>119</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R120.htm</HtmlFileName>
+      <LongName>2420408 - Disclosure - Derivatives Credit-Risk Contingent Feature Textuals (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/DerivativesCreditRiskContingentFeatureTextualsDetails</Role>
+      <ShortName>Derivatives Credit-Risk Contingent Feature Textuals (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>120</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R121.htm</HtmlFileName>
+      <LongName>2422402 - Disclosure - Fair Value, Measurements From Brokers or Third Party Pricing Services (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValueMeasurementsFromBrokersOrThirdPartyPricingServicesDetails</Role>
+      <ShortName>Fair Value, Measurements From Brokers or Third Party Pricing Services (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>121</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R122.htm</HtmlFileName>
+      <LongName>2422403 - Disclosure - Fair Value, Assets and Liabilities Recorded at Fair Value on a Recurring Basis (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValueAssetsAndLiabilitiesRecordedAtFairValueOnRecurringBasisDetails</Role>
+      <ShortName>Fair Value, Assets and Liabilities Recorded at Fair Value on a Recurring Basis (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>122</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R123.htm</HtmlFileName>
+      <LongName>2422404 - Disclosure - Fair Value, Transfers Between Fair Value Levels (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValueTransfersBetweenFairValueLevelsDetails</Role>
+      <ShortName>Fair Value, Transfers Between Fair Value Levels (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>123</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R124.htm</HtmlFileName>
+      <LongName>2422405 - Disclosure - Fair Value, Assets and Liabilities Measured on Recurring Basis Level 3 Reconciliation (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValueAssetsAndLiabilitiesMeasuredOnRecurringBasisLevel3ReconciliationDetails</Role>
+      <ShortName>Fair Value, Assets and Liabilities Measured on Recurring Basis Level 3 Reconciliation (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>124</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R125.htm</HtmlFileName>
+      <LongName>2422406 - Disclosure - Fair Value, Assets and Liabilities Measured on Recurring Basis Level 3 Reconciliation Breakout (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValueAssetsAndLiabilitiesMeasuredOnRecurringBasisLevel3ReconciliationBreakoutDetails</Role>
+      <ShortName>Fair Value, Assets and Liabilities Measured on Recurring Basis Level 3 Reconciliation Breakout (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>125</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R126.htm</HtmlFileName>
+      <LongName>2422407 - Disclosure - Fair Value, Assets and Liabilities Measured on a Recurring Basis Level 3 Valuation Techniques and Significant Unobservable Inputs (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValueAssetsAndLiabilitiesMeasuredOnRecurringBasisLevel3ValuationTechniquesAndSignificantUnobservableInputsDetails</Role>
+      <ShortName>Fair Value, Assets and Liabilities Measured on a Recurring Basis Level 3 Valuation Techniques and Significant Unobservable Inputs (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>126</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R127.htm</HtmlFileName>
+      <LongName>2422408 - Disclosure - Fair Value, Assets Recorded at Fair Value on Nonrecurring Basis (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValueAssetsRecordedAtFairValueOnNonrecurringBasisDetails</Role>
+      <ShortName>Fair Value, Assets Recorded at Fair Value on Nonrecurring Basis (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>127</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R128.htm</HtmlFileName>
+      <LongName>2422409 - Disclosure - Fair Value, Changes in Fair Value of Assets Recorded at Fair Value on Nonrecurring Basis (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValueChangesInFairValueOfAssetsRecordedAtFairValueOnNonrecurringBasisDetails</Role>
+      <ShortName>Fair Value, Changes in Fair Value of Assets Recorded at Fair Value on Nonrecurring Basis (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>128</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R129.htm</HtmlFileName>
+      <LongName>2422410 - Disclosure - Fair Value, Assets Recorded at Fair Value on a Nonrecurring Basis Level 3 Valuation Techniques and Significant Unobservable Inputs (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValueAssetsRecordedAtFairValueOnNonrecurringBasisLevel3ValuationTechniquesAndSignificantUnobservableInputsDetails</Role>
+      <ShortName>Fair Value, Assets Recorded at Fair Value on a Nonrecurring Basis Level 3 Valuation Techniques and Significant Unobservable Inputs (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>129</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R130.htm</HtmlFileName>
+      <LongName>2422411 - Disclosure - Fair Value, Option, Carrying Amount (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValueOptionCarryingAmountDetails</Role>
+      <ShortName>Fair Value, Option, Carrying Amount (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>130</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R131.htm</HtmlFileName>
+      <LongName>2422412 - Disclosure - Fair Value, Option, Gains and Losses (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValueOptionGainsAndLossesDetails</Role>
+      <ShortName>Fair Value, Option, Gains and Losses (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>131</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R132.htm</HtmlFileName>
+      <LongName>2422413 - Disclosure - Fair Value, Option, Instrument Specific Credit Risk (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValueOptionInstrumentSpecificCreditRiskDetails</Role>
+      <ShortName>Fair Value, Option, Instrument Specific Credit Risk (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>132</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R133.htm</HtmlFileName>
+      <LongName>2422414 - Disclosure - Fair Value, Estimates for Financial Instruments Excluding those Recorded at Fair Value on a Recurring Basis (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/FairValueEstimatesForFinancialInstrumentsExcludingThoseRecordedAtFairValueOnRecurringBasisDetails</Role>
+      <ShortName>Fair Value, Estimates for Financial Instruments Excluding those Recorded at Fair Value on a Recurring Basis (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>133</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R134.htm</HtmlFileName>
+      <LongName>2423402 - Disclosure - Preferred Stock (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/PreferredStockDetails</Role>
+      <ShortName>Preferred Stock (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/PreferredStockTables</ParentRole>
+      <Position>134</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R135.htm</HtmlFileName>
+      <LongName>2423403 - Disclosure - ESOP Preferred Stock (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/EsopPreferredStockDetails</Role>
+      <ShortName>ESOP Preferred Stock (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>135</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R136.htm</HtmlFileName>
+      <LongName>2424402 - Disclosure - Revenue from Contracts with Customers, Revenue by Operating Segment (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/RevenueFromContractsWithCustomersRevenueByOperatingSegmentDetails</Role>
+      <ShortName>Revenue from Contracts with Customers, Revenue by Operating Segment (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>136</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R137.htm</HtmlFileName>
+      <LongName>2424403 - Disclosure - Revenue from Contracts with Customers, Disaggregation of Revenue (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/RevenueFromContractsWithCustomersDisaggregationOfRevenueDetails</Role>
+      <ShortName>Revenue from Contracts with Customers, Disaggregation of Revenue (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>137</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R138.htm</HtmlFileName>
+      <LongName>2426402 - Disclosure - Employee Benefits, Components of Net Periodic Benefit Cost (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/EmployeeBenefitsComponentsOfNetPeriodicBenefitCostDetails</Role>
+      <ShortName>Employee Benefits, Components of Net Periodic Benefit Cost (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>138</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R139.htm</HtmlFileName>
+      <LongName>2427402 - Disclosure - Earnings Per Common Share, Calculation of Earnings and Diluted Earnings per Common Share (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/EarningsPerCommonShareCalculationOfEarningsAndDilutedEarningsPerCommonShareDetails</Role>
+      <ShortName>Earnings Per Common Share, Calculation of Earnings and Diluted Earnings per Common Share (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>139</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R140.htm</HtmlFileName>
+      <LongName>2427403 - Disclosure - Earnings Per Common Share, Antidilutive Securities Excluded from the Calculation of Diluted Earnings per Common Share (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/EarningsPerCommonShareAntidilutiveSecuritiesExcludedFromCalculationOfDilutedEarningsPerCommonShareDetails</Role>
+      <ShortName>Earnings Per Common Share, Antidilutive Securities Excluded from the Calculation of Diluted Earnings per Common Share (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>140</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R141.htm</HtmlFileName>
+      <LongName>2428402 - Disclosure - Other Comprehensive Income, Components of Other Comprehensive Income (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/OtherComprehensiveIncomeComponentsOfOtherComprehensiveIncomeDetails</Role>
+      <ShortName>Other Comprehensive Income, Components of Other Comprehensive Income (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>141</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R142.htm</HtmlFileName>
+      <LongName>2428403 - Disclosure - Other Comprehensive Income, Cumulative OCI Balances (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/OtherComprehensiveIncomeCumulativeOciBalancesDetails</Role>
+      <ShortName>Other Comprehensive Income, Cumulative OCI Balances (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>142</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R143.htm</HtmlFileName>
+      <LongName>2429402 - Disclosure - Operating Segments (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/OperatingSegmentsDetails</Role>
+      <ShortName>Operating Segments (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/OperatingSegmentsTables</ParentRole>
+      <Position>143</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R144.htm</HtmlFileName>
+      <LongName>2430402 - Disclosure - Regulatory and Agency Capital Requirements (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/RegulatoryAndAgencyCapitalRequirementsDetails</Role>
+      <ShortName>Regulatory and Agency Capital Requirements (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <ParentRole>http://www.wellsfargo.com/role/RegulatoryAndAgencyCapitalRequirementsTables</ParentRole>
+      <Position>144</Position>
+    </Report>
+    <Report instance="wfc-20180331.xml">
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <HtmlFileName>R145.htm</HtmlFileName>
+      <LongName>2430403 - Disclosure - Regulatory and Agency Capital Requirements Minimum Required Regulatory Capital Ratios ??? Transition Requirements (Details)</LongName>
+      <ReportType>Sheet</ReportType>
+      <Role>http://www.wellsfargo.com/role/RegulatoryAndAgencyCapitalRequirementsMinimumRequiredRegulatoryCapitalRatiosTransitionRequirementsDetails</Role>
+      <ShortName>Regulatory and Agency Capital Requirements Minimum Required Regulatory Capital Ratios ??? Transition Requirements (Details)</ShortName>
+      <MenuCategory>Details</MenuCategory>
+      <Position>145</Position>
+    </Report>
+    <Report>
+      <IsDefault>false</IsDefault>
+      <HasEmbeddedReports>false</HasEmbeddedReports>
+      <LongName>All Reports</LongName>
+      <ReportType>Book</ReportType>
+      <ShortName>All Reports</ShortName>
+    </Report>
+  </MyReports>
+  <InputFiles>
+    <File>wfc-20180331.xml</File>
+    <File>wfc-20180331.xsd</File>
+    <File>wfc-20180331_cal.xml</File>
+    <File>wfc-20180331_def.xml</File>
+    <File>wfc-20180331_lab.xml</File>
+    <File>wfc-20180331_pre.xml</File>
+  </InputFiles>
+  <SupplementalFiles/>
+  <BaseTaxonomies>
+    <BaseTaxonomy>http://fasb.org/us-gaap/2017-01-31</BaseTaxonomy>
+    <BaseTaxonomy>http://xbrl.sec.gov/stpr/2011-01-31</BaseTaxonomy>
+    <BaseTaxonomy>http://xbrl.sec.gov/dei/2014-01-31</BaseTaxonomy>
+    <BaseTaxonomy>http://xbrl.sec.gov/invest/2013-01-31</BaseTaxonomy>
+  </BaseTaxonomies>
+  <HasPresentationLinkbase>true</HasPresentationLinkbase>
+  <HasCalculationLinkbase>true</HasCalculationLinkbase>
+</FilingSummary>

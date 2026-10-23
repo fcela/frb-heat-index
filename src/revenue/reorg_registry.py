@@ -32,6 +32,15 @@ REORGS = [
     {"firm": "Citigroup", "effective": "2023-10-01", "type": "reorg",
      "desc": "Five-segment structure (Services/Markets/Banking/Wealth/USPB)"},
     # Goldman Sachs
+    {"firm": "Goldman Sachs", "effective": "2017-01-01", "type": "reorg",
+     "desc": "Q1 2020 realignment presented with restated annual "
+             "comparatives back to 2017 (FY2019 10-K, the realignment's "
+             "first annual filing): annual 2017-2019 FICC/equities/"
+             "underwriting/AM cells are on the realigned basis, 2011-2016 "
+             "stay on the pre-realignment ICS/IM basis. Quarterly "
+             "comparatives (10-Qs filed 2020) reach back only to Q1 2019, "
+             "so quarterly 2012-2018 cells stay on the ICS basis and the "
+             "quarterly seam is 2018Q4->2019Q1"},
     {"firm": "Goldman Sachs", "effective": "2020-01-01", "type": "reorg",
      "desc": "Segment realignment Q1 2020"},
     {"firm": "Goldman Sachs", "effective": "2022-10-01", "type": "reorg",
@@ -41,6 +50,11 @@ REORGS = [
     # Morgan Stanley
     {"firm": "Morgan Stanley", "effective": "2013-04-01", "type": "rename",
      "desc": "Q2 2013 rename only; composition unchanged"},
+    {"firm": "Morgan Stanley", "effective": "2019-01-01", "type": "reorg",
+     "desc": "S&T FICC/equities re-presented in the income statement "
+             "from FY2021 10-Ks (adds commissions and asset management "
+             "fees); comparatives restated back to 2019 only, so 2015-"
+             "2018 cells stay on the S&T-table basis"},
     # Wells Fargo
     {"firm": "Wells Fargo", "effective": "2020-10-01", "type": "reorg",
      "desc": "Four-segment structure Q4 2020"},

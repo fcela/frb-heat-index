@@ -33,7 +33,7 @@ import polars as pl
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from src.revenue.taxonomy import (  # noqa: E402
-    TAXONOMY_LINES, map_quality, canonical_firm)
+    TAXONOMY_LINES, map_quality, canonical_firm, accession_order_exprs)
 from src.revenue.reorg_registry import regime_for_quarter, canonical_segment  # noqa: E402
 from src.revenue.build_revenue import sanitize_records  # noqa: E402
 
@@ -55,6 +55,15 @@ DATA = REPO / "data" / "revenue"
 FISCAL_YEAR_ENDS = {
     "Houlihan Lokey": "--03-31",
 }
+
+# (firm, year) whose labeled "annual" cell is not a 12-month period, so
+# annual-derived Q4 (annual - Q1..Q3) is not a quarter. Jefferies' 2018
+# "annual" is the 11-month transition period Jan 1 - Nov 30, 2018 (the
+# fiscal-year-end change from Dec 31 to Nov 30, reported as the "2018"
+# comparative in the FY2019 10-K), while its 2018 quarters are mixed
+# calendar/fiscal periods. The derivation is skipped and logged, never
+# silently fudged.
+TRANSITION_YEAR_ANNUALS = {("Jefferies", 2018)}
 
 
 def quarter_of(period_end):
@@ -226,20 +235,38 @@ def build_quarterly(seg_q, seg_a, with_mda=True):
         "net_revenue_m": pl.Float64, "derivation": pl.String,
         "regime": pl.String, "source": pl.String, "accession": pl.String,
     })
-    # Dedupe: keep the best derivation (qtd > ytd_derived > annual_derived).
+    # Dedupe: keep the best quality tier first (D beats A -- the same
+    # rule as the annual builder; a direct sub-segment row must not
+    # lose to an approximate segment mapping of the same line, e.g.
+    # GS's "Equities" (D, ~$1.7B/qtr) vs "Commissions and Fees" (A,
+    # ~$0.7B/qtr) both mapping to equities, where frame order handed
+    # the cell to Commissions), then the best derivation (qtd >
+    # ytd_derived > annual_derived), then the later filing.
     rank = {"qtd": 0, "ytd_derived_q2": 1, "ytd_derived_q3": 1,
             "annual_derived_q4": 2}
+    qrank = {"D": 0, "A": 1, "U": 2}
     if len(df):
         df = df.with_columns(
+            pl.col("map_quality").replace_strict(qrank, default=3)
+            .alias("_qrank"),
             pl.col("derivation").replace_strict(rank, default=3)
             .alias("_drank"))
-        # Best derivation wins; among ties the later filing wins
-        # (restatements). Accession sorts chronologically.
+        # Best quality and derivation win; among ties the later filing
+        # wins (restatements), by (filing year, sequence) -- raw
+        # accession strings do not sort chronologically across
+        # filing-agent prefixes.
+        acc_y, acc_s = accession_order_exprs("accession")
+        df = df.with_columns(acc_y.alias("_acc_year"),
+                             acc_s.alias("_acc_seq"))
         df = df.sort(["firm", "taxonomy_line", "year", "quarter",
-                      "_drank", "accession"],
-                     descending=[False, False, False, False, False, True])
+                      "_qrank", "_drank", "_acc_year", "_acc_seq",
+                      "accession"],
+                     descending=[False, False, False, False, False,
+                                 False, True, True, True],
+                     maintain_order=True)
         df = df.unique(subset=["firm", "taxonomy_line", "year", "quarter"],
-                       keep="first").drop("_drank")
+                       keep="first").drop(["_qrank", "_drank",
+                                           "_acc_year", "_acc_seq"])
         df = df.sort(["firm", "taxonomy_line", "year", "quarter"])
     # Merge Layer 2Q: quarterly MD&A sub-business splits. These are
     # direct (D) disclosures of business lines the XBRL layer only sees
@@ -293,6 +320,12 @@ def build_quarterly(seg_q, seg_a, with_mda=True):
                     total = ann_map.get((firm, line, y))
                     if total is None:
                         continue
+                    if (firm, y) in TRANSITION_YEAR_ANNUALS:
+                        log.append({"firm": firm, "taxonomy_line": line,
+                                    "year": y, "quarter": 4,
+                                    "derivation": "mda_annual_derived_q4",
+                                    "status": "skipped_transition_year"})
+                        continue
                     v4 = total - sum(qs.values())
                     # Validate: same sign, magnitude within annual.
                     if abs(v4) > abs(total) * 1.1:
@@ -337,13 +370,21 @@ def build_quarterly(seg_q, seg_a, with_mda=True):
             df = df.with_columns(
                 pl.col("map_quality").replace_strict(
                     qrank, default=3).alias("_qrank"))
+            # Within a tier the later filing wins (restatements), by
+            # (filing year, sequence) -- raw accession strings do not
+            # sort chronologically across filing-agent prefixes.
+            acc_y, acc_s = accession_order_exprs("accession")
+            df = df.with_columns(acc_y.alias("_acc_year"),
+                                 acc_s.alias("_acc_seq"))
             df = df.sort(
                 ["firm", "taxonomy_line", "year", "quarter",
-                 "_qrank", "accession"],
-                descending=[False, False, False, False, False, True])
+                 "_qrank", "_acc_year", "_acc_seq", "accession"],
+                descending=[False, False, False, False, False,
+                            True, True, True],
+                maintain_order=True)
             df = df.unique(
                 subset=["firm", "taxonomy_line", "year", "quarter"],
-                keep="first").drop("_qrank")
+                keep="first").drop(["_qrank", "_acc_year", "_acc_seq"])
             df = df.sort(["firm", "taxonomy_line", "year", "quarter"])
     # Drop unmappable rows from the panel (recorded in meta).
     unmapped = df.filter(pl.col("taxonomy_line").is_null())

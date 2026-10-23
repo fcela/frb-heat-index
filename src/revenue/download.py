@@ -30,24 +30,10 @@ import requests
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.revenue.parse_xbrl import find_segment_reports  # noqa: E402
+from src.revenue.taxonomy import FIRM_CIKS as FIRMS  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[2]
 RAW_ROOT = REPO / "data" / "revenue" / "raw"
-
-FIRMS = {
-    "JPMorgan": "0000019617",
-    "Bank of America": "0000070858",
-    "Citigroup": "0000831001",
-    "Goldman Sachs": "0000886982",
-    "Morgan Stanley": "0000895421",
-    "Wells Fargo": "0000072971",
-    "Evercore": "0001360901",
-    "Lazard": "0001311370",
-    "Moelis": "0001596967",
-    "PJT Partners": "0001626115",
-    "Houlihan Lokey": "0001302215",
-    "Jefferies": "0000096223",
-}
 
 USER_AGENT = ("frb-heat-index/1.0 (bank revenue tracker research; "
               "contact frb-heat-index@example.com)")
