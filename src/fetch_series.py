@@ -57,6 +57,9 @@ FRED_IDS = [
     "DGS10", "BAA", "VIXCLS",
     # SLOOS (Senior Loan Officer Opinion Survey)
     "DRTSCILM", "DRTSPM",
+    # SCOOS (Senior Credit Officer Opinion Survey): net percent of
+    # respondents reporting increased use of leverage by hedge funds.
+    "EXHE2C1Q8NP",
     # housing
     "CSUSHPISA", "CUSR0000SEHA",
     # consumer / mortgage credit
@@ -94,6 +97,14 @@ SOURCES: list[tuple[str, str, str]] = (
        f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}",
        "auto") for sid in FRED_IDS]
     + [
+        # OFR Hedge Fund Monitor (SEC Form PF aggregates), public API,
+        # no key: qualifying hedge funds' gross / net assets. The CSV
+        # carries a label row under the header (the panel builder
+        # filters to parseable dates).
+        ("ofr_hf_size.csv",
+         "https://data.financialresearch.gov/hf/v1/series/multifull"
+         "?mnemonics=FPF-ALLQHF_GAV_SUM,FPF-ALLQHF_NAV_SUM&output=csv",
+         "auto"),
         # Long-run equity valuations (E/P): university-hosted monthly file.
         # NOTE: the hosted file froze at 2023Q1; the E/P series stop there.
         ("ie_data.xls",

@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FRB Heat Index — U.S. Financial System Vulnerabilities, Replicated from Public Data</title>
-<meta name="description" content="A public-data replication of the Federal Reserve's heat map of U.S. financial-system vulnerabilities: 46 indicators, 14 components, quarterly, from 1990.">
+<meta name="description" content="A public-data replication of the Federal Reserve's heat map of U.S. financial-system vulnerabilities: 48 indicators, 14 components, quarterly, from 1990.">
 <meta property="og:title" content="FRB Heat Index">
-<meta property="og:description" content="Replicating the Fed's financial-system heat map from public data — 46 indicators, 14 components, quarterly, 1990 to present.">
+<meta property="og:description" content="Replicating the Fed's financial-system heat map from public data — 48 indicators, 14 components, quarterly, 1990 to present.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='6' height='28' fill='%232166ac'/%3E%3Crect x='10' y='10' width='6' height='20' fill='%23f4a582'/%3E%3Crect x='18' y='6' width='6' height='24' fill='%23d6604d'/%3E%3Crect x='26' y='14' width='4' height='16' fill='%23b2182b'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,7 +46,7 @@
     <p class="kicker">Federal Reserve FEDS Notes · replicated from public data</p>
     <h1>Mapping <span class="hot">Heat</span> in the U.S. Financial System</h1>
     <p class="lede">A replication of the Federal Reserve's heat map of financial-system
-      vulnerabilities, rebuilt indicator-by-indicator from public data. Forty-six indicators
+      vulnerabilities, rebuilt indicator-by-indicator from public data. Forty-eight indicators
       feed fourteen components across three vulnerability categories — every cell below is a
       quantile in its own history. Blue is subdued, red is acute.</p>
     <p class="lede-note">Beyond the 44 indicators in the FEDS Notes version, this implementation
@@ -99,7 +99,7 @@
 
   <section class="card view-clustered" id="clustered-card">
     <h2>The heat map, clustered</h2>
-    <p class="sub">The same heat, resolved to its 46 indicators and re-ordered by shape:
+    <p class="sub">The same heat, resolved to its 48 indicators and re-ordered by shape:
       rows are the indicators, columns are every quarter in order — time is never
       re-shuffled. The row order comes from hierarchical clustering of the score
       trajectories, so indicators that heat up and cool down together sit next to each
@@ -107,9 +107,9 @@
       the indicator's component — compare it across rows to see where the clustering
       recovers the paper's fourteen components and where it cuts across them. Hover any
       cell for the component, sub-index, and exact value.</p>
-    <div class="heatmap-scroll"><figure id="clustermap" role="img" aria-label="Clustered heat map: 46 indicators over time with dendrogram and component chips"></figure></div>
+    <div class="heatmap-scroll"><figure id="clustermap" role="img" aria-label="Clustered heat map: 48 indicators over time with dendrogram and component chips"></figure></div>
     <div class="cluster-legend" id="cluster-legend"></div>
-    <p class="legend-note"><strong>Method:</strong> what is clustered is the 46 indicator
+    <p class="legend-note"><strong>Method:</strong> what is clustered is the 48 indicator
       score series (each indicator's 0–1 heat quantile in its own history, per quarter).
       Distance is correlation distance (1&nbsp;−&nbsp;Pearson&nbsp;r) computed on
       pairwise-complete observations — at least 24 shared quarters, no imputation, no
@@ -161,9 +161,11 @@
           and the kernel-CDF bandwidth are all computed over the full available sample, so values for
           early quarters shift as new quarters are added. The extended map is the same methodology on a
           longer sample — not point-for-point comparable with the paper's 2015 map.</li>
-        <li><strong>Coverage: 46 of 46 indicators</strong> replicated from named public sources —
-          all 44 FEDS Notes indicators plus both journal-publication additions (SRISK and
-          Granger-causality connectedness); the end-to-end public-proxy panel tracks the paper's
+        <li><strong>Coverage: 48 of 48 indicators</strong> from named public sources —
+          all 44 FEDS Notes indicators, both journal-publication additions (SRISK and
+          Granger-causality connectedness), and two hedge-fund leverage series added in
+          2026 (OFR Form PF aggregates and the SCOOS dealer survey, both in Nonbank
+          leverage); in the replication paper the public-proxy panel tracks the paper's
           published aggregate index at correlation 0.93.</li>
         <li><strong>Recent quarters are nowcast.</strong> Source-release lags leave 32 series
           ending at 2025Q4; 2026Q1–Q2 values are filled by tested nowcast models or documented
@@ -182,7 +184,7 @@
     <ul class="dl-list">
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/panel_quarterly.csv">
         <span class="fname">panel_quarterly.csv</span>
-        <span class="fdesc">quarter × 46 public-proxy indicators</span></a></li>
+        <span class="fdesc">quarter × 48 public-proxy indicators</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/components.csv">
         <span class="fname">components.csv</span>
         <span class="fdesc">quarter × 14 component indices (0–1 quantiles)</span></a></li>
@@ -191,13 +193,13 @@
         <span class="fdesc">quarter × aggregate vulnerability index (0–1)</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/indicators_standardized.csv">
         <span class="fname">indicators_standardized.csv</span>
-        <span class="fdesc">quarter × 46 oriented standardized indicators (z-scores)</span></a></li>
+        <span class="fdesc">quarter × 48 oriented standardized indicators (z-scores)</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/proxy_catalog.csv">
         <span class="fname">proxy_catalog.csv</span>
         <span class="fdesc">per-indicator source, construction, and fidelity notes</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/panel_complete.csv">
         <span class="fname">panel_complete.csv</span>
-        <span class="fdesc">quarter × 46 indicators with 2026Q1–Q2 nowcast fills</span></a></li>
+        <span class="fdesc">quarter × 48 indicators with 2026Q1–Q2 nowcast fills</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/nowcast_provenance.csv">
         <span class="fname">nowcast_provenance.csv</span>
         <span class="fdesc">per-value nowcast method, backtest scores, and assumptions</span></a></li>
@@ -215,8 +217,9 @@
     <p>This site is a replication of the Federal Reserve FEDS Notes
       <a href="https://www.federalreserve.gov/econres/feds/mapping-heat-in-the-us-financial-system.htm">“Mapping Heat in the U.S. Financial System”</a>
       (August 2015), rebuilt from public data sources alone.</p>
-    <p>46 of 46 indicators are replicated with public proxies — all 44 FEDS Notes indicators
-      plus the two added in the journal publication (<em>J.&nbsp;Banking &amp; Finance</em> 81, 2017);
+    <p>48 of 48 indicators are built from named public sources — all 44 FEDS Notes indicators,
+      the two added in the journal publication (<em>J.&nbsp;Banking &amp; Finance</em> 81, 2017),
+      and two hedge-fund leverage series added in 2026 (OFR Form PF aggregates; SCOOS);
       the results are scored against the
       paper's own published tables. See the <a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/paper/fed_heat_map-replication.pdf">replication paper</a>
       for the per-indicator specifications, fidelity scores, and limitations.</p>

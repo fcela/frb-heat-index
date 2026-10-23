@@ -3,7 +3,7 @@
 The brief's contract, tested:
   - the shipped row order equals a recomputation on fixture data, and the
     rebuild is byte-identical (deterministic, fixed tie-breaking);
-  - the order is a permutation of all 46 indicators (on the real committed
+  - the order is a permutation of all 48 indicators (on the real committed
     panel, docs/data/clustered.json must be reproducible from
     data/indicators_standardized.csv);
   - correlations use pairwise-complete observations only; insufficient
@@ -170,7 +170,7 @@ def test_bundle_deterministic_and_permutation():
 def test_shipped_bundle_equals_recomputation():
     """The brief's core test: the committed docs/data/clustered.json must be
     reproducible from the committed data/indicators_standardized.csv, and
-    its order must be a permutation of all 46 indicators."""
+    its order must be a permutation of all 48 indicators."""
     std_csv = HERE / "data" / "indicators_standardized.csv"
     shipped_p = HERE / "docs" / "data" / "clustered.json"
     if not std_csv.exists() or not shipped_p.exists():
@@ -180,8 +180,8 @@ def test_shipped_bundle_equals_recomputation():
     rebuilt = ci.compute_bundle(pl.read_csv(std_csv))
     assert json.dumps(shipped, sort_keys=True) == json.dumps(rebuilt, sort_keys=True), \
         "shipped clustered.json does not match a recomputation from the panel"
-    assert len(rebuilt["leaves"]) == 46
-    assert sorted(rebuilt["order"]) == list(range(46))
+    assert len(rebuilt["leaves"]) == 48
+    assert sorted(rebuilt["order"]) == list(range(48))
     assert set(rebuilt["leaves"]) == set(
         c for c in pl.read_csv(std_csv).columns if c != "quarter")
 

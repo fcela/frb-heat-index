@@ -87,6 +87,8 @@ PANEL_COLUMNS = [
     'Indicators of Volitility (VIX)',
     'SRISK (Total capital shortfall relative to total assets)',
     'Granger-causality connections among large financial institutions',
+    'Hedge Fund Leverage (Gross assets to net assets, qualifying hedge funds)',
+    'Hedge Fund Leverage (SCOOS net percent reporting increased use of leverage)',
 ]
 
 
@@ -242,6 +244,41 @@ def b_granger(raw: Path):
     # Built by src/systemic/build_granger.py from Yahoo monthly returns.
     return {'Granger-causality connections among large financial institutions':
             _systemic_frame(raw, "granger_quarterly.csv")}
+
+
+def b_hedge_fund_leverage(raw: Path):
+    # Hedge fund leverage, two public series (added 2026-10; the FEDS
+    # panel has no hedge-fund series because Form PF is confidential --
+    # these are the published aggregates of the same filings):
+    #  (1) OFR Hedge Fund Monitor, SEC Form PF aggregates for
+    #      qualifying hedge funds: gross assets / net assets
+    #      (FPF-ALLQHF_GAV_SUM / FPF-ALLQHF_NAV_SUM via the OFR public
+    #      API). The ratio of the published aggregates equals the
+    #      net-asset-weighted mean fund-level leverage ratio. The API
+    #      CSV carries a label row under the header; keep parseable
+    #      dates only. Series begins 2013Q1 (Form PF quarterly
+    #      reporting start) -- a documented leading boundary.
+    #  (2) SCOOS via FRED EXHE2C1Q8NP: net percent of dealers
+    #      reporting increased use of leverage by hedge funds
+    #      (quarterly survey, quarter-start dates; begins 2011Q3).
+    out = {}
+    p = raw / "ofr_hf_size.csv"
+    df = pl.read_csv(p, schema={
+        "date": pl.String,
+        "FPF-ALLQHF_GAV_SUM": pl.String,
+        "FPF-ALLQHF_NAV_SUM": pl.String,
+    }).filter(pl.col("date").str.contains(r"^\d{4}-\d{2}-\d{2}$")).with_columns(
+        pl.col("date").str.to_date().alias("date"),
+        pl.col("FPF-ALLQHF_GAV_SUM").cast(pl.Float64).alias("gav"),
+        pl.col("FPF-ALLQHF_NAV_SUM").cast(pl.Float64).alias("nav"),
+    )
+    lev = with_quarter(df, "date").with_columns(
+        (pl.col("gav") / pl.col("nav")).alias("value")
+    ).select(["quarter", "value"]).sort("quarter")
+    out["Hedge Fund Leverage (Gross assets to net assets, qualifying hedge funds)"] = lev
+    out["Hedge Fund Leverage (SCOOS net percent reporting increased use of leverage)"] = \
+        fred_qlast(raw, "EXHE2C1Q8NP")
+    return out
 
 
 def b_baa_spread(raw: Path):
@@ -743,7 +780,7 @@ BUILDERS = [
     b_sloos_cni, b_house_price_rent, b_sloos_mortgage, b_fico, b_bizdebt,
     b_risky_leverage, b_nipa, b_consumer, b_consumer_risky, b_mortgage,
     b_saving_hh, b_z1, b_bis_cre, b_sloos_cre, b_call_report,
-    b_srisk, b_granger,
+    b_srisk, b_granger, b_hedge_fund_leverage,
 ]
 
 
