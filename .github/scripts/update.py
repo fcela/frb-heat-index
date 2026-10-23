@@ -240,18 +240,18 @@ class Net:
         tmp = Path(tempfile.mkdtemp())
         try:
             from fetch_series import _curl_dl
+            from systemic.fetch_y9c import nic_text_to_csv
 
             if kind == "nic-zip":
                 zp = tmp / "bhcf.zip"
                 _curl_dl(url, zp, min_bytes=100_000)
                 with zipfile.ZipFile(zp) as z:
                     raw_text = z.read(z.namelist()[0]).decode("utf-8", errors="replace")
-                # NIC files are caret-delimited; convert robustly via csv.
+                # Shared caret->comma converter (quote processing OFF: NIC
+                # files have no quoting convention; see its docstring for the
+                # 2023Q4 incident).
                 dest.parent.mkdir(parents=True, exist_ok=True)
-                with dest.open("w", newline="") as f:
-                    w = csv.writer(f)
-                    for row in csv.reader(io.StringIO(raw_text), delimiter="^"):
-                        w.writerow(row)
+                dest.write_text(nic_text_to_csv(raw_text), newline="")
             else:
                 _curl_dl(url, dest, min_bytes=100_000)
         finally:

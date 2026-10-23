@@ -47,6 +47,24 @@ def curl_dl(url: str, dest: Path, tries: int = 4) -> None:
     raise RuntimeError(f"download failed: {url}")
 
 
+def nic_text_to_csv(raw_text: str) -> str:
+    """Convert a caret-delimited NIC bulk file to standard CSV text.
+
+    NIC files are caret-delimited with NO quoting convention: embedded double
+    quotes in free-text memo items are literal data. Parsing with a CSV quote
+    character makes the reader swallow carets/newlines inside a "..." span,
+    corrupting the row structure (one unterminated memo field merges every
+    following line into one row -- this is what silently dropped 2023Q4 from
+    the Y-9C panel). Quote processing is therefore OFF for the caret read;
+    csv.writer then re-quotes fields containing commas per standard CSV.
+    """
+    out = io.StringIO()
+    w = csv.writer(out)
+    for row in csv.reader(io.StringIO(raw_text), delimiter="^", quotechar=None):
+        w.writerow(row)
+    return out.getvalue()
+
+
 def fetch_one(year: int, q: int) -> None:
     yyyymmdd = f"{year}{Q_END[q]}"
     dest = RAW / f"bhcf{year % 100:02d}{q * 3:02d}.csv"
@@ -61,10 +79,7 @@ def fetch_one(year: int, q: int) -> None:
         with zipfile.ZipFile(zp) as z:
             raw_text = z.read(z.namelist()[0]).decode("utf-8", errors="replace")
         dest.parent.mkdir(parents=True, exist_ok=True)
-        with dest.open("w", newline="") as f:
-            w = csv.writer(f)
-            for row in csv.reader(io.StringIO(raw_text), delimiter="^"):
-                w.writerow(row)
+        dest.write_text(nic_text_to_csv(raw_text), newline="")
         print(f"  {year}Q{q}: {dest.stat().st_size / 1e6:.1f} MB")
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

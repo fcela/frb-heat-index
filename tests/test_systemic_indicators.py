@@ -29,7 +29,7 @@ SRISK = "SRISK (Total capital shortfall relative to total assets)"
 GRANGER = "Granger-causality connections among large financial institutions"
 
 EXPECTED = {
-    SRISK: ("Bank leverage", +1),
+    SRISK: ("Size/concentration", +1),  # moved from Bank leverage in f017eba
     GRANGER: ("Size/concentration", +1),
 }
 
@@ -76,18 +76,18 @@ def test_site_jsons_include_both():
             for i in comp["indicators"]:
                 if i["name"] in EXPECTED:
                     found[i["name"]] = comp["name"]
-    assert found.get(SRISK) == "Bank leverage", f"SRISK hierarchy: {found}"
+    assert found.get(SRISK) == "Size/concentration", f"SRISK hierarchy: {found}"
     assert found.get(GRANGER) == "Size/concentration", f"Granger hierarchy: {found}"
 
 
 def test_both_move_components_and_aggregate():
     # The indicators must be real inputs, not decoration: removing them
-    # must change the Bank leverage / Size-concentration components and
-    # the aggregate index by a non-trivial amount.
+    # must change the component that contains them (Size/concentration
+    # since the f017eba move) and the aggregate index by a non-trivial amount.
     panel = pl.read_csv(REPO / "data" / "panel_quarterly.csv")
     comp_new, agg_new, _ = run_pipeline.run_pipeline(panel)
     comp_old, agg_old, _ = run_pipeline.run_pipeline(panel.drop([SRISK, GRANGER]))
-    for cname in ("Bank leverage", "Size/concentration"):
+    for cname in ("Size/concentration",):
         diff = (comp_new[cname].fill_null(0)
                 - comp_old[cname].fill_null(0)).abs().max()
         assert diff > 0.01, f"{cname} unaffected by new indicators (Δ={diff})"

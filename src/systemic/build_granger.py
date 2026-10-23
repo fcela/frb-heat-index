@@ -112,8 +112,12 @@ def main() -> int:
         q = (d.month - 1) // 3 + 1
         qends[f"{d.year}Q{q}"] = d  # last date of quarter wins (sorted)
     quarters = sorted(qends)
-    # need 36m history: start at 1993Q1 (data from 1990)
-    quarters = [q for q in quarters if q >= "1993Q1" and q <= "2026Q2"]
+    # The Yahoo monthly histories fetched with period1=0 reach 1985-01 for
+    # the core firm panel (RJF 1983-07, KEY 1987-11, SCHW 1987-09), so a
+    # full 36-month window exists from 1987Q4 -- every panel quarter
+    # 1990Q1 onward satisfies the 36m/30-obs requirements. Verified: the
+    # previous 1993Q1 start was only this filter, not a data boundary.
+    quarters = [q for q in quarters if q >= "1990Q1" and q <= "2026Q2"]
 
     rows = []
     for qi, q in enumerate(quarters):

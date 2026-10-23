@@ -1,9 +1,9 @@
 {
  "last_built_quarter": "2026Q2",
- "built_at_utc": "2026-10-15T00:00:00Z",
+ "built_at_utc": "2026-10-22T00:00:00Z",
  "n_indicators": 46,
  "n_components": 14,
- "note": "Structural fixes: Tier 1 CET1 splice across Basel III 2014 break; total capital ratio rebuilt from Y-9C; SLOOS mortgage standards spliced to successor (SUBLPDHMSGLGNQ); 8 dead Z.1 FRED codes replaced via Z.1 bulk extraction. All fixable series through 2026Q2. Journal-publication additions: SRISK/total assets and Granger-causality connectedness (J. Banking & Finance 81, 2017). Nowcast completion: 32 series extended to 2026Q2 via tested nowcast models or documented assumptions (see data/nowcast_provenance.csv); maturity-gap proxy extended by OLS regression on observed inputs.",
+ "note": "Structural fixes: Tier 1 CET1 splice across Basel III 2014 break; total capital ratio rebuilt from Y-9C; SLOOS mortgage standards spliced to successor (SUBLPDHMSGLGNQ); 8 dead Z.1 FRED codes replaced via Z.1 bulk extraction. All fixable series through 2026Q2. Journal-publication additions: SRISK/total assets and Granger-causality connectedness (J. Banking & Finance 81, 2017). Nowcast completion: 32 series extended to 2026Q2 via tested nowcast models or documented assumptions (see data/nowcast_provenance.csv); maturity-gap proxy extended by OLS regression on observed inputs. 2026-10-22 heat-completeness slice 1: 2023Q4 Y-9C ingestion hole repaired (NIC caret files carry no quoting convention; parse fix re-reads the FFIEC bulk file), 7 Y-9C-derived series completed at 2023Q4.",
  "components": [
   "Equity markets",
   "Price volatility",
