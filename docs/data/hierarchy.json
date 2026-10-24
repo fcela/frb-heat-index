@@ -208,6 +208,14 @@
       {
        "name": "Ratio of U.S. Non Agency Securitization Issuance to GDP",
        "short": "Non-agency securitization / GDP"
+      },
+      {
+       "name": "Hedge Fund Leverage (Gross assets to net assets, qualifying hedge funds)",
+       "short": "Hedge fund leverage"
+      },
+      {
+       "name": "Hedge Fund Leverage (SCOOS net percent reporting increased use of leverage)",
+       "short": "Hedge fund leverage (SCOOS)"
       }
      ]
     },

@@ -56,6 +56,8 @@ SPEC = {
     "Broker Dealer Leverage (Broker dealer leverage ratio)": ("Nonbank leverage", -1, None),
     "Maturity Mismatch (Ratio of net short-term wholesale debt of the financial sector to GDP)": ("Maturity transformation", +1, "ma10"),
     "Ratio of U.S. Non Agency Securitization Issuance to GDP": ("Nonbank leverage", +1, None),
+    "Hedge Fund Leverage (Gross assets to net assets, qualifying hedge funds)": ("Nonbank leverage", +1, None),
+    "Hedge Fund Leverage (SCOOS net percent reporting increased use of leverage)": ("Nonbank leverage", +1, None),
     "Short-term Wholesale Funding (Ratio of total runnable money -like liabilities to GDP)": ("Short-term wholesale funding", +1, "ma10"),
     "Short-Term Wholesale Funding (Short-term money as a share of assets at BHCs)": ("Short-term wholesale funding", +1, None),
     "Bank Leverage (Total common equity to total assets)": ("Bank leverage", -1, None),

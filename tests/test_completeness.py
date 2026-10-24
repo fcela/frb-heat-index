@@ -31,6 +31,26 @@ ALL_QUARTERS = [f"{y}Q{q}" for y in range(1990, 2027)
 # indicator -> (first_valid_quarter, evidence for the leading boundary).
 # A series in this map may be null only BEFORE first_valid_quarter.
 ALLOWED_BOUNDARIES: dict[str, tuple[str, str]] = {
+    "Hedge Fund Leverage (Gross assets to net assets, qualifying hedge funds)": (
+        "2013Q1",
+        "Documented source boundary. The series is built from SEC Form "
+        "PF aggregates published by the OFR Hedge Fund Monitor (series "
+        "FPF-ALLQHF_GAV_SUM / FPF-ALLQHF_NAV_SUM via the OFR public "
+        "API); Form PF quarterly reporting by large hedge fund "
+        "advisers began with the 2013Q1 filing period, and the "
+        "monitor's history starts 2013-03-31 (verified against the API: "
+        "first observation 2013Q1, 54 quarters through 2026Q2). No "
+        "public hedge-fund leverage aggregate exists before Form PF; "
+        "the filings themselves are confidential, so no earlier "
+        "primary source can be substituted."),
+    "Hedge Fund Leverage (SCOOS net percent reporting increased use of leverage)": (
+        "2011Q3",
+        "Documented source boundary. FRED EXHE2C1Q8NP (Senior Credit "
+        "Officer Opinion Survey on Dealer Financing Terms): the SCOOS "
+        "began in 2011 and the series' first observation is 2011Q3 "
+        "(verified in the FRED CSV: first row 2011-07-01). The survey "
+        "did not exist before 2011, so no earlier observations can "
+        "exist."),
     "Bank Leverage (Tier 1 common equity ratio)": (
         "2001Q1",
         "Documented regulatory-data boundary. The ratio's denominator, the "
@@ -148,8 +168,8 @@ def check(cond, msg):
 def main() -> int:
     ok = True
     panel = pl.read_csv(PANEL)
-    ok &= check(panel.height == 146 and panel.width == 47,
-                f"panel_complete shape {panel.height}x{panel.width}, want 146x47")
+    ok &= check(panel.height == 146 and panel.width == 49,
+                f"panel_complete shape {panel.height}x{panel.width}, want 146x49")
     ok &= check(panel["quarter"].to_list() == ALL_QUARTERS,
                 "panel_complete quarters must be exactly 1990Q1..2026Q2")
 

@@ -98,6 +98,8 @@ SHORT_NAMES = {
     "Bank Leverage (Total Capital Ratio)": "Total capital ratio",
     "Broker Dealer Leverage (Dealer financing)": "Broker-dealer financing",
     "Broker Dealer Leverage (Broker dealer leverage ratio)": "Broker-dealer leverage ratio",
+    "Hedge Fund Leverage (Gross assets to net assets, qualifying hedge funds)": "Hedge fund leverage",
+    "Hedge Fund Leverage (SCOOS net percent reporting increased use of leverage)": "Hedge fund leverage (SCOOS)",
     "Ratio of U.S. Non Agency Securitization Issuance to GDP": "Non-agency securitization / GDP",
     "Maturity Mismatch (Loans as a percent of deposits)": "Loans / deposits",
     "Weighted Average Maturity Gap at Commerical Banks": "Weighted-average maturity gap",
