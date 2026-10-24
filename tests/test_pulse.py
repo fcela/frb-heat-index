@@ -12,7 +12,13 @@ import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from src.pulse.build_pulse import sanitize_records, strict_json
+from src.pulse.build_pulse import (
+    detect_history_rewrites,
+    merge_incremental,
+    sanitize_records,
+    strict_json,
+)
+import polars as pl
 from src.pulse.segments import SEGMENTS, FETCHABLE_STATUSES, all_indicators
 
 REPO = Path(__file__).resolve().parents[1]
@@ -153,6 +159,47 @@ def test_app_renders_provenance(tmp_path=None):
     print("ok test_app_renders_provenance")
 
 
+def _frame(rows):
+    return pl.DataFrame(
+        {"date": [r[0] for r in rows], "value": [r[1] for r in rows]}
+    ).with_columns(pl.col("date").str.to_date())
+
+
+def test_detect_rewrites_flags_large_move():
+    # Oct 2026 WTI shape: stored history vs a fresh fetch that corrects it.
+    old = _frame([("2026-10-09", 98.73), ("2026-10-12", 98.73)])
+    new = _frame([("2026-10-12", 94.99), ("2026-10-13", 95.39)])
+    out = detect_history_rewrites(old, new)
+    assert len(out) == 1, out
+    assert out[0]["date"] == "2026-10-12" and out[0]["old"] == 98.73 and out[0]["new"] == 94.99
+    print("ok test_detect_rewrites_flags_large_move")
+
+
+def test_detect_rewrites_ignores_routine_revisions():
+    # NFCI shape: weekly restatement moves old values by ~0.01, incl. near zero.
+    old = _frame([("1971-01-08", -1.093), ("2026-10-09", -0.036)])
+    new = _frame([("1971-01-08", -1.081), ("2026-10-09", -0.032)])
+    assert detect_history_rewrites(old, new) == []
+    # Identical frames and disjoint dates are also clean.
+    assert detect_history_rewrites(old, old) == []
+    assert detect_history_rewrites(old, _frame([("2027-01-01", 1.0)])) == []
+    assert detect_history_rewrites(None, new) == []
+    print("ok test_detect_rewrites_ignores_routine_revisions")
+
+
+def test_merge_incremental_new_wins():
+    # The backfill mechanism: a fresh fetch overwrites stored values on
+    # collision and appends genuinely new dates.
+    old = _frame([("2026-10-09", 98.73), ("2026-10-12", 98.73)])
+    new = _frame([("2026-10-12", 94.99), ("2026-10-14", 96.34)])
+    merged = merge_incremental(old, new)
+    by_date = {str(d): v for d, v in merged.select("date", "value").iter_rows()}
+    assert by_date["2026-10-12"] == 94.99, by_date
+    assert by_date["2026-10-14"] == 96.34 and by_date["2026-10-09"] == 98.73
+    print("ok test_merge_incremental_new_wins")
+
+
+
 if __name__ == "__main__":
     test_sanitize_nan_inf()
     test_strict_json_rejects_nan()
@@ -160,4 +207,7 @@ if __name__ == "__main__":
     test_site_json_parses_strictly()
     test_provenance_standard()
     test_app_renders_provenance()
+    test_detect_rewrites_flags_large_move()
+    test_detect_rewrites_ignores_routine_revisions()
+    test_merge_incremental_new_wins()
     print("all pulse tests pass")

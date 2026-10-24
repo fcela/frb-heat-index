@@ -31,7 +31,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install polars fastexcel pypdf
+        run: pip install polars fastexcel pypdf openpyxl  # openpyxl: htm_unrealized reads FDIC xlsx (errored 2026-10-19 without it)
 
       - name: Refresh pulse data (incremental)
         run: python3 -m src.pulse.build_pulse --incremental
@@ -61,7 +61,7 @@ jobs:
             try {
               const meta = JSON.parse(fs.readFileSync('data/pulse/_meta.json', 'utf8'));
               const lines = Object.entries(meta.indicators).map(([k, v]) =>
-                `- ${k}: ${v.status}${v.last_observation ? ` (last ${v.last_observation})` : ''}${v.error ? ` — ${v.error}` : ''}`);
+                `- ${k}: ${v.status}${v.last_observation ? ` (last ${v.last_observation})` : ''}${v.error ? ` — ${v.error}` : ''}${v.history_rewrites ? ` — ${v.history_rewrites.length} history rewrite(s)` : ''}`);
               body = `**${meta.n_live}/${meta.n_indicators} live**, ${meta.n_pending} pending-sourcing.\n\n${lines.join('\n')}`;
             } catch (e) { body = 'Could not read _meta.json: ' + e.message; }
             await github.rest.issues.create({

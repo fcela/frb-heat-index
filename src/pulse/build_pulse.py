@@ -110,6 +110,36 @@ def merge_incremental(old: pl.DataFrame | None, new: pl.DataFrame) -> pl.DataFra
     return combined
 
 
+def detect_history_rewrites(old: pl.DataFrame | None, new: pl.DataFrame,
+                            tol_rel: float = 0.02, tol_abs: float = 0.05) -> list[dict]:
+    """Compare a fresh fetch against stored history on overlapping dates.
+
+    Returns one entry per date whose stored value the fresh fetch would
+    change by more than max(tol_rel * |old|, tol_abs). Small routine
+    revisions (e.g. NFCI's weekly restatement, ~0.01 on a ~1.0 index) pass;
+    WTI-scale corruption (Oct 2026: stored 98.73 vs source 94.99) flags.
+
+    This catches rewrites of already-stored dates only. Wrong values on
+    genuinely new dates cannot be caught from one source alone — that case
+    needs a second source, not a bigger tolerance.
+    """
+    if old is None or old.height == 0 or new.height == 0:
+        return []
+    group_cols = [c for c in new.columns if c not in ("date", "value")]
+    j = old.join(new, on=["date"] + group_cols, suffix="_new")
+    out = []
+    for r in j.iter_rows(named=True):
+        o, n = r["value"], r["value_new"]
+        if o is None or n is None:
+            continue
+        if abs(n - o) > max(tol_rel * abs(o), tol_abs):
+            rec = {"date": str(r["date"]), "old": o, "new": n}
+            for g in group_cols:
+                rec[g] = r[g]
+            out.append(rec)
+    return out
+
+
 def _earnings_calls_seed() -> pl.DataFrame:
     """v1 seed for the earnings-call credit-language indicator.
 
@@ -270,7 +300,11 @@ def build(incremental: bool = False) -> dict:
                 df = fetch_indicator(ind_key, ind)
                 validate_frame(df, ind_key)
                 if incremental:
-                    df = merge_incremental(load_existing(seg_key, ind_key), df)
+                    old = load_existing(seg_key, ind_key)
+                    rewrites = detect_history_rewrites(old, df)
+                    if rewrites:
+                        entry["history_rewrites"] = rewrites
+                    df = merge_incremental(old, df)
                     validate_frame(df, ind_key)
                 write_indicator_csv(seg_key, ind_key, df)
 
