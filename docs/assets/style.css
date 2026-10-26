@@ -568,6 +568,46 @@ body[data-view="clustered"] .view-hierarchy { display: none; }
   white-space: nowrap;
 }
 
+.ind-row .ind-prov {
+  margin: 0.2rem 0 0.55rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.ind-row .ind-prov a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ind-row .ind-prov a:hover {
+  color: var(--ink);
+}
+
+.ind-row .ind-prov-src {
+  font-weight: 500;
+  margin-bottom: 0.15rem;
+}
+
+.ind-row .ind-prov-def {
+  color: var(--ink-soft);
+  margin-bottom: 0.15rem;
+}
+
+.ind-row .ind-prov-end {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--faint);
+  margin-bottom: 0.15rem;
+}
+
+.ind-row .ind-prov-note {
+  font-style: italic;
+  color: var(--faint);
+  font-size: 0.76rem;
+}
+
 /* ---------- single-page hierarchy ---------- */
 
 .hier-cat {

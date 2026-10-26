@@ -60,7 +60,7 @@ async function loadJSON(name) {
   return r.json();
 }
 
-let AGG, COMP, IND, HIER, META, CLUSTER;
+let AGG, COMP, IND, HIER, META, CLUSTER, INDICATORS_META;
 let quarters = [], qIndex = {};
 let yearTicks = [], decadeTicks = [];
 
@@ -187,7 +187,7 @@ function renderHeatmap() {
 }
 
 /* ---------------- indicator heat map (hierarchy view) ---------------- */
-/* All 46 indicators x all quarters, rows in HIERARCHY order (category,
+/* All 48 indicators x all quarters, rows in HIERARCHY order (category,
    then component, then the component's indicators as shipped in
    hierarchy.json) -- the component heat map above, resolved one level
    down. The hierarchy's groups are marked in the figure itself: a bold
@@ -308,7 +308,7 @@ function renderIndicatorHeatmap() {
 }
 
 /* ---------------- clustered view ---------------- */
-/* 46 indicator rows x all quarters, rows ordered by pipeline-computed
+/* 48 indicator rows x all quarters, rows ordered by pipeline-computed
    hierarchical clustering (docs/data/clustered.json). One figure holds the
    dendrogram (left, negative x), the row labels + component chips, and the
    matrix (x = quarter index), so all three share the same y scale and can
@@ -586,6 +586,35 @@ function lazyChart(el, renderFn) {
   else { el.appendChild(renderFn()); el._rendered = true; }
 }
 
+function fmtVal(v) {
+  if (v == null || !Number.isFinite(v)) return "–";
+  if (Math.abs(v) >= 1000) return v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  if (Math.abs(v) < 0.1 && v !== 0) return v.toFixed(3);
+  return v.toFixed(2);
+}
+
+function indicatorProvenanceHTML(m) {
+  if (!m) return "";
+  const src = m.source_url
+    ? `<a href="${esc(m.source_url)}" target="_blank" rel="noopener">${esc(m.source)}</a>`
+    : esc(m.source);
+  const seriesStr = (m.series_id && m.series_id.length)
+    ? ` · Series: ${m.series_id.map(esc).join(", ")}`
+    : "";
+  const freqStr = m.frequency ? ` · ${esc(m.frequency)}` : "";
+  const statusStr = m.last_value_status === "nowcast"
+    ? (m.nowcast_method ? `nowcast + ${m.nowcast_method}` : "nowcast")
+    : (m.last_value_status || "observed");
+  const endLine = `Last observation: ${esc(m.last_observation)} — ${esc(fmtVal(m.last_value))} (${esc(statusStr)}); last observed ${esc(m.last_observed_quarter)}`;
+
+  return `<div class="ind-prov">` +
+    `<div class="ind-prov-src">${src}${seriesStr}${freqStr}</div>` +
+    (m.definition ? `<div class="ind-prov-def">${esc(m.definition)}</div>` : "") +
+    `<div class="ind-prov-end">${endLine}</div>` +
+    (m.note ? `<div class="ind-prov-note">${esc(m.note)}</div>` : "") +
+  `</div>`;
+}
+
 function indicatorRows(comp) {
   const frag = document.createDocumentFragment();
   for (const ind of comp.indicators) {
@@ -593,6 +622,9 @@ function indicatorRows(comp) {
     const sorted = zs.filter(Number.isFinite).sort((a, b) => a - b);
     const zLast = [...zs].reverse().find(Number.isFinite);
     const h = equantile(sorted, zLast);
+    const m = (INDICATORS_META && INDICATORS_META.indicators)
+      ? INDICATORS_META.indicators.find(x => x.title === ind.name || x.short === ind.short)
+      : null;
     const row = document.createElement("div");
     row.className = "ind-row";
     row.innerHTML =
@@ -600,6 +632,7 @@ function indicatorRows(comp) {
         `<div class="nm">${esc(ind.short)}<small>${esc(ind.name)}</small></div>` +
         `<div class="ind-meta">${heatBadge(h)}<span class="zval" title="Latest oriented z-score">z ${zLast == null ? "n/a" : zLast.toFixed(2)}</span></div>` +
       `</div>` +
+      (m ? indicatorProvenanceHTML(m) : "") +
       `<figure class="ind-chart" role="img" aria-label="${esc(ind.short)} history as heat quantile"></figure>`;
     const pts = (IND[ind.name] || []).map((d, xi) => ({ q: d.q, xi, v: equantile(sorted, d.z) }));
     lazyChart(row.querySelector(".ind-chart"), () => indicatorChart(pts));
@@ -813,6 +846,12 @@ async function boot() {
     loadJSON("clustered.json"),
   ]);
   AGG = agg; COMP = comp; IND = ind; HIER = hier; META = meta; CLUSTER = clustered;
+  try {
+    INDICATORS_META = await loadJSON("indicators_meta.json");
+  } catch (err) {
+    console.warn("indicators_meta.json not available; rendering drill-downs without provenance", err);
+    INDICATORS_META = null;
+  }
   quarters = AGG.map(d => d.q);
   quarters.forEach((q, i) => { qIndex[q] = i; });
   yearTicks = quarters.map((q, i) => i).filter(i => quarters[i].endsWith("Q1") && parseInt(quarters[i]) % 5 === 0);
