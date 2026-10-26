@@ -243,6 +243,13 @@ def build(data: Path, out: Path) -> dict:
             }
     (out / "meta.json").write_text(dumps_strict(meta, indent=1))
 
+    # Indicator provenance metadata (Pulse-parity bundle)
+    if (data / "panel_complete.csv").exists():
+        from indicators_meta import build_indicators_meta
+        ind_meta = build_indicators_meta(data)
+        (out / "indicators_meta.json").write_text(dumps_strict(ind_meta, indent=1) + "\n")
+        print(f"Wrote {out / 'indicators_meta.json'} ({len(ind_meta['indicators'])} indicators)")
+
     return meta
 
 
