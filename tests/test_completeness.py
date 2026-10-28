@@ -1,10 +1,10 @@
 """Per-series completeness of data/panel_complete.csv with an explicit
 documented-boundary allowlist.
 
-Every indicator must be complete over 1990Q1-2026Q2 (146 quarters), OR its
+Every indicator must be complete over 1990Q1-2026Q3 (147 quarters), OR its
 null cells must form exactly the leading run allowed for it in
-ALLOWED_BOUNDARIES, where every entry cites the source evidence for the
-boundary. The slice that fills -- or finally documents -- a series updates
+ALLOWED_BOUNDARIES, or the trailing run allowed in ALLOWED_TRAILING,
+where every entry cites the source evidence for the boundary. The slice that fills -- or finally documents -- a series updates
 this allowlist in the same commit (work order: heat-completeness brief,
 2026-10-21; all entries are final documented boundaries or filled series
 as of 2026-10-22). Because the test fails on any hole not in
@@ -26,7 +26,7 @@ HERE = Path(__file__).resolve().parent.parent
 PANEL = HERE / "data" / "panel_complete.csv"
 
 ALL_QUARTERS = [f"{y}Q{q}" for y in range(1990, 2027)
-                for q in range(1, 5) if not (y == 2026 and q > 2)]
+                for q in range(1, 5) if not (y == 2026 and q > 3)]
 
 # indicator -> (first_valid_quarter, evidence for the leading boundary).
 # A series in this map may be null only BEFORE first_valid_quarter.
@@ -158,6 +158,22 @@ ALLOWED_BOUNDARIES: dict[str, tuple[str, str]] = {
 }
 
 
+# indicator -> (last_valid_quarter, evidence for the trailing boundary).
+# A series in this map may be null only AFTER last_valid_quarter.
+ALLOWED_TRAILING: dict[str, tuple[str, str]] = {
+    "Weighted Average Maturity Gap at Commerical Banks": (
+        "2026Q2",
+        "Documented nowcast boundary. The series is extended beyond its "
+        "observed history by a committed OLS regression "
+        "(src/build_maturity_gap.py) on contemporaneous inputs; for "
+        "2026Q3 the loan/deposit input is observed only through 2026Q2, "
+        "so the 2026Q3 cell is unextended by design (empty in "
+        "panel_complete.csv, flagged 'unextended' in "
+        "data/panel_complete_flags.csv, recorded in data/_meta.json). "
+        "No substitute input is spliced in (no-silent-splicing rule)."),
+}
+
+
 def check(cond, msg):
     if not cond:
         print(f"FAIL: {msg}")
@@ -168,28 +184,29 @@ def check(cond, msg):
 def main() -> int:
     ok = True
     panel = pl.read_csv(PANEL)
-    ok &= check(panel.height == 146 and panel.width == 49,
-                f"panel_complete shape {panel.height}x{panel.width}, want 146x49")
+    ok &= check(panel.height == 147 and panel.width == 49,
+                f"panel_complete shape {panel.height}x{panel.width}, want 147x49")
     ok &= check(panel["quarter"].to_list() == ALL_QUARTERS,
-                "panel_complete quarters must be exactly 1990Q1..2026Q2")
+                "panel_complete quarters must be exactly 1990Q1..2026Q3")
 
     cols = [c for c in panel.columns if c != "quarter"]
-    allowed = set(ALLOWED_BOUNDARIES)
-    unknown = [c for c in cols if c not in allowed
-               and panel[c].null_count() > 0]
-    ok &= check(not unknown,
-                f"holes in series with NO allowlist entry: {unknown}")
-
-    for c, (first_valid, evidence) in ALLOWED_BOUNDARIES.items():
-        ok &= check(bool(evidence.strip()),
-                    f"{c}: allowlist entry lacks evidence citation")
+    for c in cols:
         v = panel.select(["quarter", c])
         nulls = v.filter(pl.col(c).is_null())["quarter"].to_list()
-        expected = [q for q in ALL_QUARTERS if q < first_valid]
+        expected = []
+        if c in ALLOWED_BOUNDARIES:
+            first_valid, evidence = ALLOWED_BOUNDARIES[c]
+            ok &= check(bool(evidence.strip()),
+                        f"{c}: allowlist entry lacks evidence citation")
+            expected += [q for q in ALL_QUARTERS if q < first_valid]
+        if c in ALLOWED_TRAILING:
+            last_valid, evidence = ALLOWED_TRAILING[c]
+            ok &= check(bool(evidence.strip()),
+                        f"{c}: trailing entry lacks evidence citation")
+            expected += [q for q in ALL_QUARTERS if q > last_valid]
         ok &= check(nulls == expected,
                     f"{c}: nulls {nulls[:3]}..{nulls[-3:]} (n={len(nulls)}) "
-                    f"!= allowed leading run ending at {first_valid} "
-                    f"(n={len(expected)})")
+                    f"!= allowed boundary runs (n={len(expected)})")
 
     print("test_completeness: " + ("ALL PASS" if ok else "FAILURES"))
     return 0 if ok else 1

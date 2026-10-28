@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hedge Fund Leverage — Weekly Nowcast · FRB Heat Index</title>
+<meta name="description" content="A weekly nowcast of OFR qualifying-hedge-fund leverage (gross assets / net assets), published as a separate live layer alongside the quarterly FRB heat index.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script>
+  try {
+    var t = localStorage.getItem("frb-heat-theme");
+    if (t === "dark" || (t === null && matchMedia("(prefers-color-scheme: dark)").matches))
+      document.documentElement.dataset.theme = "dark";
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<nav class="nav" aria-label="Sections">
+  <div class="nav-inner">
+    <a class="brand" href="../" style="color:inherit;text-decoration:none">FRB Heat Index <span class="dot">●</span></a>
+    <div class="nav-links">
+      <a href="../frb/">Quarterly index</a>
+      <a href="../pulse/">Market Pulse</a>
+      <a href="#methodology">Methodology</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="kicker">Live layer · weekly · separate from the quarterly build</p>
+    <h1>Hedge fund leverage, nowcast weekly</h1>
+    <p class="lede">The Office of Financial Research publishes qualifying-hedge-fund
+      leverage — gross assets over net assets, from Form PF aggregates — about ten
+      weeks after each quarter ends. This page estimates the two unpublished
+      quarters every Friday from weekly market data. Every estimate is labeled a
+      nowcast; nothing here enters the official quarterly series.</p>
+    <p class="lede-note" id="vintage-line">Loading the latest vintage…</p>
+  </div>
+</header>
+
+<section class="card" id="nowcast-card">
+  <h2>Latest estimates</h2>
+  <p class="sub" id="last-published">Last published quarter: —</p>
+  <table id="nowcast-table" style="border-collapse:collapse;margin-top:0.6em">
+    <thead>
+      <tr>
+        <th style="text-align:left;padding:0.3em 1.2em 0.3em 0">Quarter</th>
+        <th style="text-align:right;padding:0.3em 1.2em">Nowcast</th>
+        <th style="text-align:right;padding:0.3em 1.2em">Carry-forward</th>
+        <th style="text-align:right;padding:0.3em 0">Band (± backtest RMSE)</th>
+      </tr>
+    </thead>
+    <tbody id="nowcast-body">
+      <tr><td colspan="4">Nowcast bundle unavailable — see the methodology below for the model and its backtest.</td></tr>
+    </tbody>
+  </table>
+  <p class="sub" id="scoos-line" style="margin-top:0.8em">SCOOS cross-check: —</p>
+</section>
+
+<section class="card" id="methodology">
+  <h2>Methodology</h2>
+  <p><strong>Target.</strong> OFR Hedge Fund Monitor, qualifying hedge funds:
+    gross assets (<a href="https://data.financialresearch.gov/hf/v1/series/timeseries?mnemonic=FPF-ALLQHF_GAV_SUM">FPF-ALLQHF_GAV_SUM</a>)
+    over net assets (<a href="https://data.financialresearch.gov/hf/v1/series/timeseries?mnemonic=FPF-ALLQHF_NAV_SUM">FPF-ALLQHF_NAV_SUM</a>),
+    quarterly from 2013Q1 (54 observations). The same series appears in the
+    quarterly panel as “Hedge Fund Leverage (Gross assets to net assets,
+    qualifying hedge funds)”.</p>
+  <p><strong>Publication rule.</strong> Quarter Q is treated as published at the
+    end of week 10 of Q+1, matching the OFR's observed cadence (the 2026Q2 print
+    was live by mid-September 2026). The most recent published value anchors
+    every estimate.</p>
+  <p><strong>Model.</strong> A ridge regression (λ = 100) with a mean-drift
+    intercept predicts the <em>change</em> from the last published value. A
+    levels regression is not used: the series drifts (1.8–1.9 in 2013–17, 2.52
+    in 2026Q2), and a levels fit shrinks toward the historical mean and fails;
+    unregularized OLS is unusable at this sample size. Features, computed
+    quarter-to-date at each Friday vintage from FRED's keyless graph CSVs:
+    S&amp;P 500 cumulative log return, mean VIX, mean Baa–Treasury spread (BAA
+    minus DGS10), change in the 10-year yield, change in the 2-year yield,
+    change in the broad dollar index (log), weeks since the last publication,
+    and the fraction of the quarter elapsed. Training rows are built the same
+    ragged way from each published quarter in turn.</p>
+  <p><strong>Backtest.</strong> Pseudo-real-time over Friday vintages from
+    January 2019 to September 2026, using final published values as targets
+    (the OFR does not publish a vintage history; this flatters all models,
+    benchmarks included, equally). In-progress quarter: RMSE 0.0758 for the
+    ridge against 0.0845 for carry-forward. Just-ended quarter, estimated
+    about ten weeks before it posts: 0.0509 against 0.0557. The band shown
+    next to each estimate is the matching backtest RMSE.</p>
+  <p><strong>Cross-check.</strong> The SCOOS dealer survey (FRED
+    <a href="https://fred.stlouisfed.org/graph/fredgraph.csv?id=EXHE2C1Q8NP">EXHE2C1Q8NP</a>,
+    net percent reporting increased use of leverage) posts inside the quarter
+    it covers, so it is displayed as an observed timely cross-check next to
+    the nowcast — it is never modeled. If a quarter's value has not posted by
+    mid-quarter it is labeled “pending”.</p>
+  <p><strong>Limits.</strong> Fifty-four quarterly observations and one
+    publication-lag assumption. The backtest edge over carry-forward is about
+    10% at every horizon but is not precisely estimated, and moves driven by
+    positioning rather than market prices (the 2020Q1 spike to 2.18, then
+    1.99) are only partly anticipated.</p>
+  <p><strong>Grading.</strong> Every weekly run archives its estimates in
+    <code>data/hf_nowcast_vintages.csv</code>. When the OFR print for a
+    quarter lands (the 2026Q3 print is expected in December 2026),
+    <code>src/hf_grade.py</code> scores every archived vintage for that
+    quarter against the actual — RMSE of the nowcast against RMSE of
+    carry-forward, mean error, and the per-vintage table — and the results
+    will be reported here.</p>
+</section>
+
+<script>
+fetch("../data/hf_nowcast.json")
+  .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(function (b) {
+    document.getElementById("vintage-line").textContent =
+      "Vintage: Friday " + b.vintage_friday + " · generated " + b.generated_at_utc + " UTC";
+    document.getElementById("last-published").textContent =
+      "Last published quarter: " + b.last_published_quarter + " = " +
+      b.last_published_value.toFixed(2) + " (OFR, observed)";
+    var rows = b.nowcasts.map(function (n) {
+      return "<tr>" +
+        "<td style='padding:0.3em 1.2em 0.3em 0'>" + n.target_quarter + "</td>" +
+        "<td style='text-align:right;padding:0.3em 1.2em'><strong>" + n.value.toFixed(2) +
+        "</strong> <span class='sub'>(nowcast)</span></td>" +
+        "<td style='text-align:right;padding:0.3em 1.2em'>" + n.carry_forward.toFixed(2) + "</td>" +
+        "<td style='text-align:right;padding:0.3em 0'>± " + n.rmse_band.toFixed(3) + "</td></tr>";
+    }).join("");
+    document.getElementById("nowcast-body").innerHTML = rows;
+    var s = b.scoos;
+    document.getElementById("scoos-line").textContent =
+      "SCOOS cross-check (" + s.series_id + "): " + s.latest_quarter + " = " +
+      (s.latest_value === null ? "—" : s.latest_value.toFixed(2)) +
+      " (" + s.status + ", observed — not a model output)";
+  })
+  .catch(function () {
+    document.getElementById("vintage-line").textContent =
+      "The latest nowcast bundle could not be loaded; the methodology below describes the model and its backtest.";
+  });
+</script>
+
+</body>
+</html>

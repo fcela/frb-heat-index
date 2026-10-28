@@ -1,0 +1,52 @@
+{
+ "generated_at_utc": "2026-10-28T20:02:44Z",
+ "vintage_friday": "2026-10-23",
+ "last_published_quarter": "2026Q2",
+ "last_published_value": 2.5155,
+ "nowcasts": [
+  {
+   "target_quarter": "2026Q3",
+   "value": 2.5273,
+   "method": "nowcast-ridge100-change",
+   "carry_forward": 2.5155,
+   "rmse_band": 0.0509,
+   "status": "nowcast"
+  },
+  {
+   "target_quarter": "2026Q4",
+   "value": 2.5665,
+   "method": "nowcast-ridge100-change",
+   "carry_forward": 2.5155,
+   "rmse_band": 0.0758,
+   "status": "nowcast"
+  }
+ ],
+ "scoos": {
+  "series_id": "EXHE2C1Q8NP",
+  "latest_quarter": "2026Q3",
+  "latest_value": 0.0,
+  "status": "observed"
+ },
+ "model": {
+  "method": "nowcast-ridge100-change",
+  "target": "OFR qualifying hedge funds, gross assets / net assets (FPF-ALLQHF_GAV_SUM / FPF-ALLQHF_NAV_SUM)",
+  "publication_rule": "quarter Q posts at end of week 10 of Q+1",
+  "features": [
+   "spx_ret",
+   "vix",
+   "oas",
+   "d10",
+   "d2",
+   "usd",
+   "staleness_weeks",
+   "quarter_fraction"
+  ],
+  "backtest": {
+   "in_progress_rmse": 0.0758,
+   "in_progress_carry_rmse": 0.0845,
+   "just_ended_rmse": 0.0509,
+   "just_ended_carry_rmse": 0.0557,
+   "window": "Friday vintages 2019-01..2026-09, pseudo-real-time, final values as targets"
+  }
+ }
+}

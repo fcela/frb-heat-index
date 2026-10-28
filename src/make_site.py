@@ -241,6 +241,35 @@ def build(data: Path, out: Path) -> dict:
                 "least_count": len(least),
                 "n_series": len(ends),
             }
+    # Nowcast flagging for the bundle: which quarters of panel_complete.csv
+    # are fills rather than observations, per data/nowcast_provenance.csv,
+    # and which cells remain unextended, per data/panel_complete_flags.csv.
+    # The freshness block above stays observed-only; this block is what lets
+    # a reader (or a chart) tell a nowcast quarter from an observed one.
+    meta["nowcast"] = None
+    prov_p, flags_p = data / "nowcast_provenance.csv", \
+        data / "panel_complete_flags.csv"
+    if prov_p.exists():
+        prov = pl.read_csv(prov_p)
+        by_quarter: dict[str, dict[str, int]] = {}
+        for r in prov.iter_rows(named=True):
+            counts = by_quarter.setdefault(r["quarter"], {})
+            counts[r["value_source"]] = counts.get(r["value_source"], 0) + 1
+        unextended = []
+        if flags_p.exists():
+            flags = pl.read_csv(flags_p)
+            fcols = [c for c in flags.columns if c != "quarter"]
+            for r in flags.iter_rows(named=True):
+                for c in fcols:
+                    if r[c] == "unextended":
+                        unextended.append(
+                            {"quarter": r["quarter"], "indicator": c})
+        meta["nowcast"] = {
+            "quarters": sorted(by_quarter),
+            "counts_by_quarter": {q: by_quarter[q]
+                                  for q in sorted(by_quarter)},
+            "unextended": unextended,
+        }
     (out / "meta.json").write_text(dumps_strict(meta, indent=1))
 
     # Indicator provenance metadata (Pulse-parity bundle)
