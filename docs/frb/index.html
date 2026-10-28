@@ -34,6 +34,7 @@
       <a href="#heatmap-card">Heat map</a>
       <a href="../">Home</a>
       <a href="../pulse/">Market Pulse</a>
+      <a href="../hf/">HF leverage nowcast</a>
       <a href="#methodology">Methodology</a>
       <a href="#data">Data</a>
     </div>
@@ -184,11 +185,16 @@
           2026 (OFR Form PF aggregates and the SCOOS dealer survey, both in Nonbank
           leverage); in the replication paper the public-proxy panel tracks the paper's
           published aggregate index at correlation 0.93.</li>
-        <li><strong>Recent quarters are nowcast.</strong> Source-release lags leave 32 series
-          ending at 2025Q4; 2026Q1–Q2 values are filled by tested nowcast models or documented
+        <li><strong>Recent quarters are nowcast.</strong> Source-release lags leave 30 series
+          ending at 2025Q4; 2026Q1–Q3 values are filled by tested nowcast models or documented
           assumptions — every filled value is flagged in
-          <code>data/nowcast_provenance.csv</code>, and the panel of observed values alone
-          remains available as <code>data/panel_quarterly.csv</code>.</li>
+          <code>data/nowcast_provenance.csv</code> (per-cell flags in
+          <code>data/panel_complete_flags.csv</code>), and the panel of observed values alone
+          remains available as <code>data/panel_quarterly.csv</code>. The 2026Q3 column is
+          entirely nowcast — direct horizon 1 for the 18 series observed through 2026Q2,
+          horizon 3 for the rest — except the weighted average maturity gap, which is
+          unextended for 2026Q3: its regression inputs are not observed for that quarter,
+          so the cell is empty rather than estimated.</li>
       </ul>
     </div>
   </section>
@@ -216,7 +222,7 @@
         <span class="fdesc">per-indicator source, construction, and fidelity notes</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/panel_complete.csv">
         <span class="fname">panel_complete.csv</span>
-        <span class="fdesc">quarter × 48 indicators with 2026Q1–Q2 nowcast fills</span></a></li>
+        <span class="fdesc">quarter × 48 indicators with 2026Q1–Q3 nowcast fills (maturity gap unextended at 2026Q3)</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/nowcast_provenance.csv">
         <span class="fname">nowcast_provenance.csv</span>
         <span class="fdesc">per-value nowcast method, backtest scores, and assumptions</span></a></li>
