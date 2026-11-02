@@ -11,6 +11,7 @@ Long format: date / contract / value.
 
 import io
 import subprocess
+import time
 import zipfile
 
 import polars as pl
@@ -27,14 +28,33 @@ WINDOW = 104
 
 def _download_year(year: int) -> pl.DataFrame:
     url = f"https://www.cftc.gov/files/dea/history/fut_fin_txt_{year}.zip"
-    r = subprocess.run(
-        ["curl", "-s", "--max-time", "300", "-L", url],
-        capture_output=True,
-    )
-    if r.returncode != 0 or not r.stdout:
-        raise RuntimeError(f"CFTC download failed for {year}: curl rc={r.returncode}")
+    # A single bare curl once accepted whatever body the server (or an
+    # interstitial in front of it) returned, and a non-zip body then
+    # surfaced downstream as "is not a zip" (2026-11-02 run). Send a
+    # normal client user-agent, fail on HTTP error statuses, validate
+    # the payload is a zip, and retry transient bad responses — the
+    # same pattern as fund_flows._curl.
+    payload = None
+    last_error = None
+    for attempt in range(3):
+        r = subprocess.run(
+            ["curl", "-s", "-f", "--max-time", "300", "-L",
+             "-A", "Mozilla/5.0", url],
+            capture_output=True,
+        )
+        if r.returncode == 0 and r.stdout:
+            if zipfile.is_zipfile(io.BytesIO(r.stdout)):
+                payload = r.stdout
+                break
+            last_error = f"response is not a zip ({len(r.stdout)} bytes)"
+        else:
+            last_error = f"curl rc={r.returncode}"
+        if attempt < 2:
+            time.sleep(5 * (attempt + 1))
+    if payload is None:
+        raise RuntimeError(f"CFTC download failed for {year}: {last_error}")
     try:
-        with zipfile.ZipFile(io.BytesIO(r.stdout)) as zf:
+        with zipfile.ZipFile(io.BytesIO(payload)) as zf:
             names = [n for n in zf.namelist() if n.lower().endswith(".txt")]
             if not names:
                 raise RuntimeError(f"no .txt inside CFTC zip for {year}")
