@@ -1460,10 +1460,14 @@ def _refresh_realized(frames: dict[str, pl.DataFrame],
 
 
 def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
-          site_json: Path = SITE_JSON) -> dict:
+          site_json: Path = SITE_JSON, now: dt.datetime | None = None) -> dict:
     data_dir.mkdir(parents=True, exist_ok=True)
     site_json.parent.mkdir(parents=True, exist_ok=True)
-    now = dt.datetime.now(dt.timezone.utc)
+    # `now` is injectable so tests can pin the front-event window: front
+    # selection is relative to the current instant, and a fixture suite
+    # that assumes a hardcoded front event breaks the day that event's
+    # meeting passes (the 2026-10-29..11-01 daily-run failures).
+    now = now if now is not None else dt.datetime.now(dt.timezone.utc)
     site_indicators, meta_indicators = [], {}
     frames: dict[str, pl.DataFrame] = {}
     close_times: dict[str, dict[str, dt.datetime]] = {}

@@ -302,12 +302,19 @@ def test_sequential_colors():
 # ------------------------------------------------------- end-to-end (fixtures)
 
 def test_build_end_to_end():
-    now = dt.datetime.now(dt.timezone.utc)
+    # Pin the clock inside the fixture window: the fixtures' front FOMC
+    # event is KXFEDDECISION-26OCT (meeting 2026-10-28), and front-event
+    # selection is relative to `now`. On the wall clock this test started
+    # failing 2026-10-29, the morning after the October meeting, when the
+    # front event correctly rolled to 26DEC — and because the daily
+    # workflow runs the tests before committing, the prediction-markets
+    # data stopped updating even though every fetch succeeded.
+    now = dt.datetime(2026, 10, 24, 12, 0, tzinfo=dt.timezone.utc)
     with tempfile.TemporaryDirectory() as tmp:
         data_dir = Path(tmp) / "data"
         site_json = Path(tmp) / "site" / "predmarkets.json"
         meta = build(transport=fixture_transport, data_dir=data_dir,
-                     site_json=site_json)
+                     site_json=site_json, now=now)
         assert meta["n_error"] == 0, meta["indicators"]
         # 4 original live + ipo_pipeline + tail_risks (derived)
         assert meta["n_live"] == 6, meta["n_live"]
@@ -400,7 +407,7 @@ def test_build_end_to_end():
         heights = {p.name: p.read_text().splitlines() for p in
                    sorted(data_dir.glob("*.csv"))}
         build(incremental=True, transport=fixture_transport, data_dir=data_dir,
-              site_json=site_json)
+              site_json=site_json, now=now)
         for name, lines in heights.items():
             again = (data_dir / name).read_text().splitlines()
             assert len(again) == len(lines), (name, len(lines), len(again))
