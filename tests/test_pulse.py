@@ -153,8 +153,23 @@ def test_app_renders_provenance(tmp_path=None):
     assert res["cards"] == 42, res
     assert res["sections"] == 10, res
     assert res["provenanceCards"] == 42, res  # every card, incl. pending-sourcing
-    assert res["figures"] == 41, res          # one chart per fetchable card
-    assert res["tapeItems"] == 41, res
+    # One chart and one tape item per indicator that carries data. An
+    # indicator whose source failed keeps its card with an empty series
+    # and renders neither; the workflow failure policy (pulse.yml) is
+    # that a failed source marks its indicator "error" but does not
+    # fail the run, so the expected count is read from the bundle
+    # itself, not hard-coded to the fetchable count. (2026-11-02: one
+    # errored indicator tripped a hard-coded 41 and blocked the run's
+    # commit despite the policy.)
+    site = json.loads((REPO / "docs" / "data" / "pulse.json").read_text())
+    with_data = sum(
+        1
+        for s in site["segments"]
+        for i in s["indicators"]
+        if i.get("series")
+    )
+    assert res["figures"] == with_data, res
+    assert res["tapeItems"] == with_data, res
     assert res["tocAnchors"] == 10, res
     print("ok test_app_renders_provenance")
 
