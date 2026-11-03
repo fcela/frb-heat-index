@@ -24,6 +24,7 @@ from src.predmarkets import distribution as distmod
 from src.predmarkets import fred as fredmod
 from src.predmarkets import realized as realized_mod
 from src.predmarkets import accuracy as accuracy_mod
+from src.predmarkets import vintage as vintage_mod
 from src.predmarkets.build_predmarkets import (
     ACCURACY_KEYS,
     build,
@@ -697,6 +698,146 @@ def test_merge_realized_freeze():
     df3 = realized_mod.merge_realized(df2, [], now)
     assert df3.height == 3
     print("ok test_merge_realized_freeze")
+
+
+# ------------------------------------------------------ vintage archive
+
+def _vintage_frame(rows):
+    return pl.DataFrame(rows, schema={
+        "date": pl.Utf8, "value": pl.Float64, "event": pl.Utf8,
+        "ticker": pl.Utf8, "strike": pl.Utf8, "volume": pl.Float64})
+
+
+def test_vintage_date_et_boundary():
+    # The archive date is the ET calendar date of the run: a 06:00 UTC
+    # workflow run lands at 01:00 ET the same UTC day, while a late-evening
+    # ET run is already the next UTC day.
+    assert vintage_mod.vintage_date(
+        dt.datetime(2026, 11, 3, 4, 30, tzinfo=dt.timezone.utc)) == "2026-11-02"
+    assert vintage_mod.vintage_date(
+        dt.datetime(2026, 11, 3, 6, 0, tzinfo=dt.timezone.utc)) == "2026-11-03"
+    assert vintage_mod.vintage_date(
+        dt.datetime(2026, 11, 2, 12, 0, tzinfo=dt.timezone.utc)) == "2026-11-02"
+    print("ok test_vintage_date_et_boundary")
+
+
+def test_vintage_snapshot_content():
+    # Threshold series: the ladder comes from the event's LATEST frame
+    # date, and the recovered bins match distribution.py on that ladder
+    # (same numbers as test_distribution_recovery's clean ladder).
+    ev = {"event_ticker": "KXFED-TEST", "title": "Fed funds test?",
+          "mutually_exclusive": False,
+          "markets": [{"ticker": "KXFED-TEST-T35",
+                       "close_time": "2026-12-16T19:05:00Z"}]}
+    strikes = [(">3.5%", 0.95), (">3.75%", 0.80), (">4.0%", 0.30),
+               (">4.25%", 0.05)]
+    rows = [{"date": "2026-10-20", "value": 0.5, "event": "KXFED-TEST",
+             "ticker": "KXFED-TEST-OLD", "strike": ">3.5%", "volume": 1.0}]
+    for i, (label, p) in enumerate(strikes):
+        rows.append({"date": "2026-10-23", "value": p, "event": "KXFED-TEST",
+                     "ticker": f"KXFED-TEST-T{i}", "strike": label,
+                     "volume": 100.0 + i})
+    snap = vintage_mod.event_snapshot(
+        "fed_funds", ev, _vintage_frame(rows),
+        threshold_keys={"fed_funds"})
+    assert snap["ladder_date"] == "2026-10-23"
+    assert [m["level"] for m in snap["markets"]] == [3.5, 3.75, 4.0, 4.25]
+    assert snap["markets"][0]["price"] == 0.95
+    assert snap["markets"][0]["volume"] == 100.0
+    dist = snap["distribution"]
+    assert dist["kind"] == "threshold_bins"
+    assert abs(sum(b["mass"] for b in dist["bins"]) - 1.0) < 1e-9
+    by = {(b["low"], b["high"]): b["mass"] for b in dist["bins"]}
+    assert abs(by[(3.75, 4.0)] - 0.50) < 1e-9
+    assert dist["quantiles"]["q50"] is not None
+    assert dist["mean"] is not None and dist["variance"] >= 0
+
+    # Mutually exclusive event: bucket masses are the prices renormalized,
+    # in the registry's stance order regardless of frame row order.
+    fomc = {"event_ticker": "KXFEDDECISION-TEST", "title": "Decision?",
+            "mutually_exclusive": True,
+            "markets": [{"ticker": "KXFEDDECISION-TEST-H0",
+                         "close_time": "2026-12-09T19:00:00Z"}]}
+    frows = [{"date": "2026-10-23", "value": p, "event": "KXFEDDECISION-TEST",
+              "ticker": f"KXFEDDECISION-TEST-{i}", "strike": label,
+              "volume": 10.0}
+             for i, (label, p) in enumerate(
+                 [("Hike 25bps", 0.10), ("Cut 25bps", 0.30),
+                  ("Hike 0bps", 0.55)])]
+    fsnap = vintage_mod.event_snapshot("fomc_decision", fomc,
+                                       _vintage_frame(frows))
+    fdist = fsnap["distribution"]
+    assert fdist["kind"] == "exclusive_buckets"
+    assert [b["label"] for b in fdist["buckets"]] == [
+        "Cut 25bps", "Hike 0bps", "Hike 25bps"]
+    assert abs(sum(b["mass"] for b in fdist["buckets"]) - 1.0) < 1e-9
+    assert abs(fdist["buckets"][1]["mass"] - 0.55 / 0.95) < 1e-9
+    assert fdist["buckets"][1]["price"] == 0.55
+
+    # Independent binary (recession-style): the ladder is the record,
+    # no distribution is invented.
+    rec = {"event_ticker": "KXRECSSNBER-TEST", "title": "Recession?",
+           "mutually_exclusive": False,
+           "markets": [{"ticker": "KXRECSSNBER-TEST",
+                        "close_time": "2028-01-31T15:00:00Z"}]}
+    rrows = [{"date": "2026-10-23", "value": 0.12,
+              "event": "KXRECSSNBER-TEST", "ticker": "KXRECSSNBER-TEST",
+              "strike": "2027", "volume": 42.0}]
+    rsnap = vintage_mod.event_snapshot("recession", rec,
+                                       _vintage_frame(rrows))
+    assert rsnap["distribution"] is None
+    assert rsnap["markets"][0]["price"] == 0.12
+    print("ok test_vintage_snapshot_content")
+
+
+def test_vintage_write_and_append_only():
+    now = dt.datetime(2026, 11, 2, 20, 0, tzinfo=dt.timezone.utc)
+    ev = {"event_ticker": "KXFED-TEST", "title": "Fed funds test?",
+          "mutually_exclusive": False,
+          "markets": [{"ticker": "KXFED-TEST-T35",
+                       "close_time": "2026-12-16T19:05:00Z"}]}
+    rows = [{"date": "2026-10-30", "value": p, "event": "KXFED-TEST",
+             "ticker": f"KXFED-TEST-T{i}", "strike": label, "volume": 5.0}
+            for i, (label, p) in enumerate([(">3.5%", 0.9), (">4.0%", 0.4)])]
+    meta = {"built_at_utc": "2026-11-03T01:00:00+00:00", "incremental": True,
+            "n_indicators": 8, "n_live": 6, "n_no_open_market": 1,
+            "n_error": 1}
+    with tempfile.TemporaryDirectory() as tmp:
+        data_dir = Path(tmp) / "data"
+        info = vintage_mod.write_vintage(
+            data_dir, frames={"fed_funds": _vintage_frame(rows)},
+            live_events={"fed_funds": [ev]}, meta=meta, now=now,
+            threshold_keys={"fed_funds"})
+        assert info["status"] == "written" and info["date"] == "2026-11-02"
+        assert info["n_events"] == 1
+        vdir = data_dir / "vintages" / "2026-11-02"
+        manifest = json.loads((vdir / "manifest.json").read_text())
+        assert manifest["schema_version"] == 1
+        assert manifest["vintage_date"] == "2026-11-02"
+        assert manifest["build"]["n_live"] == 6
+        assert manifest["build"]["n_error"] == 1
+        entry = manifest["series"]["fed_funds"]
+        assert entry["file"] == "fed_funds.json"
+        assert entry["series_ticker"] == "KXFED"
+        assert entry["events"] == ["KXFED-TEST"]
+        series = json.loads((vdir / "fed_funds.json").read_text())
+        assert series["events"][0]["markets"][0]["price"] == 0.9
+        # No staging directory is left behind.
+        assert not list((data_dir / "vintages").glob(
+            ".staging-*")), list((data_dir / "vintages").iterdir())
+
+        # Append-only: a same-day re-run with DIFFERENT market state
+        # changes nothing on disk and reports the skip.
+        before = {p.name: p.read_bytes() for p in sorted(vdir.iterdir())}
+        changed = [dict(r, value=0.01) for r in rows]
+        info2 = vintage_mod.write_vintage(
+            data_dir, frames={"fed_funds": _vintage_frame(changed)},
+            live_events={"fed_funds": [ev]}, meta=meta, now=now,
+            threshold_keys={"fed_funds"})
+        assert info2["status"] == "skipped-existing"
+        after = {p.name: p.read_bytes() for p in sorted(vdir.iterdir())}
+        assert before == after
+    print("ok test_vintage_write_and_append_only")
 
 
 # ------------------------------------------------------ accuracy layer
