@@ -20,6 +20,12 @@ Outputs:
   data/predmarkets/accuracy.csv  per-resolved-event predicted-vs-actual
                                 records (append-only; see accuracy.py)
   data/predmarkets/fred/*.csv    raw FRED responses, preserved verbatim
+  data/predmarkets/vintages/<YYYY-MM-DD>/  append-only snapshot of the
+                                run's market state (every live event's
+                                strike ladder + recovered distribution);
+                                written once per ET run date, never
+                                rewritten — see vintage.py and the
+                                vintages/README.md schema note
   data/predmarkets/_meta.json    per-indicator status + market metadata
   docs/data/predmarkets.json     site bundle (strict JSON, NaN rejected)
 
@@ -47,6 +53,7 @@ from src.predmarkets import distribution as distmod
 from src.predmarkets import fred
 from src.predmarkets import kalshi
 from src.predmarkets import realized as realized_mod
+from src.predmarkets import vintage as vintage_mod
 from src.predmarkets.indicators import (
     FOMC_BUCKET_DELTAS,
     FOMC_FAN_LEVEL_NOTE,
@@ -1472,6 +1479,7 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
     frames: dict[str, pl.DataFrame] = {}
     close_times: dict[str, dict[str, dt.datetime]] = {}
     payloads: dict[str, list[dict]] = {}
+    live_events: dict[str, list[dict]] = {}
 
     for key, reg in INDICATORS.items():
         if reg.get("series_ticker") is None:
@@ -1482,6 +1490,7 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
             events = kalshi.fetch_events(reg["series_ticker"], transport)
             payloads[key] = events
             evs = open_events(events)
+            live_events[key] = evs
             chart_evs, front_closed = chart_events(reg, evs, now)
             existing = load_existing(data_dir, key)
             starts = _fetch_starts(evs, existing, incremental)
@@ -1573,6 +1582,14 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
     }
     (data_dir / "_meta.json").write_text(strict_json(meta) + "\n")
 
+    # ---- vintage archive: append today's immutable market snapshot ----
+    # Runs after _meta.json is written; the returned info is attached to
+    # the in-memory meta only, so the committed _meta.json schema is
+    # unchanged. Append-only: an already-archived date is left untouched.
+    meta["vintage"] = vintage_mod.write_vintage(
+        data_dir, frames=frames, live_events=live_events, meta=meta,
+        now=now, threshold_keys=set(DIST_GRIDS), quantiles=DIST_QUANTILES)
+
     site = {"meta": {"built_at_utc": built}, "indicators": site_indicators}
     if accuracy_summary:
         site["accuracy"] = accuracy_summary
@@ -1588,6 +1605,10 @@ if __name__ == "__main__":
     m = build(incremental=args.incremental)
     print(f"live: {m['n_live']}/{m['n_indicators']}  "
           f"no-open-market: {m['n_no_open_market']}  errors: {m['n_error']}")
+    v = m.get("vintage") or {}
+    if v:
+        print(f"vintage {v['date']}: {v['status']} "
+              f"({v['n_events']} events) at {v['path']}")
     for k, v in m["indicators"].items():
         if v["status"] == "error":
             print(f"  {k}: ERROR — {v['error']}")
