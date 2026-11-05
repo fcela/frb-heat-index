@@ -1,0 +1,105 @@
+{
+ "schema_version": 1,
+ "vintage_date": "2026-11-05",
+ "created_at_utc": "2026-11-05T14:26:25+00:00",
+ "api_base": "https://api.elections.kalshi.com/trade-api/v2",
+ "build": {
+  "built_at_utc": "2026-11-05T14:26:25+00:00",
+  "incremental": true,
+  "n_indicators": 8,
+  "n_live": 8,
+  "n_no_open_market": 0,
+  "n_error": 0
+ },
+ "series": {
+  "fomc_decision": {
+   "file": "fomc_decision.json",
+   "series_ticker": "KXFEDDECISION",
+   "n_events": 12,
+   "events": [
+    "KXFEDDECISION-26SEP",
+    "KXFEDDECISION-26OCT",
+    "KXFEDDECISION-26DEC",
+    "KXFEDDECISION-27JAN",
+    "KXFEDDECISION-27MAR",
+    "KXFEDDECISION-27APR",
+    "KXFEDDECISION-27JUN",
+    "KXFEDDECISION-27JUL",
+    "KXFEDDECISION-27SEP",
+    "KXFEDDECISION-27OCT",
+    "KXFEDDECISION-27DEC",
+    "KXFEDDECISION-28JAN"
+   ]
+  },
+  "fed_funds": {
+   "file": "fed_funds.json",
+   "series_ticker": "KXFED",
+   "n_events": 12,
+   "events": [
+    "KXFED-26SEP",
+    "KXFED-26OCT",
+    "KXFED-26DEC",
+    "KXFED-27JAN",
+    "KXFED-27MAR",
+    "KXFED-27APR",
+    "KXFED-27JUN",
+    "KXFED-27JUL",
+    "KXFED-27SEP",
+    "KXFED-27OCT",
+    "KXFED-27DEC",
+    "KXFED-28JAN"
+   ]
+  },
+  "cpi_yoy": {
+   "file": "cpi_yoy.json",
+   "series_ticker": "KXCPIYOY",
+   "n_events": 4,
+   "events": [
+    "KXCPIYOY-26AUG",
+    "KXCPIYOY-26SEP",
+    "KXCPIYOY-26NOV",
+    "KXCPIYOY-26DEC"
+   ]
+  },
+  "gdp_quarterly": {
+   "file": "gdp_quarterly.json",
+   "series_ticker": "KXGDP",
+   "n_events": 4,
+   "events": [
+    "KXGDP-26OCT30",
+    "KXGDP-27JAN28",
+    "KXGDP-27APR29",
+    "KXGDP-27JUL29"
+   ]
+  },
+  "unemployment": {
+   "file": "unemployment.json",
+   "series_ticker": "KXU3",
+   "n_events": 4,
+   "events": [
+    "KXU3-26AUG",
+    "KXU3-26SEP",
+    "KXU3-26OCT",
+    "KXU3-26NOV"
+   ]
+  },
+  "recession": {
+   "file": "recession.json",
+   "series_ticker": "KXRECSSNBER",
+   "n_events": 2,
+   "events": [
+    "KXRECSSNBER-26",
+    "KXRECSSNBER-27"
+   ]
+  },
+  "ipo_pipeline": {
+   "file": "ipo_pipeline.json",
+   "series_ticker": "KXIPO",
+   "n_events": 2,
+   "events": [
+    "KXIPO-26",
+    "KXIPO-27"
+   ]
+  }
+ }
+}
