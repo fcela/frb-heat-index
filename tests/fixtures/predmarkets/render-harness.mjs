@@ -238,10 +238,14 @@ if (!acc || !(acc.cards || []).length) {
     results.errors.push(`scorecard rows ${results.scorecardRows} != ${acc.cards.length}`);
 }
 
-// Fixed-horizon view: one small multiple per horizon in the bundle, all
-// on the bundle's shared axis domain, definition and note rendered.
-const fh = bundle.fixed_horizon;
-if (!fh || !(fh.horizons || []).length) {
+// Fixed-horizon views: one small multiple per horizon of every
+// fixed-horizon section in the bundle (the fed funds section plus any
+// print-family sections), each section's panels on that section's
+// shared axis domain, definition and note rendered.
+const fhSections = [];
+if (bundle.fixed_horizon) fhSections.push(bundle.fixed_horizon);
+for (const fam of bundle.fixed_horizon_families || []) fhSections.push(fam);
+if (!fhSections.length || !(fhSections[0].horizons || []).length) {
   results.errors.push("fixed-horizon section missing from bundle");
 } else {
   const walk = (el, acc) => {
@@ -252,32 +256,37 @@ if (!fh || !(fh.horizons || []).length) {
   const nodes = walk(byId["predmarkets-fixed-horizon"], []);
   const fhFigs = nodes.filter(n => n.__figure);
   results.fixedHorizonPanels = fhFigs.length;
-  if (fhFigs.length !== fh.horizons.length)
-    results.errors.push(`fixed-horizon panels ${fhFigs.length} != horizons ${fh.horizons.length}`);
-  for (const f of fhFigs) {
+  const expected = [];
+  for (const s of fhSections)
+    for (const h of s.horizons || []) expected.push({ section: s, horizon: h });
+  if (fhFigs.length !== expected.length)
+    results.errors.push(`fixed-horizon panels ${fhFigs.length} != horizons ${expected.length}`);
+  fhFigs.forEach((f, i) => {
     if (!marksOf(f, "line").length)
       results.errors.push("fixed-horizon panel has no line");
     if (!marksOf(f, "areaY").length)
       results.errors.push("fixed-horizon panel has no area fill");
     const dom = (f.options.y || {}).domain;
-    if (JSON.stringify(dom) !== JSON.stringify(fh.y_domain))
+    if (JSON.stringify(dom) !== JSON.stringify((expected[i] || {}).section?.y_domain))
       results.errors.push("fixed-horizon panel axis is not the shared domain");
     const line = marksOf(f, "line")[0];
-    if (line && line.data.length !== (fh.horizons[fhFigs.indexOf(f)] || {}).points?.length)
+    if (line && line.data.length !== (expected[i] || {}).horizon?.points?.length)
       results.errors.push("fixed-horizon panel point count != bundle points");
-  }
+  });
   const fhText = nodes.map(n => (n._html || "") + (n.textContent || "")).join(" ");
-  if (!fhText.includes(esc(fh.definition.slice(0, 40))))
-    results.errors.push("fixed-horizon definition missing");
-  if (!fhText.includes(esc(fh.note.slice(0, 40))))
-    results.errors.push("fixed-horizon note missing");
-  if (!fhText.includes(`data through ${fh.as_of}`))
-    results.errors.push("fixed-horizon as-of date missing");
-  if (!fhText.includes(`href="${esc(fh.kalshi_url)}"`))
-    results.errors.push("fixed-horizon exchange link missing");
-  for (const h of fh.horizons)
-    if (!fhText.includes(esc(h.label)))
-      results.errors.push(`fixed-horizon label ${h.label} missing`);
+  for (const s of fhSections) {
+    if (!fhText.includes(esc(s.definition.slice(0, 40))))
+      results.errors.push(`fixed-horizon definition missing for ${s.series_key}`);
+    if (!fhText.includes(esc(s.note.slice(0, 40))))
+      results.errors.push(`fixed-horizon note missing for ${s.series_key}`);
+    if (!fhText.includes(`data through ${s.as_of}`))
+      results.errors.push(`fixed-horizon as-of date missing for ${s.series_key}`);
+    if (!fhText.includes(`href="${esc(s.kalshi_url)}"`))
+      results.errors.push(`fixed-horizon exchange link missing for ${s.series_key}`);
+    for (const h of s.horizons || [])
+      if (!fhText.includes(esc(h.label)))
+        results.errors.push(`fixed-horizon label ${h.label} missing for ${s.series_key}`);
+  }
   if (fhText.includes("undefined") || fhText.includes("[object"))
     results.errors.push("fixed-horizon: template leak in section HTML");
 }

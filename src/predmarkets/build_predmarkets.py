@@ -32,6 +32,21 @@ Outputs:
                                 ahead per vintage date; recomputed from
                                 the archive each run — see
                                 fixed_horizon.py)
+  data/predmarkets/fixed_horizon_cpi_yoy.csv,
+  data/predmarkets/fixed_horizon_gdp_quarterly.csv  the same
+                                re-indexing for the CPI and GDP print
+                                families, sampled by reference period
+                                (the event whose reference month or
+                                quarter contains the horizon's date;
+                                horizons with no covering event are
+                                omitted — see fixed_horizon.py)
+  data/predmarkets/fixed_horizon_accuracy.csv  per-reading accuracy
+                                records for all three fixed-horizon
+                                families, keyed to the producing
+                                vintage (append-only; predictions
+                                frozen at first write, outcomes filling
+                                as periods realize — see
+                                fixed_horizon_accuracy.py)
   data/predmarkets/_meta.json    per-indicator status + market metadata
   docs/data/predmarkets.json     site bundle (strict JSON, NaN rejected)
 
@@ -57,6 +72,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from src.predmarkets import accuracy as accuracy_mod
 from src.predmarkets import distribution as distmod
 from src.predmarkets import fixed_horizon as fixed_horizon_mod
+from src.predmarkets import fixed_horizon_accuracy as fh_accuracy_mod
 from src.predmarkets import fred
 from src.predmarkets import kalshi
 from src.predmarkets import realized as realized_mod
@@ -1611,11 +1627,44 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
         "as_of": fh_section["as_of"] if fh_section else None,
     }
 
+    # The print families (CPI, GDP) get the same treatment: one CSV
+    # per family (header-only while the archive yields no rows for it)
+    # and one bundle section per family that has rows.
+    fh_print_frames = {"fed_funds": fh_frame}
+    fh_family_sections = []
+    meta["fixed_horizon_prints"] = {}
+    for family, (pf_frame, pf_section) in (
+            fixed_horizon_mod.build_print_families(data_dir).items()):
+        pf_frame.write_csv(
+            data_dir / fixed_horizon_mod.PRINT_FAMILIES[family]["csv"])
+        fh_print_frames[family] = pf_frame
+        meta["fixed_horizon_prints"][family] = {
+            "csv": fixed_horizon_mod.PRINT_FAMILIES[family]["csv"],
+            "n_rows": pf_frame.height,
+        }
+        if pf_section:
+            fh_family_sections.append(pf_section)
+
+    # Accuracy records for every fixed-horizon reading (all three
+    # families): persistent, append-only state like accuracy.csv —
+    # predictions freeze at first write, outcomes fill as the
+    # forecasted periods realize. See fixed_horizon_accuracy.py.
+    fh_acc = fh_accuracy_mod.update_records(data_dir, fh_print_frames,
+                                            realized_df)
+    meta["fixed_horizon_accuracy"] = {
+        "csv": fh_accuracy_mod.CSV_NAME,
+        "n_rows": fh_acc.height,
+        "n_scored": (fh_acc.filter(pl.col("actual").is_not_null()).height
+                     if fh_acc.height else 0),
+    }
+
     site = {"meta": {"built_at_utc": built}, "indicators": site_indicators}
     if accuracy_summary:
         site["accuracy"] = accuracy_summary
     if fh_section:
         site["fixed_horizon"] = fh_section
+    if fh_family_sections:
+        site["fixed_horizon_families"] = fh_family_sections
     site_json.write_text(strict_json(site) + "\n")
     json.loads(site_json.read_text())  # strict re-parse of what the site serves
     return meta
@@ -1636,6 +1685,12 @@ if __name__ == "__main__":
     if fh:
         print(f"fixed horizon: {fh['n_rows']} rows in {fh['csv']} "
               f"(as of {fh['as_of']})")
+    for fam, pf in (m.get("fixed_horizon_prints") or {}).items():
+        print(f"fixed horizon {fam}: {pf['n_rows']} rows in {pf['csv']}")
+    fha = m.get("fixed_horizon_accuracy") or {}
+    if fha:
+        print(f"fixed-horizon accuracy: {fha['n_rows']} readings, "
+              f"{fha['n_scored']} scored")
     for k, v in m["indicators"].items():
         if v["status"] == "error":
             print(f"  {k}: ERROR — {v['error']}")

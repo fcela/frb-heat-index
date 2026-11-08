@@ -485,19 +485,24 @@ function accuracyHTML(ind) {
     <p class="pulse-note">${esc(a.convention)}</p></div>`;
 }
 
-/* Fixed-horizon implied policy rate: for each daily vintage, the fed
+/* Fixed-horizon implied series: for each daily vintage, the fed
    funds meetings' implied means form a step path over meeting dates;
-   each panel samples the step in force at the vintage date plus 3, 6,
-   or 12 months. Small multiples on one shared percent axis (the domain
-   ships in the bundle), straight lines with area fill. A point exists
-   only where a vintage snapshot exists — nothing is interpolated. */
+   the CPI and GDP families are sampled by reference period (the event
+   whose reference month or quarter contains the horizon's date).
+   Each family renders as one card of small multiples on its own
+   shared percent axis (the domain ships in the bundle), straight
+   lines with area fill. A point exists only where a vintage snapshot
+   exists — nothing is interpolated. */
 function fixedHorizonChart(h, domain) {
   const pts = (h.points || []).map(d => ({
     date: new Date(d.date + "T00:00:00"), v: d.value,
     target: d.target_date, src: d.source_event, meeting: d.meeting_date,
+    period: d.reference_period,
   })).filter(d => Number.isFinite(d.v));
   if (!pts.length) return null;
-  const tipFmt = d => `${d.date.toISOString().slice(0, 10)} vintage\nin force ${d.target}: ${fmtRate(d.v)}%\nset by the ${d.meeting} meeting (${d.src})`;
+  const tipFmt = d => d.period
+    ? `${d.date.toISOString().slice(0, 10)} vintage\nprint for ${d.period}: ${fmtRate(d.v)}%\nfrom ${d.src} (target ${d.target})`
+    : `${d.date.toISOString().slice(0, 10)} vintage\nin force ${d.target}: ${fmtRate(d.v)}%\nset by the ${d.meeting} meeting (${d.src})`;
   return basePlot({
     width: 330, height: 190,
     marginLeft: 44, marginRight: 10, marginTop: 10, marginBottom: 30,
@@ -512,12 +517,7 @@ function fixedHorizonChart(h, domain) {
   });
 }
 
-function renderFixedHorizon(pm) {
-  const el = document.getElementById("predmarkets-fixed-horizon");
-  if (!el) return;
-  el.innerHTML = "";
-  const fh = pm.fixed_horizon;
-  if (!fh || !(fh.horizons || []).length) return;
+function fixedHorizonCard(fh) {
   const card = document.createElement("div");
   card.className = "pulse-card pm-fixed-horizon";
   const metaBits = [
@@ -552,7 +552,19 @@ function renderFixedHorizon(pm) {
     note.textContent = fh.note;
     card.appendChild(note);
   }
-  el.appendChild(card);
+  return card;
+}
+
+function renderFixedHorizon(pm) {
+  const el = document.getElementById("predmarkets-fixed-horizon");
+  if (!el) return;
+  el.innerHTML = "";
+  const sections = [];
+  if (pm.fixed_horizon && (pm.fixed_horizon.horizons || []).length)
+    sections.push(pm.fixed_horizon);
+  for (const fam of pm.fixed_horizon_families || [])
+    if ((fam.horizons || []).length) sections.push(fam);
+  for (const fh of sections) el.appendChild(fixedHorizonCard(fh));
 }
 
 /* Cross-indicator scorecard: every accuracy-covered market's track

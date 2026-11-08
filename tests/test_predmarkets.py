@@ -26,6 +26,7 @@ from src.predmarkets import realized as realized_mod
 from src.predmarkets import accuracy as accuracy_mod
 from src.predmarkets import vintage as vintage_mod
 from src.predmarkets import fixed_horizon as fixed_horizon_mod
+from src.predmarkets import fixed_horizon_accuracy as fh_accuracy_mod
 from src.predmarkets.build_predmarkets import (
     ACCURACY_KEYS,
     build,
@@ -965,7 +966,210 @@ def test_fixed_horizon_archive_frame_and_section():
     print("ok test_fixed_horizon_archive_frame_and_section")
 
 
-# ------------------------------------------------------ accuracy layer
+def _print_snapshot(key, ticker, events):
+    return {"schema_version": 1, "key": key, "series_ticker": ticker,
+            "vintage_date": "2026-11-08",
+            "snapshot_at_utc": "2026-11-08T06:00:00+00:00",
+            "events": events}
+
+
+def test_fixed_horizon_print_reference_periods():
+    fm = fixed_horizon_mod
+    # CPI: the reference month is named in the ticker.
+    assert fm.cpi_reference_period("KXCPIYOY-26NOV") == (
+        "2026-11", dt.date(2026, 11, 1), dt.date(2026, 11, 30))
+    assert fm.cpi_reference_period("KXCPIYOY-27FEB") == (
+        "2027-02", dt.date(2027, 2, 1), dt.date(2027, 2, 28))
+    assert fm.cpi_reference_period("KXCPI-26NOV") is None
+    assert fm.cpi_reference_period("KXCPIYOY") is None
+    assert fm.cpi_reference_period(None) is None
+    # GDP: the ticker names the release date; the reference quarter
+    # ends the month before the release month.
+    def gdp(ticker, close="2027-01-28T15:13:19+00:00"):
+        return fm.gdp_reference_period(
+            {"event_ticker": ticker, "close_time": close})
+    assert gdp("KXGDP-26OCT30") == (
+        "2026Q3", dt.date(2026, 7, 1), dt.date(2026, 9, 30))
+    assert gdp("KXGDP-27JAN28") == (
+        "2026Q4", dt.date(2026, 10, 1), dt.date(2026, 12, 31))
+    assert gdp("KXGDP-27APR29") == (
+        "2027Q1", dt.date(2027, 1, 1), dt.date(2027, 3, 31))
+    assert gdp("KXGDP-27JUL29") == (
+        "2027Q2", dt.date(2027, 4, 1), dt.date(2027, 6, 30))
+    # Unparseable ticker: the ET close date stands in for the release.
+    assert gdp("KXGDP", "2027-04-29T15:13:19+00:00") == (
+        "2027Q1", dt.date(2027, 1, 1), dt.date(2027, 3, 31))
+    assert fm.gdp_reference_period(
+        {"event_ticker": "KXGDP", "close_time": None}) is None
+    print("ok test_fixed_horizon_print_reference_periods")
+
+
+def test_fixed_horizon_print_sampling():
+    fm = fixed_horizon_mod
+    gdp_snap = _print_snapshot("gdp_quarterly", "KXGDP", [
+        _fh_event("KXGDP-26OCT30", "2026-10-29T15:13:19+00:00", 3.24),
+        _fh_event("KXGDP-27JAN28", "2027-01-28T15:13:19+00:00", 2.89),
+        _fh_event("KXGDP-27APR29", "2027-04-29T15:13:19+00:00", 2.43),
+        _fh_event("KXGDP-27JUL29", "2027-07-29T15:13:19+00:00", 2.07),
+    ])
+    rows = {r["horizon_months"]: r for r in
+            fm.print_vintage_rows("2026-11-08", gdp_snap, "gdp_quarterly")}
+    # +3m target 2027-02-08 is in 2027Q1; +6m target 2027-05-08 in Q2.
+    assert rows[3]["implied_value"] == 2.43
+    assert rows[3]["source_event"] == "KXGDP-27APR29"
+    assert rows[3]["reference_period"] == "2027Q1"
+    assert rows[3]["target_date"] == "2027-02-08"
+    assert rows[6]["implied_value"] == 2.07
+    assert rows[6]["reference_period"] == "2027Q2"
+    # +12m target 2027-11-08 is in 2027Q4, which is not listed: the
+    # horizon is omitted — the Q2 value is NOT carried forward (the
+    # property that distinguishes period sampling from the rate path).
+    assert 12 not in rows
+    # A thin event for the target quarter removes the horizon too.
+    thin = _print_snapshot("gdp_quarterly", "KXGDP", [
+        _fh_event("KXGDP-27APR29", "2027-04-29T15:13:19+00:00", 2.43),
+        _fh_event("KXGDP-27JUL29", "2027-07-29T15:13:19+00:00", None),
+    ])
+    rows = {r["horizon_months"]: r for r in
+            fm.print_vintage_rows("2026-11-08", thin, "gdp_quarterly")}
+    assert set(rows) == {3}
+    # CPI: the exchange lists only the next two reference months, so a
+    # November vintage has no listed event at any fixed horizon.
+    cpi_snap = _print_snapshot("cpi_yoy", "KXCPIYOY", [
+        _fh_event("KXCPIYOY-26NOV", "2026-12-10T13:29:00+00:00", 3.78),
+        _fh_event("KXCPIYOY-26DEC", "2027-01-13T13:29:00+00:00", 3.81),
+    ])
+    assert fm.print_vintage_rows("2026-11-08", cpi_snap, "cpi_yoy") == []
+    # Once the target month is listed, the horizon populates.
+    cpi_listed = _print_snapshot("cpi_yoy", "KXCPIYOY", [
+        _fh_event("KXCPIYOY-26DEC", "2027-01-13T13:29:00+00:00", 3.81),
+        _fh_event("KXCPIYOY-27FEB", "2027-03-12T13:29:00+00:00", 3.55),
+    ])
+    rows = fm.print_vintage_rows("2026-11-08", cpi_listed, "cpi_yoy")
+    assert len(rows) == 1 and rows[0]["horizon_months"] == 3
+    assert rows[0]["implied_value"] == 3.55
+    assert rows[0]["reference_period"] == "2027-02"
+    assert rows[0]["source_event"] == "KXCPIYOY-27FEB"
+    print("ok test_fixed_horizon_print_sampling")
+
+
+def test_fixed_horizon_print_archive():
+    fm = fixed_horizon_mod
+    with tempfile.TemporaryDirectory() as tmp:
+        data_dir = Path(tmp)
+        vdir = data_dir / "vintages"
+        for vdate, q1_mean in (("2026-11-02", 2.39), ("2026-11-03", 2.22)):
+            day = vdir / vdate
+            day.mkdir(parents=True)
+            (day / "manifest.json").write_text(json.dumps(
+                {"schema_version": 1, "vintage_date": vdate}))
+            (day / "gdp_quarterly.json").write_text(json.dumps(
+                _print_snapshot("gdp_quarterly", "KXGDP", [
+                    _fh_event("KXGDP-27JAN28", "2027-01-28T15:13:19+00:00", 2.89),
+                    _fh_event("KXGDP-27APR29", "2027-04-29T15:13:19+00:00", q1_mean),
+                    _fh_event("KXGDP-27JUL29", "2027-07-29T15:13:19+00:00", 2.29),
+                ])))
+            (day / "cpi_yoy.json").write_text(json.dumps(
+                _print_snapshot("cpi_yoy", "KXCPIYOY", [
+                    _fh_event("KXCPIYOY-26NOV", "2026-12-10T13:29:00+00:00", 3.78),
+                    _fh_event("KXCPIYOY-26DEC", "2027-01-13T13:29:00+00:00", 3.81),
+                ])))
+        fams = fm.build_print_families(data_dir)
+        gdp_frame, gdp_section = fams["gdp_quarterly"]
+        assert gdp_frame.height == 4, gdp_frame  # 2 vintages x (3m, 6m)
+        assert gdp_frame.columns == list(fm.PRINT_FRAME_SCHEMA)
+        got = {(r["vintage_date"], r["horizon_months"]): r["implied_value"]
+               for r in gdp_frame.iter_rows(named=True)}
+        assert got[("2026-11-02", 3)] == 2.39
+        assert got[("2026-11-03", 6)] == 2.29
+        assert gdp_section["title"] == "Implied GDP growth at fixed horizons"
+        assert [h["months"] for h in gdp_section["horizons"]] == [3, 6]
+        assert gdp_section["front_event"] == "KXGDP-27JAN28"
+        assert gdp_section["kalshi_url"] == kalshi_event_url("KXGDP-27JAN28")
+        lo, hi = gdp_section["y_domain"]
+        assert lo <= 2.22 and hi >= 2.39  # sampled readings only
+        # CPI: no listed reference month at any horizon yet — empty
+        # frame with the stable schema, no section.
+        cpi_frame, cpi_section = fams["cpi_yoy"]
+        assert cpi_frame.height == 0 and cpi_section is None
+        assert cpi_frame.columns == list(fm.PRINT_FRAME_SCHEMA)
+    print("ok test_fixed_horizon_print_archive")
+
+
+def test_fixed_horizon_accuracy_records():
+    fam = fh_accuracy_mod
+    fed_frame = pl.DataFrame(
+        [{"vintage_date": "2026-11-08", "horizon_months": 3,
+          "target_date": "2027-02-08", "implied_rate": 4.13,
+          "source_event": "KXFED-27JAN", "source_meeting_date": "2027-01-27"}],
+        schema=fixed_horizon_mod.FRAME_SCHEMA)
+    gdp_frame = pl.DataFrame(
+        [{"vintage_date": "2026-11-08", "horizon_months": 3,
+          "target_date": "2027-02-08", "implied_value": 2.43,
+          "source_event": "KXGDP-27APR29", "reference_period": "2027Q1"}],
+        schema=fixed_horizon_mod.PRINT_FRAME_SCHEMA)
+    empty_rz = pl.DataFrame()
+    merged = fam.merge_records(
+        pl.DataFrame(schema=fam.SCHEMA_OVERRIDES),
+        {"fed_funds": fed_frame, "gdp_quarterly": gdp_frame},
+        empty_rz, today="2026-11-08")
+    assert merged.height == 2
+    by_key = {(r["family"], r["horizon_months"]): r
+              for r in merged.iter_rows(named=True)}
+    fed = by_key[("fed_funds", 3)]
+    assert fed["predicted"] == 4.13 and fed["reference_period"] == "2027-01-27"
+    assert fed["actual"] is None and fed["abs_error"] is None
+    assert fed["first_seen"] == "2026-11-08"
+    # The GDP advance print lands: the reading scores against it.
+    rz = _rz_frame([{"indicator": "gdp_quarterly", "period": "2027Q1",
+                      "event": "KXGDP-27APR29", "kind": "print",
+                      "value": 2.0, "source": "s", "first_seen": "d",
+                      "last_checked": "d", "note": "print"}])
+    merged2 = fam.merge_records(merged, {}, rz, today="2027-04-29")
+    gdp = [r for r in merged2.iter_rows(named=True)
+           if r["family"] == "gdp_quarterly"][0]
+    assert gdp["actual"] == 2.0
+    assert abs(gdp["abs_error"] - 0.43) < 1e-9
+    # A realized row for the same event but a different period must
+    # not score the reading.
+    rz_wrong = _rz_frame([{"indicator": "gdp_quarterly", "period": "2026Q4",
+                            "event": "KXGDP-27APR29", "kind": "print",
+                            "value": 9.9, "source": "s", "first_seen": "d",
+                            "last_checked": "d", "note": "print"}])
+    merged3 = fam.merge_records(
+        pl.DataFrame(schema=fam.SCHEMA_OVERRIDES),
+        {"gdp_quarterly": gdp_frame}, rz_wrong, today="2026-11-08")
+    assert merged3[0, "actual"] is None
+    # Freeze semantics: a later merge with a changed frame value keeps
+    # the first-written prediction; the scored outcome never moves;
+    # rows are retained even when the frames stop yielding them.
+    changed = gdp_frame.with_columns(pl.lit(9.99).alias("implied_value"))
+    merged4 = fam.merge_records(merged2, {"gdp_quarterly": changed},
+                                rz, today="2027-04-30")
+    assert merged4.height == 2
+    gdp4 = [r for r in merged4.iter_rows(named=True)
+            if r["family"] == "gdp_quarterly"][0]
+    assert gdp4["predicted"] == 2.43 and gdp4["actual"] == 2.0
+    assert gdp4["first_seen"] == "2026-11-08"
+    assert gdp4["last_checked"] == "2027-04-30"
+    # Summary: pending horizons report mae None, never zero.
+    s = fam.summarize(merged2.to_dicts())
+    gdp_h = s["gdp_quarterly"]["horizons"]
+    assert len(gdp_h) == 1 and gdp_h[0]["months"] == 3
+    assert gdp_h[0]["n_readings"] == 1 and gdp_h[0]["n_scored"] == 1
+    assert abs(gdp_h[0]["mae"] - 0.43) < 1e-9
+    assert s["fed_funds"]["horizons"][0]["mae"] is None
+    assert s["fed_funds"]["horizons"][0]["n_scored"] == 0
+    # Persistence round-trip through a data directory.
+    with tempfile.TemporaryDirectory() as tmp:
+        out = fam.update_records(Path(tmp), {"fed_funds": fed_frame},
+                                 empty_rz, today="2026-11-08")
+        assert (Path(tmp) / fam.CSV_NAME).is_file()
+        again = fam.load_records(Path(tmp))
+        assert again.height == out.height == 1
+        assert again[0, "predicted"] == 4.13
+    print("ok test_fixed_horizon_accuracy_records")
+
 
 def _acc_frame(rows):
     """Synthetic archive frame from (date, value, event, strike) tuples."""
@@ -1467,7 +1671,10 @@ def test_app_renders_definitions_and_realized(tmp_path=None):
     assert res["tapeItems"] >= 1, res
     # Fixed-horizon view: one small multiple per horizon in the bundle.
     bundle = json.loads((REPO / "docs" / "data" / "predmarkets.json").read_text())
-    assert res["fixedHorizonPanels"] == len(bundle["fixed_horizon"]["horizons"]), res
+    fh_sections = [bundle["fixed_horizon"]] + list(
+        bundle.get("fixed_horizon_families") or [])
+    assert res["fixedHorizonPanels"] == sum(
+        len(s["horizons"]) for s in fh_sections), res
     print("ok test_app_renders_definitions_and_realized")
 
 
