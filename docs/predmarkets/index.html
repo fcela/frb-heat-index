@@ -73,6 +73,14 @@
       intervals) and a density heatmap. These are risk-neutral probabilities, not physical
       ones, and thin tail contracts can be stale. The same distributions feed the macro
       tail-risk series (Figure 13 of the paper) and the daily mean/variance uncertainty gauge.</p>
+      <p><strong>Fixed-horizon implied rates.</strong> The lead view re-indexes the fed funds
+      distributions by horizon instead of by contract: for each day's archived snapshot, every
+      meeting's implied mean forms a step path over meeting dates, and the path is read at the
+      rate in force 3, 6, and 12 months after the snapshot date. The result is a continuous
+      statement of what markets imply rates will be in X months, unaffected by contract rolls;
+      the per-event fan charts below remain as drill-down. Each point names the meeting that
+      set it in the underlying data file, so a step priced by a thin far meeting can be audited
+      against the archive.</p>
       <p><strong>Definitions and realized outcomes.</strong> Every card carries a
       <em>Measures</em> line stating exactly what the contract settles on — the quantity, the
       reference period or meeting, the source agency release, and the resolution date — with
@@ -108,6 +116,7 @@
 
 <main>
   <nav class="pulse-toc" id="predmarkets-toc" aria-label="Tracked series"></nav>
+  <div id="predmarkets-fixed-horizon" style="max-width:1180px;margin:0 auto;padding:0 1.25rem" aria-label="Implied policy rate at fixed horizons"></div>
   <div id="predmarkets" style="max-width:1180px;margin:0 auto;padding:0 1.25rem"><p class="pulse-stamp">loading data…</p></div>
   <div id="predmarkets-accuracy" style="max-width:1180px;margin:0 auto;padding:0 1.25rem" aria-label="Prediction accuracy scorecard"></div>
   <div class="pulse-foot">

@@ -25,6 +25,7 @@ from src.predmarkets import fred as fredmod
 from src.predmarkets import realized as realized_mod
 from src.predmarkets import accuracy as accuracy_mod
 from src.predmarkets import vintage as vintage_mod
+from src.predmarkets import fixed_horizon as fixed_horizon_mod
 from src.predmarkets.build_predmarkets import (
     ACCURACY_KEYS,
     build,
@@ -840,6 +841,130 @@ def test_vintage_write_and_append_only():
     print("ok test_vintage_write_and_append_only")
 
 
+# ------------------------------------------------- fixed-horizon layer
+
+def _fh_event(ticker, close_time, mean):
+    """One archived fed funds event; mean=None -> no recovered distribution."""
+    dist = None
+    if mean is not None:
+        dist = {"kind": "threshold_bins", "bins": [], "quantiles": {},
+                "mean": mean, "variance": 0.01}
+    return {"event_ticker": ticker, "title": ticker, "close_time": close_time,
+            "ladder_date": "2026-11-02", "markets": [], "distribution": dist}
+
+
+def _fh_snapshot(events):
+    return {"schema_version": 1, "key": "fed_funds", "series_ticker": "KXFED",
+            "vintage_date": "2026-11-02", "snapshot_at_utc": "2026-11-02T06:00:00+00:00",
+            "events": events}
+
+
+def test_fixed_horizon_month_and_meeting_dates():
+    fm = fixed_horizon_mod
+    # Calendar months clamp to the target month's last day.
+    assert fm.add_months(dt.date(2026, 1, 31), 1) == dt.date(2026, 2, 28)
+    assert fm.add_months(dt.date(2026, 8, 31), 6) == dt.date(2027, 2, 28)
+    assert fm.add_months(dt.date(2026, 11, 8), 12) == dt.date(2027, 11, 8)
+    assert fm.add_months(dt.date(2026, 11, 8), 3) == dt.date(2027, 2, 8)
+    # Meeting dates are ET calendar dates of the close time: a 04:30 UTC
+    # close is still the previous ET evening.
+    assert fm.meeting_date("2027-01-27T18:55:00+00:00") == dt.date(2027, 1, 27)
+    assert fm.meeting_date("2027-01-27T04:30:00+00:00") == dt.date(2027, 1, 26)
+    assert fm.meeting_date(None) is None
+    assert fm.meeting_date("") is None
+    print("ok test_fixed_horizon_month_and_meeting_dates")
+
+
+def test_fixed_horizon_steps_and_sampling():
+    fm = fixed_horizon_mod
+    snap = _fh_snapshot([
+        _fh_event("KXFED-26OCT", "2026-10-28T17:55:00+00:00", 3.88),  # settled
+        _fh_event("KXFED-26DEC", "2026-12-09T18:55:00+00:00", 4.05),
+        _fh_event("KXFED-27JAN", "2027-01-27T18:55:00+00:00", 4.13),
+        _fh_event("KXFED-27MAR", "2027-03-17T17:55:00+00:00", None),  # too thin
+        _fh_event("KXFED-27APR", "2027-04-28T17:55:00+00:00", 3.87),
+        # A mutually exclusive distribution is not a rate step.
+        {"event_ticker": "KXFED-27JUN", "title": "x",
+         "close_time": "2027-06-09T17:55:00+00:00", "ladder_date": None,
+         "markets": [], "distribution": {"kind": "exclusive_buckets",
+                                          "buckets": [], "mean": 9.9}},
+        # No close time: cannot be placed on the path.
+        _fh_event("KXFED-27JUL", None, 4.4),
+    ])
+    steps = fm.meeting_steps(snap)
+    assert [(s[0].isoformat(), s[1], s[2]) for s in steps] == [
+        ("2026-10-28", 3.88, "KXFED-26OCT"),
+        ("2026-12-09", 4.05, "KXFED-26DEC"),
+        ("2027-01-27", 4.13, "KXFED-27JAN"),
+        ("2027-04-28", 3.87, "KXFED-27APR"),
+    ], steps
+    rows = {r["horizon_months"]: r
+            for r in fm.vintage_rows("2026-11-08", snap)}
+    # +3m target 2027-02-08: the January meeting is in force.
+    assert rows[3]["implied_rate"] == 4.13
+    assert rows[3]["source_event"] == "KXFED-27JAN"
+    assert rows[3]["target_date"] == "2027-02-08"
+    # +6m target 2027-05-08: April governs; the distribution-less March
+    # meeting carries no step, so January would hold through it — the
+    # step in force is April's own mean.
+    assert rows[6]["implied_rate"] == 3.87
+    assert rows[6]["source_event"] == "KXFED-27APR"
+    # +12m target 2027-11-08: the last meeting on the path still governs.
+    assert rows[12]["implied_rate"] == 3.87
+    # A target before the first future meeting reads the settled
+    # meeting's final archived mean (the rate in force at the vintage).
+    early = fm.vintage_rows("2026-11-08", snap, horizons=(1,))
+    assert early[0]["implied_rate"] == 3.88
+    assert early[0]["source_event"] == "KXFED-26OCT"
+    # No step in force at all -> the horizon is omitted, never filled.
+    future_only = _fh_snapshot([
+        _fh_event("KXFED-27JAN", "2027-01-27T18:55:00+00:00", 4.13)])
+    assert fm.vintage_rows("2026-01-01", future_only, horizons=(3,)) == []
+    print("ok test_fixed_horizon_steps_and_sampling")
+
+
+def test_fixed_horizon_archive_frame_and_section():
+    fm = fixed_horizon_mod
+    with tempfile.TemporaryDirectory() as tmp:
+        data_dir = Path(tmp)
+        vdir = data_dir / "vintages"
+        for vdate, dec_mean in (("2026-11-02", 4.05), ("2026-11-03", 4.08)):
+            day = vdir / vdate
+            day.mkdir(parents=True)
+            (day / "manifest.json").write_text(json.dumps(
+                {"schema_version": 1, "vintage_date": vdate}))
+            (day / "fed_funds.json").write_text(json.dumps(_fh_snapshot([
+                _fh_event("KXFED-26OCT", "2026-10-28T17:55:00+00:00", 3.88),
+                _fh_event("KXFED-26DEC", "2026-12-09T18:55:00+00:00", dec_mean),
+                _fh_event("KXFED-27JAN", "2027-01-27T18:55:00+00:00", 4.13),
+            ])))
+        # A vintage without the series file and a staging sibling are
+        # both ignored.
+        (vdir / "2026-11-04").mkdir()
+        (vdir / "2026-11-04" / "manifest.json").write_text("{}")
+        (vdir / ".staging-2026-11-05-1").mkdir()
+        frame, section = fm.build_fixed_horizon(data_dir)
+        assert frame.height == 6, frame  # 2 vintages x 3 horizons
+        assert frame.columns == list(fm.FRAME_SCHEMA)
+        got = {(r["vintage_date"], r["horizon_months"]): r["implied_rate"]
+               for r in frame.iter_rows(named=True)}
+        assert got[("2026-11-02", 3)] == 4.13   # target 2027-02-02 -> Jan
+        assert got[("2026-11-03", 12)] == 4.13  # last step carries forward
+        assert section["archive_start"] == "2026-11-02"
+        assert section["as_of"] == "2026-11-03"
+        assert section["front_event"] == "KXFED-26DEC"
+        assert section["kalshi_url"] == kalshi_event_url("KXFED-26DEC")
+        assert [h["months"] for h in section["horizons"]] == [3, 6, 12]
+        assert section["horizons"][0]["latest"]["value"] == 4.13
+        lo, hi = section["y_domain"]
+        assert lo <= 3.88 and hi >= 4.13
+        # Empty archive: header-only frame, no section.
+        empty_frame, empty_section = fm.build_fixed_horizon(Path(tmp) / "none")
+        assert empty_frame.height == 0 and empty_section is None
+        assert empty_frame.columns == list(fm.FRAME_SCHEMA)
+    print("ok test_fixed_horizon_archive_frame_and_section")
+
+
 # ------------------------------------------------------ accuracy layer
 
 def _acc_frame(rows):
@@ -1319,7 +1444,8 @@ def test_app_renders_definitions_and_realized(tmp_path=None):
     bundle under stubbed DOM + Plot (node harness, zero network) and every
     card shows its Measures definition, exchange links, as-of date, fan
     charts with realized overlays where the bundle has them, the FOMC rate
-    fan (keeping the outcome bars), IPO precision, and recession quarters.
+    fan (keeping the outcome bars), IPO precision, recession quarters, and
+    the fixed-horizon small multiples on their shared axis.
     Skips when node is unavailable."""
     node = shutil.which("node")
     if node is None:
@@ -1339,6 +1465,9 @@ def test_app_renders_definitions_and_realized(tmp_path=None):
     # 8 series charts + 4 fan/heatmap pairs + FOMC rate fan + recession bars.
     assert res["figures"] >= 14, res
     assert res["tapeItems"] >= 1, res
+    # Fixed-horizon view: one small multiple per horizon in the bundle.
+    bundle = json.loads((REPO / "docs" / "data" / "predmarkets.json").read_text())
+    assert res["fixedHorizonPanels"] == len(bundle["fixed_horizon"]["horizons"]), res
     print("ok test_app_renders_definitions_and_realized")
 
 

@@ -485,6 +485,76 @@ function accuracyHTML(ind) {
     <p class="pulse-note">${esc(a.convention)}</p></div>`;
 }
 
+/* Fixed-horizon implied policy rate: for each daily vintage, the fed
+   funds meetings' implied means form a step path over meeting dates;
+   each panel samples the step in force at the vintage date plus 3, 6,
+   or 12 months. Small multiples on one shared percent axis (the domain
+   ships in the bundle), straight lines with area fill. A point exists
+   only where a vintage snapshot exists — nothing is interpolated. */
+function fixedHorizonChart(h, domain) {
+  const pts = (h.points || []).map(d => ({
+    date: new Date(d.date + "T00:00:00"), v: d.value,
+    target: d.target_date, src: d.source_event, meeting: d.meeting_date,
+  })).filter(d => Number.isFinite(d.v));
+  if (!pts.length) return null;
+  const tipFmt = d => `${d.date.toISOString().slice(0, 10)} vintage\nin force ${d.target}: ${fmtRate(d.v)}%\nset by the ${d.meeting} meeting (${d.src})`;
+  return basePlot({
+    width: 330, height: 190,
+    marginLeft: 44, marginRight: 10, marginTop: 10, marginBottom: 30,
+    x: { type: "time", label: null, grid: true, tickSize: 0, ticks: 4 },
+    y: { domain: domain || undefined, grid: true, label: null, tickFormat: v => fmtRate(v) + "%" },
+    marks: [
+      Plot.areaY(pts, { x: "date", y: "v", fill: T().accent, fillOpacity: 0.12 }),
+      Plot.line(pts, { x: "date", y: "v", stroke: T().accent, strokeWidth: 1.8, title: tipFmt }),
+      Plot.dot(pts, { x: "date", y: "v", r: 2.6, fill: T().accent, title: tipFmt }),
+      Plot.tip(pts, Plot.pointer({ x: "date", y: "v", title: tipFmt })),
+    ],
+  });
+}
+
+function renderFixedHorizon(pm) {
+  const el = document.getElementById("predmarkets-fixed-horizon");
+  if (!el) return;
+  el.innerHTML = "";
+  const fh = pm.fixed_horizon;
+  if (!fh || !(fh.horizons || []).length) return;
+  const card = document.createElement("div");
+  card.className = "pulse-card pm-fixed-horizon";
+  const metaBits = [
+    `<span>source series ${esc(fh.series_ticker)}</span>`,
+    `<span>archive starts ${esc(fh.archive_start)}</span>`,
+    `<span>data through ${esc(fh.as_of)}</span>`,
+  ];
+  if (fh.kalshi_url && fh.front_event)
+    metaBits.push(`<a href="${esc(fh.kalshi_url)}" target="_blank" rel="noopener">${esc(fh.front_event)} ↗</a>`);
+  card.innerHTML = `
+    <div class="pulse-head"><div><strong>${esc(fh.title)}</strong></div>
+      <div class="pulse-src">${esc(fh.source)} · ${esc(fh.frequency)}</div></div>
+    <div class="pulse-def"><b>Measures:</b> ${esc(fh.definition)}
+      <p class="pulse-def-meta">${metaBits.join('<span class="sep">·</span>')}</p></div>`;
+  const row = document.createElement("div");
+  row.className = "pm-fh-row";
+  for (const h of fh.horizons) {
+    const panel = document.createElement("div");
+    panel.className = "pm-fh-panel";
+    const head = document.createElement("h4");
+    head.innerHTML = `${esc(h.label)}` + (h.latest
+      ? ` <span class="pm-fh-latest">${fmtRate(h.latest.value)}% on ${esc(fmtDate(h.latest.date))}</span>` : "");
+    panel.appendChild(head);
+    const fig = fixedHorizonChart(h, fh.y_domain);
+    if (fig) panel.appendChild(fig);
+    row.appendChild(panel);
+  }
+  card.appendChild(row);
+  if (fh.note) {
+    const note = document.createElement("p");
+    note.className = "pulse-note";
+    note.textContent = fh.note;
+    card.appendChild(note);
+  }
+  el.appendChild(card);
+}
+
 /* Cross-indicator scorecard: every accuracy-covered market's track
    record side by side. */
 function renderScorecard(pm) {
@@ -677,6 +747,7 @@ async function boot() {
   renderTape(pm.indicators);
   renderToc(pm.indicators);
   renderMarkets(pm);
+  renderFixedHorizon(pm);
   renderScorecard(pm);
   document.getElementById("predmarkets").dataset.done = "1";
   window.__predBooted = true;

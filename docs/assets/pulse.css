@@ -304,6 +304,20 @@
 
 /* Prediction-accuracy scorecard: one row per accuracy-covered market. */
 .pm-scorecard { margin-top: 1.25rem; }
+
+/* Fixed-horizon implied-rate view: one small multiple per horizon,
+   every panel on the bundle's shared percent axis. */
+.pm-fh-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+.pm-fh-panel h4 {
+  font-size: 0.9rem;
+  margin: 0.75rem 0 0.25rem;
+  font-weight: 600;
+}
+.pm-fh-latest { color: var(--muted, #75705f); font-weight: 400; }
 .pm-scorecard .pulse-table td { font-size: 0.82rem; }
 .pm-conv summary {
   cursor: pointer;

@@ -26,6 +26,12 @@ Outputs:
                                 written once per ET run date, never
                                 rewritten — see vintage.py and the
                                 vintages/README.md schema note
+  data/predmarkets/fixed_horizon_fed_funds.csv  the fed funds meetings'
+                                archived implied means re-indexed by
+                                horizon (implied rate 3/6/12 months
+                                ahead per vintage date; recomputed from
+                                the archive each run — see
+                                fixed_horizon.py)
   data/predmarkets/_meta.json    per-indicator status + market metadata
   docs/data/predmarkets.json     site bundle (strict JSON, NaN rejected)
 
@@ -50,6 +56,7 @@ import polars as pl
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from src.predmarkets import accuracy as accuracy_mod
 from src.predmarkets import distribution as distmod
+from src.predmarkets import fixed_horizon as fixed_horizon_mod
 from src.predmarkets import fred
 from src.predmarkets import kalshi
 from src.predmarkets import realized as realized_mod
@@ -1590,9 +1597,25 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
         data_dir, frames=frames, live_events=live_events, meta=meta,
         now=now, threshold_keys=set(DIST_GRIDS), quantiles=DIST_QUANTILES)
 
+    # ---- fixed-horizon implied series: re-index the archive by horizon ----
+    # Runs after the vintage append so the run's own snapshot is
+    # included. The CSV is a pure function of the archive, recomputed
+    # in full; the section joins the site bundle when the archive has
+    # produced at least one row. Like the vintage info above, the
+    # summary attaches to the in-memory meta only.
+    fh_frame, fh_section = fixed_horizon_mod.build_fixed_horizon(data_dir)
+    fh_frame.write_csv(data_dir / fixed_horizon_mod.CSV_NAME)
+    meta["fixed_horizon"] = {
+        "csv": fixed_horizon_mod.CSV_NAME,
+        "n_rows": fh_frame.height,
+        "as_of": fh_section["as_of"] if fh_section else None,
+    }
+
     site = {"meta": {"built_at_utc": built}, "indicators": site_indicators}
     if accuracy_summary:
         site["accuracy"] = accuracy_summary
+    if fh_section:
+        site["fixed_horizon"] = fh_section
     site_json.write_text(strict_json(site) + "\n")
     json.loads(site_json.read_text())  # strict re-parse of what the site serves
     return meta
@@ -1609,6 +1632,10 @@ if __name__ == "__main__":
     if v:
         print(f"vintage {v['date']}: {v['status']} "
               f"({v['n_events']} events) at {v['path']}")
+    fh = m.get("fixed_horizon") or {}
+    if fh:
+        print(f"fixed horizon: {fh['n_rows']} rows in {fh['csv']} "
+              f"(as of {fh['as_of']})")
     for k, v in m["indicators"].items():
         if v["status"] == "error":
             print(f"  {k}: ERROR — {v['error']}")
