@@ -66,7 +66,7 @@ const byKey = Object.fromEntries(bundle.indicators.map(i => [i.key, i]));
 await import(join(TMP, "app-test.mjs") + "?x=" + Date.now());
 await new Promise(r => setTimeout(r, 50));  // let the async boot() land
 
-const results = { cards: 0, figures: 0, errors: [], tocAnchors: 0, tapeItems: 0 };
+const results = { cards: 0, figures: 0, errors: [], tocAnchors: 0, tapeItems: 0, fixedHorizonPanels: 0 };
 
 const root = byId["predmarkets"];
 results.cards = root._children.length;
@@ -236,6 +236,50 @@ if (!acc || !(acc.cards || []).length) {
   results.scorecardRows = (sc.match(/<tr>/g) || []).length - 1;  // minus header
   if (results.scorecardRows !== acc.cards.length)
     results.errors.push(`scorecard rows ${results.scorecardRows} != ${acc.cards.length}`);
+}
+
+// Fixed-horizon view: one small multiple per horizon in the bundle, all
+// on the bundle's shared axis domain, definition and note rendered.
+const fh = bundle.fixed_horizon;
+if (!fh || !(fh.horizons || []).length) {
+  results.errors.push("fixed-horizon section missing from bundle");
+} else {
+  const walk = (el, acc) => {
+    acc.push(el);
+    for (const c of el._children || []) walk(c, acc);
+    return acc;
+  };
+  const nodes = walk(byId["predmarkets-fixed-horizon"], []);
+  const fhFigs = nodes.filter(n => n.__figure);
+  results.fixedHorizonPanels = fhFigs.length;
+  if (fhFigs.length !== fh.horizons.length)
+    results.errors.push(`fixed-horizon panels ${fhFigs.length} != horizons ${fh.horizons.length}`);
+  for (const f of fhFigs) {
+    if (!marksOf(f, "line").length)
+      results.errors.push("fixed-horizon panel has no line");
+    if (!marksOf(f, "areaY").length)
+      results.errors.push("fixed-horizon panel has no area fill");
+    const dom = (f.options.y || {}).domain;
+    if (JSON.stringify(dom) !== JSON.stringify(fh.y_domain))
+      results.errors.push("fixed-horizon panel axis is not the shared domain");
+    const line = marksOf(f, "line")[0];
+    if (line && line.data.length !== (fh.horizons[fhFigs.indexOf(f)] || {}).points?.length)
+      results.errors.push("fixed-horizon panel point count != bundle points");
+  }
+  const fhText = nodes.map(n => (n._html || "") + (n.textContent || "")).join(" ");
+  if (!fhText.includes(esc(fh.definition.slice(0, 40))))
+    results.errors.push("fixed-horizon definition missing");
+  if (!fhText.includes(esc(fh.note.slice(0, 40))))
+    results.errors.push("fixed-horizon note missing");
+  if (!fhText.includes(`data through ${fh.as_of}`))
+    results.errors.push("fixed-horizon as-of date missing");
+  if (!fhText.includes(`href="${esc(fh.kalshi_url)}"`))
+    results.errors.push("fixed-horizon exchange link missing");
+  for (const h of fh.horizons)
+    if (!fhText.includes(esc(h.label)))
+      results.errors.push(`fixed-horizon label ${h.label} missing`);
+  if (fhText.includes("undefined") || fhText.includes("[object"))
+    results.errors.push("fixed-horizon: template leak in section HTML");
 }
 
 // Theme toggle: re-render must rebuild the same card set (no doubling).
