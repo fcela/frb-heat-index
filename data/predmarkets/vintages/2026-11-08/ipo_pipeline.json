@@ -1,0 +1,181 @@
+{
+ "schema_version": 1,
+ "key": "ipo_pipeline",
+ "series_ticker": "KXIPO",
+ "vintage_date": "2026-11-08",
+ "snapshot_at_utc": "2026-11-08T13:06:12+00:00",
+ "events": [
+  {
+   "event_ticker": "KXIPO-26",
+   "title": "Which companies will officially announce an IPO this year?",
+   "close_time": "2027-01-01T04:59:00+00:00",
+   "ladder_date": "2026-11-07",
+   "markets": [
+    {
+     "ticker": "KXIPO-26-AINTUITION",
+     "strike": "",
+     "level": null,
+     "price": 0.01,
+     "volume": 164.52
+    },
+    {
+     "ticker": "KXIPO-26-AIRWALLEX",
+     "strike": "",
+     "level": null,
+     "price": 0.04,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXIPO-26-ANDURIL",
+     "strike": "",
+     "level": null,
+     "price": 0.01,
+     "volume": 2641.0
+    },
+    {
+     "ticker": "KXIPO-26-ANTHROPIC",
+     "strike": "",
+     "level": null,
+     "price": 0.89,
+     "volume": 1464.98
+    },
+    {
+     "ticker": "KXIPO-26-BREX",
+     "strike": "",
+     "level": null,
+     "price": 0.01,
+     "volume": 3000.0
+    },
+    {
+     "ticker": "KXIPO-26-CELONIS",
+     "strike": "",
+     "level": null,
+     "price": 0.01,
+     "volume": 752.0
+    },
+    {
+     "ticker": "KXIPO-26-DEEP",
+     "strike": "",
+     "level": null,
+     "price": 0.05,
+     "volume": 37.5
+    },
+    {
+     "ticker": "KXIPO-26-DISCORD",
+     "strike": "",
+     "level": null,
+     "price": 0.05,
+     "volume": 794.01
+    },
+    {
+     "ticker": "KXIPO-26-KRAKEN",
+     "strike": "",
+     "level": null,
+     "price": 0.03,
+     "volume": 81.35
+    },
+    {
+     "ticker": "KXIPO-26-MISTRAL",
+     "strike": "",
+     "level": null,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXIPO-26-OPENAI",
+     "strike": "",
+     "level": null,
+     "price": 0.01,
+     "volume": 17.61
+    },
+    {
+     "ticker": "KXIPO-26-PLAID",
+     "strike": "",
+     "level": null,
+     "price": 0.01,
+     "volume": 23.42
+    },
+    {
+     "ticker": "KXIPO-26-RAMP",
+     "strike": "",
+     "level": null,
+     "price": 0.01,
+     "volume": 834.0
+    },
+    {
+     "ticker": "KXIPO-26-RIPPLE",
+     "strike": "",
+     "level": null,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXIPO-26-RIPPLING",
+     "strike": "",
+     "level": null,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXIPO-26-SKIMS",
+     "strike": "",
+     "level": null,
+     "price": 0.02,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXIPO-26-STRIPE",
+     "strike": "",
+     "level": null,
+     "price": 0.01,
+     "volume": 1982.0
+    },
+    {
+     "ticker": "KXIPO-26-VANTA",
+     "strike": "",
+     "level": null,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXIPO-26-XAI",
+     "strike": "",
+     "level": null,
+     "price": 0.01,
+     "volume": 2500.0
+    }
+   ],
+   "distribution": null
+  },
+  {
+   "event_ticker": "KXIPO-27",
+   "title": "Which companies will official announce an IPO before 2028?",
+   "close_time": "2028-01-01T04:59:00+00:00",
+   "ladder_date": "2026-11-07",
+   "markets": [
+    {
+     "ticker": "KXIPO-27-DISCORD",
+     "strike": "",
+     "level": null,
+     "price": 0.34,
+     "volume": 199.99
+    },
+    {
+     "ticker": "KXIPO-27-KRAKEN",
+     "strike": "",
+     "level": null,
+     "price": 0.53,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXIPO-27-OPENAI",
+     "strike": "",
+     "level": null,
+     "price": 0.62,
+     "volume": 0.0
+    }
+   ],
+   "distribution": null
+  }
+ ]
+}
