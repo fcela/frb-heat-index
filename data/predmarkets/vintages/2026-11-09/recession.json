@@ -1,0 +1,41 @@
+{
+ "schema_version": 1,
+ "key": "recession",
+ "series_ticker": "KXRECSSNBER",
+ "vintage_date": "2026-11-09",
+ "snapshot_at_utc": "2026-11-09T15:49:59+00:00",
+ "events": [
+  {
+   "event_ticker": "KXRECSSNBER-26",
+   "title": "Recession this year?",
+   "close_time": "2027-01-31T13:25:00+00:00",
+   "ladder_date": "2026-11-08",
+   "markets": [
+    {
+     "ticker": "KXRECSSNBER-26",
+     "strike": "",
+     "level": null,
+     "price": 0.02,
+     "volume": 1495.08
+    }
+   ],
+   "distribution": null
+  },
+  {
+   "event_ticker": "KXRECSSNBER-27",
+   "title": "Recession in 2027?",
+   "close_time": "2028-01-31T13:25:00+00:00",
+   "ladder_date": "2026-11-08",
+   "markets": [
+    {
+     "ticker": "KXRECSSNBER-27",
+     "strike": "Yes",
+     "level": null,
+     "price": 0.23,
+     "volume": 3097.83
+    }
+   ],
+   "distribution": null
+  }
+ ]
+}

@@ -1,0 +1,1822 @@
+{
+ "schema_version": 1,
+ "key": "fed_funds",
+ "series_ticker": "KXFED",
+ "vintage_date": "2026-11-09",
+ "snapshot_at_utc": "2026-11-09T15:49:59+00:00",
+ "events": [
+  {
+   "event_ticker": "KXFED-26SEP",
+   "title": "Fed funds rate after Sep 2026 meeting?",
+   "close_time": "2026-09-16T17:55:00+00:00",
+   "ladder_date": "2026-09-16",
+   "markets": [
+    {
+     "ticker": "KXFED-26SEP-T2.75",
+     "strike": "2.75%",
+     "level": 2.75,
+     "price": 0.99,
+     "volume": 10224.43
+    },
+    {
+     "ticker": "KXFED-26SEP-T3.00",
+     "strike": "3.00%",
+     "level": 3.0,
+     "price": 0.99,
+     "volume": 28.05
+    },
+    {
+     "ticker": "KXFED-26SEP-T3.25",
+     "strike": "3.25%",
+     "level": 3.25,
+     "price": 0.99,
+     "volume": 600.84
+    },
+    {
+     "ticker": "KXFED-26SEP-T3.50",
+     "strike": "3.50%",
+     "level": 3.5,
+     "price": 0.99,
+     "volume": 36702.94
+    },
+    {
+     "ticker": "KXFED-26SEP-T3.75",
+     "strike": "3.75%",
+     "level": 3.75,
+     "price": 0.86,
+     "volume": 43892.98
+    },
+    {
+     "ticker": "KXFED-26SEP-T4.00",
+     "strike": "4.00%",
+     "level": 4.0,
+     "price": 0.02,
+     "volume": 110087.17
+    },
+    {
+     "ticker": "KXFED-26SEP-T4.25",
+     "strike": "4.25%",
+     "level": 4.25,
+     "price": 0.01,
+     "volume": 36141.19
+    },
+    {
+     "ticker": "KXFED-26SEP-T4.50",
+     "strike": "4.50%",
+     "level": 4.5,
+     "price": 0.01,
+     "volume": 93.5
+    },
+    {
+     "ticker": "KXFED-26SEP-T4.75",
+     "strike": "4.75%",
+     "level": 4.75,
+     "price": 0.01,
+     "volume": 350.67
+    },
+    {
+     "ticker": "KXFED-26SEP-T5.00",
+     "strike": "5.00%",
+     "level": 5.0,
+     "price": 0.01,
+     "volume": 1345.19
+    },
+    {
+     "ticker": "KXFED-26SEP-T5.25",
+     "strike": "5.25%",
+     "level": 5.25,
+     "price": 0.01,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 2.75,
+      "mass": 0.0
+     },
+     {
+      "low": 2.75,
+      "high": 3.0,
+      "mass": 0.0
+     },
+     {
+      "low": 3.0,
+      "high": 3.25,
+      "mass": 0.0
+     },
+     {
+      "low": 3.25,
+      "high": 3.5,
+      "mass": 0.0
+     },
+     {
+      "low": 3.5,
+      "high": 3.75,
+      "mass": 0.1326530612244898
+     },
+     {
+      "low": 3.75,
+      "high": 4.0,
+      "mass": 0.8571428571428571
+     },
+     {
+      "low": 4.0,
+      "high": 4.25,
+      "mass": 0.010204081632653062
+     },
+     {
+      "low": 4.25,
+      "high": 4.5,
+      "mass": 0.0
+     },
+     {
+      "low": 4.5,
+      "high": 4.75,
+      "mass": 0.0
+     },
+     {
+      "low": 4.75,
+      "high": 5.0,
+      "mass": 0.0
+     },
+     {
+      "low": 5.0,
+      "high": 5.25,
+      "mass": 0.0
+     },
+     {
+      "low": 5.25,
+      "high": null,
+      "mass": 0.0
+     }
+    ],
+    "quantiles": {
+     "q05": 3.5942307692307693,
+     "q25": 3.7842261904761907,
+     "q50": 3.857142857142857,
+     "q75": 3.9300595238095237,
+     "q95": 3.9883928571428573
+    },
+    "mean": 3.8443877551020407,
+    "variance": 0.007991461890878801
+   }
+  },
+  {
+   "event_ticker": "KXFED-26OCT",
+   "title": "Fed funds rate after Oct 2026 meeting?",
+   "close_time": "2026-10-28T17:55:00+00:00",
+   "ladder_date": "2026-10-28",
+   "markets": [
+    {
+     "ticker": "KXFED-26OCT-T2.75",
+     "strike": "2.75%",
+     "level": 2.75,
+     "price": 0.99,
+     "volume": 1963.89
+    },
+    {
+     "ticker": "KXFED-26OCT-T3.00",
+     "strike": "3.00%",
+     "level": 3.0,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-26OCT-T3.25",
+     "strike": "3.25%",
+     "level": 3.25,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-26OCT-T3.50",
+     "strike": "3.50%",
+     "level": 3.5,
+     "price": 0.99,
+     "volume": 93.51
+    },
+    {
+     "ticker": "KXFED-26OCT-T3.75",
+     "strike": "3.75%",
+     "level": 3.75,
+     "price": 0.99,
+     "volume": 2712.01
+    },
+    {
+     "ticker": "KXFED-26OCT-T4.00",
+     "strike": "4.00%",
+     "level": 4.0,
+     "price": 0.03,
+     "volume": 7019.32
+    },
+    {
+     "ticker": "KXFED-26OCT-T4.25",
+     "strike": "4.25%",
+     "level": 4.25,
+     "price": 0.01,
+     "volume": 4943.49
+    },
+    {
+     "ticker": "KXFED-26OCT-T4.50",
+     "strike": "4.50%",
+     "level": 4.5,
+     "price": 0.01,
+     "volume": 93.51
+    },
+    {
+     "ticker": "KXFED-26OCT-T4.75",
+     "strike": "4.75%",
+     "level": 4.75,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-26OCT-T5.00",
+     "strike": "5.00%",
+     "level": 5.0,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-26OCT-T5.25",
+     "strike": "5.25%",
+     "level": 5.25,
+     "price": 0.01,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 2.75,
+      "mass": 0.0
+     },
+     {
+      "low": 2.75,
+      "high": 3.0,
+      "mass": 0.0
+     },
+     {
+      "low": 3.0,
+      "high": 3.25,
+      "mass": 0.0
+     },
+     {
+      "low": 3.25,
+      "high": 3.5,
+      "mass": 0.0
+     },
+     {
+      "low": 3.5,
+      "high": 3.75,
+      "mass": 0.0
+     },
+     {
+      "low": 3.75,
+      "high": 4.0,
+      "mass": 0.9795918367346939
+     },
+     {
+      "low": 4.0,
+      "high": 4.25,
+      "mass": 0.02040816326530612
+     },
+     {
+      "low": 4.25,
+      "high": 4.5,
+      "mass": 0.0
+     },
+     {
+      "low": 4.5,
+      "high": 4.75,
+      "mass": 0.0
+     },
+     {
+      "low": 4.75,
+      "high": 5.0,
+      "mass": 0.0
+     },
+     {
+      "low": 5.0,
+      "high": 5.25,
+      "mass": 0.0
+     },
+     {
+      "low": 5.25,
+      "high": null,
+      "mass": 0.0
+     }
+    ],
+    "quantiles": {
+     "q05": 3.7627604166666666,
+     "q25": 3.8138020833333335,
+     "q50": 3.8776041666666665,
+     "q75": 3.94140625,
+     "q95": 3.9924479166666664
+    },
+    "mean": 3.8801020408163263,
+    "variance": 0.0012494793835901706
+   }
+  },
+  {
+   "event_ticker": "KXFED-26DEC",
+   "title": "Fed funds rate after Dec 2026 meeting?",
+   "close_time": "2026-12-09T18:55:00+00:00",
+   "ladder_date": "2026-11-08",
+   "markets": [
+    {
+     "ticker": "KXFED-26DEC-T3.50",
+     "strike": "3.50%",
+     "level": 3.5,
+     "price": 0.98,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-26DEC-T3.75",
+     "strike": "3.75%",
+     "level": 3.75,
+     "price": 0.98,
+     "volume": 81.0
+    },
+    {
+     "ticker": "KXFED-26DEC-T4.00",
+     "strike": "4.00%",
+     "level": 4.0,
+     "price": 0.76,
+     "volume": 280.37
+    },
+    {
+     "ticker": "KXFED-26DEC-T4.25",
+     "strike": "4.25%",
+     "level": 4.25,
+     "price": 0.01,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 3.5,
+      "mass": 0.0
+     },
+     {
+      "low": 3.5,
+      "high": 3.75,
+      "mass": 0.0
+     },
+     {
+      "low": 3.75,
+      "high": 4.0,
+      "mass": 0.22448979591836732
+     },
+     {
+      "low": 4.0,
+      "high": 4.25,
+      "mass": 0.7653061224489796
+     },
+     {
+      "low": 4.25,
+      "high": null,
+      "mass": 0.010204081632653062
+     }
+    ],
+    "quantiles": {
+     "q05": 3.805681818181818,
+     "q25": 4.008333333333334,
+     "q50": 4.09,
+     "q75": 4.171666666666667,
+     "q95": 4.237
+    },
+    "mean": 4.07015306122449,
+    "variance": 0.0111818643273636
+   }
+  },
+  {
+   "event_ticker": "KXFED-27JAN",
+   "title": "Fed funds rate after Jan 2027 meeting?",
+   "close_time": "2027-01-27T18:55:00+00:00",
+   "ladder_date": "2026-11-08",
+   "markets": [
+    {
+     "ticker": "KXFED-27JAN-T0.25",
+     "strike": "0.25%",
+     "level": 0.25,
+     "price": 0.98,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T0.50",
+     "strike": "0.50%",
+     "level": 0.5,
+     "price": 0.98,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T0.75",
+     "strike": "0.75%",
+     "level": 0.75,
+     "price": 0.94,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T1.00",
+     "strike": "1.00%",
+     "level": 1.0,
+     "price": 0.98,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T1.25",
+     "strike": "1.25%",
+     "level": 1.25,
+     "price": 0.93,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T1.50",
+     "strike": "1.50%",
+     "level": 1.5,
+     "price": 0.97,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T1.75",
+     "strike": "1.75%",
+     "level": 1.75,
+     "price": 0.98,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T2.00",
+     "strike": "2.00%",
+     "level": 2.0,
+     "price": 0.97,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T2.25",
+     "strike": "2.25%",
+     "level": 2.25,
+     "price": 0.97,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T2.50",
+     "strike": "2.50%",
+     "level": 2.5,
+     "price": 0.93,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T2.75",
+     "strike": "2.75%",
+     "level": 2.75,
+     "price": 0.96,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T3.00",
+     "strike": "3.00%",
+     "level": 3.0,
+     "price": 0.95,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T3.25",
+     "strike": "3.25%",
+     "level": 3.25,
+     "price": 0.94,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T3.50",
+     "strike": "3.50%",
+     "level": 3.5,
+     "price": 0.98,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T3.75",
+     "strike": "3.75%",
+     "level": 3.75,
+     "price": 0.97,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T4.00",
+     "strike": "4.00%",
+     "level": 4.0,
+     "price": 0.9,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T4.25",
+     "strike": "4.25%",
+     "level": 4.25,
+     "price": 0.15,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T4.50",
+     "strike": "4.50%",
+     "level": 4.5,
+     "price": 0.7,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T4.75",
+     "strike": "4.75%",
+     "level": 4.75,
+     "price": 0.35,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T5.25",
+     "strike": "5.25%",
+     "level": 5.25,
+     "price": 0.13,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JAN-T6.00",
+     "strike": "6.00%",
+     "level": 6.0,
+     "price": 0.1,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 0.25,
+      "mass": 0.0
+     },
+     {
+      "low": 0.25,
+      "high": 0.5,
+      "mass": 0.0
+     },
+     {
+      "low": 0.5,
+      "high": 0.75,
+      "mass": 0.0
+     },
+     {
+      "low": 0.75,
+      "high": 1.0,
+      "mass": 0.0
+     },
+     {
+      "low": 1.0,
+      "high": 1.25,
+      "mass": 0.0
+     },
+     {
+      "low": 1.25,
+      "high": 1.5,
+      "mass": 0.0
+     },
+     {
+      "low": 1.5,
+      "high": 1.75,
+      "mass": 0.0
+     },
+     {
+      "low": 1.75,
+      "high": 2.0,
+      "mass": 0.0
+     },
+     {
+      "low": 2.0,
+      "high": 2.25,
+      "mass": 0.0
+     },
+     {
+      "low": 2.25,
+      "high": 2.5,
+      "mass": 0.0
+     },
+     {
+      "low": 2.5,
+      "high": 2.75,
+      "mass": 0.0
+     },
+     {
+      "low": 2.75,
+      "high": 3.0,
+      "mass": 0.0
+     },
+     {
+      "low": 3.0,
+      "high": 3.25,
+      "mass": 0.0
+     },
+     {
+      "low": 3.25,
+      "high": 3.5,
+      "mass": 0.0
+     },
+     {
+      "low": 3.5,
+      "high": 3.75,
+      "mass": 0.012048192771084348
+     },
+     {
+      "low": 3.75,
+      "high": 4.0,
+      "mass": 0.0843373493975903
+     },
+     {
+      "low": 4.0,
+      "high": 4.25,
+      "mass": 0.9036144578313253
+     },
+     {
+      "low": 4.25,
+      "high": 4.5,
+      "mass": 0.0
+     },
+     {
+      "low": 4.5,
+      "high": 4.75,
+      "mass": 0.0
+     },
+     {
+      "low": 4.75,
+      "high": 5.25,
+      "mass": 0.0
+     },
+     {
+      "low": 5.25,
+      "high": 6.0,
+      "mass": 0.0
+     },
+     {
+      "low": 6.0,
+      "high": null,
+      "mass": 0.0
+     }
+    ],
+    "quantiles": {
+     "q05": 3.8625000000000003,
+     "q25": 4.0425,
+     "q50": 4.111666666666666,
+     "q75": 4.180833333333333,
+     "q95": 4.236166666666667
+    },
+    "mean": 4.09789156626506,
+    "variance": 0.007548265350558862
+   }
+  },
+  {
+   "event_ticker": "KXFED-27MAR",
+   "title": "Fed funds rate after Mar 2027 meeting?",
+   "close_time": "2027-03-17T17:55:00+00:00",
+   "ladder_date": "2026-11-08",
+   "markets": [
+    {
+     "ticker": "KXFED-27MAR-T0.50",
+     "strike": "0.50%",
+     "level": 0.5,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T1.00",
+     "strike": "1.00%",
+     "level": 1.0,
+     "price": 0.91,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T1.25",
+     "strike": "1.25%",
+     "level": 1.25,
+     "price": 0.94,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T1.75",
+     "strike": "1.75%",
+     "level": 1.75,
+     "price": 0.93,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T2.00",
+     "strike": "2.00%",
+     "level": 2.0,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T2.25",
+     "strike": "2.25%",
+     "level": 2.25,
+     "price": 0.86,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T2.50",
+     "strike": "2.50%",
+     "level": 2.5,
+     "price": 0.93,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T2.75",
+     "strike": "2.75%",
+     "level": 2.75,
+     "price": 0.96,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T3.00",
+     "strike": "3.00%",
+     "level": 3.0,
+     "price": 0.96,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T3.25",
+     "strike": "3.25%",
+     "level": 3.25,
+     "price": 0.97,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T3.50",
+     "strike": "3.50%",
+     "level": 3.5,
+     "price": 0.97,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T3.75",
+     "strike": "3.75%",
+     "level": 3.75,
+     "price": 0.97,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T4.00",
+     "strike": "4.00%",
+     "level": 4.0,
+     "price": 0.93,
+     "volume": 17.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T4.25",
+     "strike": "4.25%",
+     "level": 4.25,
+     "price": 0.58,
+     "volume": 3.18
+    },
+    {
+     "ticker": "KXFED-27MAR-T4.50",
+     "strike": "4.50%",
+     "level": 4.5,
+     "price": 0.11,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T4.75",
+     "strike": "4.75%",
+     "level": 4.75,
+     "price": 0.81,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T5.00",
+     "strike": "5.00%",
+     "level": 5.0,
+     "price": 0.05,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T5.50",
+     "strike": "5.50%",
+     "level": 5.5,
+     "price": 0.21,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27MAR-T5.75",
+     "strike": "5.75%",
+     "level": 5.75,
+     "price": 0.1,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 0.5,
+      "mass": 0.0
+     },
+     {
+      "low": 0.5,
+      "high": 1.0,
+      "mass": 0.0
+     },
+     {
+      "low": 1.0,
+      "high": 1.25,
+      "mass": 0.0
+     },
+     {
+      "low": 1.25,
+      "high": 1.75,
+      "mass": 0.0
+     },
+     {
+      "low": 1.75,
+      "high": 2.0,
+      "mass": 0.0
+     },
+     {
+      "low": 2.0,
+      "high": 2.25,
+      "mass": 0.0
+     },
+     {
+      "low": 2.25,
+      "high": 2.5,
+      "mass": 0.0
+     },
+     {
+      "low": 2.5,
+      "high": 2.75,
+      "mass": 0.0
+     },
+     {
+      "low": 2.75,
+      "high": 3.0,
+      "mass": 0.0
+     },
+     {
+      "low": 3.0,
+      "high": 3.25,
+      "mass": 0.0
+     },
+     {
+      "low": 3.25,
+      "high": 3.5,
+      "mass": 0.0
+     },
+     {
+      "low": 3.5,
+      "high": 3.75,
+      "mass": 0.0
+     },
+     {
+      "low": 3.75,
+      "high": 4.0,
+      "mass": 0.0
+     },
+     {
+      "low": 4.0,
+      "high": 4.25,
+      "mass": 0.0
+     },
+     {
+      "low": 4.25,
+      "high": 4.5,
+      "mass": 0.0
+     },
+     {
+      "low": 4.5,
+      "high": 4.75,
+      "mass": 0.0
+     },
+     {
+      "low": 4.75,
+      "high": 5.0,
+      "mass": 1.0
+     },
+     {
+      "low": 5.0,
+      "high": 5.5,
+      "mass": 0.0
+     },
+     {
+      "low": 5.5,
+      "high": 5.75,
+      "mass": 0.0
+     },
+     {
+      "low": 5.75,
+      "high": null,
+      "mass": 0.0
+     }
+    ],
+    "quantiles": {
+     "q05": 4.7625,
+     "q25": 4.8125,
+     "q50": 4.875,
+     "q75": 4.9375,
+     "q95": 4.9875
+    },
+    "mean": 4.875,
+    "variance": 0.0
+   }
+  },
+  {
+   "event_ticker": "KXFED-27APR",
+   "title": "Fed funds rate after Apr 2027 meeting?",
+   "close_time": "2027-04-28T17:55:00+00:00",
+   "ladder_date": "2026-11-08",
+   "markets": [
+    {
+     "ticker": "KXFED-27APR-T0.00",
+     "strike": "0.00%",
+     "level": 0.0,
+     "price": 0.98,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T0.25",
+     "strike": "0.25%",
+     "level": 0.25,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T0.50",
+     "strike": "0.50%",
+     "level": 0.5,
+     "price": 0.98,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T0.75",
+     "strike": "0.75%",
+     "level": 0.75,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T1.00",
+     "strike": "1.00%",
+     "level": 1.0,
+     "price": 0.97,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T1.25",
+     "strike": "1.25%",
+     "level": 1.25,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T1.50",
+     "strike": "1.50%",
+     "level": 1.5,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T1.75",
+     "strike": "1.75%",
+     "level": 1.75,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T2.00",
+     "strike": "2.00%",
+     "level": 2.0,
+     "price": 0.94,
+     "volume": 23.0
+    },
+    {
+     "ticker": "KXFED-27APR-T2.25",
+     "strike": "2.25%",
+     "level": 2.25,
+     "price": 0.97,
+     "volume": 6.0
+    },
+    {
+     "ticker": "KXFED-27APR-T2.50",
+     "strike": "2.50%",
+     "level": 2.5,
+     "price": 0.97,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T2.75",
+     "strike": "2.75%",
+     "level": 2.75,
+     "price": 0.97,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T3.00",
+     "strike": "3.00%",
+     "level": 3.0,
+     "price": 0.95,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T3.25",
+     "strike": "3.25%",
+     "level": 3.25,
+     "price": 0.94,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T3.50",
+     "strike": "3.50%",
+     "level": 3.5,
+     "price": 0.94,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T3.75",
+     "strike": "3.75%",
+     "level": 3.75,
+     "price": 0.94,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T4.00",
+     "strike": "4.00%",
+     "level": 4.0,
+     "price": 0.95,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T4.25",
+     "strike": "4.25%",
+     "level": 4.25,
+     "price": 0.56,
+     "volume": 74.81
+    },
+    {
+     "ticker": "KXFED-27APR-T4.50",
+     "strike": "4.50%",
+     "level": 4.5,
+     "price": 0.21,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27APR-T5.00",
+     "strike": "5.00%",
+     "level": 5.0,
+     "price": 0.23,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 0.0,
+      "mass": 0.0
+     },
+     {
+      "low": 0.0,
+      "high": 0.25,
+      "mass": 0.0
+     },
+     {
+      "low": 0.25,
+      "high": 0.5,
+      "mass": 0.0
+     },
+     {
+      "low": 0.5,
+      "high": 0.75,
+      "mass": 0.0
+     },
+     {
+      "low": 0.75,
+      "high": 1.0,
+      "mass": 0.0
+     },
+     {
+      "low": 1.0,
+      "high": 1.25,
+      "mass": 0.0
+     },
+     {
+      "low": 1.25,
+      "high": 1.5,
+      "mass": 0.0
+     },
+     {
+      "low": 1.5,
+      "high": 1.75,
+      "mass": 0.0
+     },
+     {
+      "low": 1.75,
+      "high": 2.0,
+      "mass": 0.0
+     },
+     {
+      "low": 2.0,
+      "high": 2.25,
+      "mass": 0.0
+     },
+     {
+      "low": 2.25,
+      "high": 2.5,
+      "mass": 0.0
+     },
+     {
+      "low": 2.5,
+      "high": 2.75,
+      "mass": 0.0
+     },
+     {
+      "low": 2.75,
+      "high": 3.0,
+      "mass": 0.0
+     },
+     {
+      "low": 3.0,
+      "high": 3.25,
+      "mass": 0.0
+     },
+     {
+      "low": 3.25,
+      "high": 3.5,
+      "mass": 0.0
+     },
+     {
+      "low": 3.5,
+      "high": 3.75,
+      "mass": 0.0
+     },
+     {
+      "low": 3.75,
+      "high": 4.0,
+      "mass": 0.0
+     },
+     {
+      "low": 4.0,
+      "high": 4.25,
+      "mass": 0.5270270270270269
+     },
+     {
+      "low": 4.25,
+      "high": 4.5,
+      "mass": 0.4729729729729731
+     },
+     {
+      "low": 4.5,
+      "high": 5.0,
+      "mass": 0.0
+     },
+     {
+      "low": 5.0,
+      "high": null,
+      "mass": 0.0
+     }
+    ],
+    "quantiles": {
+     "q05": 4.023717948717949,
+     "q25": 4.118589743589744,
+     "q50": 4.237179487179487,
+     "q75": 4.367857142857143,
+     "q95": 4.473571428571429
+    },
+    "mean": 4.243243243243243,
+    "variance": 0.01557934623813002
+   }
+  },
+  {
+   "event_ticker": "KXFED-27JUN",
+   "title": "Fed funds rate after Jun 2027 meeting?",
+   "close_time": "2027-06-09T17:55:00+00:00",
+   "ladder_date": "2026-11-08",
+   "markets": [
+    {
+     "ticker": "KXFED-27JUN-T0.00",
+     "strike": "0.00%",
+     "level": 0.0,
+     "price": 0.97,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T0.25",
+     "strike": "0.25%",
+     "level": 0.25,
+     "price": 0.95,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T0.50",
+     "strike": "0.50%",
+     "level": 0.5,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T0.75",
+     "strike": "0.75%",
+     "level": 0.75,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T1.00",
+     "strike": "1.00%",
+     "level": 1.0,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T1.25",
+     "strike": "1.25%",
+     "level": 1.25,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T1.50",
+     "strike": "1.50%",
+     "level": 1.5,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T1.75",
+     "strike": "1.75%",
+     "level": 1.75,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T2.00",
+     "strike": "2.00%",
+     "level": 2.0,
+     "price": 0.94,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T2.25",
+     "strike": "2.25%",
+     "level": 2.25,
+     "price": 0.93,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T2.50",
+     "strike": "2.50%",
+     "level": 2.5,
+     "price": 0.91,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T2.75",
+     "strike": "2.75%",
+     "level": 2.75,
+     "price": 0.91,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T3.00",
+     "strike": "3.00%",
+     "level": 3.0,
+     "price": 0.91,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T3.25",
+     "strike": "3.25%",
+     "level": 3.25,
+     "price": 0.94,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T4.00",
+     "strike": "4.00%",
+     "level": 4.0,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUN-T6.00",
+     "strike": "6.00%",
+     "level": 6.0,
+     "price": 0.53,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 0.0,
+      "mass": 0.0
+     },
+     {
+      "low": 0.0,
+      "high": 0.25,
+      "mass": 0.0
+     },
+     {
+      "low": 0.25,
+      "high": 0.5,
+      "mass": 0.0
+     },
+     {
+      "low": 0.5,
+      "high": 0.75,
+      "mass": 0.0
+     },
+     {
+      "low": 0.75,
+      "high": 1.0,
+      "mass": 0.0
+     },
+     {
+      "low": 1.0,
+      "high": 1.25,
+      "mass": 0.0
+     },
+     {
+      "low": 1.25,
+      "high": 1.5,
+      "mass": 0.0
+     },
+     {
+      "low": 1.5,
+      "high": 1.75,
+      "mass": 0.0
+     },
+     {
+      "low": 1.75,
+      "high": 2.0,
+      "mass": 0.0
+     },
+     {
+      "low": 2.0,
+      "high": 2.25,
+      "mass": 0.0
+     },
+     {
+      "low": 2.25,
+      "high": 2.5,
+      "mass": 0.0
+     },
+     {
+      "low": 2.5,
+      "high": 2.75,
+      "mass": 0.0
+     },
+     {
+      "low": 2.75,
+      "high": 3.0,
+      "mass": 0.0
+     },
+     {
+      "low": 3.0,
+      "high": 3.25,
+      "mass": 0.0
+     },
+     {
+      "low": 3.25,
+      "high": 4.0,
+      "mass": 0.0
+     },
+     {
+      "low": 4.0,
+      "high": 6.0,
+      "mass": 0.46464646464646464
+     },
+     {
+      "low": 6.0,
+      "high": null,
+      "mass": 0.5353535353535354
+     }
+    ],
+    "quantiles": {
+     "q05": 4.215217391304348,
+     "q25": 5.076086956521739,
+     "q50": 6.0,
+     "q75": 6.0,
+     "q95": 6.0
+    },
+    "mean": 5.535353535353535,
+    "variance": 0.24875012753800635
+   }
+  },
+  {
+   "event_ticker": "KXFED-27JUL",
+   "title": "Fed funds rate after Jul 2027 meeting?",
+   "close_time": "2027-07-28T17:55:00+00:00",
+   "ladder_date": "2026-11-08",
+   "markets": [
+    {
+     "ticker": "KXFED-27JUL-T0.00",
+     "strike": "0.00%",
+     "level": 0.0,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T0.25",
+     "strike": "0.25%",
+     "level": 0.25,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T0.50",
+     "strike": "0.50%",
+     "level": 0.5,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T0.75",
+     "strike": "0.75%",
+     "level": 0.75,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T1.00",
+     "strike": "1.00%",
+     "level": 1.0,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T1.25",
+     "strike": "1.25%",
+     "level": 1.25,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T1.50",
+     "strike": "1.50%",
+     "level": 1.5,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T1.75",
+     "strike": "1.75%",
+     "level": 1.75,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T2.00",
+     "strike": "2.00%",
+     "level": 2.0,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T2.25",
+     "strike": "2.25%",
+     "level": 2.25,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T2.50",
+     "strike": "2.50%",
+     "level": 2.5,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T2.75",
+     "strike": "2.75%",
+     "level": 2.75,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T3.00",
+     "strike": "3.00%",
+     "level": 3.0,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T3.25",
+     "strike": "3.25%",
+     "level": 3.25,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27JUL-T4.25",
+     "strike": "4.25%",
+     "level": 4.25,
+     "price": 0.73,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 0.0,
+      "mass": 0.0
+     },
+     {
+      "low": 0.0,
+      "high": 0.25,
+      "mass": 0.0
+     },
+     {
+      "low": 0.25,
+      "high": 0.5,
+      "mass": 0.0
+     },
+     {
+      "low": 0.5,
+      "high": 0.75,
+      "mass": 0.0
+     },
+     {
+      "low": 0.75,
+      "high": 1.0,
+      "mass": 0.0
+     },
+     {
+      "low": 1.0,
+      "high": 1.25,
+      "mass": 0.0
+     },
+     {
+      "low": 1.25,
+      "high": 1.5,
+      "mass": 0.0
+     },
+     {
+      "low": 1.5,
+      "high": 1.75,
+      "mass": 0.0
+     },
+     {
+      "low": 1.75,
+      "high": 2.0,
+      "mass": 0.0
+     },
+     {
+      "low": 2.0,
+      "high": 2.25,
+      "mass": 0.0
+     },
+     {
+      "low": 2.25,
+      "high": 2.5,
+      "mass": 0.0
+     },
+     {
+      "low": 2.5,
+      "high": 2.75,
+      "mass": 0.0
+     },
+     {
+      "low": 2.75,
+      "high": 3.0,
+      "mass": 0.0
+     },
+     {
+      "low": 3.0,
+      "high": 3.25,
+      "mass": 0.0
+     },
+     {
+      "low": 3.25,
+      "high": 4.25,
+      "mass": 0.26262626262626265
+     },
+     {
+      "low": 4.25,
+      "high": null,
+      "mass": 0.7373737373737373
+     }
+    ],
+    "quantiles": {
+     "q05": 3.440384615384615,
+     "q25": 4.201923076923077,
+     "q50": 4.25,
+     "q75": 4.25,
+     "q95": 4.25
+    },
+    "mean": 4.1186868686868685,
+    "variance": 0.048413427201305995
+   }
+  },
+  {
+   "event_ticker": "KXFED-27SEP",
+   "title": "Fed funds rate after Sep 2027 meeting?",
+   "close_time": "2027-09-15T17:55:00+00:00",
+   "ladder_date": "2026-11-08",
+   "markets": [
+    {
+     "ticker": "KXFED-27SEP-T3.50",
+     "strike": "3.50%",
+     "level": 3.5,
+     "price": 0.94,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27SEP-T4.00",
+     "strike": "4.00%",
+     "level": 4.0,
+     "price": 0.42,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27SEP-T4.75",
+     "strike": "4.75%",
+     "level": 4.75,
+     "price": 0.1,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 3.5,
+      "mass": 0.06000000000000005
+     },
+     {
+      "low": 3.5,
+      "high": 4.0,
+      "mass": 0.52
+     },
+     {
+      "low": 4.0,
+      "high": 4.75,
+      "mass": 0.31999999999999995
+     },
+     {
+      "low": 4.75,
+      "high": null,
+      "mass": 0.1
+     }
+    ],
+    "quantiles": {
+     "q05": 3.5,
+     "q25": 3.6826923076923075,
+     "q50": 3.923076923076923,
+     "q75": 4.3984375,
+     "q95": 4.75
+    },
+    "mean": 4.035,
+    "variance": 0.14752500000000002
+   }
+  },
+  {
+   "event_ticker": "KXFED-27OCT",
+   "title": "Fed funds rate after Oct 2027 meeting?",
+   "close_time": "2027-10-27T17:55:00+00:00",
+   "ladder_date": "2026-11-08",
+   "markets": [
+    {
+     "ticker": "KXFED-27OCT-T4.00",
+     "strike": "4.00%",
+     "level": 4.0,
+     "price": 0.98,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27OCT-T4.75",
+     "strike": "4.75%",
+     "level": 4.75,
+     "price": 0.11,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 4.0,
+      "mass": 0.020000000000000018
+     },
+     {
+      "low": 4.0,
+      "high": 4.75,
+      "mass": 0.87
+     },
+     {
+      "low": 4.75,
+      "high": null,
+      "mass": 0.11
+     }
+    ],
+    "quantiles": {
+     "q05": 4.025862068965517,
+     "q25": 4.198275862068965,
+     "q50": 4.413793103448276,
+     "q75": 4.629310344827586,
+     "q95": 4.75
+    },
+    "mean": 4.4087499999999995,
+    "variance": 0.017142187500000003
+   }
+  },
+  {
+   "event_ticker": "KXFED-27DEC",
+   "title": "Fed funds rate after Dec 2027 meeting?",
+   "close_time": "2027-12-08T18:55:00+00:00",
+   "ladder_date": "2026-11-08",
+   "markets": [
+    {
+     "ticker": "KXFED-27DEC-T4.00",
+     "strike": "4.00%",
+     "level": 4.0,
+     "price": 0.75,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27DEC-T4.25",
+     "strike": "4.25%",
+     "level": 4.25,
+     "price": 0.65,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFED-27DEC-T4.75",
+     "strike": "4.75%",
+     "level": 4.75,
+     "price": 0.09,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 4.0,
+      "mass": 0.11764705882352938
+     },
+     {
+      "low": 4.0,
+      "high": 4.25,
+      "mass": 0.11764705882352938
+     },
+     {
+      "low": 4.25,
+      "high": 4.75,
+      "mass": 0.6588235294117648
+     },
+     {
+      "low": 4.75,
+      "high": null,
+      "mass": 0.10588235294117647
+     }
+    ],
+    "quantiles": {
+     "q05": 4.0,
+     "q25": 4.261160714285714,
+     "q50": 4.450892857142857,
+     "q75": 4.640625,
+     "q95": 4.75
+    },
+    "mean": 4.423529411764706,
+    "variance": 0.04672577854671279
+   }
+  },
+  {
+   "event_ticker": "KXFED-28JAN",
+   "title": "Fed funds rate after Jan 2028 meeting?",
+   "close_time": "2028-01-26T18:55:00+00:00",
+   "ladder_date": "2026-11-08",
+   "markets": [
+    {
+     "ticker": "KXFED-28JAN-T3.50",
+     "strike": "3.50%",
+     "level": 3.5,
+     "price": 0.84,
+     "volume": 0.0
+    }
+   ],
+   "distribution": null
+  }
+ ]
+}
