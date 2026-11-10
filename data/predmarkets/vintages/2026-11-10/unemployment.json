@@ -1,0 +1,546 @@
+{
+ "schema_version": 1,
+ "key": "unemployment",
+ "series_ticker": "KXU3",
+ "vintage_date": "2026-11-10",
+ "snapshot_at_utc": "2026-11-10T14:40:38+00:00",
+ "events": [
+  {
+   "event_ticker": "KXU3-26SEP",
+   "title": "Unemployment in September",
+   "close_time": "2026-10-02T12:29:00+00:00",
+   "ladder_date": "2026-10-02",
+   "markets": [
+    {
+     "ticker": "KXU3-26SEP-T3.7",
+     "strike": "3.7%",
+     "level": 3.7,
+     "price": 0.99,
+     "volume": 2805.57
+    },
+    {
+     "ticker": "KXU3-26SEP-T3.8",
+     "strike": "3.8%",
+     "level": 3.8,
+     "price": 0.99,
+     "volume": 5671.42
+    },
+    {
+     "ticker": "KXU3-26SEP-T3.9",
+     "strike": "3.9%",
+     "level": 3.9,
+     "price": 0.95,
+     "volume": 6357.57
+    },
+    {
+     "ticker": "KXU3-26SEP-T4.0",
+     "strike": "4.0%",
+     "level": 4.0,
+     "price": 0.73,
+     "volume": 3836.7
+    },
+    {
+     "ticker": "KXU3-26SEP-T4.1",
+     "strike": "4.1%",
+     "level": 4.1,
+     "price": 0.36,
+     "volume": 2659.23
+    },
+    {
+     "ticker": "KXU3-26SEP-T4.2",
+     "strike": "4.2%",
+     "level": 4.2,
+     "price": 0.08,
+     "volume": 3453.36
+    },
+    {
+     "ticker": "KXU3-26SEP-T4.3",
+     "strike": "4.3%",
+     "level": 4.3,
+     "price": 0.02,
+     "volume": 48.45
+    },
+    {
+     "ticker": "KXU3-26SEP-T4.4",
+     "strike": "4.4%",
+     "level": 4.4,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXU3-26SEP-T4.5",
+     "strike": "4.5%",
+     "level": 4.5,
+     "price": 0.01,
+     "volume": 100.0
+    },
+    {
+     "ticker": "KXU3-26SEP-T4.6",
+     "strike": "4.6%",
+     "level": 4.6,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXU3-26SEP-T4.7",
+     "strike": "4.7%",
+     "level": 4.7,
+     "price": 0.01,
+     "volume": 126.0
+    },
+    {
+     "ticker": "KXU3-26SEP-T4.8",
+     "strike": "4.8%",
+     "level": 4.8,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXU3-26SEP-T4.9",
+     "strike": "4.9%",
+     "level": 4.9,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXU3-26SEP-T5.0",
+     "strike": "5.0%",
+     "level": 5.0,
+     "price": 0.02,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 3.7,
+      "mass": 0.0
+     },
+     {
+      "low": 3.7,
+      "high": 3.8,
+      "mass": 0.0
+     },
+     {
+      "low": 3.8,
+      "high": 3.9,
+      "mass": 0.04081632653061228
+     },
+     {
+      "low": 3.9,
+      "high": 4.0,
+      "mass": 0.22448979591836732
+     },
+     {
+      "low": 4.0,
+      "high": 4.1,
+      "mass": 0.37755102040816324
+     },
+     {
+      "low": 4.1,
+      "high": 4.2,
+      "mass": 0.2857142857142857
+     },
+     {
+      "low": 4.2,
+      "high": 4.3,
+      "mass": 0.061224489795918366
+     },
+     {
+      "low": 4.3,
+      "high": 4.4,
+      "mass": 0.010204081632653062
+     },
+     {
+      "low": 4.4,
+      "high": 4.5,
+      "mass": 0.0
+     },
+     {
+      "low": 4.5,
+      "high": 4.6,
+      "mass": 0.0
+     },
+     {
+      "low": 4.6,
+      "high": 4.7,
+      "mass": 0.0
+     },
+     {
+      "low": 4.7,
+      "high": 4.8,
+      "mass": 0.0
+     },
+     {
+      "low": 4.8,
+      "high": 4.9,
+      "mass": 0.0
+     },
+     {
+      "low": 4.9,
+      "high": 5.0,
+      "mass": 0.0
+     },
+     {
+      "low": 5.0,
+      "high": null,
+      "mass": 0.0
+     }
+    ],
+    "quantiles": {
+     "q05": 3.904090909090909,
+     "q25": 3.993181818181818,
+     "q50": 4.062162162162162,
+     "q75": 4.1375,
+     "q95": 4.235
+    },
+    "mean": 4.063265306122449,
+    "variance": 0.009926072469804264
+   }
+  },
+  {
+   "event_ticker": "KXU3-26OCT",
+   "title": "Unemployment in October",
+   "close_time": "2026-11-06T13:29:00+00:00",
+   "ladder_date": "2026-11-06",
+   "markets": [
+    {
+     "ticker": "KXU3-26OCT-T3.7",
+     "strike": "3.7%",
+     "level": 3.7,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXU3-26OCT-T3.8",
+     "strike": "3.8%",
+     "level": 3.8,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXU3-26OCT-T3.9",
+     "strike": "3.9%",
+     "level": 3.9,
+     "price": 0.99,
+     "volume": 1526.04
+    },
+    {
+     "ticker": "KXU3-26OCT-T4.0",
+     "strike": "4.0%",
+     "level": 4.0,
+     "price": 0.95,
+     "volume": 1911.0
+    },
+    {
+     "ticker": "KXU3-26OCT-T4.1",
+     "strike": "4.1%",
+     "level": 4.1,
+     "price": 0.69,
+     "volume": 5874.21
+    },
+    {
+     "ticker": "KXU3-26OCT-T4.2",
+     "strike": "4.2%",
+     "level": 4.2,
+     "price": 0.2,
+     "volume": 6263.79
+    },
+    {
+     "ticker": "KXU3-26OCT-T4.3",
+     "strike": "4.3%",
+     "level": 4.3,
+     "price": 0.04,
+     "volume": 29717.99
+    },
+    {
+     "ticker": "KXU3-26OCT-T4.4",
+     "strike": "4.4%",
+     "level": 4.4,
+     "price": 0.01,
+     "volume": 648.04
+    },
+    {
+     "ticker": "KXU3-26OCT-T4.5",
+     "strike": "4.5%",
+     "level": 4.5,
+     "price": 0.01,
+     "volume": 93.51
+    },
+    {
+     "ticker": "KXU3-26OCT-T4.6",
+     "strike": "4.6%",
+     "level": 4.6,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXU3-26OCT-T4.7",
+     "strike": "4.7%",
+     "level": 4.7,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXU3-26OCT-T4.8",
+     "strike": "4.8%",
+     "level": 4.8,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXU3-26OCT-T4.9",
+     "strike": "4.9%",
+     "level": 4.9,
+     "price": 0.02,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXU3-26OCT-T5.0",
+     "strike": "5.0%",
+     "level": 5.0,
+     "price": 0.01,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 3.7,
+      "mass": 0.0
+     },
+     {
+      "low": 3.7,
+      "high": 3.8,
+      "mass": 0.0
+     },
+     {
+      "low": 3.8,
+      "high": 3.9,
+      "mass": 0.0
+     },
+     {
+      "low": 3.9,
+      "high": 4.0,
+      "mass": 0.04081632653061228
+     },
+     {
+      "low": 4.0,
+      "high": 4.1,
+      "mass": 0.2653061224489796
+     },
+     {
+      "low": 4.1,
+      "high": 4.2,
+      "mass": 0.49999999999999994
+     },
+     {
+      "low": 4.2,
+      "high": 4.3,
+      "mass": 0.163265306122449
+     },
+     {
+      "low": 4.3,
+      "high": 4.4,
+      "mass": 0.030612244897959183
+     },
+     {
+      "low": 4.4,
+      "high": 4.5,
+      "mass": 0.0
+     },
+     {
+      "low": 4.5,
+      "high": 4.6,
+      "mass": 0.0
+     },
+     {
+      "low": 4.6,
+      "high": 4.7,
+      "mass": 0.0
+     },
+     {
+      "low": 4.7,
+      "high": 4.8,
+      "mass": 0.0
+     },
+     {
+      "low": 4.8,
+      "high": 4.9,
+      "mass": 0.0
+     },
+     {
+      "low": 4.9,
+      "high": 5.0,
+      "mass": 0.0
+     },
+     {
+      "low": 5.0,
+      "high": null,
+      "mass": 0.0
+     }
+    ],
+    "quantiles": {
+     "q05": 4.003461538461538,
+     "q25": 4.078846153846153,
+     "q50": 4.1387755102040815,
+     "q75": 4.188775510204081,
+     "q95": 4.288125
+    },
+    "mean": 4.137755102040816,
+    "variance": 0.006992919616826329
+   }
+  },
+  {
+   "event_ticker": "KXU3-26NOV",
+   "title": "Unemployment in November",
+   "close_time": "2026-12-04T13:29:00+00:00",
+   "ladder_date": "2026-11-09",
+   "markets": [
+    {
+     "ticker": "KXU3-26NOV-T3.9",
+     "strike": "3.9%",
+     "level": 3.9,
+     "price": 0.97,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXU3-26NOV-T4.0",
+     "strike": "4.0%",
+     "level": 4.0,
+     "price": 0.85,
+     "volume": 730.29
+    },
+    {
+     "ticker": "KXU3-26NOV-T4.1",
+     "strike": "4.1%",
+     "level": 4.1,
+     "price": 0.43,
+     "volume": 59.28
+    },
+    {
+     "ticker": "KXU3-26NOV-T4.2",
+     "strike": "4.2%",
+     "level": 4.2,
+     "price": 0.08,
+     "volume": 31.2
+    },
+    {
+     "ticker": "KXU3-26NOV-T4.3",
+     "strike": "4.3%",
+     "level": 4.3,
+     "price": 0.04,
+     "volume": 185.0
+    },
+    {
+     "ticker": "KXU3-26NOV-T4.4",
+     "strike": "4.4%",
+     "level": 4.4,
+     "price": 0.02,
+     "volume": 10.0
+    },
+    {
+     "ticker": "KXU3-26NOV-T4.5",
+     "strike": "4.5%",
+     "level": 4.5,
+     "price": 0.02,
+     "volume": 10.0
+    },
+    {
+     "ticker": "KXU3-26NOV-T4.6",
+     "strike": "4.6%",
+     "level": 4.6,
+     "price": 0.05,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXU3-26NOV-T4.7",
+     "strike": "4.7%",
+     "level": 4.7,
+     "price": 0.02,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXU3-26NOV-T4.8",
+     "strike": "4.8%",
+     "level": 4.8,
+     "price": 0.05,
+     "volume": 4.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 3.9,
+      "mass": 0.03061224489795921
+     },
+     {
+      "low": 3.9,
+      "high": 4.0,
+      "mass": 0.12244897959183673
+     },
+     {
+      "low": 4.0,
+      "high": 4.1,
+      "mass": 0.42857142857142855
+     },
+     {
+      "low": 4.1,
+      "high": 4.2,
+      "mass": 0.35714285714285715
+     },
+     {
+      "low": 4.2,
+      "high": 4.3,
+      "mass": 0.04081632653061225
+     },
+     {
+      "low": 4.3,
+      "high": 4.4,
+      "mass": 0.020408163265306124
+     },
+     {
+      "low": 4.4,
+      "high": 4.5,
+      "mass": 0.0
+     },
+     {
+      "low": 4.5,
+      "high": 4.6,
+      "mass": 0.0
+     },
+     {
+      "low": 4.6,
+      "high": 4.7,
+      "mass": 0.0
+     },
+     {
+      "low": 4.7,
+      "high": 4.8,
+      "mass": 0.0
+     },
+     {
+      "low": 4.8,
+      "high": null,
+      "mass": 0.0
+     }
+    ],
+    "quantiles": {
+     "q05": 3.915833333333333,
+     "q25": 4.022619047619047,
+     "q50": 4.080952380952381,
+     "q75": 4.147142857142857,
+     "q95": 4.2275
+    },
+    "mean": 4.083163265306123,
+    "variance": 0.007854279466888811
+   }
+  }
+ ]
+}
