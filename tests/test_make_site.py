@@ -212,6 +212,132 @@ def test_shipped_meta_freshness_matches_raw_panel():
     assert f["n_series"] == len(ends)
 
 
+def _landing_fixture_heat(**overrides):
+    meta = {
+        "last_built_quarter": "2026Q2",
+        "nowcast_through": "2026Q3",
+        "n_indicators": 48,
+        "n_components": 14,
+    }
+    meta.update(overrides)
+    return meta
+
+
+def _landing_fixture_pulse(**overrides):
+    meta = {
+        "n_indicators": 5,
+        "n_live": 4,
+        "indicators": {
+            "ib/a": {}, "ib/b": {}, "ficc/c": {},
+            "awm/d": {}, "awm/e": {},
+        },
+    }
+    meta.update(overrides)
+    return meta
+
+
+def test_landing_lines_from_metas():
+    """The three spec lines derive from the metas: counts verbatim, the
+    coverage end at the nowcast quarter with its qualifier only when the
+    panel is extended past the last built quarter, and the segment count
+    from the distinct pulse key prefixes."""
+    lines = make_site.landing_spec_lines(
+        _landing_fixture_heat(), _landing_fixture_pulse(), "1990Q1")
+    assert lines["heat_indicators"] == \
+        "48 public-proxy indicators · 14 components"
+    assert lines["heat_coverage"] == "1990Q1 – 2026Q3 (2026Q3 nowcast)"
+    assert lines["pulse_indicators"] == \
+        "5 across 3 segments · 4 live from public sources"
+
+    # No extension past the built quarter: no nowcast qualifier.
+    lines = make_site.landing_spec_lines(
+        _landing_fixture_heat(nowcast_through="2026Q2"),
+        _landing_fixture_pulse(), "1990Q1")
+    assert lines["heat_coverage"] == "1990Q1 – 2026Q2"
+    heat = _landing_fixture_heat()
+    del heat["nowcast_through"]
+    lines = make_site.landing_spec_lines(
+        heat, _landing_fixture_pulse(), "1990Q1")
+    assert lines["heat_coverage"] == "1990Q1 – 2026Q2"
+
+
+_LANDING_FIXTURE_HTML = """<main>
+    <section class="card product-card">
+      <h2>FRB Heat Index</h2>
+      <dl class="specs">
+        <dt>Indicators</dt><dd>STALE heat counts</dd>
+        <dt>Frequency</dt><dd>Quarterly, refreshed by the quarterly pipeline</dd>
+        <dt>Coverage</dt><dd>STALE coverage</dd>
+      </dl>
+    </section>
+    <section class="card product-card">
+      <h2>Market Pulse</h2>
+      <dl class="specs">
+        <dt>Indicators</dt><dd>STALE pulse counts</dd>
+        <dt>Coverage</dt><dd>5+ year backfills where sources allow</dd>
+      </dl>
+    </section>
+    <section class="card product-card">
+      <h2>Prediction Markets</h2>
+      <dl class="specs">
+        <dt>Indicators</dt><dd>8 series from Kalshi's public API</dd>
+      </dl>
+    </section>
+</main>
+"""
+
+
+def test_update_landing_page_rewrites_only_spec_lines():
+    """The rewrite replaces exactly the three generated spec lines, is
+    byte-identical everywhere else (including the hand-written pulse
+    Coverage line and the untouched third card), is idempotent, and
+    fails loudly when a card or label is missing."""
+    lines = {
+        "heat_indicators": "48 public-proxy indicators · 14 components",
+        "heat_coverage": "1990Q1 – 2026Q3 (2026Q3 nowcast)",
+        "pulse_indicators": "42 across 10 segments · 41 live from public sources",
+    }
+    with tempfile.TemporaryDirectory() as td:
+        page = Path(td) / "index.html"
+        page.write_text(_LANDING_FIXTURE_HTML)
+        assert make_site.update_landing_page(page, lines) is True
+        out = page.read_text()
+        expected = (_LANDING_FIXTURE_HTML
+                    .replace("STALE heat counts", lines["heat_indicators"])
+                    .replace("STALE coverage", lines["heat_coverage"])
+                    .replace("STALE pulse counts", lines["pulse_indicators"]))
+        assert out == expected
+        assert make_site.update_landing_page(page, lines) is False
+
+        page.write_text(_LANDING_FIXTURE_HTML.replace(
+            "<dt>Coverage</dt><dd>STALE coverage</dd>", ""))
+        try:
+            make_site.update_landing_page(page, lines)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("missing Coverage label must raise")
+
+
+def test_shipped_landing_page_matches_metas():
+    """The committed landing page's three spec lines must equal the lines
+    derived from the committed metas -- the guard against the drift this
+    generator exists to remove."""
+    heat_p = HERE / "data" / "_meta.json"
+    pulse_p = HERE / "data" / "pulse" / "_meta.json"
+    page_p = HERE / "docs" / "index.html"
+    comp_p = HERE / "data" / "components.csv"
+    if not all(p.exists() for p in (heat_p, pulse_p, page_p, comp_p)):
+        print("skip test_shipped_landing_page: data files absent")
+        return
+    lines = make_site.landing_spec_lines(
+        json.loads(heat_p.read_text()), json.loads(pulse_p.read_text()),
+        pl.read_csv(comp_p)["quarter"][0])
+    text = page_p.read_text()
+    for key, line in lines.items():
+        assert line in text, f"{key}: landing page lacks {line!r}"
+
+
 if __name__ == "__main__":
     test_sanitize_json_replaces_nonfinite()
     test_dumps_strict_fails_loudly_on_missed_nan()
@@ -220,4 +346,7 @@ if __name__ == "__main__":
     test_build_writes_clustered_bundle()
     test_build_computes_freshness_from_raw_panel()
     test_shipped_meta_freshness_matches_raw_panel()
+    test_landing_lines_from_metas()
+    test_update_landing_page_rewrites_only_spec_lines()
+    test_shipped_landing_page_matches_metas()
     print("all make_site regression tests passed")
