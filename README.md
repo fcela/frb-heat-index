@@ -30,6 +30,9 @@ src/build_panel.py    raw -> data/panel_quarterly.csv   (Polars; 44 indicators)
 src/run_pipeline.py   panel -> data/components.csv + data/aggregate.csv
         sign -> log/10y-MA -> standardize -> component means -> kernel CDF
 src/make_site.py      data/*.csv -> docs/data/*.json   (website feed)
+                      + the landing page's data-derived spec lines
+                      (docs/index.html, from data/_meta.json and
+                      data/pulse/_meta.json)
 ```
 
 Two guards from the end-of-sample audit are built into the pipeline:
@@ -46,7 +49,8 @@ pip install polars numpy
 python src/fetch_series.py      # downloads raw inputs into work/raw/
 python src/build_panel.py       # work/raw/ -> data/panel_quarterly.csv
 python src/run_pipeline.py      # panel -> data/components.csv, data/aggregate.csv
-python src/make_site.py         # data/*.csv -> docs/data/*.json
+python src/make_site.py         # data/*.csv -> docs/data/*.json, and the
+                                # landing page's spec lines from the metas
 ```
 
 `fetch_series.py` reports any source that needs a manual download

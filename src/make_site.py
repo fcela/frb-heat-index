@@ -11,6 +11,13 @@ Outputs (under --out, default <repo>/docs/data):
                    heat-map view (src/cluster_indicators.py computes it)
   meta.json        data/_meta.json + site-contract fields
 
+Also rewrites, in place, the three data-derived spec lines on the landing
+page's product cards (docs/index.html, when it sits beside --out): the
+heat-index indicator/component counts and coverage from data/_meta.json,
+and the pulse indicator/segment/live counts from data/pulse/_meta.json.
+Those lines are generated, not maintained by hand; the rest of the page
+is hand-written and is left byte-identical.
+
 Missing or non-finite values are emitted as null. JSON is serialized with
 allow_nan=False so a missed NaN/Inf fails the build loudly instead of
 shipping invalid JSON to the site (2026-10-14 outage: bare NaN literals
@@ -31,6 +38,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
 import sys
 from pathlib import Path
 
@@ -145,6 +153,91 @@ def series_json(df: pl.DataFrame, value_col: str) -> list[dict]:
     for q, v in df.select(["quarter", value_col]).iter_rows():
         out.append({"q": q, "v": json_value(v)})
     return out
+
+
+def quarter_key(q: str) -> tuple[int, int]:
+    """Order key for a 'YYYYQn' quarter string."""
+    year, _, qtr = q.partition("Q")
+    return int(year), int(qtr)
+
+
+def landing_spec_lines(heat_meta: dict, pulse_meta: dict,
+                       start_quarter: str) -> dict[str, str]:
+    """The landing page's three data-derived spec lines.
+
+    Every number and date comes from the two build metas and the panel's
+    first quarter; nothing is copied from the page's current text, so the
+    lines cannot drift from the data the site serves. The coverage line
+    ends at the nowcast quarter, flagged as a nowcast, when the panel has
+    been extended past the last built (observed) quarter; otherwise it
+    ends at the last built quarter with no qualifier. The pulse segment
+    count is the number of distinct key prefixes in the pulse meta's
+    indicator map.
+    """
+    lines = {
+        "heat_indicators": (
+            f"{heat_meta['n_indicators']} public-proxy indicators "
+            f"· {heat_meta['n_components']} components"
+        ),
+    }
+    last_built = heat_meta["last_built_quarter"]
+    nowcast = heat_meta.get("nowcast_through")
+    if nowcast and quarter_key(nowcast) > quarter_key(last_built):
+        end, qualifier = nowcast, f" ({nowcast} nowcast)"
+    else:
+        end, qualifier = last_built, ""
+    lines["heat_coverage"] = f"{start_quarter} – {end}{qualifier}"
+    segments = {key.split("/")[0] for key in pulse_meta["indicators"]}
+    lines["pulse_indicators"] = (
+        f"{pulse_meta['n_indicators']} across {len(segments)} segments "
+        f"· {pulse_meta['n_live']} live from public sources"
+    )
+    return lines
+
+
+# (card heading, {spec label: line key}) for the landing-page cards whose
+# spec lines are generated. Cards and labels not listed here are
+# hand-written and are never touched.
+LANDING_SECTIONS = (
+    ("FRB Heat Index", {"Indicators": "heat_indicators",
+                        "Coverage": "heat_coverage"}),
+    ("Market Pulse", {"Indicators": "pulse_indicators"}),
+)
+
+
+def update_landing_page(path: Path, lines: dict[str, str]) -> bool:
+    """Rewrite the generated spec lines in the landing page, in place.
+
+    Only the <dd> text of the listed spec labels, inside the listed card
+    sections, is replaced; everything else stays byte-identical. A missing
+    card or label raises ValueError -- a page whose structure has moved
+    away from the generator must fail the build loudly, not drift.
+    Returns True when the file changed.
+    """
+    text = path.read_text()
+    new = text
+    for heading, specs in LANDING_SECTIONS:
+        anchor = f"<h2>{heading}</h2>"
+        start = new.find(anchor)
+        if start < 0:
+            raise ValueError(f"{path}: landing card {heading!r} not found")
+        end = new.find("</section>", start)
+        if end < 0:
+            raise ValueError(f"{path}: landing card {heading!r} not closed")
+        section = new[start:end]
+        for label, key in specs.items():
+            pattern = re.compile(r"(<dt>" + label + r"</dt><dd>).*?(</dd>)")
+            section, n = pattern.subn(
+                lambda m: m.group(1) + lines[key] + m.group(2),
+                section, count=1)
+            if n != 1:
+                raise ValueError(
+                    f"{path}: spec {label!r} not found in card {heading!r}")
+        new = new[:start] + section + new[end:]
+    if new == text:
+        return False
+    path.write_text(new)
+    return True
 
 
 def build(data: Path, out: Path) -> dict:
@@ -278,6 +371,18 @@ def build(data: Path, out: Path) -> dict:
         ind_meta = build_indicators_meta(data)
         (out / "indicators_meta.json").write_text(dumps_strict(ind_meta, indent=1) + "\n")
         print(f"Wrote {out / 'indicators_meta.json'} ({len(ind_meta['indicators'])} indicators)")
+
+    # Landing page: regenerate the product cards' data-derived spec lines
+    # from the two metas, so the page cannot drift from the data at the
+    # next expansion. Only runs when the page sits beside the output dir
+    # (the real site build); fixture builds into scratch dirs skip it.
+    landing = out.parent / "index.html"
+    if landing.exists():
+        pulse_meta = json.loads((data / "pulse" / "_meta.json").read_text())
+        spec_lines = landing_spec_lines(meta, pulse_meta, quarters[0])
+        if update_landing_page(landing, spec_lines):
+            print(f"Wrote {landing} (spec lines from data/_meta.json "
+                  f"and data/pulse/_meta.json)")
 
     return meta
 
