@@ -1,0 +1,529 @@
+{
+ "schema_version": 1,
+ "key": "gdp_quarterly",
+ "series_ticker": "KXGDP",
+ "vintage_date": "2026-11-11",
+ "snapshot_at_utc": "2026-11-11T13:55:55+00:00",
+ "events": [
+  {
+   "event_ticker": "KXGDP-26OCT30",
+   "title": "US real GDP growth in Q3 2026?",
+   "close_time": "2026-10-29T15:13:19+00:00",
+   "ladder_date": "2026-10-29",
+   "markets": [
+    {
+     "ticker": "KXGDP-26OCT30-T0.5",
+     "strike": "0.5%",
+     "level": 0.5,
+     "price": 0.99,
+     "volume": 0.26
+    },
+    {
+     "ticker": "KXGDP-26OCT30-T1.0",
+     "strike": "1.0%",
+     "level": 1.0,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-26OCT30-T1.5",
+     "strike": "1.5%",
+     "level": 1.5,
+     "price": 0.97,
+     "volume": 17.91
+    },
+    {
+     "ticker": "KXGDP-26OCT30-T2.0",
+     "strike": "2.0%",
+     "level": 2.0,
+     "price": 0.98,
+     "volume": 536.16
+    },
+    {
+     "ticker": "KXGDP-26OCT30-T2.5",
+     "strike": "2.5%",
+     "level": 2.5,
+     "price": 0.99,
+     "volume": 5643.23
+    },
+    {
+     "ticker": "KXGDP-26OCT30-T3.0",
+     "strike": "3.0%",
+     "level": 3.0,
+     "price": 0.98,
+     "volume": 11799.33
+    },
+    {
+     "ticker": "KXGDP-26OCT30-T3.5",
+     "strike": "3.5%",
+     "level": 3.5,
+     "price": 0.01,
+     "volume": 6473.56
+    },
+    {
+     "ticker": "KXGDP-26OCT30-T4.0",
+     "strike": "4.0%",
+     "level": 4.0,
+     "price": 0.03,
+     "volume": 3183.0
+    },
+    {
+     "ticker": "KXGDP-26OCT30-T0.0",
+     "strike": "Above 0.0%",
+     "level": null,
+     "price": 0.99,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 0.5,
+      "mass": 0.0
+     },
+     {
+      "low": 0.5,
+      "high": 1.0,
+      "mass": 0.0
+     },
+     {
+      "low": 1.0,
+      "high": 1.5,
+      "mass": 0.0
+     },
+     {
+      "low": 1.5,
+      "high": 2.0,
+      "mass": 0.0
+     },
+     {
+      "low": 2.0,
+      "high": 2.5,
+      "mass": 0.0
+     },
+     {
+      "low": 2.5,
+      "high": 3.0,
+      "mass": 0.01020408163265307
+     },
+     {
+      "low": 3.0,
+      "high": 3.5,
+      "mass": 0.9897959183673469
+     },
+     {
+      "low": 3.5,
+      "high": 4.0,
+      "mass": 0.0
+     },
+     {
+      "low": 4.0,
+      "high": null,
+      "mass": 0.0
+     }
+    ],
+    "quantiles": {
+     "q05": 3.020103092783505,
+     "q25": 3.1211340206185567,
+     "q50": 3.247422680412371,
+     "q75": 3.3737113402061856,
+     "q95": 3.474742268041237
+    },
+    "mean": 3.2448979591836733,
+    "variance": 0.0025249895876718054
+   }
+  },
+  {
+   "event_ticker": "KXGDP-27JAN28",
+   "title": "US real GDP growth in Q4 2026?",
+   "close_time": "2027-01-28T13:29:00+00:00",
+   "ladder_date": "2026-11-10",
+   "markets": [
+    {
+     "ticker": "KXGDP-27JAN28-T0.5",
+     "strike": "0.5%",
+     "level": 0.5,
+     "price": 0.92,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27JAN28-T1.0",
+     "strike": "1.0%",
+     "level": 1.0,
+     "price": 0.9,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27JAN28-T1.5",
+     "strike": "1.5%",
+     "level": 1.5,
+     "price": 0.85,
+     "volume": 5.0
+    },
+    {
+     "ticker": "KXGDP-27JAN28-T2.0",
+     "strike": "2.0%",
+     "level": 2.0,
+     "price": 0.76,
+     "volume": 170.31
+    },
+    {
+     "ticker": "KXGDP-27JAN28-T2.5",
+     "strike": "2.5%",
+     "level": 2.5,
+     "price": 0.64,
+     "volume": 3.0
+    },
+    {
+     "ticker": "KXGDP-27JAN28-T3.0",
+     "strike": "3.0%",
+     "level": 3.0,
+     "price": 0.58,
+     "volume": 87.76
+    },
+    {
+     "ticker": "KXGDP-27JAN28-T3.5",
+     "strike": "3.5%",
+     "level": 3.5,
+     "price": 0.27,
+     "volume": 86.21
+    },
+    {
+     "ticker": "KXGDP-27JAN28-T4.0",
+     "strike": "4.0%",
+     "level": 4.0,
+     "price": 0.14,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27JAN28-T0.0",
+     "strike": "Above 0.0%",
+     "level": null,
+     "price": 0.94,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 0.5,
+      "mass": 0.023809523809523826
+     },
+     {
+      "low": 0.5,
+      "high": 1.0,
+      "mass": 0.023809523809523826
+     },
+     {
+      "low": 1.0,
+      "high": 1.5,
+      "mass": 0.05952380952380956
+     },
+     {
+      "low": 1.5,
+      "high": 2.0,
+      "mass": 0.07142857142857148
+     },
+     {
+      "low": 2.0,
+      "high": 2.5,
+      "mass": 0.07142857142857148
+     },
+     {
+      "low": 2.5,
+      "high": 3.0,
+      "mass": 0.07142857142857148
+     },
+     {
+      "low": 3.0,
+      "high": 3.5,
+      "mass": 0.3690476190476189
+     },
+     {
+      "low": 3.5,
+      "high": 4.0,
+      "mass": 0.15476190476190474
+     },
+     {
+      "low": 4.0,
+      "high": null,
+      "mass": 0.15476190476190474
+     }
+    ],
+    "quantiles": {
+     "q05": 1.0199999999999998,
+     "q25": 2.4999999999999987,
+     "q50": 3.2419354838709675,
+     "q75": 3.6923076923076925,
+     "q95": 4.0
+    },
+    "mean": 2.9851190476190474,
+    "variance": 0.8725464143990933
+   }
+  },
+  {
+   "event_ticker": "KXGDP-27APR29",
+   "title": "US real GDP growth in Q1 2027?",
+   "close_time": "2027-04-29T12:29:00+00:00",
+   "ladder_date": "2026-11-10",
+   "markets": [
+    {
+     "ticker": "KXGDP-27APR29-T0.5",
+     "strike": "0.5%",
+     "level": 0.5,
+     "price": 0.88,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27APR29-T1.0",
+     "strike": "1.0%",
+     "level": 1.0,
+     "price": 0.73,
+     "volume": 5.0
+    },
+    {
+     "ticker": "KXGDP-27APR29-T1.5",
+     "strike": "1.5%",
+     "level": 1.5,
+     "price": 0.63,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27APR29-T2.0",
+     "strike": "2.0%",
+     "level": 2.0,
+     "price": 0.5,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27APR29-T2.5",
+     "strike": "2.5%",
+     "level": 2.5,
+     "price": 0.44,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27APR29-T3.0",
+     "strike": "3.0%",
+     "level": 3.0,
+     "price": 0.35,
+     "volume": 5.0
+    },
+    {
+     "ticker": "KXGDP-27APR29-T3.5",
+     "strike": "3.5%",
+     "level": 3.5,
+     "price": 0.12,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27APR29-T4.0",
+     "strike": "4.0%",
+     "level": 4.0,
+     "price": 0.11,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27APR29-T0.0",
+     "strike": "Above 0.0%",
+     "level": null,
+     "price": 0.95,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 0.5,
+      "mass": 0.09375
+     },
+     {
+      "low": 0.5,
+      "high": 1.0,
+      "mass": 0.09375
+     },
+     {
+      "low": 1.0,
+      "high": 1.5,
+      "mass": 0.09375
+     },
+     {
+      "low": 1.5,
+      "high": 2.0,
+      "mass": 0.09375
+     },
+     {
+      "low": 2.0,
+      "high": 2.5,
+      "mass": 0.09375
+     },
+     {
+      "low": 2.5,
+      "high": 3.0,
+      "mass": 0.14062500000000003
+     },
+     {
+      "low": 3.0,
+      "high": 3.5,
+      "mass": 0.35937499999999994
+     },
+     {
+      "low": 3.5,
+      "high": 4.0,
+      "mass": 0.015624999999999991
+     },
+     {
+      "low": 4.0,
+      "high": null,
+      "mass": 0.015624999999999991
+     }
+    ],
+    "quantiles": {
+     "q05": 0.5,
+     "q25": 1.3333333333333333,
+     "q50": 2.611111111111111,
+     "q75": 3.1956521739130435,
+     "q95": 3.4739130434782606
+    },
+    "mean": 2.2851562499999996,
+    "variance": 1.0915374755859375
+   }
+  },
+  {
+   "event_ticker": "KXGDP-27JUL29",
+   "title": "US real GDP growth in Q2 2027?",
+   "close_time": "2027-07-29T12:29:00+00:00",
+   "ladder_date": "2026-11-10",
+   "markets": [
+    {
+     "ticker": "KXGDP-27JUL29-T0.5",
+     "strike": "0.5%",
+     "level": 0.5,
+     "price": 0.85,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27JUL29-T1.0",
+     "strike": "1.0%",
+     "level": 1.0,
+     "price": 0.77,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27JUL29-T1.5",
+     "strike": "1.5%",
+     "level": 1.5,
+     "price": 0.67,
+     "volume": 5.0
+    },
+    {
+     "ticker": "KXGDP-27JUL29-T2.0",
+     "strike": "2.0%",
+     "level": 2.0,
+     "price": 0.55,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27JUL29-T2.5",
+     "strike": "2.5%",
+     "level": 2.5,
+     "price": 0.44,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27JUL29-T3.0",
+     "strike": "3.0%",
+     "level": 3.0,
+     "price": 0.36,
+     "volume": 8.0
+    },
+    {
+     "ticker": "KXGDP-27JUL29-T3.5",
+     "strike": "3.5%",
+     "level": 3.5,
+     "price": 0.13,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27JUL29-T4.0",
+     "strike": "4.0%",
+     "level": 4.0,
+     "price": 0.08,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXGDP-27JUL29-T0.0",
+     "strike": "Above 0.0%",
+     "level": null,
+     "price": 0.93,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 0.5,
+      "mass": 0.09876543209876538
+     },
+     {
+      "low": 0.5,
+      "high": 1.0,
+      "mass": 0.09876543209876538
+     },
+     {
+      "low": 1.0,
+      "high": 1.5,
+      "mass": 0.09876543209876545
+     },
+     {
+      "low": 1.5,
+      "high": 2.0,
+      "mass": 0.09876543209876545
+     },
+     {
+      "low": 2.0,
+      "high": 2.5,
+      "mass": 0.09876543209876545
+     },
+     {
+      "low": 2.5,
+      "high": 3.0,
+      "mass": 0.09876543209876545
+     },
+     {
+      "low": 3.0,
+      "high": 3.5,
+      "mass": 0.2839506172839506
+     },
+     {
+      "low": 3.5,
+      "high": 4.0,
+      "mass": 0.061728395061728406
+     },
+     {
+      "low": 4.0,
+      "high": null,
+      "mass": 0.061728395061728406
+     }
+    ],
+    "quantiles": {
+     "q05": 0.5,
+     "q25": 1.2656250000000004,
+     "q50": 2.53125,
+     "q75": 3.2771739130434785,
+     "q95": 4.0
+    },
+    "mean": 2.314814814814815,
+    "variance": 1.2805212620027433
+   }
+  }
+ ]
+}
