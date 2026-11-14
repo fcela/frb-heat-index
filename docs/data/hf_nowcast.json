@@ -1,12 +1,12 @@
 {
- "generated_at_utc": "2026-11-07T12:19:48Z",
- "vintage_friday": "2026-11-06",
+ "generated_at_utc": "2026-11-14T12:52:47Z",
+ "vintage_friday": "2026-11-13",
  "last_published_quarter": "2026Q2",
  "last_published_value": 2.5155,
  "nowcasts": [
   {
    "target_quarter": "2026Q3",
-   "value": 2.528,
+   "value": 2.5276,
    "method": "nowcast-ridge100-change",
    "carry_forward": 2.5155,
    "rmse_band": 0.0509,
@@ -14,7 +14,7 @@
   },
   {
    "target_quarter": "2026Q4",
-   "value": 2.5678,
+   "value": 2.562,
    "method": "nowcast-ridge100-change",
    "carry_forward": 2.5155,
    "rmse_band": 0.0758,
