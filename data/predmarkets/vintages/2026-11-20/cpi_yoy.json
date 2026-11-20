@@ -1,0 +1,846 @@
+{
+ "schema_version": 1,
+ "key": "cpi_yoy",
+ "series_ticker": "KXCPIYOY",
+ "vintage_date": "2026-11-20",
+ "snapshot_at_utc": "2026-11-20T15:12:33+00:00",
+ "events": [
+  {
+   "event_ticker": "KXCPIYOY-26SEP",
+   "title": "Inflation in September 2026 (CPI YoY)",
+   "close_time": "2026-10-14T12:29:00+00:00",
+   "ladder_date": "2026-10-14",
+   "markets": [
+    {
+     "ticker": "KXCPIYOY-26SEP-T3.0",
+     "strike": "3.0",
+     "level": 3.0,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T3.1",
+     "strike": "3.1",
+     "level": 3.1,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T3.2",
+     "strike": "3.2",
+     "level": 3.2,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T3.3",
+     "strike": "3.3",
+     "level": 3.3,
+     "price": 0.98,
+     "volume": 1100.46
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T3.4",
+     "strike": "3.4",
+     "level": 3.4,
+     "price": 0.95,
+     "volume": 2558.73
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T3.5",
+     "strike": "3.5",
+     "level": 3.5,
+     "price": 0.86,
+     "volume": 3743.85
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T3.6",
+     "strike": "3.6",
+     "level": 3.6,
+     "price": 0.43,
+     "volume": 8267.75
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T3.7",
+     "strike": "3.7",
+     "level": 3.7,
+     "price": 0.18,
+     "volume": 9051.23
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T3.8",
+     "strike": "3.8",
+     "level": 3.8,
+     "price": 0.03,
+     "volume": 4808.85
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T3.9",
+     "strike": "3.9",
+     "level": 3.9,
+     "price": 0.01,
+     "volume": 476.52
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T4.0",
+     "strike": "4.0",
+     "level": 4.0,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T4.1",
+     "strike": "4.1",
+     "level": 4.1,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T4.2",
+     "strike": "4.2",
+     "level": 4.2,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T4.3",
+     "strike": "4.3",
+     "level": 4.3,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T4.4",
+     "strike": "4.4",
+     "level": 4.4,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T4.5",
+     "strike": "4.5",
+     "level": 4.5,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T4.6",
+     "strike": "4.6",
+     "level": 4.6,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T4.7",
+     "strike": "4.7",
+     "level": 4.7,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T4.8",
+     "strike": "4.8",
+     "level": 4.8,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T4.9",
+     "strike": "4.9",
+     "level": 4.9,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26SEP-T5.0",
+     "strike": "5.0",
+     "level": 5.0,
+     "price": 0.01,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 3.0,
+      "mass": 0.0
+     },
+     {
+      "low": 3.0,
+      "high": 3.1,
+      "mass": 0.0
+     },
+     {
+      "low": 3.1,
+      "high": 3.2,
+      "mass": 0.0
+     },
+     {
+      "low": 3.2,
+      "high": 3.3,
+      "mass": 0.01020408163265307
+     },
+     {
+      "low": 3.3,
+      "high": 3.4,
+      "mass": 0.03061224489795921
+     },
+     {
+      "low": 3.4,
+      "high": 3.5,
+      "mass": 0.09183673469387751
+     },
+     {
+      "low": 3.5,
+      "high": 3.6,
+      "mass": 0.4387755102040816
+     },
+     {
+      "low": 3.6,
+      "high": 3.7,
+      "mass": 0.25510204081632654
+     },
+     {
+      "low": 3.7,
+      "high": 3.8,
+      "mass": 0.15306122448979592
+     },
+     {
+      "low": 3.8,
+      "high": 3.9,
+      "mass": 0.02040816326530612
+     },
+     {
+      "low": 3.9,
+      "high": 4.0,
+      "mass": 0.0
+     },
+     {
+      "low": 4.0,
+      "high": 4.1,
+      "mass": 0.0
+     },
+     {
+      "low": 4.1,
+      "high": 4.2,
+      "mass": 0.0
+     },
+     {
+      "low": 4.2,
+      "high": 4.3,
+      "mass": 0.0
+     },
+     {
+      "low": 4.3,
+      "high": 4.4,
+      "mass": 0.0
+     },
+     {
+      "low": 4.4,
+      "high": 4.5,
+      "mass": 0.0
+     },
+     {
+      "low": 4.5,
+      "high": 4.6,
+      "mass": 0.0
+     },
+     {
+      "low": 4.6,
+      "high": 4.7,
+      "mass": 0.0
+     },
+     {
+      "low": 4.7,
+      "high": 4.8,
+      "mass": 0.0
+     },
+     {
+      "low": 4.8,
+      "high": 4.9,
+      "mass": 0.0
+     },
+     {
+      "low": 4.9,
+      "high": 5.0,
+      "mass": 0.0
+     },
+     {
+      "low": 5.0,
+      "high": null,
+      "mass": 0.0
+     }
+    ],
+    "quantiles": {
+     "q05": 3.4099999999999997,
+     "q25": 3.526744186046512,
+     "q50": 3.583720930232558,
+     "q75": 3.6700000000000004,
+     "q95": 3.7806666666666664
+    },
+    "mean": 3.5938775510204084,
+    "variance": 0.011646189087880066
+   }
+  },
+  {
+   "event_ticker": "KXCPIYOY-26NOV",
+   "title": "CPI YoY in November",
+   "close_time": "2026-12-10T13:29:00+00:00",
+   "ladder_date": "2026-11-19",
+   "markets": [
+    {
+     "ticker": "KXCPIYOY-26NOV-T3.0",
+     "strike": "3.0",
+     "level": 3.0,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T3.1",
+     "strike": "3.1",
+     "level": 3.1,
+     "price": 0.99,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T3.2",
+     "strike": "3.2",
+     "level": 3.2,
+     "price": 0.99,
+     "volume": 6907.0
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T3.3",
+     "strike": "3.3",
+     "level": 3.3,
+     "price": 0.99,
+     "volume": 6676.06
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T3.4",
+     "strike": "3.4",
+     "level": 3.4,
+     "price": 0.99,
+     "volume": 2273.0
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T3.5",
+     "strike": "3.5",
+     "level": 3.5,
+     "price": 0.96,
+     "volume": 4128.57
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T3.6",
+     "strike": "3.6",
+     "level": 3.6,
+     "price": 0.8,
+     "volume": 15448.83
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T3.7",
+     "strike": "3.7",
+     "level": 3.7,
+     "price": 0.39,
+     "volume": 685.39
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T3.8",
+     "strike": "3.8",
+     "level": 3.8,
+     "price": 0.13,
+     "volume": 555.69
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T3.9",
+     "strike": "3.9",
+     "level": 3.9,
+     "price": 0.01,
+     "volume": 6393.6
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T4.0",
+     "strike": "4.0",
+     "level": 4.0,
+     "price": 0.01,
+     "volume": 138.88
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T4.1",
+     "strike": "4.1",
+     "level": 4.1,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T4.2",
+     "strike": "4.2",
+     "level": 4.2,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T4.3",
+     "strike": "4.3",
+     "level": 4.3,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T4.4",
+     "strike": "4.4",
+     "level": 4.4,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T4.5",
+     "strike": "4.5",
+     "level": 4.5,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T4.6",
+     "strike": "4.6",
+     "level": 4.6,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T4.7",
+     "strike": "4.7",
+     "level": 4.7,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T4.8",
+     "strike": "4.8",
+     "level": 4.8,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T4.9",
+     "strike": "4.9",
+     "level": 4.9,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26NOV-T5.0",
+     "strike": "5.0",
+     "level": 5.0,
+     "price": 0.01,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 3.0,
+      "mass": 0.0
+     },
+     {
+      "low": 3.0,
+      "high": 3.1,
+      "mass": 0.0
+     },
+     {
+      "low": 3.1,
+      "high": 3.2,
+      "mass": 0.0
+     },
+     {
+      "low": 3.2,
+      "high": 3.3,
+      "mass": 0.0
+     },
+     {
+      "low": 3.3,
+      "high": 3.4,
+      "mass": 0.0
+     },
+     {
+      "low": 3.4,
+      "high": 3.5,
+      "mass": 0.03061224489795921
+     },
+     {
+      "low": 3.5,
+      "high": 3.6,
+      "mass": 0.1632653061224489
+     },
+     {
+      "low": 3.6,
+      "high": 3.7,
+      "mass": 0.41836734693877553
+     },
+     {
+      "low": 3.7,
+      "high": 3.8,
+      "mass": 0.2653061224489796
+     },
+     {
+      "low": 3.8,
+      "high": 3.9,
+      "mass": 0.12244897959183675
+     },
+     {
+      "low": 3.9,
+      "high": 4.0,
+      "mass": 0.0
+     },
+     {
+      "low": 4.0,
+      "high": 4.1,
+      "mass": 0.0
+     },
+     {
+      "low": 4.1,
+      "high": 4.2,
+      "mass": 0.0
+     },
+     {
+      "low": 4.2,
+      "high": 4.3,
+      "mass": 0.0
+     },
+     {
+      "low": 4.3,
+      "high": 4.4,
+      "mass": 0.0
+     },
+     {
+      "low": 4.4,
+      "high": 4.5,
+      "mass": 0.0
+     },
+     {
+      "low": 4.5,
+      "high": 4.6,
+      "mass": 0.0
+     },
+     {
+      "low": 4.6,
+      "high": 4.7,
+      "mass": 0.0
+     },
+     {
+      "low": 4.7,
+      "high": 4.8,
+      "mass": 0.0
+     },
+     {
+      "low": 4.8,
+      "high": 4.9,
+      "mass": 0.0
+     },
+     {
+      "low": 4.9,
+      "high": 5.0,
+      "mass": 0.0
+     },
+     {
+      "low": 5.0,
+      "high": null,
+      "mass": 0.0
+     }
+    ],
+    "quantiles": {
+     "q05": 3.511875,
+     "q25": 3.613414634146342,
+     "q50": 3.6731707317073172,
+     "q75": 3.751923076923077,
+     "q95": 3.8591666666666664
+    },
+    "mean": 3.678571428571429,
+    "variance": 0.00959183673469386
+   }
+  },
+  {
+   "event_ticker": "KXCPIYOY-26DEC",
+   "title": "CPI YoY in December",
+   "close_time": "2027-01-13T13:29:00+00:00",
+   "ladder_date": "2026-11-19",
+   "markets": [
+    {
+     "ticker": "KXCPIYOY-26DEC-T3.0",
+     "strike": "3.0",
+     "level": 3.0,
+     "price": 0.96,
+     "volume": 12.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T3.1",
+     "strike": "3.1",
+     "level": 3.1,
+     "price": 0.95,
+     "volume": 9107.01
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T3.2",
+     "strike": "3.2",
+     "level": 3.2,
+     "price": 0.87,
+     "volume": 3155.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T3.3",
+     "strike": "3.3",
+     "level": 3.3,
+     "price": 0.77,
+     "volume": 23.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T3.4",
+     "strike": "3.4",
+     "level": 3.4,
+     "price": 0.6,
+     "volume": 1.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T3.5",
+     "strike": "3.5",
+     "level": 3.5,
+     "price": 0.48,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T3.6",
+     "strike": "3.6",
+     "level": 3.6,
+     "price": 0.27,
+     "volume": 2803.41
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T3.7",
+     "strike": "3.7",
+     "level": 3.7,
+     "price": 0.17,
+     "volume": 1010.56
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T3.8",
+     "strike": "3.8",
+     "level": 3.8,
+     "price": 0.09,
+     "volume": 893.66
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T3.9",
+     "strike": "3.9",
+     "level": 3.9,
+     "price": 0.04,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T4.0",
+     "strike": "4.0",
+     "level": 4.0,
+     "price": 0.02,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T4.1",
+     "strike": "4.1",
+     "level": 4.1,
+     "price": 0.03,
+     "volume": 250.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T4.2",
+     "strike": "4.2",
+     "level": 4.2,
+     "price": 0.03,
+     "volume": 24.02
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T4.3",
+     "strike": "4.3",
+     "level": 4.3,
+     "price": 0.04,
+     "volume": 1000.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T4.4",
+     "strike": "4.4",
+     "level": 4.4,
+     "price": 0.04,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T4.5",
+     "strike": "4.5",
+     "level": 4.5,
+     "price": 0.03,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T4.6",
+     "strike": "4.6",
+     "level": 4.6,
+     "price": 0.03,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T4.7",
+     "strike": "4.7",
+     "level": 4.7,
+     "price": 0.03,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T4.8",
+     "strike": "4.8",
+     "level": 4.8,
+     "price": 0.03,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T4.9",
+     "strike": "4.9",
+     "level": 4.9,
+     "price": 0.02,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXCPIYOY-26DEC-T5.0",
+     "strike": "5.0",
+     "level": 5.0,
+     "price": 0.02,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "threshold_bins",
+    "bins": [
+     {
+      "low": null,
+      "high": 3.0,
+      "mass": 0.011111111111111122
+     },
+     {
+      "low": 3.0,
+      "high": 3.1,
+      "mass": 0.011111111111111122
+     },
+     {
+      "low": 3.1,
+      "high": 3.2,
+      "mass": 0.08888888888888885
+     },
+     {
+      "low": 3.2,
+      "high": 3.3,
+      "mass": 0.11111111111111109
+     },
+     {
+      "low": 3.3,
+      "high": 3.4,
+      "mass": 0.13333333333333333
+     },
+     {
+      "low": 3.4,
+      "high": 3.5,
+      "mass": 0.13333333333333333
+     },
+     {
+      "low": 3.5,
+      "high": 3.6,
+      "mass": 0.2333333333333333
+     },
+     {
+      "low": 3.6,
+      "high": 3.7,
+      "mass": 0.11111111111111113
+     },
+     {
+      "low": 3.7,
+      "high": 3.8,
+      "mass": 0.08888888888888892
+     },
+     {
+      "low": 3.8,
+      "high": 3.9,
+      "mass": 0.05555555555555556
+     },
+     {
+      "low": 3.9,
+      "high": 4.0,
+      "mass": 0.022222222222222227
+     },
+     {
+      "low": 4.0,
+      "high": 4.1,
+      "mass": 0.0
+     },
+     {
+      "low": 4.1,
+      "high": 4.2,
+      "mass": 0.0
+     },
+     {
+      "low": 4.2,
+      "high": 4.3,
+      "mass": 0.0
+     },
+     {
+      "low": 4.3,
+      "high": 4.4,
+      "mass": 0.0
+     },
+     {
+      "low": 4.4,
+      "high": 4.5,
+      "mass": 0.0
+     },
+     {
+      "low": 4.5,
+      "high": 4.6,
+      "mass": 0.0
+     },
+     {
+      "low": 4.6,
+      "high": 4.7,
+      "mass": 0.0
+     },
+     {
+      "low": 4.7,
+      "high": 4.8,
+      "mass": 0.0
+     },
+     {
+      "low": 4.8,
+      "high": 4.9,
+      "mass": 0.0
+     },
+     {
+      "low": 4.9,
+      "high": 5.0,
+      "mass": 0.0
+     },
+     {
+      "low": 5.0,
+      "high": null,
+      "mass": 0.0
+     }
+    ],
+    "quantiles": {
+     "q05": 3.13125,
+     "q25": 3.3208333333333333,
+     "q50": 3.5047619047619047,
+     "q75": 3.625,
+     "q95": 3.8499999999999996
+    },
+    "mean": 3.483888888888889,
+    "variance": 0.045879320987654314
+   }
+  }
+ ]
+}
