@@ -1,6 +1,6 @@
 """Regression tests for the nowcast-completed panel.
 
-- panel_complete.csv: 147 quarters x 48 indicators (through 2026Q3);
+- panel_complete.csv: 147 quarters x 52 indicators (through 2026Q3);
   the only trailing NaN is the maturity-gap 2026Q3 cell, unextended
   by design (its regression inputs are not observed for 2026Q3)
 - every filled (quarter, indicator) cell has a provenance record,
@@ -59,8 +59,8 @@ def main() -> int:
     raw = pl.read_csv(RAW)
     cols = [c for c in panel.columns if c != "quarter"]
 
-    ok &= check(panel.height == 147 and panel.width == 49,
-                f"panel shape {panel.height}x{panel.width}, want 147x49")
+    ok &= check(panel.height == 147 and panel.width == 53,
+                f"panel shape {panel.height}x{panel.width}, want 147x53")
 
     # trailing NaN: only the maturity-gap 2026Q3 cell may be empty,
     # and only in the last row
@@ -116,8 +116,8 @@ def main() -> int:
 
     # flags matrix consistency at 2026Q3 (+ two anchor cells)
     flags = pl.read_csv(FLAGS)
-    ok &= check(flags.height == 147 and flags.width == 49,
-                f"flags shape {flags.height}x{flags.width}, want 147x49")
+    ok &= check(flags.height == 147 and flags.width == 53,
+                f"flags shape {flags.height}x{flags.width}, want 147x53")
     f3 = flags.filter(pl.col("quarter") == "2026Q3").to_dicts()[0]
     prov3 = {r["indicator"]: r["value_source"]
              for r in prov.iter_rows(named=True)

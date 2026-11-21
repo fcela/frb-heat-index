@@ -90,6 +90,18 @@ FRED_IDS = [
     "BOGZ1FL794090005Q",  # financial sectors, total financial assets
     "BOGZ1FL104090103Q",  # nonfinancial corporate business, total assets
     "BOGZ1FL893065125Q",  # all sectors, home equity loans (closed-end junior liens), asset level ($M)
+    # Private credit, delineated in the Z.1 release of 2026-09-11
+    # (levels, $M). Loans owed by nonfinancial business, and the
+    # balance sheets of the three new intermediary sectors:
+    # private debt funds (44), business development companies (45),
+    # interval and tender offer funds (46).
+    "BOGZ1FL143167205Q",  # nonfinancial business, private credit loans, liability
+    "BOGZ1FL444090000Q",  # private debt funds, total financial assets
+    "BOGZ1FL444190005Q",  # private debt funds, total liabilities
+    "BOGZ1FL454090003Q",  # business development companies, total financial assets
+    "BOGZ1FL454190005Q",  # business development companies, total liabilities
+    "BOGZ1FL464090005Q",  # interval & tender offer funds, total financial assets
+    "BOGZ1FL464190005Q",  # interval & tender offer funds, total liabilities
 ]
 
 SOURCES: list[tuple[str, str, str]] = (
@@ -125,6 +137,16 @@ SOURCES: list[tuple[str, str, str]] = (
         ("bis_cre_us.csv",
          "https://www.bis.org/statistics/pp/pp_detailed.htm",
          "manual"),
+        # BIS early-warning pair, US, quarterly (BIS Data Portal, SDMX
+        # API): credit-to-GDP gap (WS_CREDIT_GAP, key Q.US.P.A.C) and
+        # debt service ratio of the private non-financial sector
+        # (WS_DSR, key Q.US.P). Plain CSV over HTTPS.
+        ("bis_credit_gap_us.csv",
+         "https://stats.bis.org/api/v1/data/WS_CREDIT_GAP/Q.US.P.A.C?format=csv",
+         "auto"),
+        ("bis_dsr_us.csv",
+         "https://stats.bis.org/api/v1/data/WS_DSR/Q.US.P?format=csv",
+         "auto"),
         # SLOOS historical tables (XML archive) for the CRE lending-standards
         # splice: discontinued SUBLPDRCS_N.Q plus the three successor series
         # (construction & land development, nonfarm nonresidential, multifamily).

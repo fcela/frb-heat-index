@@ -155,6 +155,23 @@ ALLOWED_BOUNDARIES: dict[str, tuple[str, str]] = {
         "1990Q2",
         "FRED DRTSCILM begins 1990Q2 -- SLOOS itself begins 1990Q2 "
         "(expected survey-start boundary, per data/proxy_catalog.csv)."),
+    "Private Credit Loans (Share of nonfinancial business debt)": (
+        "2012Q4",
+        "The Z.1 delineated private credit for the first time in the "
+        "release of September 11, 2026 and publishes the delineated lines "
+        "from 2012Q4 (Form PF-based history; Chen, Jang & Sufi 2026 "
+        "figures start 2012:Q4). The release file carries zeros before "
+        "2012Q4, which are placeholders, not observations."),
+    "Private Credit Intermediary Leverage (Total liabilities to total financial assets)": (
+        "2012Q4",
+        "The private debt fund and BDC sector tables (Z.1 S.124.5 and "
+        "S.124.6) begin with the delineation published in the release of "
+        "September 11, 2026, whose history starts 2012Q4; zeros before "
+        "are placeholders, not observations."),
+    "Debt Service Ratio (BIS, private non-financial sector)": (
+        "1999Q1",
+        "BIS debt service ratio dataset (WS_DSR): the U.S. private "
+        "non-financial sector series begins 1999Q1 (BIS Data Portal)."),
 }
 
 
@@ -171,6 +188,30 @@ ALLOWED_TRAILING: dict[str, tuple[str, str]] = {
         "panel_complete.csv, flagged 'unextended' in "
         "data/panel_complete_flags.csv, recorded in data/_meta.json). "
         "No substitute input is spliced in (no-silent-splicing rule)."),
+    "Private Credit Loans (Share of nonfinancial business debt)": (
+        "2026Q2",
+        "Latest Z.1 release (September 11, 2026) carries data through "
+        "2026Q2. The series is not in the nowcast roster, so its 2026Q3 "
+        "cell is empty rather than filled (added 2026-11-21)."),
+    "Private Credit Intermediary Leverage (Total liabilities to total financial assets)": (
+        "2026Q2",
+        "Latest Z.1 release (September 11, 2026) carries data through "
+        "2026Q2. The series is not in the nowcast roster, so its 2026Q3 "
+        "cell is empty rather than filled (added 2026-11-21)."),
+    "Credit-to-GDP Gap (BIS, private non-financial sector)": (
+        "2026Q2",
+        "BIS publishes the U.S. gap through 2026Q1 (latest publication "
+        "at the November 2026 build); the 2026Q2 cell is a flagged "
+        "one-quarter carry (assumption-carry-forward in "
+        "data/nowcast_provenance.csv) and the series is not extended "
+        "to 2026Q3."),
+    "Debt Service Ratio (BIS, private non-financial sector)": (
+        "2026Q2",
+        "BIS publishes the U.S. DSR through 2026Q1 (latest publication "
+        "at the November 2026 build); the 2026Q2 cell is a flagged "
+        "one-quarter carry (assumption-carry-forward in "
+        "data/nowcast_provenance.csv) and the series is not extended "
+        "to 2026Q3."),
 }
 
 
@@ -184,8 +225,8 @@ def check(cond, msg):
 def main() -> int:
     ok = True
     panel = pl.read_csv(PANEL)
-    ok &= check(panel.height == 147 and panel.width == 49,
-                f"panel_complete shape {panel.height}x{panel.width}, want 147x49")
+    ok &= check(panel.height == 147 and panel.width == 53,
+                f"panel_complete shape {panel.height}x{panel.width}, want 147x53")
     ok &= check(panel["quarter"].to_list() == ALL_QUARTERS,
                 "panel_complete quarters must be exactly 1990Q1..2026Q3")
 
