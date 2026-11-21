@@ -62,10 +62,10 @@ def test_segments_complete():
             assert f in ind, f"{seg_key}/{ind_key} missing {f}"
         assert ind["status"] in FETCHABLE_STATUSES + ("pending-sourcing",), ind_key
         n += 1
-    assert n == 42, f"expected 42 indicators, got {n}"
-    assert len(SEGMENTS) == 10
+    assert n == 60, f"expected 60 indicators, got {n}"
+    assert len(SEGMENTS) == 11
     fetchable = sum(1 for _, _, i in all_indicators() if i["status"] in FETCHABLE_STATUSES)
-    assert fetchable == 41, f"expected 41 fetchable, got {fetchable}"
+    assert fetchable == 59, f"expected 59 fetchable, got {fetchable}"
     print(f"ok test_segments_complete ({n} indicators, {fetchable} fetchable)")
 
 
@@ -75,9 +75,9 @@ def test_site_json_parses_strictly():
     raw = p.read_text()
     assert "NaN" not in raw, "bare NaN literal in site JSON"
     d = json.loads(raw)
-    assert "segments" in d and len(d["segments"]) == 10
+    assert "segments" in d and len(d["segments"]) == 11
     total = sum(len(s["indicators"]) for s in d["segments"])
-    assert total == 42, total
+    assert total == 60, total
     # Multi-series indicators carry their group column and subseries labels.
     for s in d["segments"]:
         for ind in s["indicators"]:
@@ -118,12 +118,12 @@ def test_provenance_standard():
             assert ind["source_url"].startswith("https://fred.stlouisfed.org/series/"), \
                 f"{seg_key}/{ind_key}: FRED-derived series should link its FRED leg"
         n += 1
-    assert n == 42, n
+    assert n == 60, n
 
     # Feed contract: the site bundle carries the same provenance fields.
     site = json.loads((REPO / "docs" / "data" / "pulse.json").read_text())
     served = {i["key"]: i for s in site["segments"] for i in s["indicators"]}
-    assert len(served) == 42
+    assert len(served) == 60
     for seg_key, ind_key, ind in all_indicators():
         got = served[ind_key]
         assert got["source_url"] == ind["source_url"], ind_key
@@ -150,9 +150,9 @@ def test_app_renders_provenance(tmp_path=None):
     assert r.returncode == 0, f"render harness failed:\n{r.stdout}\n{r.stderr}"
     res = json.loads(r.stdout)
     assert res["errors"] == [], res["errors"]
-    assert res["cards"] == 42, res
-    assert res["sections"] == 10, res
-    assert res["provenanceCards"] == 42, res  # every card, incl. pending-sourcing
+    assert res["cards"] == 60, res
+    assert res["sections"] == 11, res
+    assert res["provenanceCards"] == 60, res  # every card, incl. pending-sourcing
     # One chart and one tape item per indicator that carries data. An
     # indicator whose source failed keeps its card with an empty series
     # and renders neither; the workflow failure policy (pulse.yml) is
@@ -170,7 +170,7 @@ def test_app_renders_provenance(tmp_path=None):
     )
     assert res["figures"] == with_data, res
     assert res["tapeItems"] == with_data, res
-    assert res["tocAnchors"] == 10, res
+    assert res["tocAnchors"] == 11, res
     print("ok test_app_renders_provenance")
 
 
