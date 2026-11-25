@@ -81,6 +81,60 @@ def test_ms_quarterly_splits():
     assert by_line[("advisory", 2026, 2)] == pytest.approx(798.0)
 
 
+def test_ms_2016q2_10q_only_tables():
+    """MS 2016Q2 10-Q: the 10-Q-only era specs fire.
+
+    Morgan Stanley's 10-Qs keep the standalone investment-banking
+    table (full "Advisory revenues" labels) and the by-business sales
+    & trading table after the 10-K layouts moved on; the quarterly-only
+    specs read them. The investment-banking table's header splits
+    "Three Months Ended" and "June 30," across rows, which
+    detect_qtd_periods resolves via the month cell under the header
+    span. Values from the filing ($ in millions).
+    """
+    p = _fixture("0000895421", "0001193125-16-670066", "d212576d10q")
+    recs = parse_filing_q("MS", "0000895421", "0001193125-16-670066", p)
+    by_line = {(r["taxonomy_line"], r["year"], r["quarter"]):
+               r["net_revenue_m"] for r in recs
+               if not r["taxonomy_line"].startswith("_")}
+    assert by_line == {
+        ("advisory", 2016, 2): 497.0, ("advisory", 2015, 2): 423.0,
+        ("ecm", 2016, 2): 266.0, ("ecm", 2015, 2): 489.0,
+        ("dcm", 2016, 2): 345.0, ("dcm", 2015, 2): 528.0,
+        ("equities", 2016, 2): 2145.0, ("equities", 2015, 2): 2342.0,
+        ("ficc", 2016, 2): 1297.0, ("ficc", 2015, 2): 1377.0,
+    }, by_line
+
+
+def test_bac_2023q3_fees_segment_block():
+    """BAC 2023Q3 10-Q: the fees table's Total Corporation block wins.
+
+    The "Investment banking fees" table is segment-major with the
+    Global Banking block FIRST; the quarterly extractor must apply the
+    spec's segment_block (Total Corporation) rather than read the
+    first block -- before the fix it emitted the Global Banking values
+    (advisory $396M) as the firmwide cells. The corrected advisory
+    agrees with the segment-note table's Total Corporation value, and
+    ECM/DCM (previously absent from the quarterly layer) are the Total
+    Corporation amounts. Values from the filing ($ in millions).
+    """
+    p = _fixture("0000070858", "0000070858-23-000272", "bac-20230930")
+    recs = parse_filing_q("BAC", "0000070858", "0000070858-23-000272", p)
+    fees = {(r["taxonomy_line"], r["year"], r["quarter"]):
+            r["net_revenue_m"] for r in recs
+            if r["source"] == "mda_q:Investment banking fees"}
+    assert fees == {
+        ("advisory", 2023, 3): 448.0, ("advisory", 2022, 3): 432.0,
+        # Total Corporation columns; the filing's own gross-fees total
+        # (1,250 for 2023Q3, 1,204 for 2022Q3) is the sum of the three
+        # Total Corporation lines. The Global Banking block's sub-$100M
+        # equity issuance values (92 / 56) sit in earlier slots of the
+        # same row and must not shift the alignment.
+        ("ecm", 2023, 3): 232.0, ("ecm", 2022, 3): 156.0,
+        ("dcm", 2023, 3): 570.0, ("dcm", 2022, 3): 616.0,
+    }, fees
+
+
 def test_gs_quarterly_gb_markets_and_ib_fees():
     """GS 2026Q2 10-Q MD&A (GBM regime): FICC/Equities + IB fee rows.
 
