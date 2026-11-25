@@ -18,6 +18,13 @@ and the pulse indicator/segment/live counts from data/pulse/_meta.json.
 Those lines are generated, not maintained by hand; the rest of the page
 is hand-written and is left byte-identical.
 
+The same landing rewrite fills the page's "What is happening now" block
+(between the NOW-BLOCK markers): the headline index level and change,
+the hottest and coldest components, the prediction markets' modal FOMC
+outcome and recession odds (data/predmarkets/_meta.json + the fomc and
+recession CSVs), and the panel's build date with its nowcast caveat.
+Every number in the block is computed from those files at build time.
+
 Missing or non-finite values are emitted as null. JSON is serialized with
 allow_nan=False so a missed NaN/Inf fails the build loudly instead of
 shipping invalid JSON to the site (2026-10-14 outage: bare NaN literals
@@ -36,10 +43,12 @@ Requires: polars.
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
 import math
 import re
 import sys
+from html import escape as html_escape
 from pathlib import Path
 
 import polars as pl
@@ -244,13 +253,187 @@ def update_landing_page(path: Path, lines: dict[str, str]) -> bool:
     return True
 
 
+# ---------------------------------------------------------------------
+# Landing page: the "What is happening now" block.
+#
+# Every number below is computed from the committed data files at build
+# time -- the aggregate and component series this module has just built,
+# the panel meta (build date, nowcast provenance, observed freshness),
+# and the prediction-markets layer (data/predmarkets/_meta.json for the
+# front FOMC event and the recession ladder, the fomc_decision and
+# recession CSVs for the latest closes). Nothing is copied from the
+# page's current text, so the block cannot drift from the data.
+# ---------------------------------------------------------------------
+
+def _long_date(iso: str) -> str:
+    """'2026-11-20' -> 'November 20, 2026'."""
+    d = dt.date.fromisoformat(iso[:10])
+    return f"{d.strftime('%B')} {d.day}, {d.year}"
+
+
+def _month_day(iso: str) -> str:
+    """'2026-12-09' -> 'December 9'."""
+    d = dt.date.fromisoformat(iso[:10])
+    return f"{d.strftime('%B')} {d.day}"
+
+
+def _pct(v: float) -> str:
+    return f"{round(v * 100):.0f}%"
+
+
+def _fomc_phrase(strike: str) -> str:
+    """A Kalshi decision bucket label as prose: 'Hike 25bps' -> 'a 25 bp
+    hike', 'Hike 0bps' -> 'no change to the target range'."""
+    m = re.fullmatch(r"(Hike|Cut) (>)?(\d+)bps", strike or "")
+    if not m:
+        return strike
+    side, gt, n = m.group(1), m.group(2), int(m.group(3))
+    if n == 0:
+        return "no change to the target range"
+    if gt:
+        return f"a {side.lower()} of more than {n} bp"
+    return f"a {n} bp {side.lower()}"
+
+
+def _predmarket_readings(data: Path) -> tuple[str, str]:
+    """(markets sentence, as-of ISO date) from the predmarkets layer.
+
+    The front FOMC event and the recession ladder come from the layer's
+    own meta (the pipeline's discovery, not a hardcoded calendar); the
+    probabilities are the latest closes in the per-indicator CSVs.
+    """
+    pm_dir = data / "predmarkets"
+    meta = json.loads((pm_dir / "_meta.json").read_text())
+
+    fomc = meta["indicators"]["fomc_decision"]
+    front = fomc["horizons"][0]
+    fdf = pl.read_csv(pm_dir / "fomc_decision.csv")
+    frows = fdf.filter(pl.col("event") == front["event_ticker"])
+    flast = frows["date"].max()
+    fday = frows.filter(pl.col("date") == flast)
+    modal = max(fday.iter_rows(named=True), key=lambda r: r["value"])
+
+    rec = meta["indicators"]["recession"]
+    ladder = rec["horizons"][-1]
+    rdf = pl.read_csv(pm_dir / "recession.csv")
+    rrows = rdf.filter(pl.col("event") == ladder["event_ticker"])
+    rlast = rrows["date"].max()
+    rday = rrows.filter(pl.col("date") == rlast)
+    yes = rday.filter(pl.col("strike") == "Yes")
+    rrow = (yes if yes.height else rday).row(0, named=True)
+
+    asof = max(flast, rlast)
+    sentence = (
+        f"Prediction markets (Kalshi closes through {_long_date(asof)}) "
+        f"give the highest probability, {_pct(modal['value'])}, to "
+        f"{_fomc_phrase(modal['strike'])} at the "
+        f"{_month_day(front['date'])} FOMC meeting. Recession odds for "
+        f"{html_escape(str(ladder['label']))} stand at {_pct(rrow['value'])}."
+    )
+    return sentence, asof
+
+
+def now_block_html(meta: dict, agg_rows: list[dict],
+                   comp_json: dict[str, list[dict]], data: Path) -> str:
+    """The landing page's 'What is happening now' section, as HTML.
+
+    meta is the built site meta (freshness + nowcast blocks included);
+    agg_rows / comp_json are the aggregate and per-component series this
+    build has just produced; data is the data directory, for the
+    prediction-markets layer.
+    """
+    pts = [r for r in agg_rows if r["v"] is not None]
+    last, prev = pts[-1], pts[-2]
+    delta = last["v"] - prev["v"]
+    if delta <= -0.005:
+        change = f"down from {prev['v']:.2f} in {prev['q']}"
+    elif delta >= 0.005:
+        change = f"up from {prev['v']:.2f} in {prev['q']}"
+    else:
+        change = f"little changed from {prev['v']:.2f} in {prev['q']}"
+    headline = (f"The heat index stands at <strong>{last['v']:.2f}</strong> "
+                f"in {last['q']}, {change}.")
+
+    at_last = {}
+    for name, rows in comp_json.items():
+        vals = [r["v"] for r in rows if r["q"] == last["q"]]
+        if vals and vals[0] is not None:
+            at_last[name] = vals[0]
+    ranked = sorted(at_last.items(), key=lambda kv: kv[1])
+    hot = [f"{html_escape(n)} ({v:.2f})" for n, v in ranked[-2:]][::-1]
+    cold = [f"{html_escape(n)} ({v:.2f})" for n, v in ranked[:2]]
+    extremes = (f"Hottest components: {hot[0]} and {hot[1]}. "
+                f"Coldest: {cold[0]} and {cold[1]}.")
+
+    markets, asof = _predmarket_readings(data)
+
+    caveat = [f"Quarterly panel built {_long_date(meta['built_at_utc'])}."]
+    last_built = meta["last_built_quarter"]
+    nowcast = meta.get("nowcast_through")
+    if nowcast and quarter_key(nowcast) > quarter_key(last_built):
+        nc = meta.get("nowcast") or {}
+        counts = (nc.get("counts_by_quarter") or {}).get(nowcast) or {}
+        fills = sum(counts.values())
+        unext = sum(1 for u in nc.get("unextended", [])
+                    if u["quarter"] == nowcast)
+        if fills + unext >= meta["n_indicators"]:
+            caveat.append(
+                f"The {nowcast} column is entirely nowcast — no indicator "
+                f"has an observed {nowcast} value; observations run "
+                f"through {last_built}.")
+        elif fills:
+            caveat.append(
+                f"The {nowcast} column carries nowcast fills for {fills} "
+                f"of {meta['n_indicators']} series; observations run "
+                f"through {last_built}.")
+        fresh = meta.get("freshness")
+        if fresh:
+            caveat.append(
+                f"{fresh['least_count']} of {fresh['n_series']} series "
+                f"end at {fresh['observed_through']}.")
+
+    return "\n".join([
+        '  <section class="card now-card" aria-label="What is happening now">',
+        f'    <p class="kicker">What is happening now · as of '
+        f'{_long_date(asof)}</p>',
+        f'    <p class="now-lede">{headline} {extremes}</p>',
+        f'    <p>{markets}</p>',
+        f'    <p class="now-note">{" ".join(caveat)}</p>',
+        '  </section>',
+    ])
+
+
+def update_now_block(path: Path, block: str) -> bool:
+    """Replace the landing page's NOW-BLOCK section with `block`.
+
+    The block lives between the <!-- NOW-BLOCK:BEGIN ... --> and
+    <!-- NOW-BLOCK:END --> markers; missing markers raise ValueError, so
+    a page whose structure has moved away from the generator fails the
+    build loudly rather than drifting. Returns True when the file
+    changed.
+    """
+    text = path.read_text()
+    begin = text.find("<!-- NOW-BLOCK:BEGIN")
+    end = text.find("<!-- NOW-BLOCK:END -->")
+    if begin < 0 or end < 0 or end < begin:
+        raise ValueError(f"{path}: NOW-BLOCK markers not found")
+    line_end = text.find("\n", begin)
+    if line_end < 0:
+        raise ValueError(f"{path}: NOW-BLOCK begin marker not terminated")
+    new = text[:line_end + 1] + block + "\n" + text[end:]
+    if new == text:
+        return False
+    path.write_text(new)
+    return True
+
+
 def build(data: Path, out: Path) -> dict:
     """Build all site JSON files; return the meta dict that was written."""
     out.mkdir(parents=True, exist_ok=True)
 
     agg = pl.read_csv(data / "aggregate.csv")
-    (out / "aggregate.json").write_text(
-        dumps_strict(series_json(agg, "Aggregate index"), indent=1))
+    agg_json = series_json(agg, "Aggregate index")
+    (out / "aggregate.json").write_text(dumps_strict(agg_json, indent=1))
 
     comp = pl.read_csv(data / "components.csv")
     comp_cols = [c for c in comp.columns if c != "quarter"]
@@ -387,6 +570,10 @@ def build(data: Path, out: Path) -> dict:
         if update_landing_page(landing, spec_lines):
             print(f"Wrote {landing} (spec lines from data/_meta.json "
                   f"and data/pulse/_meta.json)")
+        block = now_block_html(meta, agg_json, comp_json, data)
+        if update_now_block(landing, block):
+            print(f"Wrote {landing} (now block from the panel and "
+                  f"data/predmarkets/)")
 
     return meta
 

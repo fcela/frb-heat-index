@@ -1489,6 +1489,38 @@ def _refresh_realized(frames: dict[str, pl.DataFrame],
         return pl.DataFrame(), {}, str(e)[:200]
 
 
+FH_ACCURACY_NOTE = (
+    "One record per fixed-horizon reading — the market's implied value "
+    "3, 6, or 12 months ahead, frozen at its vintage date — scored "
+    "against the realized outcome for the period it forecasts: the "
+    "post-meeting target-range upper bound for fed funds, the realized "
+    "print for CPI and GDP. A reading scores only when its target "
+    "period's outcome is published; until then it reads as recorded, "
+    "never as zero."
+)
+
+
+def fixed_horizon_accuracy_block(frame: pl.DataFrame) -> dict:
+    """The site bundle's fixed-horizon accuracy block, built from the
+    persistent records frame update_records() returns: per-(family,
+    horizon) reading counts and mean absolute error (None while nothing
+    at that horizon has scored), plus the record's span — so the page
+    states the fixed-horizon track record from the same state the
+    records CSV commits."""
+    rows = frame.to_dicts() if frame.height else []
+    vintages = [r["vintage_date"] for r in rows]
+    targets = [r["target_date"] for r in rows]
+    return {
+        "note": FH_ACCURACY_NOTE,
+        "families": fh_accuracy_mod.summarize(rows),
+        "n_readings": len(rows),
+        "n_scored": sum(1 for r in rows if r.get("abs_error") is not None),
+        "first_vintage": min(vintages) if vintages else None,
+        "last_vintage": max(vintages) if vintages else None,
+        "first_target": min(targets) if targets else None,
+    }
+
+
 def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
           site_json: Path = SITE_JSON, now: dt.datetime | None = None) -> dict:
     data_dir.mkdir(parents=True, exist_ok=True)
@@ -1665,6 +1697,7 @@ def build(incremental: bool = False, transport=None, data_dir: Path = DATA_DIR,
         site["fixed_horizon"] = fh_section
     if fh_family_sections:
         site["fixed_horizon_families"] = fh_family_sections
+    site["fixed_horizon_accuracy"] = fixed_horizon_accuracy_block(fh_acc)
     site_json.write_text(strict_json(site) + "\n")
     json.loads(site_json.read_text())  # strict re-parse of what the site serves
     return meta

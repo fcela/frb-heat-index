@@ -9,12 +9,14 @@ const THEMES = {
     ink: "#1b1a16", muted: "#75705f", faint: "#a8a294",
     grid: "#ece7d8", line: "#e9e4d6", missing: "#ece7d9",
     shade: "rgba(178,24,43,0.07)", accent: "#1d4ed8",
+    ncShade: "rgba(117,112,95,0.13)",
     card: "#ffffff", tipBg: "#1b1a16", tipFg: "#faf9f6",
   },
   dark: {
     ink: "#ede7d6", muted: "#a2987f", faint: "#6f675a",
     grid: "#2b261c", line: "#2e2a20", missing: "#2b261c",
     shade: "rgba(178,24,43,0.18)", accent: "#7aa2f7",
+    ncShade: "rgba(162,152,127,0.18)",
     card: "#1d1a13", tipBg: "#ede7d6", tipFg: "#14120d",
   },
 };
@@ -97,6 +99,29 @@ function equantile(sortedVals, z) {
   return k / sortedVals.length;
 }
 
+/* ---------------- nowcast marking ---------------- */
+
+/* Quarters the pipeline filled rather than observed (meta.json's
+   nowcast block, built from data/nowcast_provenance.csv). The heat map
+   and the aggregate chart shade and label the span, and tooltips flag
+   it, so a filled column never reads as an observation. */
+function nowcastQuarters() {
+  return ((META.nowcast && META.nowcast.quarters) || [])
+    .filter(q => qIndex[q] != null);
+}
+
+function nowcastSpan() {
+  const qs = nowcastQuarters();
+  if (!qs.length) return null;
+  const first = qIndex[qs[0]];
+  return { x1: first - 0.5, x2: quarters.length - 0.5,
+           mid: (first + quarters.length - 1) / 2 };
+}
+
+function isNowcast(q) {
+  return nowcastQuarters().includes(q);
+}
+
 /* ---------------- plot helpers ---------------- */
 
 function basePlot(opts) {
@@ -152,10 +177,11 @@ function renderHeatmap() {
       else cells.push({ q: d.q, c, v: d.v, xi });
     });
   });
+  const ncSpan = nowcastSpan();
   const fig = basePlot({
     width: 1020,
-    height: components.length * 34 + 92,
-    marginLeft: 172, marginRight: 16, marginTop: 8, marginBottom: 64,
+    height: components.length * 34 + 110,
+    marginLeft: 172, marginRight: 16, marginTop: 26, marginBottom: 64,
     padding: 0,
     x: {
       domain: [-0.5, nQ - 0.5], ticks: yearTicks,
@@ -169,6 +195,15 @@ function renderHeatmap() {
       tickFormat: d => d.toFixed(2),
     },
     marks: [
+      ...(ncSpan ? [
+        Plot.ruleX([ncSpan.x1], {
+          stroke: T().muted, strokeWidth: 1, strokeDasharray: "3,2",
+        }),
+        Plot.text([{ x: ncSpan.mid, label: "nowcast fills" }], {
+          x: "x", text: "label", frameAnchor: "top", textAnchor: "middle",
+          dy: -8, fontSize: 11, fill: T().muted,
+        }),
+      ] : []),
       Plot.rect(cells, {
         x1: d => d.xi - 0.48, x2: d => d.xi + 0.48, y: "c", fill: "v",
         stroke: T().card, strokeWidth: 0.7,
@@ -179,7 +214,7 @@ function renderHeatmap() {
       }),
       Plot.tip(cells, Plot.pointer({
         x: "xi", y: "c",
-        title: d => `${d.c}\n${d.q} — ${d.v.toFixed(2)}\nHotter than ${Math.round(d.v * 100)}% of its history`,
+        title: d => `${d.c}\n${d.q} — ${d.v.toFixed(2)}\nHotter than ${Math.round(d.v * 100)}% of its history${isNowcast(d.q) ? "\n(nowcast fills — not an observation)" : ""}`,
       })),
     ],
   });
@@ -449,6 +484,7 @@ function renderAggregate() {
   const shades = [
     { q1: "2007Q1", q2: "2008Q4", label: "2007–08 — crisis buildup" },
   ].filter(s => qIndex[s.q1] != null);
+  const ncSpan = nowcastSpan();
   const fig = basePlot({
     width: 1020, height: 380,
     marginLeft: 52, marginRight: 20, marginTop: 18, marginBottom: 44,
@@ -467,6 +503,15 @@ function renderAggregate() {
         x: (qIndex[s.q1] + qIndex[s.q2]) / 2, y: 0.06,
         text: d => d.label, fontSize: 11, fill: T().muted, textAnchor: "middle",
       })),
+      ...(ncSpan ? [
+        Plot.rect([ncSpan], {
+          x1: "x1", x2: "x2", y1: 0, y2: 1, fill: T().ncShade,
+        }),
+        Plot.text([{ x: ncSpan.mid, label: "nowcast" }], {
+          x: "x", y: 0.94, text: "label", fontSize: 11,
+          fill: T().muted, textAnchor: "middle",
+        }),
+      ] : []),
       Plot.areaY(pts, { x: "xi", y: "v", fill: T().accent, fillOpacity: 0.10 }),
       Plot.line(pts, { x: "xi", y: "v", stroke: T().accent, strokeWidth: 2.2 }),
       Plot.dot([peak], { x: "xi", y: "v", fill: "#b2182b", stroke: T().card, strokeWidth: 1.5, r: 5 }),
@@ -476,7 +521,7 @@ function renderAggregate() {
       }),
       Plot.tip(pts, Plot.pointer({
         x: "xi",
-        title: d => `${d.q}\nAggregate index: ${d.v.toFixed(3)}`,
+        title: d => `${d.q}${isNowcast(d.q) ? " (nowcast)" : ""}\nAggregate index: ${d.v.toFixed(3)}`,
       })),
     ],
   });
@@ -791,6 +836,22 @@ function renderMeta() {
   if (fb) {
     const builtD = META.built_at_utc ? META.built_at_utc.slice(0, 10) : "unknown";
     const f = META.freshness;
+    // State plainly which quarters are fills and whether the final
+    // column has any observed value at all (counts from meta.json's
+    // nowcast block: filled cells + unextended cells vs the panel's
+    // series count).
+    const nc = META.nowcast;
+    let ncNote = "";
+    if (nc && nc.quarters && nc.quarters.length) {
+      const qs = nc.quarters, lastQ = qs[qs.length - 1];
+      const counts = (nc.counts_by_quarter || {})[lastQ] || {};
+      const fills = Object.values(counts).reduce((a, b) => a + b, 0);
+      const unext = (nc.unextended || []).filter(u => u.quarter === lastQ).length;
+      ncNote = (META.n_indicators && fills + unext >= META.n_indicators)
+        ? ` The ${esc(lastQ)} column is entirely nowcast — no observed values; ` +
+          `the nowcast quarters (${esc(qs[0])}–${esc(lastQ)}) are marked on the charts.`
+        : ` The nowcast quarters (${esc(qs[0])}–${esc(lastQ)}) are marked on the charts.`;
+    }
     if (f) {
       const others = f.least_count > 1
         ? ` (with ${f.least_count - 1} other series)` : "";
@@ -798,10 +859,10 @@ function renderMeta() {
         `Page last updated: <strong>${esc(builtD)}</strong> · Data through: ` +
         `<strong>${esc(f.observed_through)}</strong> observed — least recent series: ` +
         `${esc(f.least_series)}${others}. Nowcast extensions carry the displayed ` +
-        `panel to ${esc(q)} (see Methodology).`;
+        `panel to ${esc(q)} (see Methodology).${ncNote}`;
     } else {
       fb.innerHTML =
-        `Page last updated: <strong>${esc(builtD)}</strong> · Data through: <strong>${esc(q)}</strong>.`;
+        `Page last updated: <strong>${esc(builtD)}</strong> · Data through: <strong>${esc(q)}</strong>.${ncNote}`;
     }
   }
   document.getElementById("stamp").innerHTML =

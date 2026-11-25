@@ -118,6 +118,50 @@ function statusBadge(status) {
   return `<span class="status-badge status-${esc(status)}">${esc(label)}</span>`;
 }
 
+/* ---------------- staleness ---------------- */
+
+/* Cadence in days, parsed from the bundle's own frequency strings
+   ("Daily", "Weekly (Wednesdays)", "Monthly (~1 month lag)", ...).
+   A series is stale when its last observation is older, at bundle
+   build time, than one and a half cadence periods plus ten days. The
+   ten days absorb the weekly page refresh and ordinary publication
+   lag, so a series inside its source's normal lag is never flagged —
+   and one that has missed a full cycle is. */
+const CADENCE_DAYS = { daily: 1, weekly: 7, monthly: 31, quarterly: 92, annual: 365 };
+
+function cadenceDays(frequency) {
+  const m = /^(daily|weekly|monthly|quarterly|annual)/i.exec(String(frequency || ""));
+  return m ? CADENCE_DAYS[m[1].toLowerCase()] : null;
+}
+
+function staleness(ind, builtAt) {
+  const period = cadenceDays(ind.frequency);
+  const last = ind.last_observation ? String(ind.last_observation).slice(0, 10) : null;
+  if (!period || !last || !builtAt) return null;
+  const age = Math.round(
+    (new Date(builtAt + "T00:00:00Z") - new Date(last + "T00:00:00Z")) / 86400000);
+  if (!Number.isFinite(age)) return null;
+  return { stale: age > period * 1.5 + 10, ageDays: age, last };
+}
+
+function staleBadge(st) {
+  return `<span class="status-badge status-stale">stale · last obs ${esc(st.last)}</span>`;
+}
+
+/* Series whose upstream publisher has halted the source feed: the
+   chart is a frozen print, not a current reading. The freeze date is
+   the bundle's own last_observation; the halt is a fact about the
+   publisher that the bundle does not carry, so it is stated here and
+   rendered only while the series is in fact stale. */
+const KNOWN_HALTS = {
+  fra_ois: "Publisher halt: FRED discontinued the underlying DCPF1M commercial-paper series, so this series is frozen at its last print and does not read current funding conditions.",
+};
+
+function haltNoteHTML(ind, st) {
+  if (!st || !st.stale || !KNOWN_HALTS[ind.key]) return "";
+  return `<p class="pulse-note">${esc(KNOWN_HALTS[ind.key])}</p>`;
+}
+
 /* Source text as a working link (provenance standard: institution +
    dataset name, linked — never text only). Falls back to plain text
    when the feed has no verified canonical URL. */
@@ -164,19 +208,22 @@ function lastValueHTML(ind) {
 
 /* ---------------- render ---------------- */
 
-function renderTape(segments) {
+function renderTape(segments, builtAt) {
   const el = document.getElementById("tape");
   const items = [];
   for (const seg of segments) {
     for (const ind of seg.indicators) {
       if (!ind.series || !ind.series.length) continue;
+      const st = staleness(ind, builtAt);
+      const suffix = st && st.stale
+        ? ` <span class="stale">(stale · ${esc(st.last)})</span>` : "";
       if (ind.subseries && ind.subseries.length) {
         const lv = ind.last_value || {};
         const parts = ind.subseries.map(s => `${esc(s)} <b>${fmt(lv[s])}</b>`).join(" · ");
-        items.push(`<span class="tape-item">${esc(ind.title)}: ${parts}</span>`);
+        items.push(`<span class="tape-item">${esc(ind.title)}: ${parts}${suffix}</span>`);
       } else {
         const last = ind.series[ind.series.length - 1];
-        items.push(`<span class="tape-item">${esc(ind.title)}: <b>${fmt(last.value)}</b>${ind.unit ? " " + esc(ind.unit) : ""}</span>`);
+        items.push(`<span class="tape-item">${esc(ind.title)}: <b>${fmt(last.value)}</b>${ind.unit ? " " + esc(ind.unit) : ""}${suffix}</span>`);
       }
     }
   }
@@ -216,17 +263,20 @@ function renderPulse(pulse) {
     for (const ind of seg.indicators) {
       const card = document.createElement("div");
       card.className = "pulse-card";
+      const st = staleness(ind, builtD);
+      const staleHTML = st && st.stale ? staleBadge(st) : "";
       if (ind.series && ind.series.length) {
         card.innerHTML = `
           <div class="pulse-head">
-            <div><strong>${esc(ind.title)}</strong>${statusBadge(ind.status)}
+            <div><strong>${esc(ind.title)}</strong>${statusBadge(ind.status)}${staleHTML}
               ${lastValueHTML(ind)}</div>
             <div class="pulse-src">${sourceHTML(ind)} · ${esc(ind.frequency)}</div>
           </div>
           <p class="blurb">${esc(ind.why)}</p>
           ${provenanceHTML(ind)}
           <div class="pulse-chart"></div>
-          ${ind.note ? `<p class="pulse-note">${esc(ind.note)}</p>` : ""}`;
+          ${ind.note ? `<p class="pulse-note">${esc(ind.note)}</p>` : ""}
+          ${haltNoteHTML(ind, st)}`;
         const fig = (ind.subseries && ind.subseries.length && ind.group_by)
           ? multiLine(ind.series, ind.unit, ind.group_by, ind.subseries)
           : singleLine(ind.series, ind.unit);
@@ -234,7 +284,7 @@ function renderPulse(pulse) {
       } else {
         card.innerHTML = `
           <div class="pulse-head">
-            <div><strong>${esc(ind.title)}</strong>${statusBadge(ind.status)}</div>
+            <div><strong>${esc(ind.title)}</strong>${statusBadge(ind.status)}${staleHTML}</div>
             <div class="pulse-src">${sourceHTML(ind)} · ${esc(ind.frequency)}</div>
           </div>
           <p class="blurb">${esc(ind.why)}</p>
@@ -249,7 +299,8 @@ function renderPulse(pulse) {
 
 async function boot() {
   const pulse = await loadJSON("pulse.json");
-  renderTape(pulse.segments);
+  renderTape(pulse.segments,
+    pulse.meta && pulse.meta.built_at_utc ? pulse.meta.built_at_utc.slice(0, 10) : null);
   renderToc(pulse.segments);
   renderPulse(pulse);
   document.getElementById("pulse").dataset.done = "1";

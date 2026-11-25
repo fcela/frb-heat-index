@@ -338,6 +338,151 @@ def test_shipped_landing_page_matches_metas():
         assert line in text, f"{key}: landing page lacks {line!r}"
 
 
+def _now_fixture_pm(data_dir: Path) -> None:
+    """A minimal predmarkets layer: a front FOMC event whose modal
+    bucket flips between the two fixture dates (so the block must read
+    the last date), and a two-year recession ladder."""
+    pm = data_dir / "predmarkets"
+    pm.mkdir(parents=True, exist_ok=True)
+    (pm / "_meta.json").write_text(json.dumps({"indicators": {
+        "fomc_decision": {"horizons": [{
+            "label": "Fed decision in Dec 2026?", "date": "2026-12-09",
+            "event_ticker": "KXFEDDECISION-26DEC"}]},
+        "recession": {"horizons": [
+            {"label": "2026", "date": "2027-01-31",
+             "event_ticker": "KXRECSSNBER-26"},
+            {"label": "2027", "date": "2028-01-31",
+             "event_ticker": "KXRECSSNBER-27"}]},
+    }}))
+    pl.DataFrame({
+        "date": ["2026-11-19", "2026-11-19", "2026-11-20", "2026-11-20"],
+        "value": [0.5, 0.5, 0.09, 0.90],
+        "event": ["KXFEDDECISION-26DEC"] * 4,
+        "ticker": ["KXFEDDECISION-26DEC-H0", "KXFEDDECISION-26DEC-H25"] * 2,
+        "strike": ["Hike 0bps", "Hike 25bps"] * 2,
+        "volume": [1.0] * 4,
+    }).write_csv(pm / "fomc_decision.csv")
+    pl.DataFrame({
+        "date": ["2026-11-20", "2026-11-20"],
+        "value": [0.02, 0.26],
+        "event": ["KXRECSSNBER-26", "KXRECSSNBER-27"],
+        "ticker": ["KXRECSSNBER-26", "KXRECSSNBER-27"],
+        "strike": ["", "Yes"],
+        "volume": [1.0, 1.0],
+    }).write_csv(pm / "recession.csv")
+
+
+def _now_fixture_meta(**overrides):
+    meta = {
+        "built_at_utc": "2026-10-22T00:00:00Z",
+        "last_built_quarter": "2026Q2",
+        "nowcast_through": "2026Q3",
+        "n_indicators": 48,
+        "freshness": {"observed_through": "2025Q4", "least_series": "X",
+                      "least_count": 30, "n_series": 48},
+        "nowcast": {
+            "quarters": ["2026Q1", "2026Q2", "2026Q3"],
+            "counts_by_quarter": {"2026Q3": {"nowcast-model": 47}},
+            "unextended": [{"quarter": "2026Q3", "indicator": "Gap"}],
+        },
+    }
+    meta.update(overrides)
+    return meta
+
+
+def test_now_block_from_data():
+    """The 'What is happening now' block derives every number from the
+    data: headline level and change, hottest/coldest components, the
+    modal FOMC bucket at the front event's last close, the recession
+    ladder's last year, the panel build date, and the entirely-nowcast
+    caveat when fills + unextended cells cover the whole panel."""
+    agg = [{"q": "2026Q2", "v": 0.369}, {"q": "2026Q3", "v": 0.3652}]
+    comp = {
+        "Equity markets": [{"q": "2026Q3", "v": 0.874}],
+        "Business credit": [{"q": "2026Q3", "v": 0.813}],
+        "Bank leverage": [{"q": "2026Q3", "v": 0.400}],
+        "Consumer credit": [{"q": "2026Q3", "v": 0.050}],
+        "Nonfinancial Business": [{"q": "2026Q3", "v": 0.022}],
+    }
+    with tempfile.TemporaryDirectory() as td:
+        data = Path(td)
+        _now_fixture_pm(data)
+        block = make_site.now_block_html(_now_fixture_meta(), agg, comp, data)
+    assert "as of November 20, 2026" in block
+    assert ("The heat index stands at <strong>0.37</strong> in 2026Q3, "
+            "little changed from 0.37 in 2026Q2.") in block
+    assert ("Hottest components: Equity markets (0.87) and "
+            "Business credit (0.81).") in block
+    assert ("Coldest: Nonfinancial Business (0.02) and "
+            "Consumer credit (0.05).") in block
+    assert ("give the highest probability, 90%, to a 25 bp hike at the "
+            "December 9 FOMC meeting.") in block
+    assert "Recession odds for 2027 stand at 26%." in block
+    assert "Quarterly panel built October 22, 2026." in block
+    assert ("The 2026Q3 column is entirely nowcast — no indicator has "
+            "an observed 2026Q3 value; observations run through "
+            "2026Q2.") in block
+    assert "30 of 48 series end at 2025Q4." in block
+
+    # Partial coverage: the caveat counts the filled series instead.
+    meta = _now_fixture_meta(nowcast={
+        "quarters": ["2026Q3"],
+        "counts_by_quarter": {"2026Q3": {"nowcast-model": 30}},
+        "unextended": []})
+    with tempfile.TemporaryDirectory() as td:
+        data = Path(td)
+        _now_fixture_pm(data)
+        block = make_site.now_block_html(meta, agg, comp, data)
+    assert ("The 2026Q3 column carries nowcast fills for 30 of 48 "
+            "series") in block
+    assert "entirely nowcast" not in block
+
+
+def test_update_now_block():
+    """The marker rewrite replaces exactly the block between the
+    markers, is idempotent, and fails loudly when markers are gone."""
+    html = ("<main>\n"
+            "  <!-- NOW-BLOCK:BEGIN — generated; do not edit. -->\n"
+            "  STALE\n"
+            "<!-- NOW-BLOCK:END -->\n"
+            "</main>\n")
+    with tempfile.TemporaryDirectory() as td:
+        page = Path(td) / "index.html"
+        page.write_text(html)
+        assert make_site.update_now_block(page, "  <section>NEW</section>") is True
+        out = page.read_text()
+        assert out == ("<main>\n"
+                       "  <!-- NOW-BLOCK:BEGIN — generated; do not edit. -->\n"
+                       "  <section>NEW</section>\n"
+                       "<!-- NOW-BLOCK:END -->\n"
+                       "</main>\n")
+        assert make_site.update_now_block(page, "  <section>NEW</section>") is False
+        page.write_text("<main>no markers</main>")
+        try:
+            make_site.update_now_block(page, "x")
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("missing NOW-BLOCK markers must raise")
+
+
+def test_shipped_now_block_matches_data():
+    """The committed landing page's now block must equal the block
+    derived from the committed bundles and predmarkets layer."""
+    meta_p = HERE / "docs" / "data" / "meta.json"
+    agg_p = HERE / "docs" / "data" / "aggregate.json"
+    comp_p = HERE / "docs" / "data" / "components.json"
+    page_p = HERE / "docs" / "index.html"
+    pm_p = HERE / "data" / "predmarkets" / "_meta.json"
+    if not all(p.exists() for p in (meta_p, agg_p, comp_p, page_p, pm_p)):
+        print("skip test_shipped_now_block: data files absent")
+        return
+    block = make_site.now_block_html(
+        json.loads(meta_p.read_text()), json.loads(agg_p.read_text()),
+        json.loads(comp_p.read_text()), HERE / "data")
+    assert block in page_p.read_text(), "landing page now block is stale"
+
+
 if __name__ == "__main__":
     test_sanitize_json_replaces_nonfinite()
     test_dumps_strict_fails_loudly_on_missed_nan()
@@ -349,4 +494,7 @@ if __name__ == "__main__":
     test_landing_lines_from_metas()
     test_update_landing_page_rewrites_only_spec_lines()
     test_shipped_landing_page_matches_metas()
+    test_now_block_from_data()
+    test_update_now_block()
+    test_shipped_now_block_matches_data()
     print("all make_site regression tests passed")
