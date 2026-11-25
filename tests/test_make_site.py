@@ -483,6 +483,38 @@ def test_shipped_now_block_matches_data():
     assert block in page_p.read_text(), "landing page now block is stale"
 
 
+def test_refresh_landing_from_committed_bundles():
+    """refresh_landing() recomputes the shipped page's generated
+    regions from the committed bundles alone (the daily workflow's
+    path): a current page is left byte-identical, and a page whose
+    now block has been staled is repaired to the shipped content."""
+    names = ("meta.json", "aggregate.json", "components.json")
+    bundle_src = HERE / "docs" / "data"
+    page_p = HERE / "docs" / "index.html"
+    pm_p = HERE / "data" / "predmarkets" / "_meta.json"
+    if not all((bundle_src / n).exists() for n in names) \
+            or not page_p.exists() or not pm_p.exists():
+        print("skip test_refresh_landing: data files absent")
+        return
+    original = page_p.read_text()
+    with tempfile.TemporaryDirectory() as td:
+        bundle_dir = Path(td) / "data"
+        bundle_dir.mkdir()
+        for n in names:
+            (bundle_dir / n).write_text((bundle_src / n).read_text())
+        landing = Path(td) / "index.html"
+        landing.write_text(original)
+        assert make_site.refresh_landing(HERE / "data", bundle_dir) is False
+        assert landing.read_text() == original
+
+        staled = original.replace(
+            "<!-- NOW-BLOCK:END -->", "STALE\n<!-- NOW-BLOCK:END -->", 1)
+        assert staled != original
+        landing.write_text(staled)
+        assert make_site.refresh_landing(HERE / "data", bundle_dir) is True
+        assert landing.read_text() == original
+
+
 if __name__ == "__main__":
     test_sanitize_json_replaces_nonfinite()
     test_dumps_strict_fails_loudly_on_missed_nan()
@@ -497,4 +529,5 @@ if __name__ == "__main__":
     test_now_block_from_data()
     test_update_now_block()
     test_shipped_now_block_matches_data()
+    test_refresh_landing_from_committed_bundles()
     print("all make_site regression tests passed")

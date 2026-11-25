@@ -38,6 +38,12 @@ plus the build fields already in data/_meta.json (kept verbatim).
 
 Usage:
     python src/make_site.py [--data data] [--out docs/data]
+    python src/make_site.py --refresh-landing
+        Recompute only the landing page's generated regions from the
+        committed bundles and data files. The daily predmarkets
+        workflow runs this after its data update, because the now
+        block reads that layer and the full build runs only with the
+        quarterly pipeline.
 
 Requires: polars.
 """
@@ -578,34 +584,93 @@ def build(data: Path, out: Path) -> dict:
         (out / "indicators_meta.json").write_text(dumps_strict(ind_meta, indent=1) + "\n")
         print(f"Wrote {out / 'indicators_meta.json'} ({len(ind_meta['indicators'])} indicators)")
 
-    # Landing page: regenerate the product cards' data-derived spec lines
-    # from the two metas, so the page cannot drift from the data at the
-    # next expansion. Only runs when the page sits beside the output dir
-    # (the real site build); fixture builds into scratch dirs skip it.
+    # Landing page: regenerate the product cards' data-derived spec
+    # lines and the now block, so the page cannot drift from the data
+    # at the next expansion. Only runs when the page sits beside the
+    # output dir (the real site build); fixture builds into scratch
+    # dirs skip it.
     landing = out.parent / "index.html"
     if landing.exists():
-        pulse_meta = json.loads((data / "pulse" / "_meta.json").read_text())
-        momentum_meta_path = data / "momentum" / "_meta.json"
-        momentum_meta = (json.loads(momentum_meta_path.read_text())
-                         if momentum_meta_path.exists() else None)
-        spec_lines = landing_spec_lines(meta, pulse_meta, quarters[0],
-                                        momentum_meta)
-        if update_landing_page(landing, spec_lines):
-            print(f"Wrote {landing} (spec lines from data/_meta.json, "
-                  f"data/pulse/_meta.json and data/momentum/_meta.json)")
-        block = now_block_html(meta, agg_json, comp_json, data)
-        if update_now_block(landing, block):
-            print(f"Wrote {landing} (now block from the panel and "
-                  f"data/predmarkets/)")
+        apply_landing_updates(landing, meta, agg_json, comp_json, data,
+                              quarters[0])
 
     return meta
+
+
+def apply_landing_updates(landing: Path, meta: dict, agg_rows: list,
+                          comp_json: dict, data: Path,
+                          start_quarter: str) -> bool:
+    """Regenerate the landing page's generated regions in place: the
+    product cards' spec lines (from the heat/pulse/momentum metas) and
+    the "What is happening now" block (from the panel state in `meta`,
+    `agg_rows` and `comp_json`, plus the prediction-markets layer
+    under `data`).
+
+    Shared by build(), which passes the state it has just built, and
+    refresh_landing(), which passes the committed bundles -- both
+    compute the same page from the same inputs. Returns True when the
+    page changed.
+    """
+    pulse_meta = json.loads((data / "pulse" / "_meta.json").read_text())
+    momentum_meta_path = data / "momentum" / "_meta.json"
+    momentum_meta = (json.loads(momentum_meta_path.read_text())
+                     if momentum_meta_path.exists() else None)
+    changed = False
+    spec_lines = landing_spec_lines(meta, pulse_meta, start_quarter,
+                                    momentum_meta)
+    if update_landing_page(landing, spec_lines):
+        print(f"Wrote {landing} (spec lines from data/_meta.json, "
+              f"data/pulse/_meta.json and data/momentum/_meta.json)")
+        changed = True
+    block = now_block_html(meta, agg_rows, comp_json, data)
+    if update_now_block(landing, block):
+        print(f"Wrote {landing} (now block from the panel and "
+              f"data/predmarkets/)")
+        changed = True
+    return changed
+
+
+def refresh_landing(data: Path, out: Path) -> bool:
+    """Recompute the landing page's generated regions from the
+    committed bundles (docs/data/*.json) and data files, without
+    rerunning the quarterly build.
+
+    The now block reads the prediction-markets layer, which the daily
+    workflow updates every day, while this module's full build runs
+    only with the quarterly pipeline -- between builds the shipped
+    block drifted from the daily data. The daily workflow now runs
+    this refresh after the predmarkets update, so the shipped page
+    stays in step; the values are exactly the ones the shipped-page
+    tests derive from the same committed files. Returns True when
+    the page changed; a page that does not sit beside the bundle dir
+    (fixture builds) is skipped.
+    """
+    landing = out.parent / "index.html"
+    if not landing.exists():
+        return False
+    meta = json.loads((out / "meta.json").read_text())
+    agg_rows = json.loads((out / "aggregate.json").read_text())
+    comp_json = json.loads((out / "components.json").read_text())
+    return apply_landing_updates(landing, meta, agg_rows, comp_json,
+                                 data, meta["start_quarter"])
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--data", default=str(HERE / "data"))
     ap.add_argument("--out", default=str(HERE / "docs" / "data"))
+    ap.add_argument("--refresh-landing", action="store_true",
+                    help="recompute only the landing page's generated "
+                         "regions from the committed bundles and data "
+                         "(run by the daily predmarkets workflow after "
+                         "its data update); skips the full build")
     args = ap.parse_args()
+
+    if args.refresh_landing:
+        changed = refresh_landing(Path(args.data), Path(args.out))
+        print("landing page refreshed" if changed
+              else "landing page already current")
+        return 0
 
     meta = build(Path(args.data), Path(args.out))
     out = Path(args.out)
