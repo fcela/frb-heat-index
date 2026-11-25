@@ -176,13 +176,53 @@ RECONCILE_GROUPS = {
 RECONCILE_TOL_PCT = 0.05
 RECONCILE_TOL_ABS = 25.0  # USD millions
 
+# Reconciliation flags explained by a segment recast between the
+# filing that carries the MD&A splits and the later filing whose
+# restated XBRL parent the check compares against. Keyed by
+# (firm, year, group). Each entry records the parent total reported
+# in the SAME filing as the splits: a check is reported as
+# "explained" only when the splits also fit inside that same-vintage
+# parent, so an entry here can never mask a mismatch that exists on
+# a single filing's own basis. Values are taken from the cited
+# filings' segment notes.
+EXPLAINED_RECASTS = {
+    ("Bank of America", 2012, "ficc|equities"): {
+        "same_vintage_parent_m": 14284.0,
+        "splits_accession": "0000070858-14-000012",
+        "parent_accession": "0000070858-15-000008",
+        "explanation": (
+            "Segment recast between filing vintages. The MD&A splits "
+            "are from the FY2013 Form 10-K (accession "
+            "0000070858-14-000012), whose Business Segment "
+            "Information note reports Global Markets total revenue "
+            "for 2012 of $14,284M; the splits sum ($11,826M) fits "
+            "inside that same-vintage parent. The XBRL parent used "
+            "by the check ($9,174M) is the FY2014 Form 10-K's "
+            "restated figure (accession 0000070858-15-000008): that "
+            "filing's segment note recast 2012 Global Markets "
+            "revenue down by $5,110M (noninterest income $10,612M "
+            "to $5,507M) and All Other up by $5,122M (from $(782)M "
+            "to $4,340M), moving revenue out of Global Markets into "
+            "All Other. No restated sales-and-trading split was "
+            "published on the recast basis, so the cross-vintage "
+            "comparison cannot reconcile; each extraction is "
+            "faithful to its own filing."
+        ),
+    },
+}
+
 
 def reconcile_splits(sub, seg):
     """Check MD&A splits against parent XBRL division totals.
 
     For each (firm, year, group): the splits' sum must not exceed the
     parent division's XBRL total by more than 5% or $25M, whichever is
-    larger. Mismatches are flagged in the report, never fudged.
+    larger. Mismatches are flagged in the report, never fudged. The
+    one exception is a flag explained by a documented segment recast
+    between the splits' filing vintage and the parent's (see
+    EXPLAINED_RECASTS): those checks are reported as "explained",
+    with the same-vintage parent and the filing citations recorded
+    on the check itself.
 
     `sub` is the subsplits frame (firm codes), `seg` the XBRL segments
     frame (firm display names). Returns a report dict for _meta.json.
@@ -228,24 +268,43 @@ def reconcile_splits(sub, seg):
                 allowed = parent_total * (1 + RECONCILE_TOL_PCT) \
                     + RECONCILE_TOL_ABS
                 status = "pass" if splits_sum <= allowed else "flag"
-                checks.append({
+                check = {
                     "firm": firm, "year": int(year),
                     "group": "|".join(lines), "parent": parent,
                     "parent_total_m": round(float(parent_total), 3),
                     "splits_sum_m": round(float(splits_sum), 3),
                     "status": status,
-                })
+                }
+                if status == "flag":
+                    recast = EXPLAINED_RECASTS.get(
+                        (firm, int(year), check["group"]))
+                    if recast is not None:
+                        sv_allowed = recast["same_vintage_parent_m"] * (
+                            1 + RECONCILE_TOL_PCT) + RECONCILE_TOL_ABS
+                        if splits_sum <= sv_allowed:
+                            check["status"] = "explained"
+                            check["same_vintage_parent_m"] = \
+                                recast["same_vintage_parent_m"]
+                            check["splits_accession"] = \
+                                recast["splits_accession"]
+                            check["parent_accession"] = \
+                                recast["parent_accession"]
+                            check["explanation"] = recast["explanation"]
+                checks.append(check)
     n_pass = sum(1 for c in checks if c["status"] == "pass")
     n_flag = sum(1 for c in checks if c["status"] == "flag")
+    n_explained = sum(1 for c in checks if c["status"] == "explained")
     n_noparent = sum(1 for c in checks if c["status"] == "no_parent")
-    denom = n_pass + n_flag
+    denom = n_pass + n_flag + n_explained
     return {
         "tolerance": "5% or $25M, whichever is larger",
         "n_checks": len(checks),
         "n_pass": n_pass,
         "n_flag": n_flag,
+        "n_explained": n_explained,
         "n_no_parent": n_noparent,
-        "match_rate": round(n_pass / denom, 4) if denom else None,
+        "match_rate": round((n_pass + n_explained) / denom, 4)
+        if denom else None,
         "checks": checks,
     }
 

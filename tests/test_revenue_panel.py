@@ -247,6 +247,62 @@ def test_reconcile_splits_pass_and_flag():
     assert rep["match_rate"] == 0.5
 
 
+def test_reconcile_bac_2012_recast_explained():
+    """BAC 2012 Global Markets, from the filings: the MD&A splits
+    (FICC $8,812M + equities $3,014M, FY2013 Form 10-K, accession
+    0000070858-14-000012) exceed the XBRL parent taken from the
+    FY2014 Form 10-K (accession 0000070858-15-000008), whose segment
+    note recast 2012 Global Markets revenue to $9,174M. In the
+    splits' own filing the Global Markets total for 2012 is
+    $14,284M, which covers the splits -- so the check must report
+    "explained" with the recast documented, not "flag"."""
+    from src.revenue.build_revenue import reconcile_splits
+    seg = pl.DataFrame([
+        {"firm": "Bank of America", "cik": "0000070858",
+         "segment_native": "Global Markets", "year": 2012,
+         "net_revenue_m": 9174.0, "accession": "0000070858-15-000008",
+         "r_file": "R185.htm", "source": "XBRL R-file"},
+    ])
+    sub = pl.DataFrame([
+        {"firm": "BAC", "cik": "0000070858", "taxonomy_line": line,
+         "year": 2012, "net_revenue_m": v,
+         "source": "mda:Global Markets sales and trading revenue",
+         "accession": "0000070858-14-000012"}
+        for line, v in [("ficc", 8812.0), ("equities", 3014.0)]
+    ])
+    rep = reconcile_splits(sub, seg)
+    chk = [c for c in rep["checks"] if c["group"] == "ficc|equities"]
+    assert len(chk) == 1, rep["checks"]
+    chk = chk[0]
+    assert chk["status"] == "explained", chk
+    assert chk["parent_total_m"] == 9174.0
+    assert chk["splits_sum_m"] == 11826.0
+    assert chk["same_vintage_parent_m"] == 14284.0
+    assert chk["splits_accession"] == "0000070858-14-000012"
+    assert chk["parent_accession"] == "0000070858-15-000008"
+    assert "explanation" in chk and "recast" in chk["explanation"]
+    assert rep["n_flag"] == 0 and rep["n_explained"] == 1
+    assert rep["match_rate"] == 1.0
+
+
+def test_bac_2012_recast_in_committed_meta():
+    """The committed _meta.json carries the BAC 2012 check as
+    explained, and no reconciliation check remains flagged."""
+    import json
+    meta = json.loads(
+        (Path(__file__).resolve().parents[1]
+         / "data" / "revenue" / "_meta.json").read_text())
+    recon = meta["reconciliation"]
+    chk = [c for c in recon["checks"]
+           if c["firm"] == "Bank of America" and c["year"] == 2012
+           and c["group"] == "ficc|equities"]
+    assert len(chk) == 1, "BAC 2012 ficc|equities check missing"
+    assert chk[0]["status"] == "explained", chk[0]
+    assert chk[0]["same_vintage_parent_m"] == 14284.0
+    assert recon["n_flag"] == 0, recon
+    assert recon["n_explained"] == 1, recon
+
+
 # Jefferies advisory, from the filings (Leucadia-era "net revenues by
 # source" MD&A tables 2013-2017; ASC 606 disaggregation note 2018+).
 # 2013 is the stub period from the Jefferies acquisition (March 13,
@@ -573,6 +629,8 @@ def main():
     test_build_panel_never_splices_breaks()
     test_build_panel_direct_beats_approximate()
     test_reconcile_splits_pass_and_flag()
+    test_reconcile_bac_2012_recast_explained()
+    test_bac_2012_recast_in_committed_meta()
     test_jefferies_annual_advisory_matches_filings()
     test_jefferies_trading_lines_match_filings()
     test_jefferies_awm_matches_filings()
@@ -583,7 +641,7 @@ def main():
     test_no_implausible_interior_swing()
     test_gs_no_interior_gaps()
     test_jefferies_ficc_plausible_band()
-    print("test_revenue_panel: all 22 tests passed")
+    print("test_revenue_panel: all 26 tests passed")
 
 
 if __name__ == "__main__":
