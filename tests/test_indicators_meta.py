@@ -115,8 +115,35 @@ def test_last_value_status_cross_check():
     for row in p_now.iter_rows(named=True):
         nowcast_map[(row["indicator"], row["quarter"])] = row["value_source"]
 
+    p_comp = pl.read_csv(data_dir / "panel_complete.csv")
+    p_q = pl.read_csv(data_dir / "panel_quarterly.csv")
+
     meta = build_indicators_meta(data_dir)
-    assert meta["panel_last_quarter"] == "2026Q2"
+
+    # Two different quantities, asserted separately. panel_last_quarter
+    # is the panel's last column, nowcast-inclusive: the last quarter
+    # of panel_complete. The last observed quarter is the last quarter
+    # of panel_quarterly that carries any observed value, and must
+    # equal the largest per-indicator last_observed_quarter. (A single
+    # hardcoded quarter here conflated the two and broke when the
+    # panel gained a nowcast-only column past the last observed one.)
+    panel_last = p_comp["quarter"].to_list()[-1]
+    assert meta["panel_last_quarter"] == panel_last, (
+        f"panel_last_quarter {meta['panel_last_quarter']!r} is not the "
+        f"panel's last (nowcast-inclusive) quarter {panel_last!r}")
+    q_cols = [c for c in p_q.columns if c != "quarter"]
+    last_observed = None
+    for row in p_q.iter_rows(named=True):
+        if any(row[c] is not None for c in q_cols):
+            last_observed = row["quarter"]
+    assert last_observed is not None
+    assert max(m["last_observed_quarter"] for m in meta["indicators"]) \
+        == last_observed, (
+            "largest last_observed_quarter must equal the last "
+            "quarter with observed values in panel_quarterly")
+    assert panel_last >= last_observed, (
+        "the nowcast-inclusive panel end must not precede the last "
+        "observed quarter")
 
     nowcast_count = 0
     observed_count = 0
@@ -140,8 +167,24 @@ def test_last_value_status_cross_check():
             assert math.isclose(m["last_value"], m["last_observed_value"], abs_tol=1e-12), f"{col} last_value should equal last_observed_value"
             assert m["n_observed"] == m["n_observations"], f"{col} observed series should have n_observed == n_observations"
 
-    assert nowcast_count == 30, f"expected 30 nowcast indicators, got {nowcast_count}"
-    assert observed_count == 18, f"expected 18 observed indicators, got {observed_count}"
+    # Counts recomputed independently of the emitter, from the panel
+    # and the provenance file: an indicator counts as nowcast exactly
+    # when its last non-null panel_complete value sits in a quarter
+    # the provenance file attributes to a nowcast method. (Hardcoded
+    # counts here went stale when the panel grew from 48 to 52
+    # indicators.)
+    exp_nowcast = 0
+    comp_qs = p_comp["quarter"].to_list()
+    for col in [c for c in p_comp.columns if c != "quarter"]:
+        last_q = [q for q, v in zip(comp_qs, p_comp[col].to_list())
+                  if v is not None][-1]
+        if (col, last_q) in nowcast_map:
+            exp_nowcast += 1
+    assert nowcast_count == exp_nowcast, (
+        f"expected {exp_nowcast} nowcast indicators, got {nowcast_count}")
+    assert observed_count == len(meta["indicators"]) - exp_nowcast, (
+        f"expected {len(meta['indicators']) - exp_nowcast} observed "
+        f"indicators, got {observed_count}")
 
 
 def test_schema_bar():
@@ -198,7 +241,11 @@ def test_site_bundle_check():
     bundle = _strict_loads(text)  # raises on any NaN/Inf literal
 
     assert len(bundle["indicators"]) == 52
-    assert bundle["panel_last_quarter"] == "2026Q2"
+    panel_last = pl.read_csv(
+        HERE / "data" / "panel_complete.csv")["quarter"].to_list()[-1]
+    assert bundle["panel_last_quarter"] == panel_last, (
+        "bundle panel_last_quarter must be the panel's last "
+        "(nowcast-inclusive) quarter, not the last observed quarter")
 
     # Must match fresh emitter run byte-for-byte
     fresh = dumps_strict(build_indicators_meta(HERE / "data"), indent=1) + "\n"
