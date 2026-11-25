@@ -15,10 +15,10 @@ const FIX = join(REPO, "tests/fixtures/frb");
 
 function mkEl() {
   const el = {
-    _html: "", _children: [], _slots: {}, _listeners: {},
+    _html: "", _children: [], _slots: {}, _listeners: {}, _attrs: {},
     className: "", id: "", textContent: "", dataset: {},
     classList: { add() {}, remove() {}, toggle() {} },
-    setAttribute() {},
+    setAttribute(k, v) { this._attrs[k] = v; },
     addEventListener(ev, fn) { (this._listeners[ev] ??= []).push(fn); },
     click() { for (const fn of this._listeners.click || []) fn(); },
     appendChild(c) { this._children.push(c); return c; },
@@ -89,6 +89,10 @@ if (META.freshness) {
     err("freshness banner missing the least-recent series name");
 }
 if (byId["heatmap"]?._children.length !== 1) err("component heat map did not render");
+const heatmapAria = byId["heatmap"]?._attrs?.["aria-label"] ?? null;
+const expAria = `Heat map of ${META.components.length} vulnerability components over time`;
+if (heatmapAria !== expAria)
+  err(`heat map aria-label ${JSON.stringify(heatmapAria)} != ${JSON.stringify(expAria)}`);
 if (byId["aggchart"]?._children.length !== 1) err("aggregate chart did not render");
 if (byId["hierarchy"]?._children.length !== HIER.categories.length)
   err("hierarchy view did not render its categories");
@@ -292,6 +296,7 @@ if (document.body.dataset.view !== "hierarchy")
 
 console.log(JSON.stringify({
   errors: results.errors,
+  heatmapAria,
   rows: nRows,
   cells: cells.length,
   missing: missing.length,

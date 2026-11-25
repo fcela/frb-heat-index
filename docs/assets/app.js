@@ -169,6 +169,10 @@ function renderHeatmap() {
   const el = document.getElementById("heatmap");
   el.innerHTML = "";
   const components = META.components;
+  // The static aria-label in the HTML is only a pre-render default;
+  // the count must come from the same component list the map renders.
+  el.setAttribute("aria-label",
+    `Heat map of ${components.length} vulnerability components over time`);
   const nQ = quarters.length;
   const cells = [], missing = [];
   components.forEach(c => {
