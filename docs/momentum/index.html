@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulse of the Market — frb-heat-index</title>
+<meta name="description" content="Leading indicators, dated inflection points, and rotation fingerprints for U.S. markets: the layer that says what is changing, not just where things stand. Refreshed weekly from free public data.">
+<meta property="og:title" content="Pulse of the Market — frb-heat-index">
+<meta property="og:description" content="Leading indicators first, inflection points as dated computable events, rotation underneath: fingerprint states computed from archived daily series, refreshed weekly.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='6' height='28' fill='%232166ac'%3E%3Crect x='10' y='10' width='6' height='20' fill='%23f4a582'%3E%3Crect x='18' y='6' width='6' height='24' fill='%23d6604d'%3E%3Crect x='26' y='14' width='4' height='16' fill='%23b2182b'%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/pulse.css">
+<style>
+  .mom-wrap { max-width: 1180px; margin: 0 auto; padding: 0 1.25rem; }
+  .mom-read { font-size: 1.05rem; line-height: 1.55; margin: 0.5rem 0 1.5rem; }
+  .state-pill { display: inline-block; padding: 0.08rem 0.55rem; border-radius: 999px;
+    font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+  .state-on { background: #b2182b; color: #fff; }
+  .state-off { background: var(--grid, #ece7d8); color: inherit; opacity: 0.75; }
+  .quad-chip { display: inline-block; padding: 0.08rem 0.5rem; border-radius: 4px;
+    font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+  .quad-Leading { background: #2166ac; color: #fff; }
+  .quad-Weakening { background: #92c5de; color: #1b1a16; }
+  .quad-Lagging { background: #b2182b; color: #fff; }
+  .quad-Improving { background: #f4a582; color: #1b1a16; }
+  .mom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 1rem; }
+  .mom-grid .pulse-card { margin: 0; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .neg { color: #b2182b; } .pos { color: #2166ac; }
+</style>
+<script>
+  // Set theme before first paint to avoid a flash.
+  try {
+    var t = localStorage.getItem("frb-heat-theme");
+    if (t === "dark" || (t === null && matchMedia("(prefers-color-scheme: dark)").matches))
+      document.documentElement.dataset.theme = "dark";
+  } catch (e) {}
+</script>
+<script type="module" src="app.js"></script>
+</head>
+<body>
+
+<div class="tape-band">
+  <nav class="nav" aria-label="Sections">
+    <div class="nav-inner">
+      <span class="brand"><a href="../" style="color:inherit;text-decoration:none">frb-heat-index</a> <span class="dot">●</span></span>
+      <div class="nav-links">
+        <a href="./" aria-current="page">Pulse of the Market</a>
+        <a href="../pulse/">Market Pulse</a>
+        <a href="../frb/">FRB Heat Index</a>
+        <a href="../predmarkets/">Prediction Markets</a>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">◐</button>
+    </div>
+  </nav>
+
+  <header class="pulse-hero">
+    <p class="kicker">Pulse of the Market · leading indicators &amp; rotation</p>
+    <h1>What is changing, <span class="tick">▮</span> not just where things stand</h1>
+    <p class="lede">The heat map and the pulse say where things stand. This section is about
+      movement: leading indicators first, inflection points as dated, computable events, and
+      rotation underneath. Every fingerprint state below is a stated definition evaluated on
+      the section's own archived daily series — the board never reads a value the build did
+      not store. Prices are unadjusted closes from Yahoo Finance; macro and volatility
+      series come from FRED; the excess bond premium from the Federal Reserve's FEDS Notes
+      file. All sources are free. Refreshed weekly on Mondays; the archived series are
+      daily, so the dated inflections are exact.</p>
+  </header>
+
+  <div class="tape" id="tape" aria-label="Latest prints"></div>
+</div>
+
+<main>
+  <div class="mom-wrap">
+    <div id="fresh"></div>
+
+    <section id="board-sec">
+      <h3>The fingerprint board</h3>
+      <p class="blurb">Named market states, each a definition, not a judgement. The measured
+        values behind every state are shown, so any state can be checked against its own bar.</p>
+      <p class="mom-read" id="read"></p>
+      <div id="board"></div>
+    </section>
+
+    <section id="leading-sec">
+      <h3>Leading indicators</h3>
+      <p class="blurb">The series that historically move before the coincident picture does —
+        credit spreads, financial conditions and their subindexes, the volatility complex, the
+        curve, claims, sentiment. Trailing year, own units, full provenance on every panel.</p>
+      <div id="leading"></div>
+    </section>
+
+    <section id="inflections-sec">
+      <h3>Inflection log</h3>
+      <p class="blurb">Turning points as dated events. Each signal has a computable definition;
+        the log gives the last date it fired, not a narrative about what it means.</p>
+      <div id="inflections"></div>
+    </section>
+
+    <section id="rotation-sec">
+      <h3>Rotation</h3>
+      <p class="blurb">Relative-strength quadrants computed from closes — trend is the
+        63-session return spread against SPY, momentum the 21-session spread — stated as a
+        table with the two measured numbers, and the named patterns the quadrants and the
+        fingerprint states jointly define.</p>
+      <div id="rotation"></div>
+      <div id="rotation-spread"></div>
+    </section>
+
+    <section id="grid-sec">
+      <h3>Sector momentum grid</h3>
+      <p class="blurb">The evidence layer: every panel on the same rebased scale (100 = 63
+        sessions ago), with 5/21/63-session returns, distance from the 52-week high, and
+        21-session realized volatility. No panel is cherry-picked; the grid is the universe
+        the breadth and rotation numbers are computed from.</p>
+      <div id="grid" class="mom-grid"></div>
+    </section>
+
+    <section id="movers-sec">
+      <h3>Cross-asset movers &amp; the vol regime</h3>
+      <p class="blurb">The cross-asset statement of the same windows — levels move in
+        percentage points (shown in basis points), prices in percent — and the volatility
+        complex: spot VIX against 3-month VXV, with their spread, whose sign is the
+        inversion fingerprint.</p>
+      <div id="movers"></div>
+      <div id="volpanel"></div>
+    </section>
+
+    <div class="pulse-foot">
+      <p>Pulse of the Market is the momentum companion to the
+        <a href="../">FRB Heat Index replication</a> and the <a href="../pulse/">Market
+        Pulse</a>. Every state definition, threshold, and data route is stated in the
+        <a href="methodology.md">methodology</a>. Data: <code>../data/momentum.json</code>,
+        refreshed weekly (Mondays) by the <code>momentum.yml</code> pipeline from free
+        public sources only; per-series daily CSVs under <code>data/momentum/</code>.
+        Prices are unadjusted closes, the repository's standing convention; windows are
+        counted in sessions, so a state dated "since" a day names the session the
+        definition first held.</p>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
