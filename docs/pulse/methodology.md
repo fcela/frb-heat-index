@@ -1,7 +1,7 @@
-# Market Pulse — methodology & sources
+# Early Warning — methodology & sources
 
 Per-indicator sourcing, construction details, and the full citations behind
-each card's commentary. The pulse is a *raw-series* dashboard: every
+each card's commentary. Early Warning is a *raw-series* dashboard: every
 indicator is charted in its own units at native frequency — never as heat
 quantiles — and proxies are labeled as proxies. Series are fetched by
 `src/pulse/build_pulse.py` (weekly, incremental; failures mark the
@@ -13,6 +13,22 @@ an unlicensed/unavailable ideal measure), `live-experimental` (framework
 shipped, series still a proof), `live-manual` (no machine feed —
 hand-maintained CSV in `data/pulse/manual/`, see its README),
 `pending-sourcing` (no confirmed public series yet).
+
+## Specialization
+
+This section was renamed from Market Pulse to Early Warning in November
+2026, when the Pulse of the Market section took over the tape. The split:
+Early Warning answers "is the system straining?" — quantities and
+plumbing: funding, liquidity, leverage, deal flow, and flows, between the
+quarterly heat readings. Pulse of the Market answers "is the tape
+turning?" — prices, momentum, rotation, and the volatility complex. Three
+price-derived gauges that used to sit in the Equities segment were
+removed as duplication: the Shiller CAPE z-score (valuation), the
+SPHB−SPLV factor-rotation spread (price relative strength), and CBOE
+VVIX (volatility of volatility, implied from option prices). Their
+subjects are covered by Pulse of the Market
+(`docs/momentum/methodology.md`); the SPHB−SPLV spread is computed there
+from its own archived closes.
 
 ## Segment: Inflation
 
@@ -84,17 +100,7 @@ hand-maintained CSV in `data/pulse/manual/`, see its README),
 - **Put/call ratio** — CBOE daily market statistics
   (`cboe.com/us/options/market_statistics`); historical CSV stitched to
   the daily page, definitions matched exactly.
-- **CAPE z-score** — Shiller CAPE (multpl.com republication; Yale
-  `ie_data.xls` frozen 2023-10-17); starting-valuation return prediction:
-  Campbell & Shiller (J. Portfolio Management 1988) lineage.
 - **Equity issuance** — SIFMA quarterly reports (parsed PDF tables).
-- **Factor rotation** — Yahoo Finance SPHB/SPLV; high-beta leadership as
-  late-cycle marker.
-- **VVIX** — CBOE free daily CSV
-  `cdn.cboe.com/api/global/us_indices/daily_prices/VVIX_History.csv`;
-  dashboard `cboe.com/us/indices/dashboard/vvix`. Threshold interpretation
-  (>120-140 = vol-regime break) per practitioner/academic use; episodes:
-  Feb 2018, Mar 2020.
 
 ## Segment: Asset & Wealth Management
 

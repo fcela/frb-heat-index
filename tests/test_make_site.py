@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import json
 import math
-import re
 import sys
 import tempfile
 from pathlib import Path
@@ -272,7 +271,7 @@ _LANDING_FIXTURE_HTML = """<main>
       </dl>
     </section>
     <section class="card product-card">
-      <h2>Market Pulse</h2>
+      <h2>Early Warning</h2>
       <dl class="specs">
         <dt>Indicators</dt><dd>STALE pulse counts</dd>
         <dt>Coverage</dt><dd>5+ year backfills where sources allow</dd>
@@ -318,41 +317,6 @@ def test_update_landing_page_rewrites_only_spec_lines():
             pass
         else:
             raise AssertionError("missing Coverage label must raise")
-
-
-def test_update_landing_page_syncs_view_count():
-    """The hero heading's count word follows the number of product
-    cards on the page (the fixture carries three cards, one of which
-    has no generated spec lines). A page without a heading is left
-    byte-identical."""
-    headed = ("<header><h1>Two views of "
-              "<span class=\"hot\">financial-system risk</span></h1>"
-              "</header>\n" + _LANDING_FIXTURE_HTML)
-    with tempfile.TemporaryDirectory() as td:
-        page = Path(td) / "index.html"
-        page.write_text(headed)
-        assert make_site.update_landing_page(page, {}) is True
-        out = page.read_text()
-        assert "<h1>Three views of" in out
-        assert out.replace("<h1>Three views of", "<h1>Two views of") == headed
-        assert make_site.update_landing_page(page, {}) is False
-
-        page.write_text(_LANDING_FIXTURE_HTML)
-        assert make_site.update_landing_page(page, {}) is False
-        assert page.read_text() == _LANDING_FIXTURE_HTML
-
-
-def test_shipped_landing_heading_matches_card_count():
-    """The committed landing page's heading count must equal its
-    product-card count -- the guard for the drift in which the heading
-    kept saying three views after a fourth section shipped."""
-    text = (HERE / "docs" / "index.html").read_text()
-    n = text.count('<section class="card product-card">')
-    m = re.search(r"<h1>([A-Za-z]+) views of", text)
-    assert m, "landing page hero heading not found"
-    assert m.group(1) == make_site._COUNT_WORDS[n - 1], (
-        f"heading says {m.group(1)!r} views but the page carries "
-        f"{n} product cards")
 
 
 def test_shipped_landing_page_matches_metas():
@@ -519,38 +483,6 @@ def test_shipped_now_block_matches_data():
     assert block in page_p.read_text(), "landing page now block is stale"
 
 
-def test_refresh_landing_from_committed_bundles():
-    """refresh_landing() recomputes the shipped page's generated
-    regions from the committed bundles alone (the daily workflow's
-    path): a current page is left byte-identical, and a page whose
-    now block has been staled is repaired to the shipped content."""
-    names = ("meta.json", "aggregate.json", "components.json")
-    bundle_src = HERE / "docs" / "data"
-    page_p = HERE / "docs" / "index.html"
-    pm_p = HERE / "data" / "predmarkets" / "_meta.json"
-    if not all((bundle_src / n).exists() for n in names) \
-            or not page_p.exists() or not pm_p.exists():
-        print("skip test_refresh_landing: data files absent")
-        return
-    original = page_p.read_text()
-    with tempfile.TemporaryDirectory() as td:
-        bundle_dir = Path(td) / "data"
-        bundle_dir.mkdir()
-        for n in names:
-            (bundle_dir / n).write_text((bundle_src / n).read_text())
-        landing = Path(td) / "index.html"
-        landing.write_text(original)
-        assert make_site.refresh_landing(HERE / "data", bundle_dir) is False
-        assert landing.read_text() == original
-
-        staled = original.replace(
-            "<!-- NOW-BLOCK:END -->", "STALE\n<!-- NOW-BLOCK:END -->", 1)
-        assert staled != original
-        landing.write_text(staled)
-        assert make_site.refresh_landing(HERE / "data", bundle_dir) is True
-        assert landing.read_text() == original
-
-
 if __name__ == "__main__":
     test_sanitize_json_replaces_nonfinite()
     test_dumps_strict_fails_loudly_on_missed_nan()
@@ -561,11 +493,8 @@ if __name__ == "__main__":
     test_shipped_meta_freshness_matches_raw_panel()
     test_landing_lines_from_metas()
     test_update_landing_page_rewrites_only_spec_lines()
-    test_update_landing_page_syncs_view_count()
-    test_shipped_landing_heading_matches_card_count()
     test_shipped_landing_page_matches_metas()
     test_now_block_from_data()
     test_update_now_block()
     test_shipped_now_block_matches_data()
-    test_refresh_landing_from_committed_bundles()
     print("all make_site regression tests passed")

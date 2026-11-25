@@ -43,15 +43,12 @@ from src.pulse import (
     hy_issuance,
     move_index,
     put_call,
-    cape_zscore,
     equity_issuance,
-    factor_rotation,
     fund_flows,
     cp_ois,
     fra_ois,
     dealer_cds,
     ma_announced,
-    vvix,
     sf_news_sentiment,
     gpr_threats,
     manual_feeds,
@@ -231,12 +228,8 @@ def fetch_indicator(ind_key: str, ind: dict) -> pl.DataFrame:
         old = load_existing("equities", "put_call")
         since = old["date"].max() if old is not None and old.height else None
         return put_call.fetch_put_call(scrape_since=since)
-    if ind_key == "cape_zscore":
-        return cape_zscore.fetch_cape_zscore()
     if ind_key == "equity_issuance":
         return equity_issuance.fetch_equity_issuance()
-    if ind_key == "factor_rotation":
-        return factor_rotation.fetch_factor_rotation()
     if ind_key == "fund_flows":
         return fund_flows.fetch_fund_flows()
     if ind_key == "cp_ois":
@@ -247,8 +240,6 @@ def fetch_indicator(ind_key: str, ind: dict) -> pl.DataFrame:
         return dealer_cds.fetch_dealer_cds()
     if ind_key == "ma_announced":
         return ma_announced.fetch_ma_announced()
-    if ind_key == "vvix":
-        return vvix.fetch_vvix()
     if ind_key == "news_sentiment":
         return sf_news_sentiment.fetch_news_sentiment()
     if ind_key == "gpr_threats":
