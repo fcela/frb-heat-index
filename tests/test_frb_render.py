@@ -3,7 +3,8 @@
 The clustered-view render harness (tests/fixtures/frb/render-harness.mjs)
 boots the real docs/assets/app.js under a stubbed DOM + Plot against the
 committed site bundles (docs/data/*.json, zero network): default hierarchy
-view untouched, the Hierarchy<->Clustered toggle, 46 indicator rows in the
+view untouched, the heat map's aria-label component count, the
+Hierarchy<->Clustered toggle, 46 indicator rows in the
 shipped clustered order, every (row, quarter) cell, the dendrogram aligned
 to the row order, component chips + legend, tooltips, and hash routing.
 
@@ -51,6 +52,12 @@ def test_clustered_view_renders(tmp_path):
     res = json.loads(out)
     assert res["errors"] == [], res["errors"]
     meta = json.loads((REPO / "docs/data/meta.json").read_text())
+    # The heat map's aria-label count is generated from the same
+    # component list the page renders (regression: the static label
+    # kept saying 14 after the panel grew to 15 components).
+    assert res["heatmapAria"] == (
+        f"Heat map of {len(meta['components'])} vulnerability "
+        f"components over time")
     cluster = json.loads((REPO / "docs/data/clustered.json").read_text())
     n = len(cluster["leaves"])
     assert res["rows"] == n
