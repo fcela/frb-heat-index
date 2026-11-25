@@ -55,6 +55,7 @@ from src.pulse import (
     sf_news_sentiment,
     gpr_threats,
     manual_feeds,
+    cpi_yoy,
 )
 from src.pulse.segments import SEGMENTS, FETCHABLE_STATUSES, all_indicators
 
@@ -158,6 +159,10 @@ def _earnings_calls_seed() -> pl.DataFrame:
 def fetch_indicator(ind_key: str, ind: dict) -> pl.DataFrame:
     if "fred_id" in ind:
         return fred.fetch_fred_csv(ind["fred_id"])
+    if ind_key == "cpi_yoy":
+        return cpi_yoy.fetch_cpi_yoy("CPIAUCSL")
+    if ind_key == "cpi_core_yoy":
+        return cpi_yoy.fetch_cpi_yoy("CPILFESL")
     if ind_key == "mbs_spread":
         a = fred.fetch_fred_csv("OBMMIC30YF").rename({"value": "mort"})
         b = fred.fetch_fred_csv("DGS30").rename({"value": "tsy"})

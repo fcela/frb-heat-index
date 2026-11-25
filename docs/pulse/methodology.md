@@ -14,6 +14,21 @@ shipped, series still a proof), `live-manual` (no machine feed —
 hand-maintained CSV in `data/pulse/manual/`, see its README),
 `pending-sourcing` (no confirmed public series yet).
 
+## Segment: Inflation
+
+- **CPI / core CPI, 12-month change** — FRED `CPIAUCSL` / `CPILFESL`
+  (BLS CPI-U levels, seasonally adjusted), converted to 12-month percent
+  changes by `src/pulse/cpi_yoy.py`. The join is by calendar month, never
+  by row position: October 2025 was never collected (the 2025 federal
+  shutdown interrupted BLS collection), so no 12-month change exists for
+  October 2026 and the point is absent — BLS published no 12-month rate
+  for October 2026 either (release USDL-26-1685). Before this segment the
+  dashboard held inflation only as Kalshi market prices.
+- **10-year breakeven** — FRED `T10YIE`; **5y5y forward** — FRED
+  `T5YIFR`. Both are market prices derived from the H.15 nominal and
+  TIPS curves, so both embed inflation-risk and TIPS-liquidity premia;
+  the 5y5y is the anchoring gauge because it strips the near-term path.
+
 ## Segment: Investment Banking
 
 - **Announced M&A deal value** — PitchBook Global M&A Report PDFs
@@ -37,8 +52,20 @@ hand-maintained CSV in `data/pulse/manual/`, see its README),
 - **HY / IG OAS** — FRED `BAMLH0A0HYM2`, `BAMLC0A0CM` (ICE BofA indices
   via St. Louis Fed). Spread-lead evidence: wide HY into 2007-08 and 2020
   months before realized defaults.
+- **BBB OAS** — FRED `BAMLC0A4CBBB` (ICE BofA BBB index); the lowest IG
+  rung, read against the IG index as the BBB-minus-IG gap. Same rolling
+  ~3-year FRED window as the other ICE BofA cuts (from 2023-11).
 - **Agency MBS spread** — FRED `OBMMIC30YF` minus `DGS30` (weekly
   Wednesdays).
+- **30-year mortgage rate** — FRED `MORTGAGE30US` (Freddie Mac PMMS
+  survey average); the level, complementing the spread above.
+- **Brent spot / retail gasoline** — FRED `DCOILBRENTEU` (EIA) and
+  `GASREGW` (EIA weekly survey). Brent is the seaborne war benchmark;
+  gasoline is the household transmission price.
+- **10-year term premium** — FRED `THREEFYTP10`, the Federal Reserve
+  Board's Kim–Wright three-factor estimate; model-based, revised on
+  re-estimation, and not level-comparable to the Adrian–Crump–Moench
+  estimates.
 - **SLOOS net % tightening** — FRED `DRTSCILM`
   (`fred.stlouisfed.org/series/DRTSCILM`), C&I standards for large/mid
   firms, quarterly since 1990Q2. Credit-supply anchor: Lown & Morgan,
@@ -98,11 +125,29 @@ hand-maintained CSV in `data/pulse/manual/`, see its README),
   `chicagofed.org/publications/chicago-fed-insights/2024/nfci-future-economic-growth`).
   Revision caveat: principal-components construction means the entire
   history is recomputed weekly.
+- **NFCI headline / risk / leverage / ANFCI** — FRED `NFCI`, `NFCIRISK`,
+  `NFCILEVERAGE`, `ANFCI` (Chicago Fed), completing the family next to
+  the credit subindex above; same weekly full-history revision caveat.
+  The leverage subindex is the family's vulnerability gauge (positive in
+  late 2026 while risk and credit sit below average).
+- **Bank loans to nondepository financial institutions** — FRED
+  `LNFACBW027NBOG` (H.8, weekly, from 2015); the bank-to-nonbank channel
+  the Fed FSR and IMF GFSR flag first. ~$2.13T in November 2026, +19% y/y.
+- **Card delinquency / charge-off rates** — FRED `DRCCLACBS` /
+  `CORCCACBS` (Federal Reserve charge-off and delinquency release,
+  quarterly, call-report basis). Bank-reported realized consumer
+  distress; can diverge from credit-file measures (NY Fed household
+  panel) on coverage and definitions — the divergence is informative.
 
 ## Segment: Funding Plumbing
 
 - **SOFR–IORB** — FRED `SOFR` minus `IORB` (IORB starts 2021-07-29).
 - **ON RRP** — FRED `RRPONTTLD`.
+- **Reserve balances / Treasury General Account** — FRED `WRESBAL` /
+  `WTREGEN` (H.4.1, Wednesday levels). The quantity side of the funding
+  picture the price gauges above cannot show: the October 2026 squeeze
+  was a quantities event (SOFR above IORB while reserves rebuilt; TGA
+  falling from above $1T).
 - **Dealer fails** — NY Fed primary-dealer statistics (11 Treasury
   fails-to-deliver series, summed; "*" suppressed → 0).
 - **FHLB advances** — FHLB Office of Finance Combined Financial Reports
