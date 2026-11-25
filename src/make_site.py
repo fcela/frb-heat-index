@@ -69,7 +69,7 @@ CATEGORIES = [
     {"name": "Nonfinancial-sector borrowing",
      "blurb": "Debt and saving of households and nonfinancial businesses.",
      "components": ["Nonfinancial Business", "Consumer credit",
-                    "Home mortgages", "Net saving"]},
+                    "Home mortgages", "Net saving", "Credit cycle"]},
     {"name": "Financial-sector health",
      "blurb": "Leverage, funding, and concentration inside the financial system.",
      "components": ["Bank leverage", "Nonbank leverage",
@@ -129,6 +129,10 @@ SHORT_NAMES = {
     "Illiquidity Conventration Indicator": "Illiquidity concentration",
     "SRISK (Total capital shortfall relative to total assets)": "SRISK / total assets",
     "Granger-causality connections among large financial institutions": "Granger-causality connections",
+    "Private Credit Loans (Share of nonfinancial business debt)": "Private credit share of business debt",
+    "Private Credit Intermediary Leverage (Total liabilities to total financial assets)": "Private credit intermediary leverage",
+    "Credit-to-GDP Gap (BIS, private non-financial sector)": "Credit-to-GDP gap (BIS)",
+    "Debt Service Ratio (BIS, private non-financial sector)": "Private-sector debt service ratio (BIS)",
 }
 
 

@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FRB Heat Index — U.S. Financial System Vulnerabilities, Replicated from Public Data</title>
-<meta name="description" content="A public-data replication of the Federal Reserve's heat map of U.S. financial-system vulnerabilities: 48 indicators, 14 components, quarterly, from 1990.">
+<meta name="description" content="A public-data replication of the Federal Reserve's heat map of U.S. financial-system vulnerabilities: 52 indicators, 15 components, quarterly, from 1990.">
 <meta property="og:title" content="FRB Heat Index">
-<meta property="og:description" content="Replicating the Fed's financial-system heat map from public data — 48 indicators, 14 components, quarterly, 1990 to present.">
+<meta property="og:description" content="Replicating the Fed's financial-system heat map from public data — 52 indicators, 15 components, quarterly, 1990 to present.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='6' height='28' fill='%232166ac'/%3E%3Crect x='10' y='10' width='6' height='20' fill='%23f4a582'/%3E%3Crect x='18' y='6' width='6' height='24' fill='%23d6604d'/%3E%3Crect x='26' y='14' width='4' height='16' fill='%23b2182b'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,13 +47,17 @@
     <p class="kicker">Federal Reserve FEDS Notes · replicated from public data</p>
     <h1>Mapping <span class="hot">Heat</span> in the U.S. Financial System</h1>
     <p class="lede">A replication of the Federal Reserve's heat map of financial-system
-      vulnerabilities, rebuilt indicator-by-indicator from public data. Forty-eight indicators
-      feed fourteen components across three vulnerability categories — every cell below is a
+      vulnerabilities, rebuilt indicator-by-indicator from public data. Fifty-two indicators
+      feed fifteen components across three vulnerability categories — every cell below is a
       quantile in its own history. Blue is subdued, red is acute.</p>
     <p class="lede-note">Beyond the 44 indicators in the FEDS Notes version, this implementation
       includes the two additional indicators from the final journal publication
       (<em>J.&nbsp;Banking &amp; Finance</em> 81, 2017): total SRISK relative to total assets
-      and significant Granger-causality connections among large financial institutions.</p>
+      and significant Granger-causality connections among large financial institutions.
+      Four framework series were added in 2026: private credit loans and private credit
+      intermediary leverage (Z.1 delineation, September 2026) and the BIS credit-to-GDP gap
+      and private-sector debt service ratio, the last two in a fifteenth component,
+      Credit cycle.</p>
     <ul class="stats" id="hero-stats">
       <li><span class="stat-num" id="stat-quarters">–</span><span class="stat-label">quarters</span></li>
       <li><span class="stat-num" id="stat-indicators">–</span><span class="stat-label">indicators</span></li>
@@ -73,23 +77,23 @@
 
   <section class="card view-hierarchy" id="aggregate-card">
     <h2>Aggregate vulnerability index</h2>
-    <p class="sub">The mean of the fourteen component quantiles, passed through a kernel CDF once
+    <p class="sub">The mean of the fifteen component quantiles, passed through a kernel CDF once
       more, so the index lives on 0–1. The 2007–2008 episodes are shaded for reference.</p>
     <figure id="aggchart" role="img" aria-label="Aggregate financial vulnerability index time series"></figure>
   </section>
 
   <section class="card view-hierarchy" id="hierarchy-card">
     <h2>The full picture, top down</h2>
-    <p class="sub">One aggregate ← three vulnerability categories ← fourteen components.
+    <p class="sub">One aggregate ← three vulnerability categories ← fifteen components.
       Read downward: each category chart is the mean of its components' quantiles
-      (descriptive — the official aggregate averages all fourteen at once). Click any
+      (descriptive — the official aggregate averages all fifteen at once). Click any
       component for its indicators.</p>
     <div id="hierarchy"></div>
   </section>
 
   <section class="card view-hierarchy" id="heatmap-card">
     <h2>The heat map</h2>
-    <p class="sub">Fourteen components × quarters. Colors are quantiles of each component's own
+    <p class="sub">Fifteen components × quarters. Colors are quantiles of each component's own
       historical distribution — a red cell means "hotter than most of this component's history,"
       not an absolute level. Hover any cell for the exact value.</p>
     <div class="heatmap-scroll"><figure id="heatmap" role="img" aria-label="Heat map of 14 vulnerability components over time"></figure></div>
@@ -101,14 +105,14 @@
 
   <section class="card view-hierarchy" id="indmap-card">
     <h2>The heat map, by indicator</h2>
-    <p class="sub">The same heat, resolved to all 48 indicators in hierarchy order:
-      rows are grouped by the hierarchy's three categories and fourteen components —
+    <p class="sub">The same heat, resolved to all 52 indicators in hierarchy order:
+      rows are grouped by the hierarchy's three categories and fifteen components —
       each category has a bold header row, each component's name sits beside its rows,
       and a rule marks every component boundary — so the groups that make up the
       index are visible in the map itself. Columns are every quarter in order; gray
       cells are quarters before a series begins. Hover any cell for the component,
       category, and exact value.</p>
-    <div class="heatmap-scroll"><figure id="indmap" role="img" aria-label="Heat map of all 48 indicators over time, grouped by category and component"></figure></div>
+    <div class="heatmap-scroll"><figure id="indmap" role="img" aria-label="Heat map of all 52 indicators over time, grouped by category and component"></figure></div>
     <p class="legend-note"><strong>Method:</strong> each cell is the indicator's 0–1 heat
       quantile in its own history, the same scores the indicator drill-downs show.
       Rows are never re-ordered — for a data-driven ordering of the same 48 series,
@@ -117,17 +121,17 @@
 
   <section class="card view-clustered" id="clustered-card">
     <h2>The heat map, clustered</h2>
-    <p class="sub">The same heat, resolved to its 48 indicators and re-ordered by shape:
+    <p class="sub">The same heat, resolved to its 52 indicators and re-ordered by shape:
       rows are the indicators, columns are every quarter in order — time is never
       re-shuffled. The row order comes from hierarchical clustering of the score
       trajectories, so indicators that heat up and cool down together sit next to each
       other; the dendrogram at the left shows the merge tree. The chip on each label is
       the indicator's component — compare it across rows to see where the clustering
-      recovers the paper's fourteen components and where it cuts across them. Hover any
+      recovers the panel's fifteen components and where it cuts across them. Hover any
       cell for the component, sub-index, and exact value.</p>
-    <div class="heatmap-scroll"><figure id="clustermap" role="img" aria-label="Clustered heat map: 48 indicators over time with dendrogram and component chips"></figure></div>
+    <div class="heatmap-scroll"><figure id="clustermap" role="img" aria-label="Clustered heat map: 52 indicators over time with dendrogram and component chips"></figure></div>
     <div class="cluster-legend" id="cluster-legend"></div>
-    <p class="legend-note"><strong>Method:</strong> what is clustered is the 48 indicator
+    <p class="legend-note"><strong>Method:</strong> what is clustered is the 52 indicator
       score series (each indicator's 0–1 heat quantile in its own history, per quarter).
       Distance is correlation distance (1&nbsp;−&nbsp;Pearson&nbsp;r) computed on
       pairwise-complete observations — at least 24 shared quarters, no imputation, no
@@ -161,7 +165,7 @@
           evaluated at each observation. This is what makes every heat-map cell a historical quantile —
           colors are relative to history, never absolute levels.</p></div></li>
       <li><div class="step-body"><strong>Aggregate index.</strong>
-        <p>The mean of the 14 component quantiles, mapped through its own kernel CDF again → the
+        <p>The mean of the 15 component quantiles, mapped through its own kernel CDF again → the
           0–1 headline index.</p></div></li>
     </ol>
     <div class="caveats">
@@ -179,11 +183,14 @@
           and the kernel-CDF bandwidth are all computed over the full available sample, so values for
           early quarters shift as new quarters are added. The extended map is the same methodology on a
           longer sample — not point-for-point comparable with the paper's 2015 map.</li>
-        <li><strong>Coverage: 48 of 48 indicators</strong> from named public sources —
+        <li><strong>Coverage: 52 of 52 indicators</strong> from named public sources —
           all 44 FEDS Notes indicators, both journal-publication additions (SRISK and
           Granger-causality connectedness), and two hedge-fund leverage series added in
           2026 (OFR Form PF aggregates and the SCOOS dealer survey, both in Nonbank
-          leverage); in the replication paper the public-proxy panel tracks the paper's
+          leverage); four framework series added in 2026 — private credit loans and
+          private credit intermediary leverage (Z.1 release of September 11, 2026) in
+          Nonbank leverage, and the BIS credit-to-GDP gap and private-sector debt
+          service ratio in a new Credit cycle component; in the replication paper the public-proxy panel tracks the paper's
           published aggregate index at correlation 0.93.</li>
         <li><strong>Recent quarters are nowcast.</strong> Source-release lags leave 30 series
           ending at 2025Q4; 2026Q1–Q3 values are filled by tested nowcast models or documented
@@ -194,7 +201,10 @@
           entirely nowcast — direct horizon 1 for the 18 series observed through 2026Q2,
           horizon 3 for the rest — except the weighted average maturity gap, which is
           unextended for 2026Q3: its regression inputs are not observed for that quarter,
-          so the cell is empty rather than estimated.</li>
+          so the cell is empty rather than estimated. The private-credit pair added in
+          2026 is carried observed-only through 2026Q2, so its 2026Q3 cells are empty
+          rather than filled; the BIS pair is observed through 2026Q1 with a flagged
+          one-quarter carry at 2026Q2 and is not extended to 2026Q3.</li>
       </ul>
     </div>
   </section>
@@ -207,10 +217,10 @@
     <ul class="dl-list">
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/panel_quarterly.csv">
         <span class="fname">panel_quarterly.csv</span>
-        <span class="fdesc">quarter × 48 public-proxy indicators</span></a></li>
+        <span class="fdesc">quarter × 52 public-proxy indicators</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/components.csv">
         <span class="fname">components.csv</span>
-        <span class="fdesc">quarter × 14 component indices (0–1 quantiles)</span></a></li>
+        <span class="fdesc">quarter × 15 component indices (0–1 quantiles)</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/aggregate.csv">
         <span class="fname">aggregate.csv</span>
         <span class="fdesc">quarter × aggregate vulnerability index (0–1)</span></a></li>
@@ -222,7 +232,7 @@
         <span class="fdesc">per-indicator source, construction, and fidelity notes</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/panel_complete.csv">
         <span class="fname">panel_complete.csv</span>
-        <span class="fdesc">quarter × 48 indicators with 2026Q1–Q3 nowcast fills (maturity gap unextended at 2026Q3)</span></a></li>
+        <span class="fdesc">quarter × 52 indicators with 2026Q1–Q3 nowcast fills (maturity gap unextended at 2026Q3; the private-credit pair added in 2026 is observed-only, the BIS pair carries one flagged quarter at 2026Q2)</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/nowcast_provenance.csv">
         <span class="fname">nowcast_provenance.csv</span>
         <span class="fdesc">per-value nowcast method, backtest scores, and assumptions</span></a></li>
@@ -240,9 +250,11 @@
     <p>This site is a replication of the Federal Reserve FEDS Notes
       <a href="https://www.federalreserve.gov/econres/feds/mapping-heat-in-the-us-financial-system.htm">“Mapping Heat in the U.S. Financial System”</a>
       (August 2015), rebuilt from public data sources alone.</p>
-    <p>48 of 48 indicators are built from named public sources — all 44 FEDS Notes indicators,
+    <p>52 of 52 indicators are built from named public sources — all 44 FEDS Notes indicators,
       the two added in the journal publication (<em>J.&nbsp;Banking &amp; Finance</em> 81, 2017),
-      and two hedge-fund leverage series added in 2026 (OFR Form PF aggregates; SCOOS);
+      two hedge-fund leverage series added in 2026 (OFR Form PF aggregates; SCOOS), and four
+      framework series added in 2026 (private credit loans and intermediary leverage, Z.1;
+      the BIS credit-to-GDP gap and debt service ratio);
       the results are scored against the
       paper's own published tables. See the <a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/paper/fed_heat_map-replication.pdf">replication paper</a>
       for the per-indicator specifications, fidelity scores, and limitations.</p>

@@ -66,12 +66,12 @@ let AGG, COMP, IND, HIER, META, CLUSTER, INDICATORS_META;
 let quarters = [], qIndex = {};
 let yearTicks = [], decadeTicks = [];
 
-// Categorical palette for the 14 components (index = meta.json's components
+// Categorical palette for the 15 components (index = meta.json's components
 // order). Deliberately disjoint from the blue->red heat scale that fills the
 // cells: the chips only tag membership, never a value.
 const COMPONENT_COLORS = [
   "#E69F00", "#56B4E9", "#009E73", "#C9B200", "#0072B2", "#D55E00", "#CC79A7",
-  "#17BECF", "#8C564B", "#999999", "#E377C2", "#BCBD22", "#9467BD", "#525252",
+  "#17BECF", "#8C564B", "#999999", "#E377C2", "#BCBD22", "#9467BD", "#525252", "#66A61E",
 ];
 
 function componentColor(name) {
@@ -222,7 +222,7 @@ function renderHeatmap() {
 }
 
 /* ---------------- indicator heat map (hierarchy view) ---------------- */
-/* All 48 indicators x all quarters, rows in HIERARCHY order (category,
+/* All 52 indicators x all quarters, rows in HIERARCHY order (category,
    then component, then the component's indicators as shipped in
    hierarchy.json) -- the component heat map above, resolved one level
    down. The hierarchy's groups are marked in the figure itself: a bold
@@ -529,7 +529,7 @@ function renderAggregate() {
 }
 
 /* ---------------- single-page hierarchy ---------------- */
-/* Aggregate -> 3 categories -> 14 components, all on one scrolling page.
+/* Aggregate -> 3 categories -> 15 components, all on one scrolling page.
    Charts below the fold render lazily via IntersectionObserver. */
 
 function esc(s) {

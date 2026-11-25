@@ -614,6 +614,57 @@ _SOURCES_RAW = {
         "frequency": "Quarterly",
         "note": "Series begins 2011Q3; a diffusion index of changes in leverage use, not a leverage level (bounded -100..100)."
 },
+    "Private Credit Loans (Share of nonfinancial business debt)": {
+        "status": "proxy",
+        "source": "Federal Reserve Z.1 Financial Accounts via FRED",
+        "source_url": "https://fred.stlouisfed.org/series/BOGZ1FL143167205Q",
+        "series_id": [
+                "BOGZ1FL143167205Q",
+                "BCNSDODNS",
+                "TCMILBSNNB"
+        ],
+        "definition": "100 x (private credit loans owed by nonfinancial business, Z.1 FL143167205, $M) / (nonfinancial corporate + noncorporate business debt securities and loans, $M), percent (quarter-end levels). The numerator is the Z.1's delineated private-credit total across private debt funds, BDCs, interval/tender offer funds, middle-market CLO issuers and foreign holders.",
+        "frequency": "Quarterly",
+        "note": "New framework series (not in the paper's 44), added 2026-11. Series begins 2012Q4: the Z.1 delineated private credit for the first time in the release of September 11, 2026 and publishes the lines from 2012Q4. Check values from that release (Chen, Jang & Sufi 2026, Table 1): $1,351,586M at 2026Q2, 5.64% of nonfinancial business debt (published as $1,352B, 5.6%). Observed through 2026Q2; not nowcast-extended."
+},
+    "Private Credit Intermediary Leverage (Total liabilities to total financial assets)": {
+        "status": "proxy",
+        "source": "Federal Reserve Z.1 Financial Accounts via FRED",
+        "source_url": "https://fred.stlouisfed.org/series/BOGZ1FL444090000Q",
+        "series_id": [
+                "BOGZ1FL444090000Q",
+                "BOGZ1FL444190005Q",
+                "BOGZ1FL454090003Q",
+                "BOGZ1FL454190005Q",
+                "BOGZ1FL464090005Q",
+                "BOGZ1FL464190005Q"
+        ],
+        "definition": "100 x (summed total liabilities) / (summed total financial assets) of the three Z.1 private credit intermediary sectors -- private debt funds, business development companies, and interval and tender offer funds -- percent (quarter-end levels).",
+        "frequency": "Quarterly",
+        "note": "New framework series (not in the paper's 44), added 2026-11: the first official leverage statistics for private credit intermediaries, from the Z.1 release of September 11, 2026. Check value: 42.1% at 2026Q2 (Chen, Jang & Sufi 2026, Figure 3 combined ratio: 42%). Interval and tender offer funds enter in 2021Q4, when the accounts begin publishing that sector; before then the combined ratio covers private debt funds and BDCs, as in the source publication. Private debt funds' total liabilities include the accounts' unidentified miscellaneous-liabilities residual, as published. Observed through 2026Q2; not nowcast-extended."
+},
+    "Credit-to-GDP Gap (BIS, private non-financial sector)": {
+        "status": "proxy",
+        "source": "Bank for International Settlements (BIS), credit-to-GDP gap statistics (BIS Data Portal, SDMX)",
+        "source_url": "https://stats.bis.org/api/v1/data/WS_CREDIT_GAP/Q.US.P.A.C?format=csv",
+        "series_id": [
+                "WS_CREDIT_GAP.Q.US.P.A.C"
+        ],
+        "definition": "Credit-to-GDP gap for the United States as published by the BIS: total credit to the private non-financial sector from all lenders, percent of GDP, minus its long-run trend (one-sided HP filter, lambda 400,000), percentage points. The Basel III countercyclical capital buffer guide.",
+        "frequency": "Quarterly",
+        "note": "New framework series (not in the paper's 44), added 2026-11: the benchmark Aikman et al. (FEDS 2015-059) validate the heat map against, carried in its own Credit cycle component so it stays visible as a unit. Already a deviation from trend by construction, so the pipeline applies no further detrending. BIS publishes the U.S. gap from 1957Q4; latest published value at the November 2026 build is 2026Q1, -11.32pp, carried one quarter (flagged assumption-carry-forward in data/nowcast_provenance.csv) so the component is defined at 2026Q2; not extended to 2026Q3."
+},
+    "Debt Service Ratio (BIS, private non-financial sector)": {
+        "status": "proxy",
+        "source": "Bank for International Settlements (BIS), debt service ratio statistics (BIS Data Portal, SDMX)",
+        "source_url": "https://stats.bis.org/api/v1/data/WS_DSR/Q.US.P?format=csv",
+        "series_id": [
+                "WS_DSR.Q.US.P"
+        ],
+        "definition": "Debt service ratio of the U.S. private non-financial sector as published by the BIS: interest payments plus amortisation as a percent of income, percent.",
+        "frequency": "Quarterly",
+        "note": "New framework series (not in the paper's 44), added 2026-11: the BIS companion to the credit-to-GDP gap in the Credit cycle component. Unlike the panel's other debt service ratios (TDSP, MDSP), it covers the whole private non-financial sector, households and nonfinancial businesses together. BIS publishes the U.S. series from 1999Q1; latest published value at the November 2026 build is 2026Q1, 13.8%, carried one quarter (flagged assumption-carry-forward in data/nowcast_provenance.csv); not extended to 2026Q3."
+},
 }
 
 # Full SOURCES table keyed by exact panel column name
@@ -654,8 +705,8 @@ def build_indicators_meta(data_dir: Path | str) -> dict:
     df_now = pl.read_csv(p_now_path)
 
     comp_cols = [c for c in df_comp.columns if c != "quarter"]
-    if len(comp_cols) != 48:
-        raise ValueError(f"Expected exactly 48 panel indicators, found {len(comp_cols)}")
+    if len(comp_cols) != 52:
+        raise ValueError(f"Expected exactly 52 panel indicators, found {len(comp_cols)}")
 
     sources_keys = set(SOURCES.keys())
     panel_cols_set = set(comp_cols)
