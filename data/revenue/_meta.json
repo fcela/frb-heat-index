@@ -1075,9 +1075,10 @@
     "tolerance": "5% or $25M, whichever is larger",
     "n_checks": 107,
     "n_pass": 89,
-    "n_flag": 1,
+    "n_flag": 0,
+    "n_explained": 1,
     "n_no_parent": 17,
-    "match_rate": 0.9889,
+    "match_rate": 1.0,
     "checks": [
       {
         "firm": "JPMorgan",
@@ -1485,7 +1486,11 @@
         "parent": "Global Markets",
         "parent_total_m": 9174.0,
         "splits_sum_m": 11826.0,
-        "status": "flag"
+        "status": "explained",
+        "same_vintage_parent_m": 14284.0,
+        "splits_accession": "0000070858-14-000012",
+        "parent_accession": "0000070858-15-000008",
+        "explanation": "Segment recast between filing vintages. The MD&A splits are from the FY2013 Form 10-K (accession 0000070858-14-000012), whose Business Segment Information note reports Global Markets total revenue for 2012 of $14,284M; the splits sum ($11,826M) fits inside that same-vintage parent. The XBRL parent used by the check ($9,174M) is the FY2014 Form 10-K's restated figure (accession 0000070858-15-000008): that filing's segment note recast 2012 Global Markets revenue down by $5,110M (noninterest income $10,612M to $5,507M) and All Other up by $5,122M (from $(782)M to $4,340M), moving revenue out of Global Markets into All Other. No restated sales-and-trading split was published on the recast basis, so the cross-vintage comparison cannot reconcile; each extraction is faithful to its own filing."
       },
       {
         "firm": "Bank of America",
