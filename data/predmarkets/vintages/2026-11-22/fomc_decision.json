@@ -1,0 +1,777 @@
+{
+ "schema_version": 1,
+ "key": "fomc_decision",
+ "series_ticker": "KXFEDDECISION",
+ "vintage_date": "2026-11-22",
+ "snapshot_at_utc": "2026-11-22T14:24:29+00:00",
+ "events": [
+  {
+   "event_ticker": "KXFEDDECISION-26SEP",
+   "title": "Fed decision in Sep 2026?",
+   "close_time": "2026-09-16T17:59:00+00:00",
+   "ladder_date": "2026-09-16",
+   "markets": [
+    {
+     "ticker": "KXFEDDECISION-26SEP-C25",
+     "strike": "Cut 25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 2882525.84
+    },
+    {
+     "ticker": "KXFEDDECISION-26SEP-C26",
+     "strike": "Cut >25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 306454.29
+    },
+    {
+     "ticker": "KXFEDDECISION-26SEP-H0",
+     "strike": "Hike 0bps",
+     "level": null,
+     "price": 0.12,
+     "volume": 5494884.28
+    },
+    {
+     "ticker": "KXFEDDECISION-26SEP-H25",
+     "strike": "Hike 25bps",
+     "level": null,
+     "price": 0.88,
+     "volume": 2084141.43
+    },
+    {
+     "ticker": "KXFEDDECISION-26SEP-H26",
+     "strike": "Hike >25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 1861410.39
+    }
+   ],
+   "distribution": {
+    "kind": "exclusive_buckets",
+    "buckets": [
+     {
+      "label": "Cut >25bps",
+      "price": 0.01,
+      "mass": 0.009708737864077669
+     },
+     {
+      "label": "Cut 25bps",
+      "price": 0.01,
+      "mass": 0.009708737864077669
+     },
+     {
+      "label": "Hike 0bps",
+      "price": 0.12,
+      "mass": 0.11650485436893203
+     },
+     {
+      "label": "Hike 25bps",
+      "price": 0.88,
+      "mass": 0.8543689320388349
+     },
+     {
+      "label": "Hike >25bps",
+      "price": 0.01,
+      "mass": 0.009708737864077669
+     }
+    ]
+   }
+  },
+  {
+   "event_ticker": "KXFEDDECISION-26OCT",
+   "title": "Fed decision in Oct 2026?",
+   "close_time": "2026-10-28T17:59:00+00:00",
+   "ladder_date": "2026-10-28",
+   "markets": [
+    {
+     "ticker": "KXFEDDECISION-26OCT-C25",
+     "strike": "Cut 25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 74175.13
+    },
+    {
+     "ticker": "KXFEDDECISION-26OCT-C26",
+     "strike": "Cut >25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 17985.55
+    },
+    {
+     "ticker": "KXFEDDECISION-26OCT-H0",
+     "strike": "Hike 0bps",
+     "level": null,
+     "price": 0.97,
+     "volume": 2062431.98
+    },
+    {
+     "ticker": "KXFEDDECISION-26OCT-H25",
+     "strike": "Hike 25bps",
+     "level": null,
+     "price": 0.03,
+     "volume": 891740.86
+    },
+    {
+     "ticker": "KXFEDDECISION-26OCT-H26",
+     "strike": "Hike >25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 13714.07
+    }
+   ],
+   "distribution": {
+    "kind": "exclusive_buckets",
+    "buckets": [
+     {
+      "label": "Cut >25bps",
+      "price": 0.01,
+      "mass": 0.009708737864077669
+     },
+     {
+      "label": "Cut 25bps",
+      "price": 0.01,
+      "mass": 0.009708737864077669
+     },
+     {
+      "label": "Hike 0bps",
+      "price": 0.97,
+      "mass": 0.9417475728155339
+     },
+     {
+      "label": "Hike 25bps",
+      "price": 0.03,
+      "mass": 0.029126213592233007
+     },
+     {
+      "label": "Hike >25bps",
+      "price": 0.01,
+      "mass": 0.009708737864077669
+     }
+    ]
+   }
+  },
+  {
+   "event_ticker": "KXFEDDECISION-26DEC",
+   "title": "Fed decision in Dec 2026?",
+   "close_time": "2026-12-09T18:59:00+00:00",
+   "ladder_date": "2026-11-21",
+   "markets": [
+    {
+     "ticker": "KXFEDDECISION-26DEC-C25",
+     "strike": "Cut 25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 129829.4
+    },
+    {
+     "ticker": "KXFEDDECISION-26DEC-C26",
+     "strike": "Cut >25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 81424.26
+    },
+    {
+     "ticker": "KXFEDDECISION-26DEC-H0",
+     "strike": "Hike 0bps",
+     "level": null,
+     "price": 0.08,
+     "volume": 347587.06
+    },
+    {
+     "ticker": "KXFEDDECISION-26DEC-H25",
+     "strike": "Hike 25bps",
+     "level": null,
+     "price": 0.89,
+     "volume": 30040.04
+    },
+    {
+     "ticker": "KXFEDDECISION-26DEC-H26",
+     "strike": "Hike >25bps",
+     "level": null,
+     "price": 0.03,
+     "volume": 83084.39
+    }
+   ],
+   "distribution": {
+    "kind": "exclusive_buckets",
+    "buckets": [
+     {
+      "label": "Cut >25bps",
+      "price": 0.01,
+      "mass": 0.00980392156862745
+     },
+     {
+      "label": "Cut 25bps",
+      "price": 0.01,
+      "mass": 0.00980392156862745
+     },
+     {
+      "label": "Hike 0bps",
+      "price": 0.08,
+      "mass": 0.0784313725490196
+     },
+     {
+      "label": "Hike 25bps",
+      "price": 0.89,
+      "mass": 0.8725490196078431
+     },
+     {
+      "label": "Hike >25bps",
+      "price": 0.03,
+      "mass": 0.029411764705882353
+     }
+    ]
+   }
+  },
+  {
+   "event_ticker": "KXFEDDECISION-27JAN",
+   "title": "Fed decision in Jan 2027?",
+   "close_time": "2027-01-27T18:59:00+00:00",
+   "ladder_date": "2026-11-21",
+   "markets": [
+    {
+     "ticker": "KXFEDDECISION-27JAN-C25",
+     "strike": "Cut 25bps",
+     "level": null,
+     "price": 0.05,
+     "volume": 1149.47
+    },
+    {
+     "ticker": "KXFEDDECISION-27JAN-C26",
+     "strike": "Cut >25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 467.59
+    },
+    {
+     "ticker": "KXFEDDECISION-27JAN-H0",
+     "strike": "Hike 0bps",
+     "level": null,
+     "price": 0.51,
+     "volume": 59.3
+    },
+    {
+     "ticker": "KXFEDDECISION-27JAN-H25",
+     "strike": "Hike 25bps",
+     "level": null,
+     "price": 0.47,
+     "volume": 2554.93
+    },
+    {
+     "ticker": "KXFEDDECISION-27JAN-H26",
+     "strike": "Hike >25bps",
+     "level": null,
+     "price": 0.03,
+     "volume": 239.13
+    }
+   ],
+   "distribution": {
+    "kind": "exclusive_buckets",
+    "buckets": [
+     {
+      "label": "Cut >25bps",
+      "price": 0.01,
+      "mass": 0.009345794392523364
+     },
+     {
+      "label": "Cut 25bps",
+      "price": 0.05,
+      "mass": 0.04672897196261682
+     },
+     {
+      "label": "Hike 0bps",
+      "price": 0.51,
+      "mass": 0.4766355140186916
+     },
+     {
+      "label": "Hike 25bps",
+      "price": 0.47,
+      "mass": 0.43925233644859807
+     },
+     {
+      "label": "Hike >25bps",
+      "price": 0.03,
+      "mass": 0.02803738317757009
+     }
+    ]
+   }
+  },
+  {
+   "event_ticker": "KXFEDDECISION-27MAR",
+   "title": "Fed decision in Mar 2027?",
+   "close_time": "2027-03-17T17:59:00+00:00",
+   "ladder_date": "2026-11-21",
+   "markets": [
+    {
+     "ticker": "KXFEDDECISION-27MAR-C25",
+     "strike": "Cut 25bps",
+     "level": null,
+     "price": 0.03,
+     "volume": 50.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27MAR-C26",
+     "strike": "Cut >25bps",
+     "level": null,
+     "price": 0.02,
+     "volume": 30.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27MAR-H0",
+     "strike": "Hike 0bps",
+     "level": null,
+     "price": 0.4,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27MAR-H25",
+     "strike": "Hike 25bps",
+     "level": null,
+     "price": 0.5,
+     "volume": 486.85
+    },
+    {
+     "ticker": "KXFEDDECISION-27MAR-H26",
+     "strike": "Hike >25bps",
+     "level": null,
+     "price": 0.03,
+     "volume": 3.0
+    }
+   ],
+   "distribution": {
+    "kind": "exclusive_buckets",
+    "buckets": [
+     {
+      "label": "Cut >25bps",
+      "price": 0.02,
+      "mass": 0.020408163265306124
+     },
+     {
+      "label": "Cut 25bps",
+      "price": 0.03,
+      "mass": 0.030612244897959183
+     },
+     {
+      "label": "Hike 0bps",
+      "price": 0.4,
+      "mass": 0.40816326530612246
+     },
+     {
+      "label": "Hike 25bps",
+      "price": 0.5,
+      "mass": 0.5102040816326531
+     },
+     {
+      "label": "Hike >25bps",
+      "price": 0.03,
+      "mass": 0.030612244897959183
+     }
+    ]
+   }
+  },
+  {
+   "event_ticker": "KXFEDDECISION-27APR",
+   "title": "Fed decision in Apr 2027?",
+   "close_time": "2027-04-28T17:59:00+00:00",
+   "ladder_date": "2026-11-21",
+   "markets": [
+    {
+     "ticker": "KXFEDDECISION-27APR-C25",
+     "strike": "Cut 25bps",
+     "level": null,
+     "price": 0.09,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27APR-C26",
+     "strike": "Cut >25bps",
+     "level": null,
+     "price": 0.03,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27APR-H0",
+     "strike": "Hike 0bps",
+     "level": null,
+     "price": 0.63,
+     "volume": 15.47
+    },
+    {
+     "ticker": "KXFEDDECISION-27APR-H25",
+     "strike": "Hike 25bps",
+     "level": null,
+     "price": 0.16,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "exclusive_buckets",
+    "buckets": [
+     {
+      "label": "Cut >25bps",
+      "price": 0.03,
+      "mass": 0.03296703296703297
+     },
+     {
+      "label": "Cut 25bps",
+      "price": 0.09,
+      "mass": 0.0989010989010989
+     },
+     {
+      "label": "Hike 0bps",
+      "price": 0.63,
+      "mass": 0.6923076923076923
+     },
+     {
+      "label": "Hike 25bps",
+      "price": 0.16,
+      "mass": 0.1758241758241758
+     }
+    ]
+   }
+  },
+  {
+   "event_ticker": "KXFEDDECISION-27JUN",
+   "title": "Fed decision in Jun 2027?",
+   "close_time": "2027-06-09T17:59:00+00:00",
+   "ladder_date": "2026-11-21",
+   "markets": [
+    {
+     "ticker": "KXFEDDECISION-27JUN-C25",
+     "strike": "Cut 25bps",
+     "level": null,
+     "price": 0.05,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27JUN-H0",
+     "strike": "Hike 0bps",
+     "level": null,
+     "price": 0.65,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27JUN-H25",
+     "strike": "Hike 25bps",
+     "level": null,
+     "price": 0.25,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "exclusive_buckets",
+    "buckets": [
+     {
+      "label": "Cut 25bps",
+      "price": 0.05,
+      "mass": 0.05263157894736842
+     },
+     {
+      "label": "Hike 0bps",
+      "price": 0.65,
+      "mass": 0.6842105263157895
+     },
+     {
+      "label": "Hike 25bps",
+      "price": 0.25,
+      "mass": 0.2631578947368421
+     }
+    ]
+   }
+  },
+  {
+   "event_ticker": "KXFEDDECISION-27JUL",
+   "title": "Fed decision in Jul 2027?",
+   "close_time": "2027-07-28T17:59:00+00:00",
+   "ladder_date": "2026-11-21",
+   "markets": [
+    {
+     "ticker": "KXFEDDECISION-27JUL-C25",
+     "strike": "Cut 25bps",
+     "level": null,
+     "price": 0.06,
+     "volume": 101.5
+    },
+    {
+     "ticker": "KXFEDDECISION-27JUL-H0",
+     "strike": "Hike 0bps",
+     "level": null,
+     "price": 0.89,
+     "volume": 124.76
+    },
+    {
+     "ticker": "KXFEDDECISION-27JUL-H25",
+     "strike": "Hike 25bps",
+     "level": null,
+     "price": 0.03,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27JUL-H26",
+     "strike": "Hike >25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "exclusive_buckets",
+    "buckets": [
+     {
+      "label": "Cut 25bps",
+      "price": 0.06,
+      "mass": 0.06060606060606061
+     },
+     {
+      "label": "Hike 0bps",
+      "price": 0.89,
+      "mass": 0.898989898989899
+     },
+     {
+      "label": "Hike 25bps",
+      "price": 0.03,
+      "mass": 0.030303030303030304
+     },
+     {
+      "label": "Hike >25bps",
+      "price": 0.01,
+      "mass": 0.010101010101010102
+     }
+    ]
+   }
+  },
+  {
+   "event_ticker": "KXFEDDECISION-27SEP",
+   "title": "Fed decision in Sep 2027?",
+   "close_time": "2027-09-15T17:59:00+00:00",
+   "ladder_date": "2026-11-21",
+   "markets": [
+    {
+     "ticker": "KXFEDDECISION-27SEP-H0",
+     "strike": "Hike 0bps",
+     "level": null,
+     "price": 0.83,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27SEP-H25",
+     "strike": "Hike 25bps",
+     "level": null,
+     "price": 0.08,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "exclusive_buckets",
+    "buckets": [
+     {
+      "label": "Hike 0bps",
+      "price": 0.83,
+      "mass": 0.9120879120879122
+     },
+     {
+      "label": "Hike 25bps",
+      "price": 0.08,
+      "mass": 0.08791208791208792
+     }
+    ]
+   }
+  },
+  {
+   "event_ticker": "KXFEDDECISION-27OCT",
+   "title": "Fed decision in Oct 2027?",
+   "close_time": "2027-10-27T17:59:00+00:00",
+   "ladder_date": "2026-11-21",
+   "markets": [
+    {
+     "ticker": "KXFEDDECISION-27OCT-C25",
+     "strike": "Cut 25bps",
+     "level": null,
+     "price": 0.07,
+     "volume": 903.48
+    },
+    {
+     "ticker": "KXFEDDECISION-27OCT-C26",
+     "strike": "Cut >25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27OCT-H0",
+     "strike": "Hike 0bps",
+     "level": null,
+     "price": 0.97,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27OCT-H25",
+     "strike": "Hike 25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27OCT-H26",
+     "strike": "Hike >25bps",
+     "level": null,
+     "price": 0.03,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "exclusive_buckets",
+    "buckets": [
+     {
+      "label": "Cut >25bps",
+      "price": 0.01,
+      "mass": 0.009174311926605503
+     },
+     {
+      "label": "Cut 25bps",
+      "price": 0.07,
+      "mass": 0.06422018348623854
+     },
+     {
+      "label": "Hike 0bps",
+      "price": 0.97,
+      "mass": 0.8899082568807338
+     },
+     {
+      "label": "Hike 25bps",
+      "price": 0.01,
+      "mass": 0.009174311926605503
+     },
+     {
+      "label": "Hike >25bps",
+      "price": 0.03,
+      "mass": 0.027522935779816512
+     }
+    ]
+   }
+  },
+  {
+   "event_ticker": "KXFEDDECISION-27DEC",
+   "title": "Fed decision in Dec 2027?",
+   "close_time": "2027-12-08T18:59:00+00:00",
+   "ladder_date": "2026-11-21",
+   "markets": [
+    {
+     "ticker": "KXFEDDECISION-27DEC-C26",
+     "strike": "Cut >25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27DEC-H0",
+     "strike": "Hike 0bps",
+     "level": null,
+     "price": 0.93,
+     "volume": 1.07
+    },
+    {
+     "ticker": "KXFEDDECISION-27DEC-H25",
+     "strike": "Hike 25bps",
+     "level": null,
+     "price": 0.07,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-27DEC-H26",
+     "strike": "Hike >25bps",
+     "level": null,
+     "price": 0.01,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "exclusive_buckets",
+    "buckets": [
+     {
+      "label": "Cut >25bps",
+      "price": 0.01,
+      "mass": 0.00980392156862745
+     },
+     {
+      "label": "Hike 0bps",
+      "price": 0.93,
+      "mass": 0.9117647058823529
+     },
+     {
+      "label": "Hike 25bps",
+      "price": 0.07,
+      "mass": 0.06862745098039216
+     },
+     {
+      "label": "Hike >25bps",
+      "price": 0.01,
+      "mass": 0.00980392156862745
+     }
+    ]
+   }
+  },
+  {
+   "event_ticker": "KXFEDDECISION-28JAN",
+   "title": "Fed decision in Jan 2028?",
+   "close_time": "2028-01-26T18:59:00+00:00",
+   "ladder_date": "2026-11-21",
+   "markets": [
+    {
+     "ticker": "KXFEDDECISION-28JAN-C25",
+     "strike": "Cut 25bps",
+     "level": null,
+     "price": 0.07,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-28JAN-C26",
+     "strike": "Cut >25bps",
+     "level": null,
+     "price": 0.04,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-28JAN-H0",
+     "strike": "Hike 0bps",
+     "level": null,
+     "price": 0.7,
+     "volume": 0.0
+    },
+    {
+     "ticker": "KXFEDDECISION-28JAN-H25",
+     "strike": "Hike 25bps",
+     "level": null,
+     "price": 0.14,
+     "volume": 0.0
+    }
+   ],
+   "distribution": {
+    "kind": "exclusive_buckets",
+    "buckets": [
+     {
+      "label": "Cut >25bps",
+      "price": 0.04,
+      "mass": 0.04210526315789474
+     },
+     {
+      "label": "Cut 25bps",
+      "price": 0.07,
+      "mass": 0.0736842105263158
+     },
+     {
+      "label": "Hike 0bps",
+      "price": 0.7,
+      "mass": 0.7368421052631579
+     },
+     {
+      "label": "Hike 25bps",
+      "price": 0.14,
+      "mass": 0.1473684210526316
+     }
+    ]
+   }
+  }
+ ]
+}
