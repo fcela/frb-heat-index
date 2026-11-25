@@ -1,7 +1,7 @@
 # Pulse of the Market — methodology & sources
 
 What this section computes, from what data, under which definitions.
-The section exists because the heat map and the Market Pulse are
+The section exists because the heat map and Early Warning are
 level displays: they say where things stand. This layer is about
 movement — leading indicators, dated inflection points, and rotation.
 Nothing on the page is a judgement call: every state is a stated
@@ -200,7 +200,7 @@ Not sourced, deliberately:
 ## Cadence
 
 Weekly, Mondays (`momentum.yml`, 06:30 UTC — half an hour after the
-Market Pulse run, so the two data commits never race). An earlier
+Early Warning run, so the two data commits never race). An earlier
 design proposed a daily refresh; the section's states are weekly-
 timescale objects (21-session windows, 13-week condition changes),
 and the daily archive underneath keeps every dated inflection exact,

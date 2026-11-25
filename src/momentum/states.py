@@ -125,8 +125,7 @@ def def_cyc_spread_series(closes):
 
 
 def factor_spread_60(closes):
-    """SPHB − SPLV trailing 60-session return spread (pp) — the same
-    construction as the pulse layer's factor_rotation series, computed
+    """SPHB − SPLV trailing 60-session return spread (pp), computed
     from this section's own archived closes as the rotation
     cross-check."""
     dates, (hb, lv) = align([closes["sphb"], closes["splv"]])

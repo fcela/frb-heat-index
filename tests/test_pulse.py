@@ -62,10 +62,10 @@ def test_segments_complete():
             assert f in ind, f"{seg_key}/{ind_key} missing {f}"
         assert ind["status"] in FETCHABLE_STATUSES + ("pending-sourcing",), ind_key
         n += 1
-    assert n == 60, f"expected 60 indicators, got {n}"
+    assert n == 57, f"expected 57 indicators, got {n}"
     assert len(SEGMENTS) == 11
     fetchable = sum(1 for _, _, i in all_indicators() if i["status"] in FETCHABLE_STATUSES)
-    assert fetchable == 59, f"expected 59 fetchable, got {fetchable}"
+    assert fetchable == 56, f"expected 56 fetchable, got {fetchable}"
     print(f"ok test_segments_complete ({n} indicators, {fetchable} fetchable)")
 
 
@@ -77,7 +77,7 @@ def test_site_json_parses_strictly():
     d = json.loads(raw)
     assert "segments" in d and len(d["segments"]) == 11
     total = sum(len(s["indicators"]) for s in d["segments"])
-    assert total == 60, total
+    assert total == 57, total
     # Multi-series indicators carry their group column and subseries labels.
     for s in d["segments"]:
         for ind in s["indicators"]:
@@ -118,18 +118,40 @@ def test_provenance_standard():
             assert ind["source_url"].startswith("https://fred.stlouisfed.org/series/"), \
                 f"{seg_key}/{ind_key}: FRED-derived series should link its FRED leg"
         n += 1
-    assert n == 60, n
+    assert n == 57, n
 
     # Feed contract: the site bundle carries the same provenance fields.
     site = json.loads((REPO / "docs" / "data" / "pulse.json").read_text())
     served = {i["key"]: i for s in site["segments"] for i in s["indicators"]}
-    assert len(served) == 60
+    assert len(served) == 57
     for seg_key, ind_key, ind in all_indicators():
         got = served[ind_key]
         assert got["source_url"] == ind["source_url"], ind_key
         assert got["series_id"] == ind["series_id"], ind_key
         assert got["definition"] == ind["definition"], ind_key
     print(f"ok test_provenance_standard ({n} cards)")
+
+
+def test_removed_price_based_indicators_absent():
+    # The November 2026 specialization removed the price-derived gauges
+    # that duplicated Pulse of the Market (valuation, factor rotation,
+    # vol-of-vol). They must stay out of the registry, the shipped site
+    # bundle, and the build meta — and the three must agree exactly.
+    removed = {"cape_zscore", "factor_rotation", "vvix"}
+    registry = {ind_key for _, ind_key, _ in all_indicators()}
+    assert not (removed & registry), removed & registry
+
+    site = json.loads((REPO / "docs" / "data" / "pulse.json").read_text())
+    served = {i["key"] for s in site["segments"] for i in s["indicators"]}
+    assert not (removed & served), removed & served
+    assert served == registry, (registry ^ served)
+
+    meta = json.loads((REPO / "data" / "pulse" / "_meta.json").read_text())
+    meta_keys = {k.split("/", 1)[1] for k in meta["indicators"]}
+    assert not (removed & meta_keys), removed & meta_keys
+    assert meta_keys == registry, (registry ^ meta_keys)
+    assert meta["n_indicators"] == len(registry)
+    print("ok test_removed_price_based_indicators_absent")
 
 
 def test_app_renders_provenance(tmp_path=None):
@@ -150,9 +172,9 @@ def test_app_renders_provenance(tmp_path=None):
     assert r.returncode == 0, f"render harness failed:\n{r.stdout}\n{r.stderr}"
     res = json.loads(r.stdout)
     assert res["errors"] == [], res["errors"]
-    assert res["cards"] == 60, res
+    assert res["cards"] == 57, res
     assert res["sections"] == 11, res
-    assert res["provenanceCards"] == 60, res  # every card, incl. pending-sourcing
+    assert res["provenanceCards"] == 57, res  # every card, incl. pending-sourcing
     # One chart and one tape item per indicator that carries data. An
     # indicator whose source failed keeps its card with an empty series
     # and renders neither; the workflow failure policy (pulse.yml) is
@@ -219,6 +241,7 @@ if __name__ == "__main__":
     test_sanitize_nan_inf()
     test_strict_json_rejects_nan()
     test_segments_complete()
+    test_removed_price_based_indicators_absent()
     test_site_json_parses_strictly()
     test_provenance_standard()
     test_app_renders_provenance()

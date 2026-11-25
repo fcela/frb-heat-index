@@ -271,7 +271,7 @@ _LANDING_FIXTURE_HTML = """<main>
       </dl>
     </section>
     <section class="card product-card">
-      <h2>Market Pulse</h2>
+      <h2>Early Warning</h2>
       <dl class="specs">
         <dt>Indicators</dt><dd>STALE pulse counts</dd>
         <dt>Coverage</dt><dd>5+ year backfills where sources allow</dd>

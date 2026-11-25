@@ -1,9 +1,8 @@
 """Yahoo Finance v8 chart API fetcher for the Pulse of the Market section.
 
-Prices come from the Yahoo Finance v8 chart API (public, no key) — the
-same feed src/pulse/factor_rotation.py already uses. Closes are the
-unadjusted quote closes, matching the repo's existing practice
-(factor_rotation); dividends are not reinvested, and the choice is
+Prices come from the Yahoo Finance v8 chart API (public, no key).
+Closes are the unadjusted quote closes, the repository's standing
+convention; dividends are not reinvested, and the choice is
 documented on the section's methodology page.
 
 Only completed sessions are returned: any bar dated today in

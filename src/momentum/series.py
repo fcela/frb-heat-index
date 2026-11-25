@@ -3,8 +3,7 @@
 Every series the section archives, grouped for the page. Two free
 routes, both already used by this repo; no API key, no paid feed:
 
-  route "yahoo" — Yahoo Finance v8 chart API (unadjusted daily closes),
-                  the feed src/pulse/factor_rotation.py uses.
+  route "yahoo" — Yahoo Finance v8 chart API (unadjusted daily closes).
   route "fred"  — FRED via fredgraph CSV (src/pulse/fred.py).
   route "ebp"   — the Federal Reserve's FEDS Notes EBP file, read by
                   the existing fetcher src/pulse/cds_bond_basis.py.
@@ -87,7 +86,7 @@ GROUPS = {
                 "Credit spreads typically widen before equity drawdowns "
                 "deepen and tighten before durable equity bottoms; this "
                 "is the confirmation channel for any equity stress. The "
-                "same series is carried by the Market Pulse layer; it is "
+                "same series is carried by the Early Warning layer; it is "
                 "archived here as well because the fingerprint states "
                 "are computed only from this section's own archive.",
                 "ICE BofA US High Yield Index option-adjusted spread "
@@ -345,8 +344,7 @@ GROUPS = {
             _yahoo(
                 "sphb", "SPHB", "High beta (SPHB)",
                 "The risk-appetite leg of the factor pair. The "
-                "SPHB−SPLV 60-session spread (the pulse layer's "
-                "factor_rotation series, same construction) is the "
+                "SPHB−SPLV 60-session spread is the "
                 "displayed cross-check on the rotation fingerprint: "
                 "high beta rolling over before the index is the "
                 "classic early tell.",

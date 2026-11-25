@@ -286,7 +286,7 @@ SEGMENTS = {
     },
     "equities": {
         "title": "Equities",
-        "subtitle": "Positioning, valuation, supply, vol regime",
+        "subtitle": "Positioning and supply",
         "indicators": {
             "put_call": {
                 "title": "CBOE equity put/call ratio",
@@ -300,18 +300,6 @@ SEGMENTS = {
                 "unit": "ratio",
                 "note": "Equity-only, total contract volume across all investor horizons — retail and dealer flow are indistinguishable. Historical CSV (frozen 2019-10-04) stitched to the daily publication page; definitions match exactly and were cross-checked at 7 dates.",
             },
-            "cape_zscore": {
-                "title": "Cyclically adjusted P/E vs 10-yr mean",
-                "why": "Shiller CAPE as a z-score against its trailing 10-year mean. Starting valuation is the most robust medium-horizon return predictor in the equity literature — rich z-scores precede below-average long-run returns, though with notoriously loose timing.",
-                "source": "Shiller CAPE via multpl.com (Yale ie_data.xls frozen) — multpl.com/shiller-pe",
-                "definition": "Shiller CAPE (S&P 500 real price / trailing 10-year mean of real earnings), z-scored against its trailing 120-month mean and standard deviation — z = (CAPE − 120m mean)/120m std; monthly, in standard deviations.",
-                "source_url": "https://www.multpl.com/shiller-pe",
-                "series_id": "Shiller CAPE (PE10)",
-                "frequency": "Monthly",
-                "status": "live",
-                "unit": "z-score",
-                "note": "z = (CAPE − trailing 120m mean)/120m std. The Yale source file has been frozen since 2023-10-17, so values come from multpl.com's monthly republication. Mean-reversion timing risk: expensive can stay expensive for years.",
-            },
             "equity_issuance": {
                 "title": "US IPO + follow-on issuance volume",
                 "why": "US IPO plus secondary issuance per quarter. Treasurers time equity supply to peak demand, so issuance surges cluster near cycle tops — a supply-side valuation signal that price-only gauges miss.",
@@ -323,30 +311,6 @@ SEGMENTS = {
                 "status": "live",
                 "unit": "USD billions",
                 "note": "IPOs + secondaries from SIFMA quarterly tables; newest-report-wins revision rule. SIFMA's monthly workbook is form-gated. Secondary offerings include selling-shareholder deals, so the series mixes issuer and holder motives.",
-            },
-            "factor_rotation": {
-                "title": "High-beta minus low-vol 60-day relative strength",
-                "why": "60-day relative strength of high-beta vs low-volatility equities (SPHB − SPLV). Rotations into high-beta leadership mark late-cycle risk-appetite peaks; reversals into low-vol precede broad index turns as the marginal buyer defensive-shifts.",
-                "source": "Yahoo Finance: SPHB, SPLV daily closes — finance.yahoo.com",
-                "definition": "100 × (trailing 60-trading-day total return of Invesco S&P 500 High Beta ETF (SPHB) − that of Invesco S&P 500 Low Volatility ETF (SPLV)); daily, in percentage points (positive = high-beta leading).",
-                "source_url": "https://finance.yahoo.com/quote/SPHB",
-                "series_id": "SPHB − SPLV",
-                "frequency": "Daily",
-                "status": "live",
-                "unit": "percentage points",
-                "note": "100 × (60d SPHB return − 60d SPLV return); positive = high-beta leading (risk-on). ETF-based, so index-construction changes bleed into both legs; the 60-day window smooths — read persistent swings, not single days.",
-            },
-            "vvix": {
-                "title": "CBOE VVIX — volatility of volatility",
-                "why": "30-day expected volatility of the VIX, implied from VIX options — the market's price of vol-regime instability, and the dashboard's vol-surface blind spot. Read by threshold, not level: VVIX above 120-140 flags vol-regime breaks (Feb 2018, March 2020 — VVIX turned up before VIX peaked); low VIX with low VVIX is the complacency mix that precedes disorderly unwinds.",
-                "source": "CBOE VVIX history CSV — cdn.cboe.com/api/global/us_indices/daily_prices/VVIX_History.csv",
-                "definition": "Cboe VVIX — 30-day expected volatility of the VIX implied from VIX option prices; daily, in index points (history from 2006-03).",
-                "source_url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VVIX_History.csv",
-                "series_id": "VVIX",
-                "frequency": "Daily",
-                "status": "live",
-                "unit": "index points",
-                "note": "Not on FRED — ingested from CBOE's free CSV. Mean-reverting and itself volatile: compare against the 120-140 threshold band and its own history, never against other indices' scales. History from 2006-03.",
             },
         },
     },
@@ -774,7 +738,7 @@ SEGMENTS = {
     },
     "sentiment": {
         "title": "Sentiment & Uncertainty",
-        "subtitle": "News-based, survey-based, and market-priced risk perception",
+        "subtitle": "News-based and survey-based risk perception",
         "indicators": {
             "epu_daily": {
                 "title": "Economic Policy Uncertainty — daily news index",

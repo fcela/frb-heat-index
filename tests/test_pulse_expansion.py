@@ -1,4 +1,4 @@
-"""Tests for the pulse-expansion indicators (8 new fetchers/feeds).
+"""Tests for the pulse-expansion indicators.
 
 Run: python3 tests/test_pulse_expansion.py (plain python3, no pytest).
 
@@ -18,7 +18,7 @@ import polars as pl
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
-from src.pulse import cpi_yoy, fred, gpr_threats, manual_feeds, sf_news_sentiment, vvix
+from src.pulse import cpi_yoy, fred, gpr_threats, manual_feeds, sf_news_sentiment
 from src.pulse.build_pulse import fetch_indicator
 from src.pulse.segments import FETCHABLE_STATUSES, SEGMENTS
 
@@ -41,32 +41,6 @@ def expect_raise(fn, what: str):
     except RuntimeError:
         return
     raise AssertionError(f"expected RuntimeError: {what}")
-
-
-# ------------------------------------------------------------- vvix (CBOE)
-
-def test_vvix_fetch_parses_cboe_csv():
-    df = vvix.fetch_vvix(transport=file_transport(load("vvix.csv")))
-    assert df.columns == ["date", "value"]
-    assert df.height == 6
-    assert df["date"][0] == dt.date(2006, 3, 6)
-    assert df["date"].to_list() == sorted(df["date"].to_list())
-    assert df["value"][0] == 71.73
-    assert abs(df["value"].last() - 109.91) < 1e-9
-    print("ok test_vvix_fetch_parses_cboe_csv")
-
-
-def test_vvix_rejects_garbage_rows():
-    bad = "DATE,VVIX\n03/06/2006,71.73\nnot-a-date,12.0\n"
-    expect_raise(lambda: vvix.fetch_vvix(transport=file_transport(bad)),
-                 "unparseable date must raise")
-    bad2 = "DATE,VVIX\n03/06/2006,nonsense\n"
-    expect_raise(lambda: vvix.fetch_vvix(transport=file_transport(bad2)),
-                 "non-numeric VVIX must raise")
-    bad3 = "COL1,COL2\n1,2\n"
-    expect_raise(lambda: vvix.fetch_vvix(transport=file_transport(bad3)),
-                 "unexpected columns must raise")
-    print("ok test_vvix_rejects_garbage_rows")
 
 
 # ------------------------------------------------ SF Fed news sentiment
@@ -316,7 +290,6 @@ def test_pipeline_reads_manual_feeds_without_network():
 
 NEW_WIRING = {
     "sentiment": ("epu_daily", "news_sentiment", "gpr_threats", "cfo_optimism"),
-    "equities": ("vvix",),
     "ficc": ("sloos_tightening", "cmi"),
     "firmwide": ("nfci_credit",),
 }
@@ -363,21 +336,11 @@ def test_commentary_bar():
             assert any(dom in src for dom in KNOWN_SOURCE_DOMAINS), \
                 f"{seg_key}/{k}: source has no verifiable pointer: {src}"
             n += 1
-    assert n == 59, n
+    assert n == 56, n
     print(f"ok test_commentary_bar ({n} fetchable cards)")
 
 
-def test_vvix_threshold_documented():
-    # The brief's explicit requirement: VVIX interpretation is
-    # threshold-based and the card must say so.
-    ind = SEGMENTS["equities"]["indicators"]["vvix"]
-    assert "120" in ind["why"] and "regime" in ind["why"].lower()
-    print("ok test_vvix_threshold_documented")
-
-
 if __name__ == "__main__":
-    test_vvix_fetch_parses_cboe_csv()
-    test_vvix_rejects_garbage_rows()
     test_news_sentiment_parses_frbsf_csv()
     test_news_sentiment_rejects_duplicate_dates()
     test_gpr_threats_fixture_roundtrip()
@@ -392,5 +355,4 @@ if __name__ == "__main__":
     test_pipeline_reads_manual_feeds_without_network()
     test_new_indicators_wired()
     test_commentary_bar()
-    test_vvix_threshold_documented()
     print("all pulse-expansion tests pass")

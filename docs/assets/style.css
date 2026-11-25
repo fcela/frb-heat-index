@@ -391,7 +391,7 @@ body[data-view="clustered"] .view-hierarchy { display: none; }
 
 .exp-card .spark svg { width: 100%; height: auto; display: block; }
 
-/* ---------- market pulse ---------- */
+/* ---------- early warning (pulse layer) ---------- */
 
 .pulse-stamp {
   color: var(--muted);

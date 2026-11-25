@@ -226,7 +226,7 @@ def landing_spec_lines(heat_meta: dict, pulse_meta: dict,
 LANDING_SECTIONS = (
     ("FRB Heat Index", {"Indicators": "heat_indicators",
                         "Coverage": "heat_coverage"}),
-    ("Market Pulse", {"Indicators": "pulse_indicators"}),
+    ("Early Warning", {"Indicators": "pulse_indicators"}),
     ("Pulse of the Market", {"Indicators": "momentum_indicators"}),
 )
 

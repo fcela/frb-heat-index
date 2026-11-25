@@ -1,6 +1,6 @@
 # Manual pulse feeds
 
-Two Market Pulse indicators have no machine-readable public feed. Their
+Two Early Warning indicators have no machine-readable public feed. Their
 values are transcribed by hand from the cited primary releases into the
 CSVs in this directory, and the pipeline (status `live-manual`) charts them
 like any other series. Values are **never** invented, interpolated, or

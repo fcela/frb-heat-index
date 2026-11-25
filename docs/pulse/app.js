@@ -1,4 +1,4 @@
-/* Market Pulse standalone page. All data from ../data/pulse.json; nothing
+/* Early Warning standalone page. All data from ../data/pulse.json; nothing
    hardcoded. Observable Plot visual language, shared with the main site. */
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+esm";
 
