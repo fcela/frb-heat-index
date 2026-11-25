@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -319,6 +320,41 @@ def test_update_landing_page_rewrites_only_spec_lines():
             raise AssertionError("missing Coverage label must raise")
 
 
+def test_update_landing_page_syncs_view_count():
+    """The hero heading's count word follows the number of product
+    cards on the page (the fixture carries three cards, one of which
+    has no generated spec lines). A page without a heading is left
+    byte-identical."""
+    headed = ("<header><h1>Two views of "
+              "<span class=\"hot\">financial-system risk</span></h1>"
+              "</header>\n" + _LANDING_FIXTURE_HTML)
+    with tempfile.TemporaryDirectory() as td:
+        page = Path(td) / "index.html"
+        page.write_text(headed)
+        assert make_site.update_landing_page(page, {}) is True
+        out = page.read_text()
+        assert "<h1>Three views of" in out
+        assert out.replace("<h1>Three views of", "<h1>Two views of") == headed
+        assert make_site.update_landing_page(page, {}) is False
+
+        page.write_text(_LANDING_FIXTURE_HTML)
+        assert make_site.update_landing_page(page, {}) is False
+        assert page.read_text() == _LANDING_FIXTURE_HTML
+
+
+def test_shipped_landing_heading_matches_card_count():
+    """The committed landing page's heading count must equal its
+    product-card count -- the guard for the drift in which the heading
+    kept saying three views after a fourth section shipped."""
+    text = (HERE / "docs" / "index.html").read_text()
+    n = text.count('<section class="card product-card">')
+    m = re.search(r"<h1>([A-Za-z]+) views of", text)
+    assert m, "landing page hero heading not found"
+    assert m.group(1) == make_site._COUNT_WORDS[n - 1], (
+        f"heading says {m.group(1)!r} views but the page carries "
+        f"{n} product cards")
+
+
 def test_shipped_landing_page_matches_metas():
     """The committed landing page's three spec lines must equal the lines
     derived from the committed metas -- the guard against the drift this
@@ -493,6 +529,8 @@ if __name__ == "__main__":
     test_shipped_meta_freshness_matches_raw_panel()
     test_landing_lines_from_metas()
     test_update_landing_page_rewrites_only_spec_lines()
+    test_update_landing_page_syncs_view_count()
+    test_shipped_landing_heading_matches_card_count()
     test_shipped_landing_page_matches_metas()
     test_now_block_from_data()
     test_update_now_block()
