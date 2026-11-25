@@ -1,9 +1,9 @@
 {
  "last_built_quarter": "2026Q2",
- "built_at_utc": "2026-10-22T00:00:00Z",
- "n_indicators": 48,
- "n_components": 14,
- "note": "Structural fixes: Tier 1 CET1 splice across Basel III 2014 break; total capital ratio rebuilt from Y-9C; SLOOS mortgage standards spliced to successor (SUBLPDHMSGLGNQ); 8 dead Z.1 FRED codes replaced via Z.1 bulk extraction. All fixable series through 2026Q2. Journal-publication additions: SRISK/total assets and Granger-causality connectedness (J. Banking & Finance 81, 2017). Nowcast completion: in the observed panel 30 series end at 2025Q4 and 18 reach 2026Q2; the 2026Q1-Q2 fills for the 30 are tested nowcast models or documented assumptions (see data/nowcast_provenance.csv); maturity-gap proxy extended by OLS regression on observed inputs. 2023Q4 Y-9C ingestion hole repaired 2026-10-22 (NIC caret files carry no quoting convention; parse fix re-reads the FFIEC bulk file), 7 Y-9C-derived series completed at 2023Q4. 2026Q3 row: appended by src/nowcast_extend.py under the same decision rule (direct horizon 1 for the 18 series observed through 2026Q2, horizon 3 for 29 of the 30 ending 2025Q4; lag-1 predictor block, no filled value used as an input); the maturity-gap series is unextended for 2026Q3 because its regression inputs are not observed for that quarter. Per-cell flags: data/panel_complete_flags.csv.",
+ "built_at_utc": "2026-11-21T00:00:00Z",
+ "n_indicators": 52,
+ "n_components": 15,
+ "note": "Structural fixes: Tier 1 CET1 splice across Basel III 2014 break; total capital ratio rebuilt from Y-9C; SLOOS mortgage standards spliced to successor (SUBLPDHMSGLGNQ); 8 dead Z.1 FRED codes replaced via Z.1 bulk extraction. All fixable series through 2026Q2. Journal-publication additions: SRISK/total assets and Granger-causality connectedness (J. Banking & Finance 81, 2017). Nowcast completion: in the observed panel 30 series end at 2025Q4 and 18 reach 2026Q2; the 2026Q1-Q2 fills for the 30 are tested nowcast models or documented assumptions (see data/nowcast_provenance.csv); maturity-gap proxy extended by OLS regression on observed inputs. 2023Q4 Y-9C ingestion hole repaired 2026-10-22 (NIC caret files carry no quoting convention; parse fix re-reads the FFIEC bulk file), 7 Y-9C-derived series completed at 2023Q4. 2026Q3 row: appended by src/nowcast_extend.py under the same decision rule (direct horizon 1 for the 18 series observed through 2026Q2, horizon 3 for 29 of the 30 ending 2025Q4; lag-1 predictor block, no filled value used as an input); the maturity-gap series is unextended for 2026Q3 because its regression inputs are not observed for that quarter. Per-cell flags: data/panel_complete_flags.csv. Extension of 2026-11-21: four series added. Private credit loans as a share of nonfinancial business debt and private credit intermediary leverage (Z.1 delineation, release of September 11, 2026; observed 2012Q4-2026Q2, not nowcast-extended) join Nonbank leverage; the BIS credit-to-GDP gap and private-sector debt service ratio (observed through 2026Q1, the latest BIS publication, with a flagged one-quarter carry at 2026Q2) form a new Credit cycle component, so the aggregate is now the mean of 15 components. All other series are as of the 2026-10-22 build.",
  "nowcast_through": "2026Q3",
  "components": [
   "Equity markets",
@@ -19,7 +19,8 @@
   "Nonbank leverage",
   "Maturity transformation",
   "Short-term wholesale funding",
-  "Size/concentration"
+  "Size/concentration",
+  "Credit cycle"
  ],
  "last_updated_quarter": "2026Q3",
  "start_quarter": "1990Q1",
@@ -29,7 +30,7 @@
   "observed_through": "2025Q4",
   "least_series": "Broker Dealer Leverage (Dealer financing)",
   "least_count": 30,
-  "n_series": 48
+  "n_series": 52
  },
  "nowcast": {
   "quarters": [
@@ -47,7 +48,7 @@
    "2026Q2": {
     "regression-extension": 1,
     "nowcast-model": 9,
-    "assumption-carry-forward": 19,
+    "assumption-carry-forward": 21,
     "assumption-trend": 1
    },
    "2026Q3": {

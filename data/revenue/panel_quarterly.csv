@@ -1,38 +1,4 @@
 firm,segment_native,taxonomy_line,map_quality,layer,year,quarter,net_revenue_m,derivation,regime,source,accession
-Bank of America,,advisory,D,mda_q,2009,2,292.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000950123-10-074181
-Bank of America,,advisory,D,mda_q,2009,3,207.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000950123-10-101545
-Bank of America,,advisory,D,mda_q,2010,1,167.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000950123-11-045620
-Bank of America,,advisory,D,mda_q,2010,2,242.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000950123-11-072937
-Bank of America,,advisory,D,mda_q,2010,3,273.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000070858-11-000140
-Bank of America,,advisory,D,mda_q,2010,4,336.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,advisory,D,mda_q,2011,1,320.0,mda_qtd,r0,mda_q:Investment banking fees,0000070858-12-000191
-Bank of America,,advisory,D,mda_q,2011,2,382.0,mda_qtd,r0,mda_q:Investment banking fees,0000070858-12-000308
-Bank of America,,advisory,D,mda_q,2011,3,273.0,mda_qtd,r0,mda_q:Investment banking fees,0000070858-12-000362
-Bank of America,,advisory,D,mda_q,2011,4,273.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,advisory,D,mda_q,2012,1,203.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-13-000147
-Bank of America,,advisory,D,mda_q,2012,2,340.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-13-000216
-Bank of America,,advisory,D,mda_q,2012,3,221.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-13-000248
-Bank of America,,advisory,D,mda_q,2012,4,302.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,advisory,D,mda_q,2013,1,257.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-14-000056
-Bank of America,,advisory,D,mda_q,2013,2,262.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-14-000088
-Bank of America,,advisory,D,mda_q,2013,3,255.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-14-000139
-Bank of America,,advisory,D,mda_q,2013,4,351.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,advisory,D,mda_q,2014,1,286.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-15-000048
-Bank of America,,advisory,D,mda_q,2014,2,264.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-15-000078
-Bank of America,,advisory,D,mda_q,2014,3,316.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-15-000103
-Bank of America,,advisory,D,mda_q,2014,4,339.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,advisory,D,mda_q,2015,1,428.0,mda_qtd,r2,mda_q:Investment banking fees,0000070858-16-000166
-Bank of America,,advisory,D,mda_q,2015,2,276.0,mda_qtd,r2,mda_q:Investment banking fees,0000070858-16-000200
-Bank of America,,advisory,D,mda_q,2015,3,391.0,mda_qtd,r2,mda_q:Investment banking fees,0000070858-16-000222
-Bank of America,,advisory,D,mda_q,2015,4,408.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,advisory,D,mda_q,2016,1,346.0,mda_qtd,r2,mda_q:Investment banking fees,0000070858-17-000025
-Bank of America,,advisory,D,mda_q,2016,2,333.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-17-000037
-Bank of America,,advisory,D,mda_q,2016,3,328.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-17-000046
-Bank of America,,advisory,D,mda_q,2016,4,261.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,advisory,D,mda_q,2017,1,405.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-18-000020
-Bank of America,,advisory,D,mda_q,2017,2,483.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-18-000030
-Bank of America,,advisory,D,mda_q,2017,3,374.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-18-000042
-Bank of America,,advisory,D,mda_q,2017,4,429.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,advisory,D,mda_q,2018,1,296.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-19-000026
 Bank of America,,advisory,D,mda_q,2018,2,303.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-19-000042
 Bank of America,,advisory,D,mda_q,2018,3,262.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-19-000057
@@ -63,11 +29,10 @@ Bank of America,,advisory,D,mda_q,2024,3,387.0,mda_qtd,r3,mda_q:Noninterest inco
 Bank of America,,advisory,D,mda_q,2024,4,556.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,advisory,D,mda_q,2025,1,384.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000249
 Bank of America,,advisory,D,mda_q,2025,2,333.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000394
-Bank of America,,advisory,D,mda_q,2025,3,583.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000548
+Bank of America,,advisory,D,mda_q,2025,3,583.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000405
 Bank of America,,advisory,D,mda_q,2025,4,590.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,advisory,D,mda_q,2026,1,553.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000249
 Bank of America,,advisory,D,mda_q,2026,2,558.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000394
-Bank of America,,advisory,D,mda_q,2026,3,471.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000548
 Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2010,2,4189.0,qtd,r0,XBRL R-file (10-Q),0000950123-11-072937
 Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2010,3,3898.0,qtd,r0,XBRL R-file (10-Q),0000070858-11-000140
 Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2011,1,4496.0,qtd,r0,XBRL R-file (10-Q),0000070858-12-000191
@@ -110,178 +75,40 @@ Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2025,1,6016.0
 Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2025,2,5937.0,qtd,r3,XBRL R-file (10-Q),0000070858-26-000394
 Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2026,1,6712.0,qtd,r3,XBRL R-file (10-Q),0000070858-26-000249
 Bank of America,Global Wealth & Investment Management,awm,D,xbrl_q,2026,2,6871.0,qtd,r3,XBRL R-file (10-Q),0000070858-26-000394
-Bank of America,,dcm,D,mda_q,2009,2,944.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000950123-10-074181
-Bank of America,,dcm,D,mda_q,2009,3,724.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000950123-10-101545
-Bank of America,,dcm,D,mda_q,2010,1,735.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000950123-11-045620
-Bank of America,,dcm,D,mda_q,2010,2,773.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000950123-11-072937
-Bank of America,,dcm,D,mda_q,2010,3,743.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000070858-11-000140
-Bank of America,,dcm,D,mda_q,2010,4,808.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2011,1,845.0,mda_qtd,r0,mda_q:Investment banking fees,0000070858-12-000191
-Bank of America,,dcm,D,mda_q,2011,2,939.0,mda_qtd,r0,mda_q:Investment banking fees,0000070858-12-000308
-Bank of America,,dcm,D,mda_q,2011,3,511.0,mda_qtd,r0,mda_q:Investment banking fees,0000070858-12-000362
-Bank of America,,dcm,D,mda_q,2011,4,583.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2012,1,775.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-13-000147
-Bank of America,,dcm,D,mda_q,2012,2,646.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-13-000216
-Bank of America,,dcm,D,mda_q,2012,3,865.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-13-000248
-Bank of America,,dcm,D,mda_q,2012,4,1076.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2013,1,1022.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-14-000056
-Bank of America,,dcm,D,mda_q,2013,2,987.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-14-000088
-Bank of America,,dcm,D,mda_q,2013,3,809.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-14-000139
-Bank of America,,dcm,D,mda_q,2013,4,986.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2014,1,1025.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-15-000048
-Bank of America,,dcm,D,mda_q,2014,2,891.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-15-000078
-Bank of America,,dcm,D,mda_q,2014,3,784.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-15-000103
-Bank of America,,dcm,D,mda_q,2014,4,883.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2015,1,781.0,mda_qtd,r2,mda_q:Investment banking fees,0000070858-16-000166
-Bank of America,,dcm,D,mda_q,2015,2,887.0,mda_qtd,r2,mda_q:Investment banking fees,0000070858-16-000200
-Bank of America,,dcm,D,mda_q,2015,3,748.0,mda_qtd,r2,mda_q:Investment banking fees,0000070858-16-000222
-Bank of America,,dcm,D,mda_q,2015,4,617.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2016,1,669.0,mda_qtd,r2,mda_q:Investment banking fees,0000070858-17-000025
-Bank of America,,dcm,D,mda_q,2016,2,889.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-17-000037
-Bank of America,,dcm,D,mda_q,2016,3,908.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-17-000046
-Bank of America,,dcm,D,mda_q,2016,4,810.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2017,1,926.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-18-000020
-Bank of America,,dcm,D,mda_q,2017,2,901.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-18-000030
-Bank of America,,dcm,D,mda_q,2017,3,962.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-18-000042
-Bank of America,,dcm,D,mda_q,2017,4,846.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2018,1,827.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-19-000026
-Bank of America,,dcm,D,mda_q,2018,2,874.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-19-000042
-Bank of America,,dcm,D,mda_q,2018,3,684.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-19-000057
-Bank of America,,dcm,D,mda_q,2018,4,699.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2019,1,748.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-20-000023
-Bank of America,,dcm,D,mda_q,2019,2,746.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-20-000040
-Bank of America,,dcm,D,mda_q,2019,3,816.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-20-000071
-Bank of America,,dcm,D,mda_q,2019,4,797.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2020,1,927.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-21-000063
-Bank of America,,dcm,D,mda_q,2020,2,1058.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-21-000084
-Bank of America,,dcm,D,mda_q,2020,3,740.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-21-000107
-Bank of America,,dcm,D,mda_q,2020,4,718.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2021,1,988.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-22-000088
-Bank of America,,dcm,D,mda_q,2021,2,1110.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-22-000112
-Bank of America,,dcm,D,mda_q,2021,3,933.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-22-000131
-Bank of America,,dcm,D,mda_q,2021,4,984.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2022,1,831.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-23-000142
-Bank of America,,dcm,D,mda_q,2022,2,662.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-23-000176
-Bank of America,,dcm,D,mda_q,2022,3,616.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-23-000272
-Bank of America,,dcm,D,mda_q,2022,4,414.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2023,1,644.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-24-000156
-Bank of America,,dcm,D,mda_q,2023,2,600.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-24-000208
-Bank of America,,dcm,D,mda_q,2023,3,570.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-24-000280
-Bank of America,,dcm,D,mda_q,2023,4,589.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2024,1,885.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-25-000200
-Bank of America,,dcm,D,mda_q,2024,2,880.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-25-000268
-Bank of America,,dcm,D,mda_q,2024,3,780.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-25-000405
-Bank of America,,dcm,D,mda_q,2024,4,765.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2025,1,942.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-26-000249
-Bank of America,,dcm,D,mda_q,2025,2,837.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-26-000394
-Bank of America,,dcm,D,mda_q,2025,3,1109.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-26-000548
-Bank of America,,dcm,D,mda_q,2025,4,810.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,dcm,D,mda_q,2026,1,986.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-26-000249
-Bank of America,,dcm,D,mda_q,2026,2,1113.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-26-000394
-Bank of America,,dcm,D,mda_q,2026,3,958.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-26-000548
-Bank of America,,ecm,D,mda_q,2009,2,508.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000950123-10-074181
-Bank of America,,ecm,D,mda_q,2009,3,403.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000950123-10-101545
-Bank of America,,ecm,D,mda_q,2010,1,314.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000950123-11-045620
-Bank of America,,ecm,D,mda_q,2010,2,286.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000950123-11-072937
-Bank of America,,ecm,D,mda_q,2010,3,290.0,mda_qtd,r0,mda_q:Investment banking income (GBAM era),0000070858-11-000140
-Bank of America,,ecm,D,mda_q,2010,4,439.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2011,1,448.0,mda_qtd,r0,mda_q:Investment banking fees,0000070858-12-000191
-Bank of America,,ecm,D,mda_q,2011,2,422.0,mda_qtd,r0,mda_q:Investment banking fees,0000070858-12-000308
-Bank of America,,ecm,D,mda_q,2011,3,320.0,mda_qtd,r0,mda_q:Investment banking fees,0000070858-12-000362
-Bank of America,,ecm,D,mda_q,2011,4,269.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2012,1,305.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-13-000147
-Bank of America,,ecm,D,mda_q,2012,2,192.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-13-000216
-Bank of America,,ecm,D,mda_q,2012,3,279.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-13-000248
-Bank of America,,ecm,D,mda_q,2012,4,250.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2013,1,323.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-14-000056
-Bank of America,,ecm,D,mda_q,2013,2,356.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-14-000088
-Bank of America,,ecm,D,mda_q,2013,3,329.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-14-000139
-Bank of America,,ecm,D,mda_q,2013,4,464.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2014,1,313.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-15-000048
-Bank of America,,ecm,D,mda_q,2014,2,514.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-15-000078
-Bank of America,,ecm,D,mda_q,2014,3,315.0,mda_qtd,r1,mda_q:Investment banking fees,0000070858-15-000103
-Bank of America,,ecm,D,mda_q,2014,4,348.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2015,1,345.0,mda_qtd,r2,mda_q:Investment banking fees,0000070858-16-000166
-Bank of America,,ecm,D,mda_q,2015,2,417.0,mda_qtd,r2,mda_q:Investment banking fees,0000070858-16-000200
-Bank of America,,ecm,D,mda_q,2015,3,188.0,mda_qtd,r2,mda_q:Investment banking fees,0000070858-16-000222
-Bank of America,,ecm,D,mda_q,2015,4,286.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2016,1,188.0,mda_qtd,r2,mda_q:Investment banking fees,0000070858-17-000025
-Bank of America,,ecm,D,mda_q,2016,2,232.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-17-000037
-Bank of America,,ecm,D,mda_q,2016,3,261.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-17-000046
-Bank of America,,ecm,D,mda_q,2016,4,183.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2017,1,312.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-18-000020
-Bank of America,,ecm,D,mda_q,2017,2,231.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-18-000030
-Bank of America,,ecm,D,mda_q,2017,3,193.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-18-000042
-Bank of America,,ecm,D,mda_q,2017,4,204.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2018,1,314.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-19-000026
-Bank of America,,ecm,D,mda_q,2018,2,290.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-19-000042
-Bank of America,,ecm,D,mda_q,2018,3,307.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-19-000057
-Bank of America,,ecm,D,mda_q,2018,4,272.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2019,1,234.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-20-000023
-Bank of America,,ecm,D,mda_q,2019,2,395.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-20-000040
-Bank of America,,ecm,D,mda_q,2019,3,308.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-20-000071
-Bank of America,,ecm,D,mda_q,2019,4,322.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2020,1,283.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-21-000063
-Bank of America,,ecm,D,mda_q,2020,2,740.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-21-000084
-Bank of America,,ecm,D,mda_q,2020,3,664.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-21-000107
-Bank of America,,ecm,D,mda_q,2020,4,641.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2021,1,900.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-22-000088
-Bank of America,,ecm,D,mda_q,2021,2,702.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-22-000112
-Bank of America,,ecm,D,mda_q,2021,3,637.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-22-000131
-Bank of America,,ecm,D,mda_q,2021,4,545.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2022,1,225.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-23-000142
-Bank of America,,ecm,D,mda_q,2022,2,139.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-23-000176
-Bank of America,,ecm,D,mda_q,2022,3,156.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-23-000272
-Bank of America,,ecm,D,mda_q,2022,4,189.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2023,1,168.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-24-000156
-Bank of America,,ecm,D,mda_q,2023,2,287.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-24-000208
-Bank of America,,ecm,D,mda_q,2023,3,232.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-24-000280
-Bank of America,,ecm,D,mda_q,2023,4,199.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2024,1,363.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-25-000200
-Bank of America,,ecm,D,mda_q,2024,2,357.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-25-000268
-Bank of America,,ecm,D,mda_q,2024,3,270.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-25-000405
-Bank of America,,ecm,D,mda_q,2024,4,364.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2025,1,272.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-26-000249
-Bank of America,,ecm,D,mda_q,2025,2,328.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-26-000394
-Bank of America,,ecm,D,mda_q,2025,3,362.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-26-000548
-Bank of America,,ecm,D,mda_q,2025,4,297.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ecm,D,mda_q,2026,1,353.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-26-000249
-Bank of America,,ecm,D,mda_q,2026,2,535.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-26-000394
-Bank of America,,ecm,D,mda_q,2026,3,395.0,mda_qtd,r3,mda_q:Investment banking fees,0000070858-26-000548
-Bank of America,,equities,D,mda_q,2009,2,1198.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000950123-10-074181
-Bank of America,,equities,D,mda_q,2009,3,1265.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000950123-10-101545
-Bank of America,,equities,D,mda_q,2010,1,1514.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000950123-11-045620
-Bank of America,,equities,D,mda_q,2010,2,882.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000950123-11-072937
-Bank of America,,equities,D,mda_q,2010,3,966.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000070858-11-000140
-Bank of America,,equities,D,mda_q,2010,4,793.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,equities,D,mda_q,2011,1,1249.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000950123-11-045620
-Bank of America,,equities,D,mda_q,2011,2,1081.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000950123-11-072937
-Bank of America,,equities,D,mda_q,2011,3,960.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000070858-11-000140
-Bank of America,,equities,D,mda_q,2011,4,667.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,equities,D,mda_q,2012,1,912.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-13-000147
-Bank of America,,equities,D,mda_q,2012,2,761.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-13-000216
-Bank of America,,equities,D,mda_q,2012,3,667.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-13-000248
-Bank of America,,equities,D,mda_q,2012,4,674.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,equities,D,mda_q,2013,1,1153.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-14-000056
-Bank of America,,equities,D,mda_q,2013,2,1280.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-14-000088
-Bank of America,,equities,D,mda_q,2013,3,918.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-14-000139
-Bank of America,,equities,D,mda_q,2013,4,829.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,equities,D,mda_q,2014,1,1193.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-15-000048
-Bank of America,,equities,D,mda_q,2014,2,1055.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-15-000078
-Bank of America,,equities,D,mda_q,2014,3,1105.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-15-000103
-Bank of America,,equities,D,mda_q,2014,4,841.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,equities,D,mda_q,2015,1,1137.0,mda_qtd,r2,mda_q:Global Markets sales and trading revenue,0000070858-16-000166
-Bank of America,,equities,D,mda_q,2015,2,1176.0,mda_qtd,r2,mda_q:Global Markets sales and trading revenue,0000070858-16-000200
-Bank of America,,equities,D,mda_q,2015,3,1148.0,mda_qtd,r2,mda_q:Global Markets sales and trading revenue,0000070858-16-000222
-Bank of America,,equities,D,mda_q,2015,4,874.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,equities,D,mda_q,2016,1,1037.0,mda_qtd,r2,mda_q:Global Markets sales and trading revenue,0000070858-17-000025
-Bank of America,,equities,D,mda_q,2016,2,1081.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-17-000037
-Bank of America,,equities,D,mda_q,2016,3,954.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-17-000046
-Bank of America,,equities,D,mda_q,2016,4,945.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,equities,D,mda_q,2017,1,1089.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-18-000020
-Bank of America,,equities,D,mda_q,2017,2,1104.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-18-000030
-Bank of America,,equities,D,mda_q,2017,3,977.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-18-000042
-Bank of America,,equities,D,mda_q,2017,4,950.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
+Bank of America,,ecm_dcm_combined,D,mda_q,2018,1,740.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-19-000026
+Bank of America,,ecm_dcm_combined,D,mda_q,2018,2,719.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-19-000042
+Bank of America,,ecm_dcm_combined,D,mda_q,2018,3,701.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-19-000057
+Bank of America,,ecm_dcm_combined,D,mda_q,2018,4,562.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
+Bank of America,,ecm_dcm_combined,D,mda_q,2019,1,666.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-20-000023
+Bank of America,,ecm_dcm_combined,D,mda_q,2019,2,792.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-20-000040
+Bank of America,,ecm_dcm_combined,D,mda_q,2019,3,740.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-20-000071
+Bank of America,,ecm_dcm_combined,D,mda_q,2019,4,800.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
+Bank of America,,ecm_dcm_combined,D,mda_q,2020,1,848.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000063
+Bank of America,,ecm_dcm_combined,D,mda_q,2020,2,1523.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000084
+Bank of America,,ecm_dcm_combined,D,mda_q,2020,3,1239.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-21-000107
+Bank of America,,ecm_dcm_combined,D,mda_q,2020,4,1088.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
+Bank of America,,ecm_dcm_combined,D,mda_q,2021,1,1546.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000088
+Bank of America,,ecm_dcm_combined,D,mda_q,2021,2,1314.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000112
+Bank of America,,ecm_dcm_combined,D,mda_q,2021,3,1168.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-22-000131
+Bank of America,,ecm_dcm_combined,D,mda_q,2021,4,1049.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
+Bank of America,,ecm_dcm_combined,D,mda_q,2022,1,672.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000142
+Bank of America,,ecm_dcm_combined,D,mda_q,2022,2,435.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000176
+Bank of America,,ecm_dcm_combined,D,mda_q,2022,3,452.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-23-000272
+Bank of America,,ecm_dcm_combined,D,mda_q,2022,4,411.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
+Bank of America,,ecm_dcm_combined,D,mda_q,2023,1,569.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000156
+Bank of America,,ecm_dcm_combined,D,mda_q,2023,2,657.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000208
+Bank of America,,ecm_dcm_combined,D,mda_q,2023,3,531.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-24-000280
+Bank of America,,ecm_dcm_combined,D,mda_q,2023,4,478.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
+Bank of America,,ecm_dcm_combined,D,mda_q,2024,1,901.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000200
+Bank of America,,ecm_dcm_combined,D,mda_q,2024,2,869.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000268
+Bank of America,,ecm_dcm_combined,D,mda_q,2024,3,742.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000405
+Bank of America,,ecm_dcm_combined,D,mda_q,2024,4,763.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
+Bank of America,,ecm_dcm_combined,D,mda_q,2025,1,770.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000249
+Bank of America,,ecm_dcm_combined,D,mda_q,2025,2,806.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000394
+Bank of America,,ecm_dcm_combined,D,mda_q,2025,3,992.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-25-000405
+Bank of America,,ecm_dcm_combined,D,mda_q,2025,4,752.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
+Bank of America,,ecm_dcm_combined,D,mda_q,2026,1,951.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000249
+Bank of America,,ecm_dcm_combined,D,mda_q,2026,2,1220.0,mda_qtd,r3,mda_q:Noninterest income by business segment,0000070858-26-000394
 Bank of America,,equities,D,mda_q,2018,1,1512.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-19-000026
 Bank of America,,equities,D,mda_q,2018,2,1319.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-19-000042
 Bank of America,,equities,D,mda_q,2018,3,998.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-19-000057
@@ -312,45 +139,10 @@ Bank of America,,equities,D,mda_q,2024,3,1996.0,mda_qtd,r3,mda_q:Global Markets 
 Bank of America,,equities,D,mda_q,2024,4,1642.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,equities,D,mda_q,2025,1,2186.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000249
 Bank of America,,equities,D,mda_q,2025,2,2133.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000394
-Bank of America,,equities,D,mda_q,2025,3,2270.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000548
+Bank of America,,equities,D,mda_q,2025,3,2270.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000405
 Bank of America,,equities,D,mda_q,2025,4,2015.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,equities,D,mda_q,2026,1,2842.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000249
 Bank of America,,equities,D,mda_q,2026,2,3622.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000394
-Bank of America,,equities,D,mda_q,2026,3,2510.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000548
-Bank of America,,ficc,D,mda_q,2009,2,2682.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000950123-10-074181
-Bank of America,,ficc,D,mda_q,2009,3,4004.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000950123-10-101545
-Bank of America,,ficc,D,mda_q,2010,1,5487.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000950123-11-045620
-Bank of America,,ficc,D,mda_q,2010,2,2230.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000950123-11-072937
-Bank of America,,ficc,D,mda_q,2010,3,3478.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000070858-11-000140
-Bank of America,,ficc,D,mda_q,2010,4,1662.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ficc,D,mda_q,2011,1,3646.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000950123-11-045620
-Bank of America,,ficc,D,mda_q,2011,2,2697.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000950123-11-072937
-Bank of America,,ficc,D,mda_q,2011,3,1820.0,mda_qtd,r0,mda_q:Sales and trading revenue (GBAM era),0000070858-11-000140
-Bank of America,,ficc,D,mda_q,2011,4,734.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ficc,D,mda_q,2012,1,2843.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-13-000147
-Bank of America,,ficc,D,mda_q,2012,2,2418.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-13-000216
-Bank of America,,ficc,D,mda_q,2012,3,2000.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-13-000248
-Bank of America,,ficc,D,mda_q,2012,4,1551.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ficc,D,mda_q,2013,1,2852.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-14-000056
-Bank of America,,ficc,D,mda_q,2013,2,2216.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-14-000088
-Bank of America,,ficc,D,mda_q,2013,3,1636.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-14-000139
-Bank of America,,ficc,D,mda_q,2013,4,1527.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ficc,D,mda_q,2014,1,3024.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-15-000048
-Bank of America,,ficc,D,mda_q,2014,2,2422.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-15-000078
-Bank of America,,ficc,D,mda_q,2014,3,2387.0,mda_qtd,r1,mda_q:Global Markets sales and trading revenue,0000070858-15-000103
-Bank of America,,ficc,D,mda_q,2014,4,919.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ficc,D,mda_q,2015,1,2352.0,mda_qtd,r2,mda_q:Global Markets sales and trading revenue,0000070858-16-000166
-Bank of America,,ficc,D,mda_q,2015,2,1942.0,mda_qtd,r2,mda_q:Global Markets sales and trading revenue,0000070858-16-000200
-Bank of America,,ficc,D,mda_q,2015,3,2010.0,mda_qtd,r2,mda_q:Global Markets sales and trading revenue,0000070858-16-000222
-Bank of America,,ficc,D,mda_q,2015,4,1565.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ficc,D,mda_q,2016,1,2405.0,mda_qtd,r2,mda_q:Global Markets sales and trading revenue,0000070858-17-000025
-Bank of America,,ficc,D,mda_q,2016,2,2456.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-17-000037
-Bank of America,,ficc,D,mda_q,2016,3,2646.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-17-000046
-Bank of America,,ficc,D,mda_q,2016,4,1866.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
-Bank of America,,ficc,D,mda_q,2017,1,2810.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-18-000020
-Bank of America,,ficc,D,mda_q,2017,2,2106.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-18-000030
-Bank of America,,ficc,D,mda_q,2017,3,2152.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-18-000042
-Bank of America,,ficc,D,mda_q,2017,4,1589.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,ficc,D,mda_q,2018,1,2633.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-19-000026
 Bank of America,,ficc,D,mda_q,2018,2,2132.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-19-000042
 Bank of America,,ficc,D,mda_q,2018,3,1989.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-19-000057
@@ -381,27 +173,10 @@ Bank of America,,ficc,D,mda_q,2024,3,2934.0,mda_qtd,r3,mda_q:Global Markets sale
 Bank of America,,ficc,D,mda_q,2024,4,2464.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,ficc,D,mda_q,2025,1,3479.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000249
 Bank of America,,ficc,D,mda_q,2025,2,3195.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000394
-Bank of America,,ficc,D,mda_q,2025,3,3092.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000548
-Bank of America,,ficc,D,mda_q,2025,4,2501.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
+Bank of America,,ficc,D,mda_q,2025,3,3091.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-25-000405
+Bank of America,,ficc,D,mda_q,2025,4,2502.0,mda_annual_derived_q4,r3,MD&A annual sub-split less Q1-Q3,""
 Bank of America,,ficc,D,mda_q,2026,1,3545.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000249
 Bank of America,,ficc,D,mda_q,2026,2,3476.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000394
-Bank of America,,ficc,D,mda_q,2026,3,2565.0,mda_qtd,r3,mda_q:Global Markets sales and trading revenue,0000070858-26-000548
-Citigroup,,advisory,D,mda_q,2014,1,175.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000056
-Citigroup,,advisory,D,mda_q,2014,2,193.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000111
-Citigroup,,advisory,D,mda_q,2014,3,318.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000157
-Citigroup,,advisory,D,mda_q,2014,4,252.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,advisory,D,mda_q,2015,1,295.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000241
-Citigroup,,advisory,D,mda_q,2015,2,257.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000292
-Citigroup,,advisory,D,mda_q,2015,3,239.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000334
-Citigroup,,advisory,D,mda_q,2015,4,302.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,advisory,D,mda_q,2016,1,227.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000048
-Citigroup,,advisory,D,mda_q,2016,2,238.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000098
-Citigroup,,advisory,D,mda_q,2016,3,239.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000139
-Citigroup,,advisory,D,mda_q,2016,4,309.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,advisory,D,mda_q,2017,1,246.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000048
-Citigroup,,advisory,D,mda_q,2017,2,314.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000098
-Citigroup,,advisory,D,mda_q,2017,3,237.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000139
-Citigroup,,advisory,D,mda_q,2017,4,326.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,advisory,D,mda_q,2018,1,215.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
 Citigroup,,advisory,D,mda_q,2018,2,361.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
 Citigroup,,advisory,D,mda_q,2018,3,262.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
@@ -450,22 +225,6 @@ Citigroup,Wealth,awm,D,xbrl_q,2025,3,2164.0,qtd,r4,XBRL R-file (10-Q),0000831001
 Citigroup,Wealth,awm,D,xbrl_q,2025,4,2133.0,annual_derived_q4,r4,"XBRL R-file (10-Q, annual_derived_q4)",0000831001-25-000154
 Citigroup,Wealth,awm,D,xbrl_q,2026,1,3065.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000019
 Citigroup,Wealth,awm,D,xbrl_q,2026,2,3177.0,qtd,r4,XBRL R-file (10-Q),0000831001-26-000045
-Citigroup,,dcm,D,mda_q,2014,1,579.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000056
-Citigroup,,dcm,D,mda_q,2014,2,749.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000111
-Citigroup,,dcm,D,mda_q,2014,3,633.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000157
-Citigroup,,dcm,D,mda_q,2014,4,579.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,dcm,D,mda_q,2015,1,676.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000241
-Citigroup,,dcm,D,mda_q,2015,2,737.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000292
-Citigroup,,dcm,D,mda_q,2015,3,532.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000334
-Citigroup,,dcm,D,mda_q,2015,4,613.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,dcm,D,mda_q,2016,1,528.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000048
-Citigroup,,dcm,D,mda_q,2016,2,803.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000098
-Citigroup,,dcm,D,mda_q,2016,3,698.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000139
-Citigroup,,dcm,D,mda_q,2016,4,747.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,dcm,D,mda_q,2017,1,733.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000048
-Citigroup,,dcm,D,mda_q,2017,2,877.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000098
-Citigroup,,dcm,D,mda_q,2017,3,704.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000139
-Citigroup,,dcm,D,mda_q,2017,4,812.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,dcm,D,mda_q,2018,1,699.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
 Citigroup,,dcm,D,mda_q,2018,2,726.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
 Citigroup,,dcm,D,mda_q,2018,3,660.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
@@ -499,22 +258,6 @@ Citigroup,,dcm,D,mda_q,2025,3,568.0,mda_qtd,r4,mda_q:Banking business metrics - 
 Citigroup,,dcm,D,mda_q,2025,4,446.0,mda_annual_derived_q4,r4,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,dcm,D,mda_q,2026,1,519.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-26-000019
 Citigroup,,dcm,D,mda_q,2026,2,732.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-26-000045
-Citigroup,,ecm,D,mda_q,2014,1,299.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000056
-Citigroup,,ecm,D,mda_q,2014,2,397.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000111
-Citigroup,,ecm,D,mda_q,2014,3,298.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000157
-Citigroup,,ecm,D,mda_q,2014,4,256.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,ecm,D,mda_q,2015,1,231.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000241
-Citigroup,,ecm,D,mda_q,2015,2,296.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000292
-Citigroup,,ecm,D,mda_q,2015,3,173.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000334
-Citigroup,,ecm,D,mda_q,2015,4,206.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,ecm,D,mda_q,2016,1,118.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000048
-Citigroup,,ecm,D,mda_q,2016,2,174.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000098
-Citigroup,,ecm,D,mda_q,2016,3,146.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000139
-Citigroup,,ecm,D,mda_q,2016,4,225.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,ecm,D,mda_q,2017,1,235.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000048
-Citigroup,,ecm,D,mda_q,2017,2,295.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000098
-Citigroup,,ecm,D,mda_q,2017,3,290.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000139
-Citigroup,,ecm,D,mda_q,2017,4,301.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,ecm,D,mda_q,2018,1,216.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
 Citigroup,,ecm,D,mda_q,2018,2,335.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
 Citigroup,,ecm,D,mda_q,2018,3,259.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
@@ -549,22 +292,6 @@ Citigroup,,ecm,D,mda_q,2025,3,174.0,mda_qtd,r4,mda_q:Banking business metrics - 
 Citigroup,,ecm,D,mda_q,2025,4,176.0,mda_annual_derived_q4,r4,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,ecm,D,mda_q,2026,1,208.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-26-000019
 Citigroup,,ecm,D,mda_q,2026,2,426.0,mda_qtd,r4,mda_q:Banking business metrics - investment banking fees,0000831001-26-000045
-Citigroup,,equities,D,mda_q,2014,1,882.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000056
-Citigroup,,equities,D,mda_q,2014,2,659.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000111
-Citigroup,,equities,D,mda_q,2014,3,763.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000157
-Citigroup,,equities,D,mda_q,2014,4,418.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,equities,D,mda_q,2015,1,867.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000241
-Citigroup,,equities,D,mda_q,2015,2,649.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000292
-Citigroup,,equities,D,mda_q,2015,3,1002.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000334
-Citigroup,,equities,D,mda_q,2015,4,583.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,equities,D,mda_q,2016,1,697.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000048
-Citigroup,,equities,D,mda_q,2016,2,776.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000098
-Citigroup,,equities,D,mda_q,2016,3,654.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000139
-Citigroup,,equities,D,mda_q,2016,4,806.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,equities,D,mda_q,2017,1,769.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000048
-Citigroup,,equities,D,mda_q,2017,2,691.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000098
-Citigroup,,equities,D,mda_q,2017,3,757.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000139
-Citigroup,,equities,D,mda_q,2017,4,662.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,equities,D,mda_q,2018,1,1103.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
 Citigroup,,equities,D,mda_q,2018,2,864.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
 Citigroup,,equities,D,mda_q,2018,3,792.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
@@ -593,22 +320,6 @@ Citigroup,,equities,D,mda_q,2025,3,1540.0,mda_qtd,r4,mda_q:Markets revenue by co
 Citigroup,,equities,D,mda_q,2025,4,1115.0,mda_annual_derived_q4,r4,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,equities,D,mda_q,2026,1,2080.0,mda_qtd,r4,mda_q:Markets revenue by component,0000831001-26-000019
 Citigroup,,equities,D,mda_q,2026,2,2301.0,mda_qtd,r4,mda_q:Markets revenue by component,0000831001-26-000045
-Citigroup,,ficc,D,mda_q,2014,1,3929.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000056
-Citigroup,,ficc,D,mda_q,2014,2,3080.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000111
-Citigroup,,ficc,D,mda_q,2014,3,3064.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-15-000157
-Citigroup,,ficc,D,mda_q,2014,4,2098.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,ficc,D,mda_q,2015,1,3484.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000241
-Citigroup,,ficc,D,mda_q,2015,2,3047.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000292
-Citigroup,,ficc,D,mda_q,2015,3,2566.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-16-000334
-Citigroup,,ficc,D,mda_q,2015,4,2180.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,ficc,D,mda_q,2016,1,3051.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000048
-Citigroup,,ficc,D,mda_q,2016,2,3432.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000098
-Citigroup,,ficc,D,mda_q,2016,3,3413.0,mda_qtd,r1,mda_q:ICG revenue details,0000831001-17-000139
-Citigroup,,ficc,D,mda_q,2016,4,3167.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-Citigroup,,ficc,D,mda_q,2017,1,3622.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000048
-Citigroup,,ficc,D,mda_q,2017,2,3215.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000098
-Citigroup,,ficc,D,mda_q,2017,3,2877.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-17-000139
-Citigroup,,ficc,D,mda_q,2017,4,2655.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 Citigroup,,ficc,D,mda_q,2018,1,3425.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000033
 Citigroup,,ficc,D,mda_q,2018,2,3082.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000073
 Citigroup,,ficc,D,mda_q,2018,3,3206.0,mda_qtd,r2,mda_q:ICG revenue details,0000831001-19-000105
@@ -1260,38 +971,6 @@ Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2025,2,398.0,qtd,r0,XBRL R-fi
 Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2025,3,438.661,qtd,r0,XBRL R-file (10-Q),0001302215-25-000111
 Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2025,4,473.688,qtd,r0,XBRL R-file (10-Q),0001302215-26-000007
 Houlihan Lokey,Corporate Finance,advisory,A,xbrl_q,2026,2,303.0,qtd,r0,XBRL R-file (10-Q),0001302215-26-000067
-JPMorgan,,advisory,D,mda_q,2009,1,479.0,mda_qtd,r0,mda_q:Investment banking fees,0000950123-10-047138
-JPMorgan,,advisory,D,mda_q,2009,2,393.0,mda_qtd,r0,mda_q:Investment banking fees,0000950123-10-074254
-JPMorgan,,advisory,D,mda_q,2009,3,384.0,mda_qtd,r0,mda_q:Investment banking fees,0000950123-10-102689
-JPMorgan,,advisory,D,mda_q,2009,4,611.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,advisory,D,mda_q,2010,1,305.0,mda_qtd,r0,mda_q:Investment banking fees,0000950123-11-045948
-JPMorgan,,advisory,D,mda_q,2010,2,355.0,mda_qtd,r0,mda_q:Investment banking fees,0001193125-11-212045
-JPMorgan,,advisory,D,mda_q,2010,3,385.0,mda_qtd,r0,mda_q:Investment banking fees,0000019617-11-000264
-JPMorgan,,advisory,D,mda_q,2010,4,424.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,advisory,D,mda_q,2011,1,429.0,mda_qtd,r0,mda_q:Investment banking fees,0000019617-12-000262
-JPMorgan,,advisory,D,mda_q,2011,2,601.0,mda_qtd,r0,mda_q:Investment banking fees,0000019617-12-000264
-JPMorgan,,advisory,D,mda_q,2011,3,365.0,mda_qtd,r0,mda_q:Investment banking fees,0000019617-12-000308
-JPMorgan,,advisory,D,mda_q,2011,4,397.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,advisory,D,mda_q,2012,1,281.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-13-000300
-JPMorgan,,advisory,D,mda_q,2012,2,356.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-13-000354
-JPMorgan,,advisory,D,mda_q,2012,3,389.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-13-000400
-JPMorgan,,advisory,D,mda_q,2012,4,465.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,advisory,D,mda_q,2013,1,255.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-14-000339
-JPMorgan,,advisory,D,mda_q,2013,2,304.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-14-000409
-JPMorgan,,advisory,D,mda_q,2013,3,322.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-14-000451
-JPMorgan,,advisory,D,mda_q,2013,4,434.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,advisory,D,mda_q,2014,1,383.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-15-000318
-JPMorgan,,advisory,D,mda_q,2014,2,397.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-15-000367
-JPMorgan,,advisory,D,mda_q,2014,3,413.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-15-000464
-JPMorgan,,advisory,D,mda_q,2014,4,434.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,advisory,D,mda_q,2015,1,542.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-000960
-JPMorgan,,advisory,D,mda_q,2015,2,466.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-001056
-JPMorgan,,advisory,D,mda_q,2015,3,503.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-001150
-JPMorgan,,advisory,D,mda_q,2015,4,622.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,advisory,D,mda_q,2016,1,585.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-000960
-JPMorgan,,advisory,D,mda_q,2016,2,466.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-001056
-JPMorgan,,advisory,D,mda_q,2016,3,542.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-001150
-JPMorgan,,advisory,D,mda_q,2016,4,517.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,advisory,D,mda_q,2017,3,620.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-18-000206
 JPMorgan,,advisory,D,mda_q,2018,1,575.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000067
 JPMorgan,,advisory,D,mda_q,2018,2,626.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000127
@@ -1388,38 +1067,6 @@ JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2025,3,6066.0,qtd,r2,XBRL R-file
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2025,4,6516.0,annual_derived_q4,r2,"XBRL R-file (10-Q, annual_derived_q4)",0001628280-25-048859
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2026,1,6374.0,qtd,r2,XBRL R-file (10-Q),0001628280-26-029344
 JPMorgan,Asset & Wealth Management,awm,D,xbrl_q,2026,2,6851.0,qtd,r2,XBRL R-file (10-Q),0001628280-26-054343
-JPMorgan,,dcm,D,mda_q,2009,1,593.0,mda_qtd,r0,mda_q:Investment banking fees,0000950123-10-047138
-JPMorgan,,dcm,D,mda_q,2009,2,743.0,mda_qtd,r0,mda_q:Investment banking fees,0000950123-10-074254
-JPMorgan,,dcm,D,mda_q,2009,3,593.0,mda_qtd,r0,mda_q:Investment banking fees,0000950123-10-102689
-JPMorgan,,dcm,D,mda_q,2009,4,732.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,dcm,D,mda_q,2010,1,728.0,mda_qtd,r0,mda_q:Investment banking fees,0000950123-11-045948
-JPMorgan,,dcm,D,mda_q,2010,2,696.0,mda_qtd,r0,mda_q:Investment banking fees,0001193125-11-212045
-JPMorgan,,dcm,D,mda_q,2010,3,784.0,mda_qtd,r0,mda_q:Investment banking fees,0000019617-11-000264
-JPMorgan,,dcm,D,mda_q,2010,4,920.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,dcm,D,mda_q,2011,1,971.0,mda_qtd,r0,mda_q:Investment banking fees,0000019617-12-000262
-JPMorgan,,dcm,D,mda_q,2011,2,866.0,mda_qtd,r0,mda_q:Investment banking fees,0000019617-12-000264
-JPMorgan,,dcm,D,mda_q,2011,3,496.0,mda_qtd,r0,mda_q:Investment banking fees,0000019617-12-000308
-JPMorgan,,dcm,D,mda_q,2011,4,553.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,dcm,D,mda_q,2012,1,818.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-13-000300
-JPMorgan,,dcm,D,mda_q,2012,2,639.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-13-000354
-JPMorgan,,dcm,D,mda_q,2012,3,805.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-13-000400
-JPMorgan,,dcm,D,mda_q,2012,4,990.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,dcm,D,mda_q,2013,1,905.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-14-000339
-JPMorgan,,dcm,D,mda_q,2013,2,956.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-14-000409
-JPMorgan,,dcm,D,mda_q,2013,3,855.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-14-000451
-JPMorgan,,dcm,D,mda_q,2013,4,801.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,dcm,D,mda_q,2014,1,708.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-15-000318
-JPMorgan,,dcm,D,mda_q,2014,2,899.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-15-000367
-JPMorgan,,dcm,D,mda_q,2014,3,715.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-15-000464
-JPMorgan,,dcm,D,mda_q,2014,4,1050.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,dcm,D,mda_q,2015,1,820.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-000960
-JPMorgan,,dcm,D,mda_q,2015,2,907.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-001056
-JPMorgan,,dcm,D,mda_q,2015,3,840.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-001150
-JPMorgan,,dcm,D,mda_q,2015,4,602.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,dcm,D,mda_q,2016,1,531.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-000960
-JPMorgan,,dcm,D,mda_q,2016,2,885.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-001056
-JPMorgan,,dcm,D,mda_q,2016,3,943.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-001150
-JPMorgan,,dcm,D,mda_q,2016,4,866.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,dcm,D,mda_q,2017,3,924.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-18-000206
 JPMorgan,,dcm,D,mda_q,2018,1,775.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000067
 JPMorgan,,dcm,D,mda_q,2018,2,943.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000127
@@ -1455,38 +1102,6 @@ JPMorgan,,dcm,D,mda_q,2025,3,1174.0,mda_qtd,r2,mda_q:Investment banking fees,000
 JPMorgan,,dcm,D,mda_q,2025,4,898.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,dcm,D,mda_q,2026,1,1145.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-029344
 JPMorgan,,dcm,D,mda_q,2026,2,1436.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-054343
-JPMorgan,,ecm,D,mda_q,2009,1,308.0,mda_qtd,r0,mda_q:Investment banking fees,0000950123-10-047138
-JPMorgan,,ecm,D,mda_q,2009,2,1103.0,mda_qtd,r0,mda_q:Investment banking fees,0000950123-10-074254
-JPMorgan,,ecm,D,mda_q,2009,3,681.0,mda_qtd,r0,mda_q:Investment banking fees,0000950123-10-102689
-JPMorgan,,ecm,D,mda_q,2009,4,549.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ecm,D,mda_q,2010,1,413.0,mda_qtd,r0,mda_q:Investment banking fees,0000950123-11-045948
-JPMorgan,,ecm,D,mda_q,2010,2,354.0,mda_qtd,r0,mda_q:Investment banking fees,0001193125-11-212045
-JPMorgan,,ecm,D,mda_q,2010,3,333.0,mda_qtd,r0,mda_q:Investment banking fees,0000019617-11-000264
-JPMorgan,,ecm,D,mda_q,2010,4,489.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ecm,D,mda_q,2011,1,379.0,mda_qtd,r0,mda_q:Investment banking fees,0000019617-12-000262
-JPMorgan,,ecm,D,mda_q,2011,2,455.0,mda_qtd,r0,mda_q:Investment banking fees,0000019617-12-000264
-JPMorgan,,ecm,D,mda_q,2011,3,178.0,mda_qtd,r0,mda_q:Investment banking fees,0000019617-12-000308
-JPMorgan,,ecm,D,mda_q,2011,4,169.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ecm,D,mda_q,2012,1,276.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-13-000300
-JPMorgan,,ecm,D,mda_q,2012,2,250.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-13-000354
-JPMorgan,,ecm,D,mda_q,2012,3,235.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-13-000400
-JPMorgan,,ecm,D,mda_q,2012,4,265.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ecm,D,mda_q,2013,1,273.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-14-000339
-JPMorgan,,ecm,D,mda_q,2013,2,457.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-14-000409
-JPMorgan,,ecm,D,mda_q,2013,3,333.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-14-000451
-JPMorgan,,ecm,D,mda_q,2013,4,436.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ecm,D,mda_q,2014,1,353.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-15-000318
-JPMorgan,,ecm,D,mda_q,2014,2,477.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-15-000367
-JPMorgan,,ecm,D,mda_q,2014,3,414.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-15-000464
-JPMorgan,,ecm,D,mda_q,2014,4,327.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ecm,D,mda_q,2015,1,399.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-000960
-JPMorgan,,ecm,D,mda_q,2015,2,452.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-001056
-JPMorgan,,ecm,D,mda_q,2015,3,269.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-001150
-JPMorgan,,ecm,D,mda_q,2015,4,314.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ecm,D,mda_q,2016,1,205.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-000960
-JPMorgan,,ecm,D,mda_q,2016,2,285.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-001056
-JPMorgan,,ecm,D,mda_q,2016,3,370.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-16-001150
-JPMorgan,,ecm,D,mda_q,2016,4,353.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ecm,D,mda_q,2017,3,300.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-18-000206
 JPMorgan,,ecm,D,mda_q,2018,1,346.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000067
 JPMorgan,,ecm,D,mda_q,2018,2,570.0,mda_qtd,r1,mda_q:Investment banking fees,0000019617-19-000127
@@ -1522,38 +1137,6 @@ JPMorgan,,ecm,D,mda_q,2025,3,527.0,mda_qtd,r2,mda_q:Investment banking fees,0001
 JPMorgan,,ecm,D,mda_q,2025,4,416.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ecm,D,mda_q,2026,1,472.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-029344
 JPMorgan,,ecm,D,mda_q,2026,2,829.0,mda_qtd,r2,mda_q:Investment banking fees,0001628280-26-054343
-JPMorgan,,equities,D,mda_q,2009,1,1773.0,mda_qtd,r0,mda_q:CIB revenue by business,0000950123-10-047138
-JPMorgan,,equities,D,mda_q,2009,2,708.0,mda_qtd,r0,mda_q:CIB revenue by business,0000950123-10-074254
-JPMorgan,,equities,D,mda_q,2009,3,941.0,mda_qtd,r0,mda_q:CIB revenue by business,0000950123-10-102689
-JPMorgan,,equities,D,mda_q,2009,4,971.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,equities,D,mda_q,2010,1,1462.0,mda_qtd,r0,mda_q:CIB revenue by business,0000950123-11-045948
-JPMorgan,,equities,D,mda_q,2010,2,1038.0,mda_qtd,r0,mda_q:CIB revenue by business,0001193125-11-212045
-JPMorgan,,equities,D,mda_q,2010,3,1135.0,mda_qtd,r0,mda_q:CIB revenue by business,0000019617-11-000264
-JPMorgan,,equities,D,mda_q,2010,4,947.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,equities,D,mda_q,2011,1,1406.0,mda_qtd,r0,mda_q:CIB revenue by business,0000019617-12-000262
-JPMorgan,,equities,D,mda_q,2011,2,1223.0,mda_qtd,r0,mda_q:CIB revenue by business,0000019617-12-000264
-JPMorgan,,equities,D,mda_q,2011,3,1424.0,mda_qtd,r0,mda_q:CIB revenue by business,0000019617-12-000308
-JPMorgan,,equities,D,mda_q,2011,4,423.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,equities,D,mda_q,2012,1,1424.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-13-000300
-JPMorgan,,equities,D,mda_q,2012,2,1043.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-13-000354
-JPMorgan,,equities,D,mda_q,2012,3,1044.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-13-000400
-JPMorgan,,equities,D,mda_q,2012,4,937.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,equities,D,mda_q,2013,1,1340.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-14-000339
-JPMorgan,,equities,D,mda_q,2013,2,1296.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-14-000409
-JPMorgan,,equities,D,mda_q,2013,3,1249.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-14-000451
-JPMorgan,,equities,D,mda_q,2013,4,1109.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,equities,D,mda_q,2014,1,1315.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-15-000318
-JPMorgan,,equities,D,mda_q,2014,2,1243.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-15-000367
-JPMorgan,,equities,D,mda_q,2014,3,1286.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-15-000464
-JPMorgan,,equities,D,mda_q,2014,4,1200.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,equities,D,mda_q,2015,1,1651.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-16-000960
-JPMorgan,,equities,D,mda_q,2015,2,1576.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-16-001056
-JPMorgan,,equities,D,mda_q,2015,3,1403.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-16-001150
-JPMorgan,,equities,D,mda_q,2015,4,1064.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,equities,D,mda_q,2016,1,1576.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-16-000960
-JPMorgan,,equities,D,mda_q,2016,2,1600.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-16-001056
-JPMorgan,,equities,D,mda_q,2016,3,1414.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-16-001150
-JPMorgan,,equities,D,mda_q,2016,4,1150.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,equities,D,mda_q,2017,3,1363.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-18-000206
 JPMorgan,,equities,D,mda_q,2018,1,2017.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000067
 JPMorgan,,equities,D,mda_q,2018,2,1959.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000127
@@ -1589,38 +1172,6 @@ JPMorgan,,equities,D,mda_q,2025,3,3331.0,mda_qtd,r2,mda_q:CIB revenue by busines
 JPMorgan,,equities,D,mda_q,2025,4,2859.0,mda_annual_derived_q4,r2,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,equities,D,mda_q,2026,1,4481.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-029344
 JPMorgan,,equities,D,mda_q,2026,2,6025.0,mda_qtd,r2,mda_q:CIB revenue by business,0001628280-26-054343
-JPMorgan,,ficc,D,mda_q,2009,1,4889.0,mda_qtd,r0,mda_q:CIB revenue by business,0000950123-10-047138
-JPMorgan,,ficc,D,mda_q,2009,2,4929.0,mda_qtd,r0,mda_q:CIB revenue by business,0000950123-10-074254
-JPMorgan,,ficc,D,mda_q,2009,3,5011.0,mda_qtd,r0,mda_q:CIB revenue by business,0000950123-10-102689
-JPMorgan,,ficc,D,mda_q,2009,4,2735.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ficc,D,mda_q,2010,1,5464.0,mda_qtd,r0,mda_q:CIB revenue by business,0000950123-11-045948
-JPMorgan,,ficc,D,mda_q,2010,2,3563.0,mda_qtd,r0,mda_q:CIB revenue by business,0001193125-11-212045
-JPMorgan,,ficc,D,mda_q,2010,3,3123.0,mda_qtd,r0,mda_q:CIB revenue by business,0000019617-11-000264
-JPMorgan,,ficc,D,mda_q,2010,4,2588.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ficc,D,mda_q,2011,1,5238.0,mda_qtd,r0,mda_q:CIB revenue by business,0000019617-12-000262
-JPMorgan,,ficc,D,mda_q,2011,2,4280.0,mda_qtd,r0,mda_q:CIB revenue by business,0000019617-12-000264
-JPMorgan,,ficc,D,mda_q,2011,3,3328.0,mda_qtd,r0,mda_q:CIB revenue by business,0000019617-12-000308
-JPMorgan,,ficc,D,mda_q,2011,4,1938.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ficc,D,mda_q,2012,1,5016.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-13-000300
-JPMorgan,,ficc,D,mda_q,2012,2,3493.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-13-000354
-JPMorgan,,ficc,D,mda_q,2012,3,3726.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-13-000400
-JPMorgan,,ficc,D,mda_q,2012,4,3466.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ficc,D,mda_q,2013,1,4752.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-14-000339
-JPMorgan,,ficc,D,mda_q,2013,2,4078.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-14-000409
-JPMorgan,,ficc,D,mda_q,2013,3,3439.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-14-000451
-JPMorgan,,ficc,D,mda_q,2013,4,3707.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ficc,D,mda_q,2014,1,3889.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-15-000318
-JPMorgan,,ficc,D,mda_q,2014,2,3704.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-15-000367
-JPMorgan,,ficc,D,mda_q,2014,3,3787.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-15-000464
-JPMorgan,,ficc,D,mda_q,2014,4,2695.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ficc,D,mda_q,2015,1,4154.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-16-000960
-JPMorgan,,ficc,D,mda_q,2015,2,2931.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-16-001056
-JPMorgan,,ficc,D,mda_q,2015,3,2933.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-16-001150
-JPMorgan,,ficc,D,mda_q,2015,4,2574.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
-JPMorgan,,ficc,D,mda_q,2016,1,3597.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-16-000960
-JPMorgan,,ficc,D,mda_q,2016,2,3959.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-16-001056
-JPMorgan,,ficc,D,mda_q,2016,3,4334.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-16-001150
-JPMorgan,,ficc,D,mda_q,2016,4,3369.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 JPMorgan,,ficc,D,mda_q,2017,3,3164.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-18-000206
 JPMorgan,,ficc,D,mda_q,2018,1,4553.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000067
 JPMorgan,,ficc,D,mda_q,2018,2,3453.0,mda_qtd,r1,mda_q:CIB revenue by business,0000019617-19-000127
@@ -1837,21 +1388,6 @@ Lazard,Asset Management,awm,D,xbrl_q,2025,3,327.029,qtd,r0,XBRL R-file (10-Q),00
 Lazard,Asset Management,awm,D,xbrl_q,2025,4,367.11900000000014,annual_derived_q4,r0,"XBRL R-file (10-Q, annual_derived_q4)",0001311370-25-000052
 Lazard,Asset Management,awm,D,xbrl_q,2026,1,338.272,qtd,r0,XBRL R-file (10-Q),0001311370-26-000015
 Lazard,Asset Management,awm,D,xbrl_q,2026,2,342.183,qtd,r0,XBRL R-file (10-Q),0001311370-26-000022
-Morgan Stanley,,advisory,D,mda_q,2012,2,263.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-13-317186
-Morgan Stanley,,advisory,D,mda_q,2012,3,339.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-13-425422
-Morgan Stanley,,advisory,D,mda_q,2013,2,333.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-14-295874
-Morgan Stanley,,advisory,D,mda_q,2013,3,275.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-14-396227
-Morgan Stanley,,advisory,D,mda_q,2014,2,418.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-14-295874
-Morgan Stanley,,advisory,D,mda_q,2014,3,392.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-14-396227
-Morgan Stanley,,advisory,D,mda_q,2015,2,423.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (pre-2015 labels, 10-Q)",0001193125-16-670066
-Morgan Stanley,,advisory,D,mda_q,2015,3,557.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (pre-2015 labels, 10-Q)",0001193125-16-757027
-Morgan Stanley,,advisory,D,mda_q,2016,2,497.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (pre-2015 labels, 10-Q)",0001193125-16-670066
-Morgan Stanley,,advisory,D,mda_q,2016,3,504.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (pre-2015 labels, 10-Q)",0001193125-16-757027
-Morgan Stanley,,advisory,D,mda_q,2017,2,504.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001193125-18-238269
-Morgan Stanley,,advisory,D,mda_q,2018,2,618.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001628280-19-009973
-Morgan Stanley,,advisory,D,mda_q,2018,3,510.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001628280-19-013331
-Morgan Stanley,,advisory,D,mda_q,2019,2,506.0,mda_qtd,r1,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001628280-19-009973
-Morgan Stanley,,advisory,D,mda_q,2019,3,550.0,mda_qtd,r1,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001628280-19-013331
 Morgan Stanley,,advisory,D,mda_q,2020,2,462.0,mda_qtd,r1,mda_q:Institutional Securities investment banking,0000895421-21-000425
 Morgan Stanley,,advisory,D,mda_q,2020,3,357.0,mda_qtd,r1,mda_q:Institutional Securities investment banking,0000895421-21-000532
 Morgan Stanley,,advisory,D,mda_q,2021,1,480.0,mda_qtd,r1,mda_q:Institutional Securities investment banking,0000895421-22-000442
@@ -1930,21 +1466,6 @@ Morgan Stanley,Investment Management,awm,A,xbrl_q,2025,3,1651.0,qtd,r1,XBRL R-fi
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2025,4,1720.0,annual_derived_q4,r1,"XBRL R-file (10-Q, annual_derived_q4)",0000895421-25-000539
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2026,1,1535.0,qtd,r1,XBRL R-file (10-Q),0000895421-26-000121
 Morgan Stanley,Investment Management,awm,A,xbrl_q,2026,2,1646.0,qtd,r1,XBRL R-file (10-Q),0000895421-26-000212
-Morgan Stanley,,dcm,D,mda_q,2012,2,338.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-13-317186
-Morgan Stanley,,dcm,D,mda_q,2012,3,431.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-13-425422
-Morgan Stanley,,dcm,D,mda_q,2013,2,418.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-14-295874
-Morgan Stanley,,dcm,D,mda_q,2013,3,481.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-14-396227
-Morgan Stanley,,dcm,D,mda_q,2014,2,525.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-14-295874
-Morgan Stanley,,dcm,D,mda_q,2014,3,484.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-14-396227
-Morgan Stanley,,dcm,D,mda_q,2015,2,528.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (pre-2015 labels, 10-Q)",0001193125-16-670066
-Morgan Stanley,,dcm,D,mda_q,2015,3,374.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (pre-2015 labels, 10-Q)",0001193125-16-757027
-Morgan Stanley,,dcm,D,mda_q,2016,2,345.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (pre-2015 labels, 10-Q)",0001193125-16-670066
-Morgan Stanley,,dcm,D,mda_q,2016,3,364.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (pre-2015 labels, 10-Q)",0001193125-16-757027
-Morgan Stanley,,dcm,D,mda_q,2017,2,504.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001193125-18-238269
-Morgan Stanley,,dcm,D,mda_q,2018,2,540.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001628280-19-009973
-Morgan Stanley,,dcm,D,mda_q,2018,3,508.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001628280-19-013331
-Morgan Stanley,,dcm,D,mda_q,2019,2,420.0,mda_qtd,r1,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001628280-19-009973
-Morgan Stanley,,dcm,D,mda_q,2019,3,584.0,mda_qtd,r1,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001628280-19-013331
 Morgan Stanley,,dcm,D,mda_q,2020,2,707.0,mda_qtd,r1,mda_q:Institutional Securities investment banking,0000895421-21-000425
 Morgan Stanley,,dcm,D,mda_q,2020,3,476.0,mda_qtd,r1,mda_q:Institutional Securities investment banking,0000895421-21-000532
 Morgan Stanley,,dcm,D,mda_q,2021,1,631.0,mda_qtd,r1,mda_q:Institutional Securities investment banking,0000895421-22-000442
@@ -1969,21 +1490,6 @@ Morgan Stanley,,dcm,D,mda_q,2025,3,772.0,mda_qtd,r1,mda_q:Institutional Securiti
 Morgan Stanley,,dcm,D,mda_q,2025,4,785.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,dcm,D,mda_q,2026,1,742.0,mda_qtd,r1,mda_q:Institutional Securities investment banking,0000895421-26-000121
 Morgan Stanley,,dcm,D,mda_q,2026,2,788.0,mda_qtd,r1,mda_q:Institutional Securities investment banking,0000895421-26-000212
-Morgan Stanley,,ecm,D,mda_q,2012,2,283.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-13-317186
-Morgan Stanley,,ecm,D,mda_q,2012,3,199.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-13-425422
-Morgan Stanley,,ecm,D,mda_q,2013,2,327.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-14-295874
-Morgan Stanley,,ecm,D,mda_q,2013,3,236.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-14-396227
-Morgan Stanley,,ecm,D,mda_q,2014,2,489.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-14-295874
-Morgan Stanley,,ecm,D,mda_q,2014,3,464.0,mda_qtd,r0,mda_q:Institutional Securities investment banking (pre-2015),0001193125-14-396227
-Morgan Stanley,,ecm,D,mda_q,2015,2,489.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (pre-2015 labels, 10-Q)",0001193125-16-670066
-Morgan Stanley,,ecm,D,mda_q,2015,3,250.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (pre-2015 labels, 10-Q)",0001193125-16-757027
-Morgan Stanley,,ecm,D,mda_q,2016,2,266.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (pre-2015 labels, 10-Q)",0001193125-16-670066
-Morgan Stanley,,ecm,D,mda_q,2016,3,236.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (pre-2015 labels, 10-Q)",0001193125-16-757027
-Morgan Stanley,,ecm,D,mda_q,2017,2,405.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001193125-18-238269
-Morgan Stanley,,ecm,D,mda_q,2018,2,541.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001628280-19-009973
-Morgan Stanley,,ecm,D,mda_q,2018,3,441.0,mda_qtd,r0,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001628280-19-013331
-Morgan Stanley,,ecm,D,mda_q,2019,2,546.0,mda_qtd,r1,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001628280-19-009973
-Morgan Stanley,,ecm,D,mda_q,2019,3,401.0,mda_qtd,r1,"mda_q:Institutional Securities investment banking (bare labels, 10-Q)",0001628280-19-013331
 Morgan Stanley,,ecm,D,mda_q,2020,2,882.0,mda_qtd,r1,mda_q:Institutional Securities investment banking,0000895421-21-000425
 Morgan Stanley,,ecm,D,mda_q,2020,3,874.0,mda_qtd,r1,mda_q:Institutional Securities investment banking,0000895421-21-000532
 Morgan Stanley,,ecm,D,mda_q,2021,1,1502.0,mda_qtd,r1,mda_q:Institutional Securities investment banking,0000895421-22-000442
@@ -2008,26 +1514,6 @@ Morgan Stanley,,ecm,D,mda_q,2025,3,652.0,mda_qtd,r1,mda_q:Institutional Securiti
 Morgan Stanley,,ecm,D,mda_q,2025,4,494.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,ecm,D,mda_q,2026,1,396.0,mda_qtd,r1,mda_q:Institutional Securities investment banking,0000895421-26-000121
 Morgan Stanley,,ecm,D,mda_q,2026,2,851.0,mda_qtd,r1,mda_q:Institutional Securities investment banking,0000895421-26-000212
-Morgan Stanley,,equities,D,mda_q,2011,1,1702.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (pre-2015),0001193125-12-215012
-Morgan Stanley,,equities,D,mda_q,2012,1,1575.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (pre-2015),0001193125-13-204446
-Morgan Stanley,,equities,D,mda_q,2012,2,1326.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (pre-2015),0001193125-13-317186
-Morgan Stanley,,equities,D,mda_q,2013,1,1515.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (pre-2015),0001193125-13-204446
-Morgan Stanley,,equities,D,mda_q,2013,2,1920.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (pre-2015),0001193125-13-317186
-Morgan Stanley,,equities,D,mda_q,2014,2,1826.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (pre-2015),0001193125-15-276529
-Morgan Stanley,,equities,D,mda_q,2015,1,2293.0,mda_qtd,r0,"mda_q:Institutional Securities sales and trading (by business, 10-Q)",0001193125-16-577875
-Morgan Stanley,,equities,D,mda_q,2015,2,2342.0,mda_qtd,r0,"mda_q:Institutional Securities sales and trading (by business, 10-Q)",0001193125-16-670066
-Morgan Stanley,,equities,D,mda_q,2016,1,2056.0,mda_qtd,r0,"mda_q:Institutional Securities sales and trading (by business, 10-Q)",0001193125-16-577875
-Morgan Stanley,,equities,D,mda_q,2016,2,2145.0,mda_qtd,r0,"mda_q:Institutional Securities sales and trading (by business, 10-Q)",0001193125-16-670066
-Morgan Stanley,,equities,D,mda_q,2017,1,2016.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (By Business),0001193125-18-152899
-Morgan Stanley,,equities,D,mda_q,2017,2,2155.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (By Business),0001193125-18-238269
-Morgan Stanley,,equities,D,mda_q,2018,1,2558.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (By Business),0001193125-19-136929
-Morgan Stanley,,equities,D,mda_q,2018,2,2470.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (By Business),0001628280-19-009973
-Morgan Stanley,,equities,D,mda_q,2018,3,2019.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (By Business),0001628280-19-013331
-Morgan Stanley,,equities,D,mda_q,2018,4,1929.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-Morgan Stanley,,equities,D,mda_q,2019,1,2015.0,mda_qtd,r1,mda_q:Institutional Securities sales and trading (By Business),0001193125-19-136929
-Morgan Stanley,,equities,D,mda_q,2019,2,2130.0,mda_qtd,r1,mda_q:Institutional Securities sales and trading (By Business),0001628280-19-009973
-Morgan Stanley,,equities,D,mda_q,2019,3,1991.0,mda_qtd,r1,mda_q:Institutional Securities sales and trading (By Business),0001628280-19-013331
-Morgan Stanley,,equities,D,mda_q,2019,4,1997.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,equities,D,mda_q,2020,2,2627.0,mda_qtd,r1,mda_q:Institutional Securities income statement,0000895421-21-000425
 Morgan Stanley,,equities,D,mda_q,2020,3,2311.0,mda_qtd,r1,mda_q:Institutional Securities income statement,0000895421-21-000532
 Morgan Stanley,,equities,D,mda_q,2021,1,2875.0,mda_qtd,r1,mda_q:Institutional Securities income statement,0000895421-22-000442
@@ -2052,26 +1538,6 @@ Morgan Stanley,,equities,D,mda_q,2025,3,4116.0,mda_qtd,r1,mda_q:Institutional Se
 Morgan Stanley,,equities,D,mda_q,2025,4,3666.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,equities,D,mda_q,2026,1,5148.0,mda_qtd,r1,mda_q:Institutional Securities income statement,0000895421-26-000121
 Morgan Stanley,,equities,D,mda_q,2026,2,6300.0,mda_qtd,r1,mda_q:Institutional Securities income statement,0000895421-26-000212
-Morgan Stanley,,ficc,D,mda_q,2011,1,1777.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (pre-2015),0001193125-12-215012
-Morgan Stanley,,ficc,D,mda_q,2012,1,993.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (pre-2015),0001193125-13-204446
-Morgan Stanley,,ficc,D,mda_q,2012,2,1047.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (pre-2015),0001193125-13-317186
-Morgan Stanley,,ficc,D,mda_q,2013,1,1277.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (pre-2015),0001193125-13-204446
-Morgan Stanley,,ficc,D,mda_q,2013,2,1214.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (pre-2015),0001193125-13-317186
-Morgan Stanley,,ficc,D,mda_q,2014,2,1061.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (pre-2015),0001193125-15-276529
-Morgan Stanley,,ficc,D,mda_q,2015,1,2003.0,mda_qtd,r0,"mda_q:Institutional Securities sales and trading (by business, 10-Q)",0001193125-16-577875
-Morgan Stanley,,ficc,D,mda_q,2015,2,1377.0,mda_qtd,r0,"mda_q:Institutional Securities sales and trading (by business, 10-Q)",0001193125-16-670066
-Morgan Stanley,,ficc,D,mda_q,2016,1,873.0,mda_qtd,r0,"mda_q:Institutional Securities sales and trading (by business, 10-Q)",0001193125-16-577875
-Morgan Stanley,,ficc,D,mda_q,2016,2,1297.0,mda_qtd,r0,"mda_q:Institutional Securities sales and trading (by business, 10-Q)",0001193125-16-670066
-Morgan Stanley,,ficc,D,mda_q,2017,1,1714.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (By Business),0001193125-18-152899
-Morgan Stanley,,ficc,D,mda_q,2017,2,1239.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (By Business),0001193125-18-238269
-Morgan Stanley,,ficc,D,mda_q,2018,1,1873.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (By Business),0001193125-19-136929
-Morgan Stanley,,ficc,D,mda_q,2018,2,1389.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (By Business),0001628280-19-009973
-Morgan Stanley,,ficc,D,mda_q,2018,3,1179.0,mda_qtd,r0,mda_q:Institutional Securities sales and trading (By Business),0001628280-19-013331
-Morgan Stanley,,ficc,D,mda_q,2018,4,564.0,mda_annual_derived_q4,r0,MD&A annual sub-split less Q1-Q3,""
-Morgan Stanley,,ficc,D,mda_q,2019,1,1710.0,mda_qtd,r1,mda_q:Institutional Securities sales and trading (By Business),0001193125-19-136929
-Morgan Stanley,,ficc,D,mda_q,2019,2,1133.0,mda_qtd,r1,mda_q:Institutional Securities sales and trading (By Business),0001628280-19-009973
-Morgan Stanley,,ficc,D,mda_q,2019,3,1430.0,mda_qtd,r1,mda_q:Institutional Securities sales and trading (By Business),0001628280-19-013331
-Morgan Stanley,,ficc,D,mda_q,2019,4,1712.0,mda_annual_derived_q4,r1,MD&A annual sub-split less Q1-Q3,""
 Morgan Stanley,,ficc,D,mda_q,2020,2,3041.0,mda_qtd,r1,mda_q:Institutional Securities income statement,0000895421-21-000425
 Morgan Stanley,,ficc,D,mda_q,2020,3,1954.0,mda_qtd,r1,mda_q:Institutional Securities income statement,0000895421-21-000532
 Morgan Stanley,,ficc,D,mda_q,2021,1,2966.0,mda_qtd,r1,mda_q:Institutional Securities income statement,0000895421-22-000442

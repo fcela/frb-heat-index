@@ -1,12 +1,9 @@
 firm,taxonomy_line,year,net_revenue_m,map_quality,layer,regime,source,accession
-Bank of America,advisory,2008,546.0,D,mda,r0,mda:Investment banking income (GBAM era),0001193125-10-041666
-Bank of America,advisory,2009,1167.0,D,mda,r0,mda:Investment banking income (GBAM era),0000950123-11-018743
-Bank of America,advisory,2010,1018.0,D,mda,r0,mda:Investment banking income (GBAM era),0000070858-12-000155
-Bank of America,advisory,2011,1248.0,D,mda,r0,mda:Investment banking fees,0000070858-13-000097
-Bank of America,advisory,2012,1066.0,D,mda,r1,mda:Investment banking fees,0000070858-14-000012
-Bank of America,advisory,2013,1125.0,D,mda,r1,mda:Investment banking fees,0000070858-15-000008
-Bank of America,advisory,2014,1205.0,D,mda,r1,mda:Investment banking fees,0000070858-16-000137
-Bank of America,advisory,2015,1503.0,D,mda,r2,mda:Investment banking fees,0000070858-17-000013
+Bank of America,advisory,2011,1248.0,D,mda,r0,mda:Investment banking fees (pre-2016),0000070858-13-000097
+Bank of America,advisory,2012,1066.0,D,mda,r1,mda:Investment banking fees (pre-2016),0000070858-14-000012
+Bank of America,advisory,2013,1125.0,D,mda,r1,mda:Investment banking fees (pre-2016),0000070858-15-000008
+Bank of America,advisory,2014,1205.0,D,mda,r1,mda:Investment banking fees (pre-2016),0000070858-16-000137
+Bank of America,advisory,2015,1503.0,D,mda,r2,mda:Investment banking fees (pre-2016),0000070858-16-000137
 Bank of America,advisory,2016,1268.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-19-000012
 Bank of America,advisory,2017,1691.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-20-000011
 Bank of America,advisory,2018,1258.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-21-000023
@@ -15,8 +12,8 @@ Bank of America,advisory,2020,1621.0,D,mda,r3,mda:Noninterest income by business
 Bank of America,advisory,2021,2311.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-24-000122
 Bank of America,advisory,2022,1783.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-25-000139
 Bank of America,advisory,2023,1575.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-26-000157
-Bank of America,advisory,2024,1690.0,D,mda,r3,mda:Investment banking fees,0000070858-26-000157
-Bank of America,advisory,2025,1890.0,D,mda,r3,mda:Investment banking fees,0000070858-26-000157
+Bank of America,advisory,2024,1690.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-26-000157
+Bank of America,advisory,2025,1890.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-26-000157
 Bank of America,awm,2010,15383.0,D,xbrl,r0,XBRL R-file,0000070858-13-000097
 Bank of America,awm,2011,16495.0,D,xbrl,r0,XBRL R-file,0000070858-14-000012
 Bank of America,awm,2012,16518.0,D,xbrl,r1,XBRL R-file,0000070858-15-000008
@@ -33,45 +30,21 @@ Bank of America,awm,2022,21748.0,D,xbrl,r3,XBRL R-file,0000070858-25-000139
 Bank of America,awm,2023,21105.0,D,xbrl,r3,XBRL R-file,0000070858-26-000157
 Bank of America,awm,2024,22929.0,D,xbrl,r3,XBRL R-file,0000070858-26-000157
 Bank of America,awm,2025,24883.0,D,xbrl,r3,XBRL R-file,0000070858-26-000157
-Bank of America,dcm,2008,1539.0,D,mda,r0,mda:Investment banking income (GBAM era),0001193125-10-041666
-Bank of America,dcm,2009,3124.0,D,mda,r0,mda:Investment banking income (GBAM era),0000950123-11-018743
-Bank of America,dcm,2010,3059.0,D,mda,r0,mda:Investment banking income (GBAM era),0000070858-12-000155
-Bank of America,dcm,2011,2878.0,D,mda,r0,mda:Investment banking fees,0000070858-13-000097
-Bank of America,dcm,2012,3362.0,D,mda,r1,mda:Investment banking fees,0000070858-14-000012
-Bank of America,dcm,2013,3804.0,D,mda,r1,mda:Investment banking fees,0000070858-15-000008
-Bank of America,dcm,2014,3583.0,D,mda,r1,mda:Investment banking fees,0000070858-16-000137
-Bank of America,dcm,2015,3033.0,D,mda,r2,mda:Investment banking fees,0000070858-17-000013
-Bank of America,dcm,2016,3276.0,D,mda,r3,mda:Investment banking fees,0000070858-18-000009
-Bank of America,dcm,2017,3635.0,D,mda,r3,mda:Investment banking fees,0000070858-19-000012
-Bank of America,dcm,2018,3084.0,D,mda,r3,mda:Investment banking fees,0000070858-20-000011
-Bank of America,dcm,2019,3107.0,D,mda,r3,mda:Investment banking fees,0000070858-21-000023
-Bank of America,dcm,2020,3443.0,D,mda,r3,mda:Investment banking fees,0000070858-22-000062
-Bank of America,dcm,2021,4015.0,D,mda,r3,mda:Investment banking fees,0000070858-23-000092
-Bank of America,dcm,2022,2523.0,D,mda,r3,mda:Investment banking fees,0000070858-24-000122
-Bank of America,dcm,2023,2403.0,D,mda,r3,mda:Investment banking fees,0000070858-25-000139
-Bank of America,dcm,2024,3310.0,D,mda,r3,mda:Investment banking fees,0000070858-26-000157
-Bank of America,dcm,2025,3698.0,D,mda,r3,mda:Investment banking fees,0000070858-26-000157
-Bank of America,ecm,2008,624.0,D,mda,r0,mda:Investment banking income (GBAM era),0001193125-10-041666
-Bank of America,ecm,2009,1964.0,D,mda,r0,mda:Investment banking income (GBAM era),0000950123-11-018743
-Bank of America,ecm,2010,1329.0,D,mda,r0,mda:Investment banking income (GBAM era),0000070858-12-000155
-Bank of America,ecm,2011,1459.0,D,mda,r0,mda:Investment banking fees,0000070858-13-000097
-Bank of America,ecm,2012,1026.0,D,mda,r1,mda:Investment banking fees,0000070858-14-000012
-Bank of America,ecm,2013,1472.0,D,mda,r1,mda:Investment banking fees,0000070858-15-000008
-Bank of America,ecm,2014,1490.0,D,mda,r1,mda:Investment banking fees,0000070858-16-000137
-Bank of America,ecm,2015,1236.0,D,mda,r2,mda:Investment banking fees,0000070858-17-000013
-Bank of America,ecm,2016,864.0,D,mda,r3,mda:Investment banking fees,0000070858-18-000009
-Bank of America,ecm,2017,940.0,D,mda,r3,mda:Investment banking fees,0000070858-19-000012
-Bank of America,ecm,2018,1183.0,D,mda,r3,mda:Investment banking fees,0000070858-20-000011
-Bank of America,ecm,2019,1259.0,D,mda,r3,mda:Investment banking fees,0000070858-21-000023
-Bank of America,ecm,2020,2328.0,D,mda,r3,mda:Investment banking fees,0000070858-22-000062
-Bank of America,ecm,2021,2784.0,D,mda,r3,mda:Investment banking fees,0000070858-23-000092
-Bank of America,ecm,2022,709.0,D,mda,r3,mda:Investment banking fees,0000070858-24-000122
-Bank of America,ecm,2023,886.0,D,mda,r3,mda:Investment banking fees,0000070858-25-000139
-Bank of America,ecm,2024,1354.0,D,mda,r3,mda:Investment banking fees,0000070858-26-000157
-Bank of America,ecm,2025,1259.0,D,mda,r3,mda:Investment banking fees,0000070858-26-000157
-Bank of America,equities,2008,743.0,D,mda,r0,mda:Sales and trading revenue (GBAM era),0001193125-10-041666
-Bank of America,equities,2009,4902.0,D,mda,r0,mda:Sales and trading revenue (GBAM era),0000950123-11-018743
-Bank of America,equities,2010,4155.0,D,mda,r0,mda:Sales and trading revenue (GBAM era),0000070858-12-000155
+Bank of America,ecm_dcm_combined,2011,4337.0,D,mda,r0,mda:Investment banking fees (pre-2016),0000070858-13-000097
+Bank of America,ecm_dcm_combined,2012,4388.0,D,mda,r1,mda:Investment banking fees (pre-2016),0000070858-14-000012
+Bank of America,ecm_dcm_combined,2013,5276.0,D,mda,r1,mda:Investment banking fees (pre-2016),0000070858-15-000008
+Bank of America,ecm_dcm_combined,2014,5073.0,D,mda,r1,mda:Investment banking fees (pre-2016),0000070858-16-000137
+Bank of America,ecm_dcm_combined,2015,4269.0,D,mda,r2,mda:Investment banking fees (pre-2016),0000070858-16-000137
+Bank of America,ecm_dcm_combined,2016,2585.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-19-000012
+Bank of America,ecm_dcm_combined,2017,2821.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-20-000011
+Bank of America,ecm_dcm_combined,2018,2722.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-21-000023
+Bank of America,ecm_dcm_combined,2019,2998.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-22-000062
+Bank of America,ecm_dcm_combined,2020,4698.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-23-000092
+Bank of America,ecm_dcm_combined,2021,5077.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-24-000122
+Bank of America,ecm_dcm_combined,2022,1970.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-25-000139
+Bank of America,ecm_dcm_combined,2023,2235.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-26-000157
+Bank of America,ecm_dcm_combined,2024,3275.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-26-000157
+Bank of America,ecm_dcm_combined,2025,3320.0,D,mda,r3,mda:Noninterest income by business segment,0000070858-26-000157
 Bank of America,equities,2011,3957.0,D,mda,r0,mda:Global Markets sales and trading revenue,0000070858-13-000097
 Bank of America,equities,2012,3014.0,D,mda,r1,mda:Global Markets sales and trading revenue,0000070858-14-000012
 Bank of America,equities,2013,4180.0,D,mda,r1,mda:Global Markets sales and trading revenue,0000070858-15-000008
@@ -87,9 +60,6 @@ Bank of America,equities,2022,6572.0,D,mda,r3,mda:Global Markets sales and tradi
 Bank of America,equities,2023,6480.0,D,mda,r3,mda:Global Markets sales and trading revenue,0000070858-25-000139
 Bank of America,equities,2024,7436.0,D,mda,r3,mda:Global Markets sales and trading revenue,0000070858-26-000157
 Bank of America,equities,2025,8604.0,D,mda,r3,mda:Global Markets sales and trading revenue,0000070858-26-000157
-Bank of America,ficc,2008,-7625.0,D,mda,r0,mda:Sales and trading revenue (GBAM era),0001193125-10-041666
-Bank of America,ficc,2009,12723.0,D,mda,r0,mda:Sales and trading revenue (GBAM era),0000950123-11-018743
-Bank of America,ficc,2010,12857.0,D,mda,r0,mda:Sales and trading revenue (GBAM era),0000070858-12-000155
 Bank of America,ficc,2011,8897.0,D,mda,r0,mda:Global Markets sales and trading revenue,0000070858-13-000097
 Bank of America,ficc,2012,8812.0,D,mda,r1,mda:Global Markets sales and trading revenue,0000070858-14-000012
 Bank of America,ficc,2013,8231.0,D,mda,r1,mda:Global Markets sales and trading revenue,0000070858-15-000008
@@ -152,11 +122,6 @@ Citigroup,ecm,2022,621.0,D,mda,r3,mda:Banking business metrics - investment bank
 Citigroup,ecm,2023,500.0,D,mda,r4,mda:Banking business metrics - investment banking fees,0000831001-26-000011
 Citigroup,ecm,2024,688.0,D,mda,r4,mda:Banking business metrics - investment banking fees,0000831001-26-000011
 Citigroup,ecm,2025,699.0,D,mda,r4,mda:Banking business metrics - investment banking fees,0000831001-26-000011
-Citigroup,equities,2007,5202.0,D,mda,r0,mda:Securities and Banking revenue details,0001206774-10-000406
-Citigroup,equities,2008,2878.0,D,mda,r0,mda:Securities and Banking revenue details,0001206774-11-000316
-Citigroup,equities,2009,3183.0,D,mda,r1,mda:Securities and Banking revenue details,0001206774-12-000799
-Citigroup,equities,2010,3501.0,D,mda,r1,mda:Securities and Banking revenue details,0001206774-12-000799
-Citigroup,equities,2011,2756.0,D,mda,r1,mda:Securities and Banking revenue details,0001206774-12-000799
 Citigroup,equities,2012,2281.0,D,mda,r1,mda:ICG revenue details,0000831001-15-000043
 Citigroup,equities,2013,2815.0,D,mda,r1,mda:ICG revenue details,0000831001-16-000235
 Citigroup,equities,2014,2722.0,D,mda,r1,mda:ICG revenue details,0000831001-17-000038
@@ -171,11 +136,6 @@ Citigroup,equities,2022,4451.0,D,mda,r3,mda:Markets revenue by component,0000831
 Citigroup,equities,2023,4037.0,D,mda,r4,mda:Markets revenue by component,0000831001-26-000011
 Citigroup,equities,2024,5086.0,D,mda,r4,mda:Markets revenue by component,0000831001-26-000011
 Citigroup,equities,2025,5744.0,D,mda,r4,mda:Markets revenue by component,0000831001-26-000011
-Citigroup,ficc,2007,11507.0,D,mda,r0,mda:Securities and Banking revenue details,0001206774-10-000406
-Citigroup,ficc,2008,13606.0,D,mda,r0,mda:Securities and Banking revenue details,0001206774-11-000316
-Citigroup,ficc,2009,21294.0,D,mda,r1,mda:Securities and Banking revenue details,0001206774-12-000799
-Citigroup,ficc,2010,14077.0,D,mda,r1,mda:Securities and Banking revenue details,0001206774-12-000799
-Citigroup,ficc,2011,12263.0,D,mda,r1,mda:Securities and Banking revenue details,0001206774-12-000799
 Citigroup,ficc,2012,14361.0,D,mda,r1,mda:ICG revenue details,0000831001-15-000043
 Citigroup,ficc,2013,13625.0,D,mda,r1,mda:ICG revenue details,0000831001-16-000235
 Citigroup,ficc,2014,12171.0,D,mda,r1,mda:ICG revenue details,0000831001-17-000038
@@ -575,9 +535,6 @@ Moelis,advisory,2022,985.297,D,xbrl,r0,XBRL R-file,0000950170-25-029070
 Moelis,advisory,2023,854.748,D,xbrl,r0,XBRL R-file,0001193125-26-076747
 Moelis,advisory,2024,1194.545,D,xbrl,r0,XBRL R-file,0001193125-26-076747
 Moelis,advisory,2025,1516.796,D,xbrl,r0,XBRL R-file,0001193125-26-076747
-Morgan Stanley,advisory,2007,2541.0,D,mda,r0,mda:Institutional Securities investment banking (fiscal 2007-2009),0001193125-10-042763
-Morgan Stanley,advisory,2008,1740.0,D,mda,r0,mda:Institutional Securities investment banking (fiscal 2007-2009),0001193125-10-042763
-Morgan Stanley,advisory,2009,1488.0,D,mda,r0,mda:Institutional Securities investment banking (fiscal 2007-2009),0001193125-10-042763
 Morgan Stanley,advisory,2010,1470.0,D,mda,r0,mda:Institutional Securities investment banking (pre-2015),0001193125-13-077191
 Morgan Stanley,advisory,2011,1737.0,D,mda,r0,mda:Institutional Securities investment banking (pre-2015),0001193125-14-067354
 Morgan Stanley,advisory,2012,1369.0,D,mda,r0,mda:Institutional Securities investment banking (pre-2015),0001193125-15-071980
@@ -608,9 +565,6 @@ Morgan Stanley,awm,2022,5375.0,A,xbrl,r1,XBRL R-file,0000895421-25-000304
 Morgan Stanley,awm,2023,5370.0,A,xbrl,r1,XBRL R-file,0000895421-26-000086
 Morgan Stanley,awm,2024,5861.0,A,xbrl,r1,XBRL R-file,0000895421-26-000086
 Morgan Stanley,awm,2025,6525.0,A,xbrl,r1,XBRL R-file,0000895421-26-000086
-Morgan Stanley,dcm,2007,1427.0,D,mda,r0,mda:Institutional Securities investment banking (fiscal 2007-2009),0001193125-10-042763
-Morgan Stanley,dcm,2008,845.0,D,mda,r0,mda:Institutional Securities investment banking (fiscal 2007-2009),0001193125-10-042763
-Morgan Stanley,dcm,2009,1272.0,D,mda,r0,mda:Institutional Securities investment banking (fiscal 2007-2009),0001193125-10-042763
 Morgan Stanley,dcm,2010,1371.0,D,mda,r0,mda:Institutional Securities investment banking (pre-2015),0001193125-13-077191
 Morgan Stanley,dcm,2011,1359.0,D,mda,r0,mda:Institutional Securities investment banking (pre-2015),0001193125-14-067354
 Morgan Stanley,dcm,2012,1669.0,D,mda,r0,mda:Institutional Securities investment banking (pre-2015),0001193125-15-071980
@@ -627,9 +581,6 @@ Morgan Stanley,dcm,2022,1438.0,D,mda,r1,mda:Institutional Securities investment 
 Morgan Stanley,dcm,2023,1445.0,D,mda,r1,mda:Institutional Securities investment banking,0000895421-26-000086
 Morgan Stanley,dcm,2024,2193.0,D,mda,r1,mda:Institutional Securities investment banking,0000895421-26-000086
 Morgan Stanley,dcm,2025,2766.0,D,mda,r1,mda:Institutional Securities investment banking,0000895421-26-000086
-Morgan Stanley,ecm,2007,1570.0,D,mda,r0,mda:Institutional Securities investment banking (fiscal 2007-2009),0001193125-10-042763
-Morgan Stanley,ecm,2008,1045.0,D,mda,r0,mda:Institutional Securities investment banking (fiscal 2007-2009),0001193125-10-042763
-Morgan Stanley,ecm,2009,1694.0,D,mda,r0,mda:Institutional Securities investment banking (fiscal 2007-2009),0001193125-10-042763
 Morgan Stanley,ecm,2010,1454.0,D,mda,r0,mda:Institutional Securities investment banking (pre-2015),0001193125-13-077191
 Morgan Stanley,ecm,2011,1144.0,D,mda,r0,mda:Institutional Securities investment banking (pre-2015),0001193125-14-067354
 Morgan Stanley,ecm,2012,892.0,D,mda,r0,mda:Institutional Securities investment banking (pre-2015),0001193125-15-071980
@@ -646,9 +597,6 @@ Morgan Stanley,ecm,2022,851.0,D,mda,r1,mda:Institutional Securities investment b
 Morgan Stanley,ecm,2023,889.0,D,mda,r1,mda:Institutional Securities investment banking,0000895421-26-000086
 Morgan Stanley,ecm,2024,1599.0,D,mda,r1,mda:Institutional Securities investment banking,0000895421-26-000086
 Morgan Stanley,ecm,2025,1965.0,D,mda,r1,mda:Institutional Securities investment banking,0000895421-26-000086
-Morgan Stanley,equities,2007,9040.0,D,mda,r0,mda:Institutional Securities sales and trading (fiscal 2007-2009),0001193125-10-042763
-Morgan Stanley,equities,2008,9968.0,D,mda,r0,mda:Institutional Securities sales and trading (fiscal 2007-2009),0001193125-10-042763
-Morgan Stanley,equities,2009,3353.0,D,mda,r0,mda:Institutional Securities sales and trading (fiscal 2007-2009),0001193125-10-042763
 Morgan Stanley,equities,2010,4840.0,D,mda,r0,mda:Institutional Securities sales and trading (pre-2015),0001193125-13-077191
 Morgan Stanley,equities,2011,7263.0,D,mda,r0,mda:Institutional Securities sales and trading (pre-2015),0001193125-14-067354
 Morgan Stanley,equities,2012,4811.0,D,mda,r0,mda:Institutional Securities sales and trading (pre-2015),0001193125-15-071980
@@ -665,9 +613,6 @@ Morgan Stanley,equities,2022,10769.0,D,mda,r1,mda:Institutional Securities incom
 Morgan Stanley,equities,2023,9986.0,D,mda,r1,mda:Institutional Securities income statement,0000895421-26-000086
 Morgan Stanley,equities,2024,12230.0,D,mda,r1,mda:Institutional Securities income statement,0000895421-26-000086
 Morgan Stanley,equities,2025,15631.0,D,mda,r1,mda:Institutional Securities income statement,0000895421-26-000086
-Morgan Stanley,ficc,2007,268.0,D,mda,r0,mda:Institutional Securities sales and trading (fiscal 2007-2009),0001193125-10-042763
-Morgan Stanley,ficc,2008,3862.0,D,mda,r0,mda:Institutional Securities sales and trading (fiscal 2007-2009),0001193125-10-042763
-Morgan Stanley,ficc,2009,5017.0,D,mda,r0,mda:Institutional Securities sales and trading (fiscal 2007-2009),0001193125-10-042763
 Morgan Stanley,ficc,2010,5895.0,D,mda,r0,mda:Institutional Securities sales and trading (pre-2015),0001193125-13-077191
 Morgan Stanley,ficc,2011,7506.0,D,mda,r0,mda:Institutional Securities sales and trading (pre-2015),0001193125-14-067354
 Morgan Stanley,ficc,2012,2358.0,D,mda,r0,mda:Institutional Securities sales and trading (pre-2015),0001193125-15-071980

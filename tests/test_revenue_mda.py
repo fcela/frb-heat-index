@@ -20,15 +20,6 @@ Fixtures are real 10-K main documents (unedited filing HTML, gzip-compressed):
   tests/fixtures_revenue_mda/gs_10k_fy2019.htm.gz (Goldman Sachs FY2019 10-K,
       accession 0001193125-20-043853 -- first filing under the realigned
       four-segment structure, restated 2017-2019 comparatives)
-  tests/fixtures_revenue_mda/ms_10k_fy2009.htm.gz (Morgan Stanley FY2009
-      10-K, accession 0001193125-10-042763 -- fiscal 2007-2009 era tables,
-      December 2008 stub column)
-  tests/fixtures_revenue_mda/c_10k_fy2011.htm.gz  (Citigroup FY2011 10-K,
-      accession 0001206774-12-000799 -- Securities and Banking revenue
-      details on the reported basis)
-  tests/fixtures_revenue_mda/bac_10k_fy2009.htm.gz (Bank of America FY2009
-      10-K, accession 0001193125-10-041666 -- GBAM-era investment banking
-      income and sales and trading tables)
 Expected values below were read off the filings' MD&A tables.
 """
 
@@ -126,61 +117,15 @@ EXPECTED_MS_2018 = {
 }
 
 # Bank of America FY2025 10-K: "Noninterest Income by Business Segment"
-# (Total Corporation block: advisory), the MD&A "Investment banking
-# fees" table (Total Corporation block: advisory / equity issuance /
-# debt issuance -- the underwriting split; the segment note's
-# "Underwriting income" row is a narrower measure, $3,320M for 2025
-# against $4,957M of gross issuance fees, and is no longer carried),
-# and the Global Markets sales-and-trading table (FICC/Equities,
-# 2-year table). Advisory is carried by both MD&A tables and agrees.
+# (Total Corporation block: advisory + combined underwriting) and the
+# Global Markets sales-and-trading table (FICC/Equities, 2-year table).
 EXPECTED_BAC = {
     ("advisory", 2025): 1890.0, ("advisory", 2024): 1690.0,
     ("advisory", 2023): 1575.0,
-    ("ecm", 2025): 1259.0, ("ecm", 2024): 1354.0,
-    ("dcm", 2025): 3698.0, ("dcm", 2024): 3310.0,
+    ("ecm_dcm_combined", 2025): 3320.0, ("ecm_dcm_combined", 2024): 3275.0,
+    ("ecm_dcm_combined", 2023): 2235.0,
     ("ficc", 2025): 12267.0, ("ficc", 2024): 11371.0,
     ("equities", 2025): 8604.0, ("equities", 2024): 7436.0,
-}
-
-# Morgan Stanley FY2009 10-K: the fiscal 2007-2009 era tables. The
-# investment-banking table labels advisory "Advisory fees from merger,
-# acquisition and restructuring transactions"; both tables carry a
-# fourth column for the one-month December 2008 stub period, which
-# detect_years drops. Values from the filing ($ in millions).
-EXPECTED_MS_2009 = {
-    ("advisory", 2009): 1488.0, ("advisory", 2008): 1740.0,
-    ("advisory", 2007): 2541.0,
-    ("ecm", 2009): 1694.0, ("ecm", 2008): 1045.0, ("ecm", 2007): 1570.0,
-    ("dcm", 2009): 1272.0, ("dcm", 2008): 845.0, ("dcm", 2007): 1427.0,
-    ("ficc", 2009): 5017.0, ("ficc", 2008): 3862.0, ("ficc", 2007): 268.0,
-    ("equities", 2009): 3353.0, ("equities", 2008): 9968.0,
-    ("equities", 2007): 9040.0,
-}
-
-# Citigroup FY2011 10-K: "Securities and Banking revenue details" on
-# the reported basis (the section inside the S&B results table). The
-# FY2011 filing restates 2010 FICC to $14,077M (FY2010 filing:
-# $14,075M) and 2009 to $21,294M (FY2009 filing: $21,540M as first
-# reported). The table does not split investment banking.
-EXPECTED_C_2011_SB = {
-    ("ficc", 2011): 12263.0, ("ficc", 2010): 14077.0,
-    ("ficc", 2009): 21294.0,
-    ("equities", 2011): 2756.0, ("equities", 2010): 3501.0,
-    ("equities", 2009): 3183.0,
-}
-
-# Bank of America FY2009 10-K: GBAM-era tables. The "Investment banking
-# income" table (Advisory carries a "(1)" footnote cell) and the
-# "Sales and Trading Revenue" table, whose equities row is labeled
-# "Equity income" and whose 2008 FICC value is negative -- rendered
-# with the parenthesis pair split across cells ("(7,625" | ")"), the
-# case the parse_money opening-parenthesis rule covers.
-EXPECTED_BAC_2009 = {
-    ("advisory", 2009): 1167.0, ("advisory", 2008): 546.0,
-    ("ecm", 2009): 1964.0, ("ecm", 2008): 624.0,
-    ("dcm", 2009): 3124.0, ("dcm", 2008): 1539.0,
-    ("ficc", 2009): 12727.0, ("ficc", 2008): -7625.0,
-    ("equities", 2009): 4901.0, ("equities", 2008): 743.0,
 }
 
 # Leucadia National FY2017 10-K (CIK 0000096223 was Leucadia until the
@@ -427,101 +372,38 @@ def test_ms_fy2018_st_by_business():
 
 
 def test_bac_segments():
-    """Bank of America: segment-note advisory, MD&A underwriting split,
-    GM sales & trading."""
+    """Bank of America: segment-note IB splits + GM sales & trading."""
     path = _fixture("bac_10k_fy2025.htm.gz")
     recs = parse_filing("BAC", "0000070858", "0000070858-26-000157", path)
     by = _by_line_year(recs)
-    # 13 records: advisory x3 (segment note) + advisory/ECM/DCM x2
-    # (fees table; its advisory values agree with the segment note) +
-    # FICC/equities x2 (sales and trading).
-    assert len(recs) == 13, f"expected 13 cells, got {len(recs)}"
+    assert len(recs) == 10, f"expected 10 cells, got {len(recs)}"
     for key, want in EXPECTED_BAC.items():
         assert by.get(key) == want, \
             f"BAC {key}: got {by.get(key)}, want {want}"
-    assert not any(r["taxonomy_line"] == "ecm_dcm_combined" for r in recs), \
-        "the segment note's combined underwriting row must not be carried"
     assert {r["source"] for r in recs} == {
         "mda:Noninterest income by business segment",
-        "mda:Investment banking fees",
         "mda:Global Markets sales and trading revenue"}, \
         {r["source"] for r in recs}
     print(f"test_bac_segments: OK ({len(recs)} cells)")
 
 
 def test_bac_fy2016_sales_and_trading():
-    """BAC FY2016 10-K: S&T rows + IB fees rows parse; no abort.
+    """BAC FY2016 10-K: S&T rows parse; the filing must not abort.
 
     The "Noninterest income by business segment" table was introduced
     in the FY2018 10-K; while its spec window covered filing years
     2016+, the FY2016/FY2017 10-Ks raised TableNotFoundError and the
     whole filings were skipped -- the 2016 FICC/equities hole. The
-    FY2017 10-K's comparative column confirms both 2016 values. The
-    MD&A "Investment banking fees" table is in this filing too and,
-    since the fees spec's window was extended past 2015, contributes
-    the advisory/ECM/DCM cells (Total Corporation block).
+    FY2017 10-K's comparative column confirms both 2016 values.
     """
     path = _fixture("bac_10k_fy2016.htm.gz")
     recs = parse_filing("BAC", "0000070858", "0000070858-17-000013", path)
     by = _by_line_year(recs)
     assert by == {("ficc", 2016): 9373.0, ("ficc", 2015): 7869.0,
-                  ("equities", 2016): 4017.0, ("equities", 2015): 4335.0,
-                  ("advisory", 2016): 1269.0, ("advisory", 2015): 1503.0,
-                  ("ecm", 2016): 864.0, ("ecm", 2015): 1236.0,
-                  ("dcm", 2016): 3276.0, ("dcm", 2015): 3033.0}, by
+                  ("equities", 2016): 4017.0, ("equities", 2015): 4335.0}, by
     assert {r["source"] for r in recs} == {
-        "mda:Global Markets sales and trading revenue",
-        "mda:Investment banking fees"}
+        "mda:Global Markets sales and trading revenue"}
     print(f"test_bac_fy2016_sales_and_trading: OK ({len(recs)} cells)")
-
-
-def test_ms_fy2009_pre2010():
-    """Morgan Stanley FY2009 10-K: fiscal 2007-2009 era tables.
-
-    Before the era specs, every MS spec was windowed to fiscal 2010+,
-    so 2007-2009 had no MD&A sub-splits at all. The December 2008 stub
-    column must not leak into the fiscal-year columns.
-    """
-    path = _fixture("ms_10k_fy2009.htm.gz")
-    recs = parse_filing("MS", "0000895421", "0001193125-10-042763", path)
-    by = _by_line_year(recs)
-    assert by == EXPECTED_MS_2009, by
-    print(f"test_ms_fy2009_pre2010: OK ({len(recs)} cells)")
-
-
-def test_c_fy2011_securities_and_banking():
-    """Citigroup FY2011 10-K: S&B revenue details, reported basis.
-
-    Before this spec, the ICG spec's window covered the FY2010-FY2013
-    filings, none of which carry that table, and their
-    TableNotFoundError aborted the filings -- 2007-2011 had no Citi
-    FICC/equities cells despite the S&B details being disclosed.
-    """
-    path = _fixture("c_10k_fy2011.htm.gz")
-    recs = parse_filing("C", "0000831001", "0001206774-12-000799", path)
-    by = _by_line_year(recs)
-    assert by == EXPECTED_C_2011_SB, by
-    assert {r["source"] for r in recs} == {
-        "mda:Securities and Banking revenue details"}
-    print(f"test_c_fy2011_securities_and_banking: OK ({len(recs)} cells)")
-
-
-def test_bac_fy2009_gbam():
-    """Bank of America FY2009 10-K: GBAM-era IB income + S&T tables.
-
-    Before the GBAM specs, the FY2009-FY2011 filings aborted on the
-    modern S&T spec ("Equity income" is not "Equities"), so 2008-2010
-    had no BofA sub-splits. Locks the negative 2008 FICC value (split
-    parenthesis pair) and the Advisory footnote cell.
-    """
-    path = _fixture("bac_10k_fy2009.htm.gz")
-    recs = parse_filing("BAC", "0000070858", "0001193125-10-041666", path)
-    by = _by_line_year(recs)
-    assert by == EXPECTED_BAC_2009, by
-    assert {r["source"] for r in recs} == {
-        "mda:Investment banking income (GBAM era)",
-        "mda:Sales and trading revenue (GBAM era)"}
-    print(f"test_bac_fy2009_gbam: OK ({len(recs)} cells)")
 
 
 def test_missing_table_raises():
@@ -685,9 +567,6 @@ def main():
     test_ms_fy2018_st_by_business()
     test_bac_segments()
     test_bac_fy2016_sales_and_trading()
-    test_ms_fy2009_pre2010()
-    test_c_fy2011_securities_and_banking()
-    test_bac_fy2009_gbam()
     test_jefferies_leucadia_backfill()
     test_jefferies_jfg2019_both_specs()
     test_jefferies_grid_columns_fy2023()

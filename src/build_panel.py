@@ -89,6 +89,10 @@ PANEL_COLUMNS = [
     'Granger-causality connections among large financial institutions',
     'Hedge Fund Leverage (Gross assets to net assets, qualifying hedge funds)',
     'Hedge Fund Leverage (SCOOS net percent reporting increased use of leverage)',
+    'Private Credit Loans (Share of nonfinancial business debt)',
+    'Private Credit Intermediary Leverage (Total liabilities to total financial assets)',
+    'Credit-to-GDP Gap (BIS, private non-financial sector)',
+    'Debt Service Ratio (BIS, private non-financial sector)',
 ]
 
 
@@ -747,6 +751,96 @@ def b_z1(raw: Path):
     }
 
 
+def b_private_credit(raw: Path):
+    # Private credit, delineated in the Z.1 for the first time in the
+    # release of September 11, 2026 (instrument table F.4.4, sector
+    # tables S.124.5/.6/.8; documented in Chen, Jang & Sufi, "The Size
+    # and Leverage of Private Credit", October 1, 2026). Two series:
+    #  (1) Private credit loans owed by nonfinancial business
+    #      (FL143167205, $M) as a share of total nonfinancial business
+    #      debt securities and loans -- the same denominator legs as
+    #      b_bizdebt (BCNSDODNS + TCMILBSNNB, $M). 2026Q2 check:
+    #      $1,351,586M / $23,980,172M = 5.64% (the memo's Table 1:
+    #      $1,352B, 5.6% of nonfinancial business debt).
+    #  (2) Intermediary leverage: summed total liabilities / summed
+    #      total financial assets of the three new Z.1 private credit
+    #      sectors -- private debt funds (44), business development
+    #      companies (45), interval and tender offer funds (46).
+    #      2026Q2 check: $770,857M / $1,830,393M = 42.1% (the memo's
+    #      Figure 3 combined ratio: 42%).
+    # The delineated lines are published from 2012Q4 (interval and
+    # tender offer funds from 2021Q4); the release file carries zeros
+    # before a line's inception, so non-positive values are not
+    # observations and are dropped. Before 2021Q4 the combined
+    # leverage ratio therefore covers private debt funds and BDCs,
+    # exactly as in the source publication's combined line.
+    pc = fred_qlast(raw, "BOGZ1FL143167205Q").rename({"value": "pc"})
+    pc = pc.filter(pl.col("pc") > 0)
+    corp = fred_qlast(raw, "BCNSDODNS").rename({"value": "corp"})
+    ncorp = fred_qlast(raw, "TCMILBSNNB").rename({"value": "ncorp"})
+    debt = align(corp, ncorp, how="left").with_columns(
+        (pl.col("corp") + pl.col("ncorp").fill_null(strategy="forward"))
+        .alias("debt"))
+    share = align(pc, debt).with_columns(
+        (100.0 * pl.col("pc") / pl.col("debt")).alias("value"))
+
+    def leg(sid: str, name: str) -> pl.DataFrame:
+        d = fred_qlast(raw, sid).filter(pl.col("value") > 0)
+        return d.rename({"value": name})
+
+    # All four private-debt-fund / BDC legs share the 2012Q4-2026Q2
+    # quarterly grid; the interval-fund legs join from 2021Q4 and are
+    # zero before that, as in the accounts.
+    lev = leg("BOGZ1FL444090000Q", "a44")
+    for sid, name in (("BOGZ1FL444190005Q", "l44"),
+                      ("BOGZ1FL454090003Q", "a45"),
+                      ("BOGZ1FL454190005Q", "l45"),
+                      ("BOGZ1FL464090005Q", "a46"),
+                      ("BOGZ1FL464190005Q", "l46")):
+        lev = lev.join(leg(sid, name), on="quarter", how="left")
+    lev = (lev.with_columns([
+               (pl.col("a44") + pl.col("a45")
+                + pl.col("a46").fill_null(0)).alias("assets"),
+               (pl.col("l44").fill_null(0) + pl.col("l45").fill_null(0)
+                + pl.col("l46").fill_null(0)).alias("liabs"),
+           ])
+           .with_columns(
+               (100.0 * pl.col("liabs") / pl.col("assets")).alias("value"))
+           .select(["quarter", "value"]).sort("quarter"))
+    return {
+        'Private Credit Loans (Share of nonfinancial business debt)':
+            share.select(["quarter", "value"]),
+        'Private Credit Intermediary Leverage (Total liabilities to total financial assets)':
+            lev,
+    }
+
+
+def _bis_series(raw: Path, fname: str) -> pl.DataFrame:
+    """BIS SDMX CSV (TIME_PERIOD 'YYYY-Qn', OBS_VALUE) -> (quarter, value)."""
+    d = pl.read_csv(raw / fname)
+    return (d.select([
+                pl.col("TIME_PERIOD").str.replace("-Q", "Q").alias("quarter"),
+                pl.col("OBS_VALUE").cast(pl.Float64).alias("value")])
+            .sort("quarter"))
+
+
+def b_bis_benchmarks(raw: Path):
+    # BIS early-warning pair for the United States (BIS Data Portal,
+    # SDMX API): the credit-to-GDP gap (WS_CREDIT_GAP, key Q.US.P.A.C:
+    # private non-financial sector borrowers, all lenders, gap series)
+    # and the debt service ratio of the private non-financial sector
+    # (WS_DSR, key Q.US.P). The gap is the Basel III countercyclical-
+    # buffer guide and the benchmark Aikman et al. (FEDS 2015-059)
+    # validate the heat map against. Latest published values at the
+    # November 2026 build: gap -11.32pp and DSR 13.8%, both 2026Q1.
+    return {
+        'Credit-to-GDP Gap (BIS, private non-financial sector)':
+            _bis_series(raw, "bis_credit_gap_us.csv"),
+        'Debt Service Ratio (BIS, private non-financial sector)':
+            _bis_series(raw, "bis_dsr_us.csv"),
+    }
+
+
 # ---------------------------------------------------------------------------
 # Manual / small sources
 # ---------------------------------------------------------------------------
@@ -780,7 +874,8 @@ BUILDERS = [
     b_sloos_cni, b_house_price_rent, b_sloos_mortgage, b_fico, b_bizdebt,
     b_risky_leverage, b_nipa, b_consumer, b_consumer_risky, b_mortgage,
     b_saving_hh, b_z1, b_bis_cre, b_sloos_cre, b_call_report,
-    b_srisk, b_granger, b_hedge_fund_leverage,
+    b_srisk, b_granger, b_hedge_fund_leverage, b_private_credit,
+    b_bis_benchmarks,
 ]
 
 

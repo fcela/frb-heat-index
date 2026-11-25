@@ -162,7 +162,7 @@ RECONCILE_GROUPS = {
          ["advisory", "ecm", "dcm", "ficc", "equities"]),
     ],
     "Bank of America": [
-        (["Global Banking"], ["advisory", "ecm", "dcm"]),
+        (["Global Banking"], ["advisory", "ecm_dcm_combined"]),
         (["Global Markets"], ["ficc", "equities"]),
     ],
     "Citigroup": [

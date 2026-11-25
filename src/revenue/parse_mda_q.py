@@ -166,29 +166,6 @@ def detect_qtd_periods(table) -> list[tuple[int, int]]:
         strict = bool(_YTD_DECL_RE.search(
             " ".join(tr.get_text(" ", strip=True)
                      for tr in rows[:10])))
-        if quarter is None:
-            # Header variant with the month in neither the header cell
-            # nor a full date cell: "Three Months Ended" over a
-            # "June 30," row, bare years below that (Morgan Stanley's
-            # 10-Q investment-banking tables). The month cell sits
-            # under the QTD header's span in the next rows; its month
-            # fixes the quarter for the bare-year cells.
-            for nxt in rows[ri + 1:ri + 4]:
-                pos = 0
-                for c in nxt.find_all(["th", "td"]):
-                    cs = int(c.get("colspan", 1))
-                    if not strict or (start <= pos < start + span):
-                        mm = re.search(
-                            r"\b(january|february|march|april|may|june|"
-                            r"july|august|september|october|november|"
-                            r"december)\b",
-                            c.get_text(" ", strip=True), re.I)
-                        if mm:
-                            quarter = MONTH_Q.get(mm.group(1).lower())
-                            break
-                    pos += cs
-                if quarter is not None:
-                    break
         # Next rows: collect periods.
         for nxt in rows[ri + 1:ri + 4]:
             periods: list[tuple[int, int]] = []
@@ -270,15 +247,6 @@ def extract_spec_rows_q(table, spec: TableSpec,
             f"table '{spec.description}': rows not found for lines "
             f"{missing}")
     out = []
-    # Segment-major tables repeat the period columns once per segment
-    # block ([Global Banking, Total Corporation] x [QTD years], then the
-    # YTD groups): the wanted block's QTD slots start at
-    # segment_block * len(periods). The annual extractor has always
-    # applied segment_block; this one ignored it and read the FIRST
-    # block, which for BofA's "Investment banking fees" table is the
-    # Global Banking segment, not the firmwide Total Corporation.
-    block0 = spec.segment_block if spec.column_layout == "segment_major" \
-        else 0
     for rs in spec.rows:
         tr = found[rs.line][-1] if rs.occurrence == "last" \
             else found[rs.line][0]
@@ -286,13 +254,12 @@ def extract_spec_rows_q(table, spec: TableSpec,
         # _money_slots drops the interleaved "% of Net Revenues" / "%
         # Change" columns so the period values stay positionally zip-able.
         slots = _money_slots(cells[1:])
-        if len(slots) < (block0 + 1) * len(periods):
-            log.warning("table '%s': row '%s' has %d slots for %d periods "
-                        "(block %d); skipping row", spec.description,
-                        rs.line, len(slots), len(periods), block0)
+        if len(slots) < len(periods):
+            log.warning("table '%s': row '%s' has %d slots for %d periods; "
+                        "skipping row", spec.description, rs.line,
+                        len(slots), len(periods))
             continue
-        slots = slots[block0 * len(periods):(block0 + 1) * len(periods)]
-        for (year, quarter), val in zip(periods, slots):
+        for (year, quarter), val in zip(periods, slots[:len(periods)]):
             if val is None:
                 continue
             out.append({"taxonomy_line": rs.line, "year": year,

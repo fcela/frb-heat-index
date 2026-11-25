@@ -188,14 +188,6 @@ class TableSpec:
     # (underwriting/equities/fixed income stay annual until a separate
     # quarterly line is spec'd).
     annual_only: bool = False
-    # When True, only the quarterly scraper (parse_mda_q) runs this
-    # spec; the annual scraper (parse_mda) skips it. Used where a
-    # firm's 10-Qs keep a table layout its 10-Ks replaced (Morgan
-    # Stanley's standalone investment-banking and by-business sales &
-    # trading tables persist in 10-Qs after the 10-K moved on), so
-    # widening the annual spec's window to reach the 10-Q era would
-    # mis-fire on the intervening 10-Ks.
-    quarterly_only: bool = False
     # Column mapping by header grid instead of positional slots. The
     # first header row carrying 2+ year labels pins each year to a
     # colspan-accumulated grid-column range; a data row's value for a
@@ -448,108 +440,6 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
                 RowSpec("dcm", [r"fixed income underwriting revenues"]),
             ],
         ),
-        TableSpec(
-            # Fiscal 2007-2009 era (December year-end adopted for fiscal
-            # 2009; fiscal 2007-2008 ended November 30): the standalone
-            # "Investment banking revenues" table labels the advisory row
-            # "Advisory fees from merger, acquisition and restructuring
-            # transactions". The fiscal-2009 filing's table carries a
-            # fourth column for the one-month December 2008 stub period;
-            # detect_years drops it (2008 is already present from the
-            # fiscal-2008 column), so the three fiscal-year columns zip
-            # positionally. Validated on the FY2009 10-K (advisory
-            # 2009 = $1,488M).
-            description="Institutional Securities investment banking "
-                        "(fiscal 2007-2009)",
-            anchors=[r"investment banking revenues"],
-            fiscal_years=(2007, 2009),
-            rows=[
-                RowSpec("advisory", [r"advisory fees from merger.*"]),
-                RowSpec("ecm", [r"equity underwriting revenues"]),
-                RowSpec("dcm", [r"fixed income underwriting revenues"]),
-            ],
-        ),
-        TableSpec(
-            # Fiscal 2007-2009 era: "Sales and trading net revenues" by
-            # business with bare "Equity" / "Fixed income" rows plus an
-            # "Other" row (the pin keeps the spec off any other table
-            # carrying the bare labels). Same December-2008 stub column
-            # as the investment-banking table above; detect_years drops
-            # it. Validated on the FY2009 10-K (FICC 2009 = $5,017M,
-            # equities 2009 = $3,353M).
-            description="Institutional Securities sales and trading "
-                        "(fiscal 2007-2009)",
-            anchors=[r"sales and trading net revenues",
-                     r"total sales and trading revenues"],
-            fiscal_years=(2007, 2009),
-            rows=[
-                RowSpec("ficc", [r"^fixed income$"]),
-                RowSpec("equities", [r"^equity$"]),
-                RowSpec("_st_other_pin", [r"^other$"], pin_only=True),
-            ],
-        ),
-        TableSpec(
-            # 10-Q only, fiscal 2015-2017: the standalone investment-
-            # banking table with full "Advisory revenues" / "Equity
-            # underwriting revenues" / "Fixed income underwriting
-            # revenues" labels persists in 10-Qs after the pre-2015
-            # spec's window (set by the 10-K layouts) ends. The 10-Ks of
-            # these years do not carry the table in this form, hence
-            # quarterly_only. Validated on the FY2016 Q2 10-Q (advisory
-            # 2016Q2 = $497M).
-            description="Institutional Securities investment banking "
-                        "(pre-2015 labels, 10-Q)",
-            anchors=[r"investment banking.*revenues",
-                     r"advisory revenues"],
-            fiscal_years=(2015, 2017),
-            quarterly_only=True,
-            rows=[
-                RowSpec("advisory", [r"advisory revenues"]),
-                RowSpec("ecm", [r"equity underwriting revenues"]),
-                RowSpec("dcm", [r"fixed income underwriting revenues"]),
-            ],
-        ),
-        TableSpec(
-            # 10-Q only, fiscal 2016-2017: sales and trading by business
-            # (bare "Equity" / "Fixed income and commodities" / "Other"
-            # rows) persists in 10-Qs; the same years' 10-Ks present
-            # the GAAP/non-GAAP layout instead. The "Other" pin keeps
-            # the spec off the principal-transactions decomposition.
-            # Validated on the FY2016 Q2 10-Q (equities 2016Q2 =
-            # $2,145M, FICC 2016Q2 = $1,297M).
-            description="Institutional Securities sales and trading "
-                        "(by business, 10-Q)",
-            anchors=[r"sales and trading net revenues",
-                     r"total sales and trading revenues"],
-            fiscal_years=(2016, 2017),
-            quarterly_only=True,
-            rows=[
-                RowSpec("ficc", [r"fixed income and commodities"]),
-                RowSpec("equities", [r"^equity$"]),
-                RowSpec("_st_other_pin", [r"^other$"], pin_only=True),
-            ],
-        ),
-        TableSpec(
-            # 10-Q only, fiscal 2018-2019: the standalone investment-
-            # banking summary table with BARE "Equity" / "Fixed income"
-            # underwriting rows under an "Underwriting:" header (the
-            # fragment-era labels, but a standalone 10-Q table the
-            # fragment spec's income-statement anchors do not reach).
-            # The sales & trading rows are not in this table, so the
-            # first occurrences are the underwriting split. Validated on
-            # the FY2019 Q2 10-Q (advisory 2019Q2 = $506M, ECM = $546M,
-            # DCM = $420M).
-            description="Institutional Securities investment banking "
-                        "(bare labels, 10-Q)",
-            anchors=[r"total investment banking"],
-            fiscal_years=(2018, 2019),
-            quarterly_only=True,
-            rows=[
-                RowSpec("advisory", [r"advisory"]),
-                RowSpec("ecm", [r"equity"], occurrence="first"),
-                RowSpec("dcm", [r"fixed income"], occurrence="first"),
-            ],
-        ),
     ],
     "C": [
         TableSpec(
@@ -586,40 +476,14 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
             ],
         ),
         TableSpec(
-            # Pre-ICG era (FY2009-FY2011 filings): the "Securities and
-            # Banking revenue details" table in the Citicorp MD&A carries
-            # the Fixed Income Markets / Equity Markets split on the
-            # reported basis (the block totals tie to reported Securities
-            # and Banking revenue). The FY2012 filing's version of the
-            # table is presented excluding CVA/DVA -- a different basis --
-            # so the window ends at fiscal 2011; 2012-2013 cells come
-            # from the FY2014 filing's ICG comparatives. The table does
-            # not split investment banking, and no other table in these
-            # filings does either: advisory/ECM/DCM before 2012 are not
-            # disclosed and stay absent. Validated on the FY2009, FY2010
-            # and FY2011 10-Ks (FICC 2009 = $21,540M).
-            description="Securities and Banking revenue details",
-            anchors=[r"securities\s+and\s+banking\s+revenue\s+details"],
-            fiscal_years=(2009, 2011),
-            rows=[
-                RowSpec("ficc", [r"fixed income markets"],
-                        occurrence="first"),
-                RowSpec("equities", [r"equity markets"],
-                        occurrence="first"),
-            ],
-        ),
-        TableSpec(
-            # ICG era: "ICG Revenue Details" carries both the
-            # investment-banking split and the headline ex-CVA/DVA Fixed
-            # income / Equity markets rows. The markets rows repeat
-            # (CVA/DVA adjustments, then detail breakdowns); the FIRST
-            # occurrence is the headline business measure. The table
-            # first appears in the FY2014 10-K; the FY2010-FY2013 filings
-            # do not carry it, and while the window covered them their
-            # TableNotFoundError aborted those filings wholesale.
+            # ICG era (FY2010-FY2022 filings): "ICG Revenue Details" carries
+            # both the investment-banking split and the headline
+            # ex-CVA/DVA Fixed income / Equity markets rows. The markets
+            # rows repeat (CVA/DVA adjustments, then detail breakdowns);
+            # the FIRST occurrence is the headline business measure.
             description="ICG revenue details",
             anchors=[r"icg revenue details"],
-            fiscal_years=(2014, 2022),
+            fiscal_years=(2010, 2022),
             rows=[
                 RowSpec("advisory", [r"advisory"]),
                 RowSpec("ecm", [r"equity underwriting"]),
@@ -635,14 +499,9 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
         TableSpec(
             description="Global Markets sales and trading revenue",
             anchors=[r"sales and trading"],
-            # Validated on FY2012+ filings; the "Fixed income,
-            # currencies and commodities"/"Equities" labels are stable
-            # from the FY2012 10-K on. The GBAM-era filings (fiscal
-            # 2009-2011) label the equities row "Equity income" and are
-            # served by the GBAM sales-and-trading spec below; while
-            # this window covered them, their TableNotFoundError aborted
-            # those filings wholesale.
-            fiscal_years=(2012, 2100),
+            # Validated 2010+; the "Fixed income, currencies and
+            # commodities"/"Equities" labels are stable across eras.
+            fiscal_years=(2010, 2100),
             rows=[
                 # Label is hyphenated: "Fixed-income, currencies and
                 # commodities". The first (GAAP, incl. net DVA) block is
@@ -659,14 +518,8 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
             # table ([Total Corp, Consumer, GWIM, ...] x year columns).
             # The FIRST block is the consolidated total (require_text pins
             # it); "Financial advisory services" is the firmwide advisory
-            # line. The table's "Underwriting income" row is NOT carried:
-            # it is a segment-note measure net of amounts the MD&A
-            # "Investment banking fees" table reports gross, and the two
-            # disagree (2025: $3,320M vs $4,957M of equity + debt
-            # issuance), so carrying both would put two inconsistent
-            # underwriting cells for the same year in the panel. The
-            # MD&A table splits equity and debt issuance for every year
-            # and is the underwriting source. The table was
+            # line and "Underwriting income" the combined ECM+DCM line
+            # (BofA does not split underwriting further). The table was
             # introduced in the FY2018 10-K (its columns reach back to
             # 2016); the FY2016/FY2017 10-Ks do not carry it, and an
             # in-window miss aborted those filings wholesale, taking
@@ -679,77 +532,31 @@ FIRM_SPECS: dict[str, list[TableSpec]] = {
             fiscal_years=(2018, 2100),
             rows=[
                 RowSpec("advisory", [r"financial advisory services"]),
+                RowSpec("ecm_dcm_combined", [r"underwriting income"]),
             ],
         ),
         TableSpec(
-            # "Investment Banking Fees" MD&A table with "Advisory",
-            # "Debt issuance", "Equity issuance" rows; columns are
-            # [Global Banking, Total Corporation] x [FY, FY-1]. The Total
-            # Corporation block is SECOND (segment_block=1); it is the
-            # firmwide measure. The table appears in every 10-K from
-            # FY2012 on (validated FY2012-FY2025, including the FY2016
-            # fixture); the FY2010/FY2011 filings predate it and report
-            # the GBAM-era "Investment banking income" table instead.
-            # Equity and debt issuance are separate rows and are carried
-            # as ECM and DCM directly -- the earlier version of this spec
-            # summed them into ecm_dcm_combined, which is what left BofA
-            # the only large firm in the panel with no underwriting
-            # split. Validated on FY2012 and FY2016.
-            description="Investment banking fees",
+            # Pre-2016 era (FY2010-FY2015 filings): "Investment Banking
+            # Fees" table with "Advisory", "Debt issuance", "Equity
+            # issuance" rows; columns are [Global Banking, Total
+            # Corporation] x [FY, FY-1]. The Total Corporation block is
+            # SECOND (segment_block=1); it is the firmwide measure.
+            # ECM+DCM are separate rows, summed via `derived`. Validated
+            # on FY2012.
+            description="Investment banking fees (pre-2016)",
             anchors=[r"investment banking fees"],
             require_text=[r"total corporation"],
             column_layout="segment_major",
             segment_block=1,
-            fiscal_years=(2012, 2100),
+            fiscal_years=(2010, 2015),
             rows=[
                 RowSpec("advisory", [r"^advisory$"]),
-                RowSpec("ecm", [r"equity issuance"]),
-                RowSpec("dcm", [r"debt issuance"]),
+                # Temporary component lines, summed into ecm_dcm_combined.
+                RowSpec("_debt_issuance", [r"debt issuance"]),
+                RowSpec("_equity_issuance", [r"equity issuance"]),
             ],
-        ),
-        TableSpec(
-            # GBAM era (fiscal 2009-2011 filings): the firmwide
-            # investment-banking product table -- titled "Investment
-            # banking income" in the FY2009/FY2010 filings and
-            # "Investment Banking Fees" in the FY2011 filing -- splits
-            # Advisory / Debt issuance / Equity issuance over [FY, FY-1]
-            # columns (single block; the figures are the Total
-            # Corporation amounts, summing to the filings' total
-            # investment banking income/fees). The FY2011 filing
-            # restates 2010 (advisory $1,018M vs $1,019M as first
-            # reported; debt issuance $3,059M vs $3,267M) and wins by
-            # accession order. The Advisory row carries a "(1)"
-            # footnote cell, handled by the footnote-slot rule in
-            # _money_slots. Validated on the FY2009, FY2010 and FY2011
-            # 10-Ks (advisory 2009 = $1,167M, debt issuance 2009 =
-            # $3,124M, equity issuance 2009 = $1,964M).
-            description="Investment banking income (GBAM era)",
-            anchors=[r"investment banking income",
-                     r"investment banking fees"],
-            fiscal_years=(2009, 2011),
-            rows=[
-                RowSpec("advisory", [r"^advisory$"]),
-                RowSpec("ecm", [r"equity issuance"]),
-                RowSpec("dcm", [r"debt issuance"]),
-            ],
-        ),
-        TableSpec(
-            # GBAM era (fiscal 2009-2011 filings): the "Sales and
-            # Trading Revenue" table labels the rows "Fixed income,
-            # currencies and commodities" and "Equity income" (not
-            # "Equities"). Validated on the FY2009, FY2010 and FY2011
-            # 10-Ks (FICC 2011 = $8,868M as reported in the FY2011
-            # filing; the FY2012 filing restates it to $8,897M and wins
-            # by accession order).
-            description="Sales and trading revenue (GBAM era)",
-            anchors=[r"sales and trading revenue"],
-            fiscal_years=(2009, 2011),
-            rows=[
-                RowSpec("ficc",
-                        [r"fixed[- ]income,?\s+currencies( and|,)?\s+"
-                         r"commodities"]),
-                RowSpec("equities", [r"equity income"]),
-            ],
+            derived={"ecm_dcm_combined": ["_debt_issuance",
+                                           "_equity_issuance"]},
         ),
     ],
     "JEF": [
@@ -1466,11 +1273,7 @@ def parse_money(text: str) -> float | None:
     if not t or t in {"—", "–", "-", "--", "NM", "n/m", "N/M", "$", "$—"}:
         return None
     t = _MONEY.sub("", t).strip()  # drop leading $, etc. (may precede parens)
-    # An opening parenthesis marks a negative even when the closing
-    # parenthesis sits in the NEXT cell ("(7,625" | ")"), as inline-XBRL
-    # renderings of GBAM-era BofA tables split the pair; the old
-    # both-ends rule read those cells as positive.
-    neg = t.startswith("(")
+    neg = t.startswith("(") and t.endswith(")")
     t = t.strip("()")
     t = t.replace(",", "").strip()
     # Trailing footnote digits, e.g. "7,973 1".
@@ -1551,7 +1354,7 @@ def _slot_value(slot: list[str]) -> float | None:
     for t in slot:
         if t in {"$", ""} or "%" in t:
             continue
-        if re.fullmatch(r"\d{1,2}", t) or re.fullmatch(r"\(\d{1,2}\)", t):
+        if re.fullmatch(r"\d{1,2}", t):
             continue  # footnote-only cell, not a value
         v = parse_money(t)
         if v is not None:
@@ -1580,19 +1383,6 @@ def _money_slots(cells: list) -> list[float | None]:
     """
     out: list[float | None] = []
     for s in _row_slots(cells):
-        if s and all(re.fullmatch(r"\(\d{1,2}\)", t) for t in s):
-            # A slot holding only a parenthesized footnote marker
-            # ("(1)" in its own cell, e.g. BofA's GBAM-era
-            # "Advisory (1)" row) is an annotation, not a column:
-            # dropping it keeps the value slots aligned with the year
-            # columns. A BARE small number in its own slot is not
-            # dropped: it can be a genuine small value (BofA Global
-            # Banking equity issuance of $99M in a weak quarter), and
-            # _slot_value already maps it to None when it is a
-            # footnote trailing a value in the same slot. An explicitly
-            # missing value ("--"/"NM") is a column and is kept as a
-            # None slot by _slot_value.
-            continue
         if not any("%" in t for t in s):
             out.append(_slot_value(s))
             continue
@@ -1878,10 +1668,6 @@ def parse_filing(firm: str, cik: str, accession: str,
         fiscal_year = None
     records = []
     for spec in FIRM_SPECS[firm]:
-        if spec.quarterly_only:
-            log.info("%s %s: '%s' is quarterly-only; skipping in 10-K "
-                     "parse", firm, accession, spec.description)
-            continue
         if spec.fiscal_years is not None:
             if fiscal_year is None:
                 log.warning("%s %s: cannot determine fiscal year; "

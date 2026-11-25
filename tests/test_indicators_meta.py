@@ -1,7 +1,7 @@
 """Tests for src/indicators_meta.py.
 
 Verifies:
-  - 48/48 coverage (emitter covers exactly panel_complete columns)
+  - 52/52 coverage (emitter covers exactly panel_complete columns)
   - Independent recomputation of all computed fields from CSVs
   - last_value_status cross-check against data/nowcast_provenance.csv
   - Schema compliance (required fields, https URLs, list series_ids)
@@ -59,18 +59,18 @@ REQUIRED_FIELDS = {
 }
 
 
-def test_coverage_48_indicators():
+def test_coverage_52_indicators():
     data_dir = HERE / "data"
     p_comp = pl.read_csv(data_dir / "panel_complete.csv")
     cols = [c for c in p_comp.columns if c != "quarter"]
-    assert len(cols) == 48, f"expected 48 columns in panel_complete, got {len(cols)}"
+    assert len(cols) == 52, f"expected 52 columns in panel_complete, got {len(cols)}"
 
-    assert len(SOURCES) == 48, f"expected 48 entries in SOURCES, got {len(SOURCES)}"
+    assert len(SOURCES) == 52, f"expected 52 entries in SOURCES, got {len(SOURCES)}"
     assert set(SOURCES.keys()) == set(cols), "SOURCES keys do not match panel_complete columns exactly"
 
     meta = build_indicators_meta(data_dir)
     meta_indicators = meta["indicators"]
-    assert len(meta_indicators) == 48, f"expected 48 indicators in meta, got {len(meta_indicators)}"
+    assert len(meta_indicators) == 52, f"expected 52 indicators in meta, got {len(meta_indicators)}"
     meta_titles = [m["title"] for m in meta_indicators]
     assert meta_titles == cols, "indicators list order does not match panel_complete column order"
 
@@ -197,7 +197,7 @@ def test_site_bundle_check():
     text = bundle_path.read_text()
     bundle = _strict_loads(text)  # raises on any NaN/Inf literal
 
-    assert len(bundle["indicators"]) == 48
+    assert len(bundle["indicators"]) == 52
     assert bundle["panel_last_quarter"] == "2026Q2"
 
     # Must match fresh emitter run byte-for-byte
@@ -229,7 +229,7 @@ def test_app_js_provenance_rendering_grep():
 
 
 if __name__ == "__main__":
-    test_coverage_48_indicators()
+    test_coverage_52_indicators()
     test_independent_recomputation()
     test_last_value_status_cross_check()
     test_schema_bar()
