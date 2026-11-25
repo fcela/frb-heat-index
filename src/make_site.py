@@ -11,10 +11,12 @@ Outputs (under --out, default <repo>/docs/data):
                    heat-map view (src/cluster_indicators.py computes it)
   meta.json        data/_meta.json + site-contract fields
 
-Also rewrites, in place, the three data-derived spec lines on the landing
+Also rewrites, in place, the data-derived spec lines on the landing
 page's product cards (docs/index.html, when it sits beside --out): the
 heat-index indicator/component counts and coverage from data/_meta.json,
-and the pulse indicator/segment/live counts from data/pulse/_meta.json.
+the pulse indicator/segment/live counts from data/pulse/_meta.json, and
+the pulse-of-the-market series/group/live counts from
+data/momentum/_meta.json (when that layer has been built).
 Those lines are generated, not maintained by hand; the rest of the page
 is hand-written and is left byte-identical.
 
@@ -175,17 +177,20 @@ def quarter_key(q: str) -> tuple[int, int]:
 
 
 def landing_spec_lines(heat_meta: dict, pulse_meta: dict,
-                       start_quarter: str) -> dict[str, str]:
-    """The landing page's three data-derived spec lines.
+                       start_quarter: str,
+                       momentum_meta: dict | None = None) -> dict[str, str]:
+    """The landing page's data-derived spec lines.
 
-    Every number and date comes from the two build metas and the panel's
+    Every number and date comes from the build metas and the panel's
     first quarter; nothing is copied from the page's current text, so the
     lines cannot drift from the data the site serves. The coverage line
     ends at the nowcast quarter, flagged as a nowcast, when the panel has
     been extended past the last built (observed) quarter; otherwise it
     ends at the last built quarter with no qualifier. The pulse segment
     count is the number of distinct key prefixes in the pulse meta's
-    indicator map.
+    indicator map. The momentum line is included only when the caller
+    passes the momentum layer's meta (that layer is built by its own
+    weekly pipeline, after this one historically ran).
     """
     lines = {
         "heat_indicators": (
@@ -205,6 +210,13 @@ def landing_spec_lines(heat_meta: dict, pulse_meta: dict,
         f"{pulse_meta['n_indicators']} across {len(segments)} segments "
         f"· {pulse_meta['n_live']} live from public sources"
     )
+    if momentum_meta is not None:
+        groups = {key.split("/")[0] for key in momentum_meta["indicators"]}
+        lines["momentum_indicators"] = (
+            f"{momentum_meta['n_indicators']} archived series across "
+            f"{len(groups)} groups "
+            f"· {momentum_meta['n_live']} live from free public sources"
+        )
     return lines
 
 
@@ -215,6 +227,7 @@ LANDING_SECTIONS = (
     ("FRB Heat Index", {"Indicators": "heat_indicators",
                         "Coverage": "heat_coverage"}),
     ("Market Pulse", {"Indicators": "pulse_indicators"}),
+    ("Pulse of the Market", {"Indicators": "momentum_indicators"}),
 )
 
 
@@ -230,6 +243,12 @@ def update_landing_page(path: Path, lines: dict[str, str]) -> bool:
     text = path.read_text()
     new = text
     for heading, specs in LANDING_SECTIONS:
+        if not any(key in lines for key in specs.values()):
+            # No generated lines for this card in this build (e.g. the
+            # momentum layer has not been built): leave the card as
+            # hand-written. When lines ARE supplied, a missing card or
+            # label below still fails loudly.
+            continue
         anchor = f"<h2>{heading}</h2>"
         start = new.find(anchor)
         if start < 0:
@@ -566,10 +585,14 @@ def build(data: Path, out: Path) -> dict:
     landing = out.parent / "index.html"
     if landing.exists():
         pulse_meta = json.loads((data / "pulse" / "_meta.json").read_text())
-        spec_lines = landing_spec_lines(meta, pulse_meta, quarters[0])
+        momentum_meta_path = data / "momentum" / "_meta.json"
+        momentum_meta = (json.loads(momentum_meta_path.read_text())
+                         if momentum_meta_path.exists() else None)
+        spec_lines = landing_spec_lines(meta, pulse_meta, quarters[0],
+                                        momentum_meta)
         if update_landing_page(landing, spec_lines):
-            print(f"Wrote {landing} (spec lines from data/_meta.json "
-                  f"and data/pulse/_meta.json)")
+            print(f"Wrote {landing} (spec lines from data/_meta.json, "
+                  f"data/pulse/_meta.json and data/momentum/_meta.json)")
         block = now_block_html(meta, agg_json, comp_json, data)
         if update_now_block(landing, block):
             print(f"Wrote {landing} (now block from the panel and "
