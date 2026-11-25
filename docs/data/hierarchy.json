@@ -170,6 +170,19 @@
        "short": "Household saving / GDP"
       }
      ]
+    },
+    {
+     "name": "Credit cycle",
+     "indicators": [
+      {
+       "name": "Credit-to-GDP Gap (BIS, private non-financial sector)",
+       "short": "Credit-to-GDP gap (BIS)"
+      },
+      {
+       "name": "Debt Service Ratio (BIS, private non-financial sector)",
+       "short": "Private-sector debt service ratio (BIS)"
+      }
+     ]
     }
    ]
   },
@@ -216,6 +229,14 @@
       {
        "name": "Hedge Fund Leverage (SCOOS net percent reporting increased use of leverage)",
        "short": "Hedge fund leverage (SCOOS)"
+      },
+      {
+       "name": "Private Credit Loans (Share of nonfinancial business debt)",
+       "short": "Private credit share of business debt"
+      },
+      {
+       "name": "Private Credit Intermediary Leverage (Total liabilities to total financial assets)",
+       "short": "Private credit intermediary leverage"
       }
      ]
     },

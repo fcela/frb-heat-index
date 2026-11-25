@@ -555,6 +555,50 @@ function fixedHorizonCard(fh) {
   return card;
 }
 
+/* The fixed-horizon track record, stated from the bundle's
+   fixed_horizon_accuracy block: how many readings are on record, how
+   many have scored, and the mean absolute error where any have. While
+   nothing has scored, the card says so and gives the first target
+   date — a reading scores only when its target period's outcome is
+   published, so an empty record reads as pending, never as zero. */
+function fhAccuracyCard(pm) {
+  const acc = pm.fixed_horizon_accuracy;
+  const titles = {};
+  if (pm.fixed_horizon) titles[pm.fixed_horizon.series_key] = pm.fixed_horizon.title;
+  for (const fam of pm.fixed_horizon_families || [])
+    titles[fam.series_key] = fam.title;
+  const rows = [];
+  for (const [family, fam] of Object.entries(acc.families || {})) {
+    for (const h of fam.horizons || []) {
+      rows.push(`<tr><td>${esc(titles[family] || family)}</td>` +
+        `<td>${h.months} months</td><td>${h.n_readings}</td><td>${h.n_scored}</td>` +
+        `<td>${h.mae == null ? "pending" : fmtRate(h.mae) + " pp"}</td></tr>`);
+    }
+  }
+  if (!rows.length) return null;
+  const card = document.createElement("div");
+  card.className = "pulse-card pm-fh-accuracy";
+  const span = acc.first_vintage
+    ? ` Readings recorded since ${esc(fmtDate(acc.first_vintage))}` +
+      (acc.last_vintage && acc.last_vintage !== acc.first_vintage
+        ? ` (through ${esc(fmtDate(acc.last_vintage))})` : "") + "."
+    : "";
+  const pending = acc.n_scored
+    ? ""
+    : `<p class="pulse-note">No reading has scored yet — the earliest target ` +
+      `date on record is ${esc(fmtDate(acc.first_target))}, and a reading scores ` +
+      `only when its target period's outcome is published. Scores appear here ` +
+      `as those outcomes arrive.</p>`;
+  card.innerHTML = `
+    <div class="pulse-head"><div><strong>Fixed-horizon track record</strong></div>
+      <div class="pulse-src">recorded readings vs realized outcomes · append-only record</div></div>
+    <p class="blurb">${esc(acc.note)}${span}</p>
+    <table class="pulse-table"><thead><tr><th>Family</th><th>Horizon</th><th>Readings</th><th>Scored</th><th>Mean abs error</th></tr></thead>
+      <tbody>${rows.join("")}</tbody></table>
+    ${pending}`;
+  return card;
+}
+
 function renderFixedHorizon(pm) {
   const el = document.getElementById("predmarkets-fixed-horizon");
   if (!el) return;
@@ -565,6 +609,10 @@ function renderFixedHorizon(pm) {
   for (const fam of pm.fixed_horizon_families || [])
     if ((fam.horizons || []).length) sections.push(fam);
   for (const fh of sections) el.appendChild(fixedHorizonCard(fh));
+  if (pm.fixed_horizon_accuracy && pm.fixed_horizon_accuracy.n_readings) {
+    const accCard = fhAccuracyCard(pm);
+    if (accCard) el.appendChild(accCard);
+  }
 }
 
 /* Cross-indicator scorecard: every accuracy-covered market's track

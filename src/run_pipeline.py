@@ -7,7 +7,7 @@ Pipeline (exactly the paper's documented construction):
   -> standardize over the full available sample
   -> component = mean of its standardized indicators
   -> Gaussian-kernel CDF (Silverman bandwidth) to (0,1)
-  aggregate = mean of the 14 components -> kernel CDF again.
+  aggregate = mean of the 15 components -> kernel CDF again.
 
 The oriented standardized indicators are also written out
 (data/indicators_standardized.csv): they are the actual component inputs
@@ -95,6 +95,17 @@ SPEC = {
     "Indicators of Volitility (VIX)": ("Price volatility", -1, "log"),
     "SRISK (Total capital shortfall relative to total assets)": ("Size/concentration", +1, None),
     "Granger-causality connections among large financial institutions": ("Size/concentration", +1, None),
+    # Added 2026-11 (not in the paper's 44): private credit enters
+    # Nonbank leverage alongside the other nonbank intermediation
+    # measures; its share-of-debt stock ratio gets the paper's ma10
+    # detrend for stock ratios, the leverage ratio none. The BIS
+    # early-warning pair forms its own Credit cycle component so the
+    # benchmark the paper validates against stays visible as a unit;
+    # the gap is a deviation from trend by construction (no transform).
+    "Private Credit Loans (Share of nonfinancial business debt)": ("Nonbank leverage", +1, "ma10"),
+    "Private Credit Intermediary Leverage (Total liabilities to total financial assets)": ("Nonbank leverage", +1, None),
+    "Credit-to-GDP Gap (BIS, private non-financial sector)": ("Credit cycle", +1, None),
+    "Debt Service Ratio (BIS, private non-financial sector)": ("Credit cycle", +1, None),
 }
 
 COMPONENTS = ["Equity markets", "Price volatility", "Business credit",
@@ -102,7 +113,7 @@ COMPONENTS = ["Equity markets", "Price volatility", "Business credit",
               "Nonfinancial Business", "Consumer credit", "Home mortgages",
               "Net saving", "Bank leverage", "Nonbank leverage",
               "Maturity transformation", "Short-term wholesale funding",
-              "Size/concentration"]
+              "Size/concentration", "Credit cycle"]
 
 
 def last_full_quarter(today: dt.date | None = None) -> str:

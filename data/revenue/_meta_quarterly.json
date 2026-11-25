@@ -1,9 +1,9 @@
 {
   "n_firms": 11,
   "n_lines": 11,
-  "year_min": 2010,
+  "year_min": 2009,
   "year_max": 2026,
-  "n_cells": 1664,
+  "n_cells": 2198,
   "taxonomy_lines": [
     "advisory",
     "ecm",
@@ -16241,6 +16241,86 @@
     {
       "firm": "Bank of America",
       "taxonomy_line": "advisory",
+      "year": 2010,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 336.0,
+      "ref_m": 1018.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "advisory",
+      "year": 2011,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 273.0,
+      "ref_m": 1248.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "advisory",
+      "year": 2012,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 302.0,
+      "ref_m": 1066.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "advisory",
+      "year": 2013,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 351.0,
+      "ref_m": 1125.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "advisory",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 339.0,
+      "ref_m": 1205.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "advisory",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 408.0,
+      "ref_m": 1503.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "advisory",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 261.0,
+      "ref_m": 1268.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "advisory",
+      "year": 2017,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 429.0,
+      "ref_m": 1691.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "advisory",
       "year": 2018,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
@@ -16320,83 +16400,403 @@
     },
     {
       "firm": "Bank of America",
-      "taxonomy_line": "ecm_dcm_combined",
+      "taxonomy_line": "dcm",
+      "year": 2010,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 808.0,
+      "ref_m": 3059.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "dcm",
+      "year": 2011,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 583.0,
+      "ref_m": 2878.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "dcm",
+      "year": 2012,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1076.0,
+      "ref_m": 3362.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "dcm",
+      "year": 2013,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 986.0,
+      "ref_m": 3804.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "dcm",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 883.0,
+      "ref_m": 3583.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "dcm",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 617.0,
+      "ref_m": 3033.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "dcm",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 810.0,
+      "ref_m": 3276.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "dcm",
+      "year": 2017,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 846.0,
+      "ref_m": 3635.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "dcm",
       "year": 2018,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
       "status": "ok",
-      "value_m": 562.0,
-      "ref_m": 2722.0
+      "value_m": 699.0,
+      "ref_m": 3084.0
     },
     {
       "firm": "Bank of America",
-      "taxonomy_line": "ecm_dcm_combined",
+      "taxonomy_line": "dcm",
       "year": 2019,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
       "status": "ok",
-      "value_m": 800.0,
-      "ref_m": 2998.0
+      "value_m": 797.0,
+      "ref_m": 3107.0
     },
     {
       "firm": "Bank of America",
-      "taxonomy_line": "ecm_dcm_combined",
+      "taxonomy_line": "dcm",
       "year": 2020,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
       "status": "ok",
-      "value_m": 1088.0,
-      "ref_m": 4698.0
+      "value_m": 718.0,
+      "ref_m": 3443.0
     },
     {
       "firm": "Bank of America",
-      "taxonomy_line": "ecm_dcm_combined",
+      "taxonomy_line": "dcm",
       "year": 2021,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
       "status": "ok",
-      "value_m": 1049.0,
-      "ref_m": 5077.0
+      "value_m": 984.0,
+      "ref_m": 4015.0
     },
     {
       "firm": "Bank of America",
-      "taxonomy_line": "ecm_dcm_combined",
+      "taxonomy_line": "dcm",
       "year": 2022,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
       "status": "ok",
-      "value_m": 411.0,
-      "ref_m": 1970.0
+      "value_m": 414.0,
+      "ref_m": 2523.0
     },
     {
       "firm": "Bank of America",
-      "taxonomy_line": "ecm_dcm_combined",
+      "taxonomy_line": "dcm",
       "year": 2023,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
       "status": "ok",
-      "value_m": 478.0,
-      "ref_m": 2235.0
+      "value_m": 589.0,
+      "ref_m": 2403.0
     },
     {
       "firm": "Bank of America",
-      "taxonomy_line": "ecm_dcm_combined",
+      "taxonomy_line": "dcm",
       "year": 2024,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
       "status": "ok",
-      "value_m": 763.0,
-      "ref_m": 3275.0
+      "value_m": 765.0,
+      "ref_m": 3310.0
     },
     {
       "firm": "Bank of America",
-      "taxonomy_line": "ecm_dcm_combined",
+      "taxonomy_line": "dcm",
       "year": 2025,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
       "status": "ok",
-      "value_m": 752.0,
-      "ref_m": 3320.0
+      "value_m": 810.0,
+      "ref_m": 3698.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2010,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 439.0,
+      "ref_m": 1329.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2011,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 269.0,
+      "ref_m": 1459.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2012,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 250.0,
+      "ref_m": 1026.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2013,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 464.0,
+      "ref_m": 1472.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 348.0,
+      "ref_m": 1490.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 286.0,
+      "ref_m": 1236.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 183.0,
+      "ref_m": 864.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2017,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 204.0,
+      "ref_m": 940.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2018,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 272.0,
+      "ref_m": 1183.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2019,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 322.0,
+      "ref_m": 1259.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2020,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 641.0,
+      "ref_m": 2328.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2021,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 545.0,
+      "ref_m": 2784.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2022,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 189.0,
+      "ref_m": 709.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2023,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 199.0,
+      "ref_m": 886.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2024,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 364.0,
+      "ref_m": 1354.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ecm",
+      "year": 2025,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 297.0,
+      "ref_m": 1259.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "equities",
+      "year": 2010,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 793.0,
+      "ref_m": 4155.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "equities",
+      "year": 2011,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 667.0,
+      "ref_m": 3957.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "equities",
+      "year": 2012,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 674.0,
+      "ref_m": 3014.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "equities",
+      "year": 2013,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 829.0,
+      "ref_m": 4180.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "equities",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 841.0,
+      "ref_m": 4194.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "equities",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 874.0,
+      "ref_m": 4335.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "equities",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 945.0,
+      "ref_m": 4017.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "equities",
+      "year": 2017,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 950.0,
+      "ref_m": 4120.0
     },
     {
       "firm": "Bank of America",
@@ -16481,6 +16881,86 @@
     {
       "firm": "Bank of America",
       "taxonomy_line": "ficc",
+      "year": 2010,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1662.0,
+      "ref_m": 12857.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ficc",
+      "year": 2011,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 734.0,
+      "ref_m": 8897.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ficc",
+      "year": 2012,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1551.0,
+      "ref_m": 8812.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ficc",
+      "year": 2013,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1527.0,
+      "ref_m": 8231.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ficc",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 919.0,
+      "ref_m": 8752.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ficc",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1565.0,
+      "ref_m": 7869.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ficc",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1866.0,
+      "ref_m": 9373.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ficc",
+      "year": 2017,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1589.0,
+      "ref_m": 8657.0
+    },
+    {
+      "firm": "Bank of America",
+      "taxonomy_line": "ficc",
       "year": 2018,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
@@ -16555,8 +17035,48 @@
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
       "status": "ok",
-      "value_m": 2502.0,
+      "value_m": 2501.0,
       "ref_m": 12267.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "advisory",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 252.0,
+      "ref_m": 938.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "advisory",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 302.0,
+      "ref_m": 1093.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "advisory",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 309.0,
+      "ref_m": 1013.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "advisory",
+      "year": 2017,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 326.0,
+      "ref_m": 1123.0
     },
     {
       "firm": "Citigroup",
@@ -16641,6 +17161,46 @@
     {
       "firm": "Citigroup",
       "taxonomy_line": "dcm",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 579.0,
+      "ref_m": 2540.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "dcm",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 613.0,
+      "ref_m": 2558.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "dcm",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 747.0,
+      "ref_m": 2776.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "dcm",
+      "year": 2017,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 812.0,
+      "ref_m": 3126.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "dcm",
       "year": 2018,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
@@ -16717,6 +17277,46 @@
       "status": "ok",
       "value_m": 446.0,
       "ref_m": 2011.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "ecm",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 256.0,
+      "ref_m": 1250.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "ecm",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 206.0,
+      "ref_m": 906.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "ecm",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 225.0,
+      "ref_m": 663.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "ecm",
+      "year": 2017,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 301.0,
+      "ref_m": 1121.0
     },
     {
       "firm": "Citigroup",
@@ -16801,6 +17401,46 @@
     {
       "firm": "Citigroup",
       "taxonomy_line": "equities",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 418.0,
+      "ref_m": 2722.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "equities",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 583.0,
+      "ref_m": 3101.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "equities",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 806.0,
+      "ref_m": 2933.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "equities",
+      "year": 2017,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 662.0,
+      "ref_m": 2879.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "equities",
       "year": 2018,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
@@ -16857,6 +17497,46 @@
       "status": "ok",
       "value_m": 1115.0,
       "ref_m": 5744.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "ficc",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 2098.0,
+      "ref_m": 12171.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "ficc",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 2180.0,
+      "ref_m": 11277.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "ficc",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 3167.0,
+      "ref_m": 13063.0
+    },
+    {
+      "firm": "Citigroup",
+      "taxonomy_line": "ficc",
+      "year": 2017,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 2655.0,
+      "ref_m": 12369.0
     },
     {
       "firm": "Citigroup",
@@ -17351,6 +18031,86 @@
     {
       "firm": "JPMorgan",
       "taxonomy_line": "advisory",
+      "year": 2009,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 611.0,
+      "ref_m": 1867.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "advisory",
+      "year": 2010,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 424.0,
+      "ref_m": 1469.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "advisory",
+      "year": 2011,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 397.0,
+      "ref_m": 1792.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "advisory",
+      "year": 2012,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 465.0,
+      "ref_m": 1491.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "advisory",
+      "year": 2013,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 434.0,
+      "ref_m": 1315.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "advisory",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 434.0,
+      "ref_m": 1627.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "advisory",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 622.0,
+      "ref_m": 2133.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "advisory",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 517.0,
+      "ref_m": 2110.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "advisory",
       "year": 2018,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
@@ -17427,6 +18187,86 @@
       "status": "ok",
       "value_m": 1033.0,
       "ref_m": 3497.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "dcm",
+      "year": 2009,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 732.0,
+      "ref_m": 2661.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "dcm",
+      "year": 2010,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 920.0,
+      "ref_m": 3128.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "dcm",
+      "year": 2011,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 553.0,
+      "ref_m": 2886.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "dcm",
+      "year": 2012,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 990.0,
+      "ref_m": 3252.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "dcm",
+      "year": 2013,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 801.0,
+      "ref_m": 3517.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "dcm",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1050.0,
+      "ref_m": 3372.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "dcm",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 602.0,
+      "ref_m": 3169.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "dcm",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 866.0,
+      "ref_m": 3225.0
     },
     {
       "firm": "JPMorgan",
@@ -17511,6 +18351,86 @@
     {
       "firm": "JPMorgan",
       "taxonomy_line": "ecm",
+      "year": 2009,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 549.0,
+      "ref_m": 2641.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ecm",
+      "year": 2010,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 489.0,
+      "ref_m": 1589.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ecm",
+      "year": 2011,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 169.0,
+      "ref_m": 1181.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ecm",
+      "year": 2012,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 265.0,
+      "ref_m": 1026.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ecm",
+      "year": 2013,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 436.0,
+      "ref_m": 1499.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ecm",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 327.0,
+      "ref_m": 1571.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ecm",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 314.0,
+      "ref_m": 1434.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ecm",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 353.0,
+      "ref_m": 1213.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ecm",
       "year": 2018,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
@@ -17591,6 +18511,86 @@
     {
       "firm": "JPMorgan",
       "taxonomy_line": "equities",
+      "year": 2009,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 971.0,
+      "ref_m": 4393.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "equities",
+      "year": 2010,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 947.0,
+      "ref_m": 4582.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "equities",
+      "year": 2011,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 423.0,
+      "ref_m": 4476.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "equities",
+      "year": 2012,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 937.0,
+      "ref_m": 4448.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "equities",
+      "year": 2013,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1109.0,
+      "ref_m": 4994.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "equities",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1200.0,
+      "ref_m": 5044.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "equities",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1064.0,
+      "ref_m": 5694.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "equities",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1150.0,
+      "ref_m": 5740.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "equities",
       "year": 2018,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
@@ -17667,6 +18667,86 @@
       "status": "ok",
       "value_m": 2859.0,
       "ref_m": 13250.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ficc",
+      "year": 2009,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 2735.0,
+      "ref_m": 17564.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ficc",
+      "year": 2010,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 2588.0,
+      "ref_m": 14738.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ficc",
+      "year": 2011,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1938.0,
+      "ref_m": 14784.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ficc",
+      "year": 2012,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 3466.0,
+      "ref_m": 15701.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ficc",
+      "year": 2013,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 3707.0,
+      "ref_m": 15976.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ficc",
+      "year": 2014,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 2695.0,
+      "ref_m": 14075.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ficc",
+      "year": 2015,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 2574.0,
+      "ref_m": 12592.0
+    },
+    {
+      "firm": "JPMorgan",
+      "taxonomy_line": "ficc",
+      "year": 2016,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 3369.0,
+      "ref_m": 15259.0
     },
     {
       "firm": "JPMorgan",
@@ -17971,6 +19051,26 @@
     {
       "firm": "Morgan Stanley",
       "taxonomy_line": "equities",
+      "year": 2018,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1929.0,
+      "ref_m": 8976.0
+    },
+    {
+      "firm": "Morgan Stanley",
+      "taxonomy_line": "equities",
+      "year": 2019,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1997.0,
+      "ref_m": 8133.0
+    },
+    {
+      "firm": "Morgan Stanley",
+      "taxonomy_line": "equities",
       "year": 2021,
       "quarter": 4,
       "derivation": "mda_annual_derived_q4",
@@ -18017,6 +19117,26 @@
       "status": "ok",
       "value_m": 3666.0,
       "ref_m": 15631.0
+    },
+    {
+      "firm": "Morgan Stanley",
+      "taxonomy_line": "ficc",
+      "year": 2018,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 564.0,
+      "ref_m": 5005.0
+    },
+    {
+      "firm": "Morgan Stanley",
+      "taxonomy_line": "ficc",
+      "year": 2019,
+      "quarter": 4,
+      "derivation": "mda_annual_derived_q4",
+      "status": "ok",
+      "value_m": 1712.0,
+      "ref_m": 5985.0
     },
     {
       "firm": "Morgan Stanley",
@@ -18072,11 +19192,83 @@
   "n_derived_cells": 651,
   "reconciliation_vs_annual": {
     "tolerance": "5% or $25M, whichever is larger",
-    "n_checks": 366,
-    "n_pass": 347,
+    "n_checks": 478,
+    "n_pass": 459,
     "n_flag": 19,
-    "match_rate": 0.9481,
+    "match_rate": 0.9603,
     "checks": [
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "advisory",
+        "year": 2010,
+        "q_sum_m": 1018.0,
+        "annual_m": 1018.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "advisory",
+        "year": 2011,
+        "q_sum_m": 1248.0,
+        "annual_m": 1248.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "advisory",
+        "year": 2012,
+        "q_sum_m": 1066.0,
+        "annual_m": 1066.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "advisory",
+        "year": 2013,
+        "q_sum_m": 1125.0,
+        "annual_m": 1125.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "advisory",
+        "year": 2014,
+        "q_sum_m": 1205.0,
+        "annual_m": 1205.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "advisory",
+        "year": 2015,
+        "q_sum_m": 1503.0,
+        "annual_m": 1503.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "advisory",
+        "year": 2016,
+        "q_sum_m": 1268.0,
+        "annual_m": 1268.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "advisory",
+        "year": 2017,
+        "q_sum_m": 1691.0,
+        "annual_m": 1691.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
       {
         "firm": "Bank of America",
         "taxonomy_line": "advisory",
@@ -18223,73 +19415,361 @@
       },
       {
         "firm": "Bank of America",
-        "taxonomy_line": "ecm_dcm_combined",
+        "taxonomy_line": "dcm",
+        "year": 2010,
+        "q_sum_m": 3059.0,
+        "annual_m": 3059.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "dcm",
+        "year": 2011,
+        "q_sum_m": 2878.0,
+        "annual_m": 2878.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "dcm",
+        "year": 2012,
+        "q_sum_m": 3362.0,
+        "annual_m": 3362.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "dcm",
+        "year": 2013,
+        "q_sum_m": 3804.0,
+        "annual_m": 3804.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "dcm",
+        "year": 2014,
+        "q_sum_m": 3583.0,
+        "annual_m": 3583.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "dcm",
+        "year": 2015,
+        "q_sum_m": 3033.0,
+        "annual_m": 3033.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "dcm",
+        "year": 2016,
+        "q_sum_m": 3276.0,
+        "annual_m": 3276.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "dcm",
+        "year": 2017,
+        "q_sum_m": 3635.0,
+        "annual_m": 3635.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "dcm",
         "year": 2018,
-        "q_sum_m": 2722.0,
-        "annual_m": 2722.0,
+        "q_sum_m": 3084.0,
+        "annual_m": 3084.0,
         "diff_m": 0.0,
         "status": "pass"
       },
       {
         "firm": "Bank of America",
-        "taxonomy_line": "ecm_dcm_combined",
+        "taxonomy_line": "dcm",
         "year": 2019,
-        "q_sum_m": 2998.0,
-        "annual_m": 2998.0,
+        "q_sum_m": 3107.0,
+        "annual_m": 3107.0,
         "diff_m": 0.0,
         "status": "pass"
       },
       {
         "firm": "Bank of America",
-        "taxonomy_line": "ecm_dcm_combined",
+        "taxonomy_line": "dcm",
         "year": 2020,
-        "q_sum_m": 4698.0,
-        "annual_m": 4698.0,
+        "q_sum_m": 3443.0,
+        "annual_m": 3443.0,
         "diff_m": 0.0,
         "status": "pass"
       },
       {
         "firm": "Bank of America",
-        "taxonomy_line": "ecm_dcm_combined",
+        "taxonomy_line": "dcm",
         "year": 2021,
-        "q_sum_m": 5077.0,
-        "annual_m": 5077.0,
+        "q_sum_m": 4015.0,
+        "annual_m": 4015.0,
         "diff_m": 0.0,
         "status": "pass"
       },
       {
         "firm": "Bank of America",
-        "taxonomy_line": "ecm_dcm_combined",
+        "taxonomy_line": "dcm",
         "year": 2022,
-        "q_sum_m": 1970.0,
-        "annual_m": 1970.0,
+        "q_sum_m": 2523.0,
+        "annual_m": 2523.0,
         "diff_m": 0.0,
         "status": "pass"
       },
       {
         "firm": "Bank of America",
-        "taxonomy_line": "ecm_dcm_combined",
+        "taxonomy_line": "dcm",
         "year": 2023,
-        "q_sum_m": 2235.0,
-        "annual_m": 2235.0,
+        "q_sum_m": 2403.0,
+        "annual_m": 2403.0,
         "diff_m": 0.0,
         "status": "pass"
       },
       {
         "firm": "Bank of America",
-        "taxonomy_line": "ecm_dcm_combined",
+        "taxonomy_line": "dcm",
         "year": 2024,
-        "q_sum_m": 3275.0,
-        "annual_m": 3275.0,
+        "q_sum_m": 3310.0,
+        "annual_m": 3310.0,
         "diff_m": 0.0,
         "status": "pass"
       },
       {
         "firm": "Bank of America",
-        "taxonomy_line": "ecm_dcm_combined",
+        "taxonomy_line": "dcm",
         "year": 2025,
-        "q_sum_m": 3320.0,
-        "annual_m": 3320.0,
+        "q_sum_m": 3698.0,
+        "annual_m": 3698.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2010,
+        "q_sum_m": 1329.0,
+        "annual_m": 1329.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2011,
+        "q_sum_m": 1459.0,
+        "annual_m": 1459.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2012,
+        "q_sum_m": 1026.0,
+        "annual_m": 1026.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2013,
+        "q_sum_m": 1472.0,
+        "annual_m": 1472.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2014,
+        "q_sum_m": 1490.0,
+        "annual_m": 1490.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2015,
+        "q_sum_m": 1236.0,
+        "annual_m": 1236.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2016,
+        "q_sum_m": 864.0,
+        "annual_m": 864.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2017,
+        "q_sum_m": 940.0,
+        "annual_m": 940.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2018,
+        "q_sum_m": 1183.0,
+        "annual_m": 1183.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2019,
+        "q_sum_m": 1259.0,
+        "annual_m": 1259.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2020,
+        "q_sum_m": 2328.0,
+        "annual_m": 2328.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2021,
+        "q_sum_m": 2784.0,
+        "annual_m": 2784.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2022,
+        "q_sum_m": 709.0,
+        "annual_m": 709.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2023,
+        "q_sum_m": 886.0,
+        "annual_m": 886.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2024,
+        "q_sum_m": 1354.0,
+        "annual_m": 1354.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ecm",
+        "year": 2025,
+        "q_sum_m": 1259.0,
+        "annual_m": 1259.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "equities",
+        "year": 2010,
+        "q_sum_m": 4155.0,
+        "annual_m": 4155.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "equities",
+        "year": 2011,
+        "q_sum_m": 3957.0,
+        "annual_m": 3957.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "equities",
+        "year": 2012,
+        "q_sum_m": 3014.0,
+        "annual_m": 3014.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "equities",
+        "year": 2013,
+        "q_sum_m": 4180.0,
+        "annual_m": 4180.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "equities",
+        "year": 2014,
+        "q_sum_m": 4194.0,
+        "annual_m": 4194.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "equities",
+        "year": 2015,
+        "q_sum_m": 4335.0,
+        "annual_m": 4335.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "equities",
+        "year": 2016,
+        "q_sum_m": 4017.0,
+        "annual_m": 4017.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "equities",
+        "year": 2017,
+        "q_sum_m": 4120.0,
+        "annual_m": 4120.0,
         "diff_m": 0.0,
         "status": "pass"
       },
@@ -18368,6 +19848,78 @@
       {
         "firm": "Bank of America",
         "taxonomy_line": "ficc",
+        "year": 2010,
+        "q_sum_m": 12857.0,
+        "annual_m": 12857.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ficc",
+        "year": 2011,
+        "q_sum_m": 8897.0,
+        "annual_m": 8897.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ficc",
+        "year": 2012,
+        "q_sum_m": 8812.0,
+        "annual_m": 8812.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ficc",
+        "year": 2013,
+        "q_sum_m": 8231.0,
+        "annual_m": 8231.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ficc",
+        "year": 2014,
+        "q_sum_m": 8752.0,
+        "annual_m": 8752.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ficc",
+        "year": 2015,
+        "q_sum_m": 7869.0,
+        "annual_m": 7869.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ficc",
+        "year": 2016,
+        "q_sum_m": 9373.0,
+        "annual_m": 9373.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ficc",
+        "year": 2017,
+        "q_sum_m": 8657.0,
+        "annual_m": 8657.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Bank of America",
+        "taxonomy_line": "ficc",
         "year": 2018,
         "q_sum_m": 8271.0,
         "annual_m": 8271.0,
@@ -18434,6 +19986,42 @@
         "year": 2025,
         "q_sum_m": 12267.0,
         "annual_m": 12267.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "advisory",
+        "year": 2014,
+        "q_sum_m": 938.0,
+        "annual_m": 938.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "advisory",
+        "year": 2015,
+        "q_sum_m": 1093.0,
+        "annual_m": 1093.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "advisory",
+        "year": 2016,
+        "q_sum_m": 1013.0,
+        "annual_m": 1013.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "advisory",
+        "year": 2017,
+        "q_sum_m": 1123.0,
+        "annual_m": 1123.0,
         "diff_m": 0.0,
         "status": "pass"
       },
@@ -18539,6 +20127,42 @@
       {
         "firm": "Citigroup",
         "taxonomy_line": "dcm",
+        "year": 2014,
+        "q_sum_m": 2540.0,
+        "annual_m": 2540.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "dcm",
+        "year": 2015,
+        "q_sum_m": 2558.0,
+        "annual_m": 2558.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "dcm",
+        "year": 2016,
+        "q_sum_m": 2776.0,
+        "annual_m": 2776.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "dcm",
+        "year": 2017,
+        "q_sum_m": 3126.0,
+        "annual_m": 3126.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "dcm",
         "year": 2018,
         "q_sum_m": 2719.0,
         "annual_m": 2719.0,
@@ -18596,6 +20220,42 @@
         "year": 2025,
         "q_sum_m": 2011.0,
         "annual_m": 2011.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "ecm",
+        "year": 2014,
+        "q_sum_m": 1250.0,
+        "annual_m": 1250.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "ecm",
+        "year": 2015,
+        "q_sum_m": 906.0,
+        "annual_m": 906.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "ecm",
+        "year": 2016,
+        "q_sum_m": 663.0,
+        "annual_m": 663.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "ecm",
+        "year": 2017,
+        "q_sum_m": 1121.0,
+        "annual_m": 1121.0,
         "diff_m": 0.0,
         "status": "pass"
       },
@@ -18674,6 +20334,42 @@
       {
         "firm": "Citigroup",
         "taxonomy_line": "equities",
+        "year": 2014,
+        "q_sum_m": 2722.0,
+        "annual_m": 2722.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "equities",
+        "year": 2015,
+        "q_sum_m": 3101.0,
+        "annual_m": 3101.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "equities",
+        "year": 2016,
+        "q_sum_m": 2933.0,
+        "annual_m": 2933.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "equities",
+        "year": 2017,
+        "q_sum_m": 2879.0,
+        "annual_m": 2879.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "equities",
         "year": 2018,
         "q_sum_m": 3427.0,
         "annual_m": 3427.0,
@@ -18722,6 +20418,42 @@
         "year": 2025,
         "q_sum_m": 5744.0,
         "annual_m": 5744.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "ficc",
+        "year": 2014,
+        "q_sum_m": 12171.0,
+        "annual_m": 12171.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "ficc",
+        "year": 2015,
+        "q_sum_m": 11277.0,
+        "annual_m": 11277.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "ficc",
+        "year": 2016,
+        "q_sum_m": 13063.0,
+        "annual_m": 13063.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Citigroup",
+        "taxonomy_line": "ficc",
+        "year": 2017,
+        "q_sum_m": 12369.0,
+        "annual_m": 12369.0,
         "diff_m": 0.0,
         "status": "pass"
       },
@@ -20006,6 +21738,78 @@
       {
         "firm": "JPMorgan",
         "taxonomy_line": "advisory",
+        "year": 2009,
+        "q_sum_m": 1867.0,
+        "annual_m": 1867.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "advisory",
+        "year": 2010,
+        "q_sum_m": 1469.0,
+        "annual_m": 1469.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "advisory",
+        "year": 2011,
+        "q_sum_m": 1792.0,
+        "annual_m": 1792.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "advisory",
+        "year": 2012,
+        "q_sum_m": 1491.0,
+        "annual_m": 1491.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "advisory",
+        "year": 2013,
+        "q_sum_m": 1315.0,
+        "annual_m": 1315.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "advisory",
+        "year": 2014,
+        "q_sum_m": 1627.0,
+        "annual_m": 1627.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "advisory",
+        "year": 2015,
+        "q_sum_m": 2133.0,
+        "annual_m": 2133.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "advisory",
+        "year": 2016,
+        "q_sum_m": 2110.0,
+        "annual_m": 2110.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "advisory",
         "year": 2018,
         "q_sum_m": 2509.0,
         "annual_m": 2509.0,
@@ -20204,6 +22008,78 @@
       {
         "firm": "JPMorgan",
         "taxonomy_line": "dcm",
+        "year": 2009,
+        "q_sum_m": 2661.0,
+        "annual_m": 2661.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "dcm",
+        "year": 2010,
+        "q_sum_m": 3128.0,
+        "annual_m": 3128.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "dcm",
+        "year": 2011,
+        "q_sum_m": 2886.0,
+        "annual_m": 2886.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "dcm",
+        "year": 2012,
+        "q_sum_m": 3252.0,
+        "annual_m": 3252.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "dcm",
+        "year": 2013,
+        "q_sum_m": 3517.0,
+        "annual_m": 3517.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "dcm",
+        "year": 2014,
+        "q_sum_m": 3372.0,
+        "annual_m": 3372.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "dcm",
+        "year": 2015,
+        "q_sum_m": 3169.0,
+        "annual_m": 3169.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "dcm",
+        "year": 2016,
+        "q_sum_m": 3225.0,
+        "annual_m": 3225.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "dcm",
         "year": 2018,
         "q_sum_m": 3280.0,
         "annual_m": 3280.0,
@@ -20270,6 +22146,78 @@
         "year": 2025,
         "q_sum_m": 4506.0,
         "annual_m": 4506.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ecm",
+        "year": 2009,
+        "q_sum_m": 2641.0,
+        "annual_m": 2641.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ecm",
+        "year": 2010,
+        "q_sum_m": 1589.0,
+        "annual_m": 1589.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ecm",
+        "year": 2011,
+        "q_sum_m": 1181.0,
+        "annual_m": 1181.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ecm",
+        "year": 2012,
+        "q_sum_m": 1026.0,
+        "annual_m": 1026.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ecm",
+        "year": 2013,
+        "q_sum_m": 1499.0,
+        "annual_m": 1499.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ecm",
+        "year": 2014,
+        "q_sum_m": 1571.0,
+        "annual_m": 1571.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ecm",
+        "year": 2015,
+        "q_sum_m": 1434.0,
+        "annual_m": 1434.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ecm",
+        "year": 2016,
+        "q_sum_m": 1213.0,
+        "annual_m": 1213.0,
         "diff_m": 0.0,
         "status": "pass"
       },
@@ -20348,6 +22296,78 @@
       {
         "firm": "JPMorgan",
         "taxonomy_line": "equities",
+        "year": 2009,
+        "q_sum_m": 4393.0,
+        "annual_m": 4393.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "equities",
+        "year": 2010,
+        "q_sum_m": 4582.0,
+        "annual_m": 4582.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "equities",
+        "year": 2011,
+        "q_sum_m": 4476.0,
+        "annual_m": 4476.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "equities",
+        "year": 2012,
+        "q_sum_m": 4448.0,
+        "annual_m": 4448.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "equities",
+        "year": 2013,
+        "q_sum_m": 4994.0,
+        "annual_m": 4994.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "equities",
+        "year": 2014,
+        "q_sum_m": 5044.0,
+        "annual_m": 5044.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "equities",
+        "year": 2015,
+        "q_sum_m": 5694.0,
+        "annual_m": 5694.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "equities",
+        "year": 2016,
+        "q_sum_m": 5740.0,
+        "annual_m": 5740.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "equities",
         "year": 2018,
         "q_sum_m": 6888.0,
         "annual_m": 6888.0,
@@ -20414,6 +22434,78 @@
         "year": 2025,
         "q_sum_m": 13250.0,
         "annual_m": 13250.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ficc",
+        "year": 2009,
+        "q_sum_m": 17564.0,
+        "annual_m": 17564.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ficc",
+        "year": 2010,
+        "q_sum_m": 14738.0,
+        "annual_m": 14738.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ficc",
+        "year": 2011,
+        "q_sum_m": 14784.0,
+        "annual_m": 14784.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ficc",
+        "year": 2012,
+        "q_sum_m": 15701.0,
+        "annual_m": 15701.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ficc",
+        "year": 2013,
+        "q_sum_m": 15976.0,
+        "annual_m": 15976.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ficc",
+        "year": 2014,
+        "q_sum_m": 14075.0,
+        "annual_m": 14075.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ficc",
+        "year": 2015,
+        "q_sum_m": 12592.0,
+        "annual_m": 12592.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "JPMorgan",
+        "taxonomy_line": "ficc",
+        "year": 2016,
+        "q_sum_m": 15259.0,
+        "annual_m": 15259.0,
         "diff_m": 0.0,
         "status": "pass"
       },
@@ -21077,6 +23169,24 @@
       {
         "firm": "Morgan Stanley",
         "taxonomy_line": "equities",
+        "year": 2018,
+        "q_sum_m": 8976.0,
+        "annual_m": 8976.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Morgan Stanley",
+        "taxonomy_line": "equities",
+        "year": 2019,
+        "q_sum_m": 8133.0,
+        "annual_m": 8133.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Morgan Stanley",
+        "taxonomy_line": "equities",
         "year": 2021,
         "q_sum_m": 11435.0,
         "annual_m": 11435.0,
@@ -21116,6 +23226,24 @@
         "year": 2025,
         "q_sum_m": 15631.0,
         "annual_m": 15631.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Morgan Stanley",
+        "taxonomy_line": "ficc",
+        "year": 2018,
+        "q_sum_m": 5005.0,
+        "annual_m": 5005.0,
+        "diff_m": 0.0,
+        "status": "pass"
+      },
+      {
+        "firm": "Morgan Stanley",
+        "taxonomy_line": "ficc",
+        "year": 2019,
+        "q_sum_m": 5985.0,
+        "annual_m": 5985.0,
         "diff_m": 0.0,
         "status": "pass"
       },

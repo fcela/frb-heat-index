@@ -11,6 +11,7 @@
   --proxy: #b45309;
   --experimental: #7c3aed;
   --err: #b91c1c;
+  --stale: #c2410c;
 }
 
 [data-theme="dark"] {
@@ -18,6 +19,7 @@
   --proxy: #fbbf24;
   --experimental: #c4b5fd;
   --err: #f87171;
+  --stale: #fb923c;
 }
 
 /* ---------- tape band (distinct pulse identity, both themes) ---------- */
@@ -113,6 +115,8 @@
   border: 1px solid;
 }
 
+.status-stale { color: var(--stale); border-color: var(--stale); border-style: dashed; }
+.tape-item .stale { color: #f87171; }
 .status-live { color: var(--live); border-color: var(--live); }
 .status-live-proxy { color: var(--proxy); border-color: var(--proxy); }
 .status-live-experimental { color: var(--experimental); border-color: var(--experimental); }

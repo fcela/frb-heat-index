@@ -23,6 +23,21 @@ Inputs (all public):
 
 Frequency: monthly (median of daily prints). Unit: basis points, annualized.
 
+Guards on daily prints. The formula divides the spot/futures gap by tau,
+so pip-level input noise becomes hundreds of basis points when tau is
+small or the spot leg is stale; two guards keep prints inside what the
+construction can support:
+- Same-date spot pairing: a daily print is dropped when the asof spot
+  observation is more than one business day older than the futures date.
+  DEXUSEU lags and skips US holidays while CME futures trade on, and
+  pairing a frozen spot with a moving futures close manufactures basis
+  moves that never happened (November 2026: daily prints of +669 to
+  +1683 bp against a spot frozen at its 2026-11-06 value).
+- Tenor floor: prints with tau below 0.15 (about 54 days) are excluded.
+  At tau around 0.1 the annualization multiplies spot/futures
+  discrepancies roughly tenfold. A month whose front contract sits
+  inside the floor is no-data, not a funding-stress signal.
+
 Caveats:
 - Short history: Yahoo delists expired contracts (6EM25/6EM26/6EU26 already
   gone), so the series starts 2025-04 and the front-contract tenor varies
@@ -62,6 +77,23 @@ CONTRACTS = {
 }
 ROLL_DAYS_BEFORE_EXPIRY = 14
 START = datetime.date(2025, 4, 1)
+# Daily prints are kept only at tau >= TAU_MIN and with a spot observation
+# at most MAX_SPOT_AGE_BUSINESS_DAYS old (see module docstring).
+TAU_MIN = 0.15
+MAX_SPOT_AGE_BUSINESS_DAYS = 1
+
+
+def _business_days_after(start: datetime.date, end: datetime.date,
+                         cap: int) -> int:
+    """Business days in (start, end], stopping early once the count
+    exceeds cap (callers only need to distinguish small ages)."""
+    n = 0
+    d = start
+    while d < end and n <= cap:
+        d += datetime.timedelta(days=1)
+        if d.weekday() < 5:
+            n += 1
+    return n
 
 
 def _third_wednesday(year: int, month: int) -> datetime.date:
@@ -160,22 +192,32 @@ def fetch_xccy_basis() -> pl.DataFrame:
     of daily DTV(2018) CIP-deviation prints.
     """
     front = _front_contract_series()
-    spot = _fred_daily("DEXUSEU").rename({"value": "S"})
+    spot = _fred_daily("DEXUSEU").rename({"value": "S", "date": "spot_date"})
     euribor = _fred_daily("IR3TIB01EZM156N").rename({"value": "r_eur"})
     tbill = _fred_daily("DGS3MO").rename({"value": "r_usd"})
-    df = front.join_asof(spot, on="date", strategy="backward")
+    df = front.join_asof(spot, left_on="date", right_on="spot_date",
+                         strategy="backward")
     df = df.join_asof(euribor, on="date", strategy="backward")  # monthly -> ffill
     df = df.join_asof(tbill, on="date", strategy="backward")
     df = df.with_columns(
         ((pl.col("expiry") - pl.col("date")).dt.total_days() / 360.0).alias("tau"),
         (pl.col("r_eur") / 100.0).alias("re"),
         (pl.col("r_usd") / 100.0).alias("ru"),
+        pl.struct(["spot_date", "date"]).map_elements(
+            lambda s: None
+            if s["spot_date"] is None
+            else _business_days_after(
+                s["spot_date"], s["date"], MAX_SPOT_AGE_BUSINESS_DAYS + 1
+            ),
+            return_dtype=pl.Int64,
+        ).alias("spot_age_bd"),
     )
     df = df.filter(
         pl.col("S").is_not_null()
         & pl.col("re").is_not_null()
         & pl.col("ru").is_not_null()
-        & (pl.col("tau") > 0.03)
+        & (pl.col("spot_age_bd") <= MAX_SPOT_AGE_BUSINESS_DAYS)
+        & (pl.col("tau") >= TAU_MIN)
     )
     if df.height == 0:
         raise RuntimeError("xccy: no complete daily observations")

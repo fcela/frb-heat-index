@@ -39,6 +39,7 @@ from src.predmarkets.build_predmarkets import (
     chart_events,
     event_close_time,
     event_horizon,
+    fixed_horizon_accuracy_block,
     front_gap_note,
     merge_incremental,
     open_events,
@@ -1169,6 +1170,48 @@ def test_fixed_horizon_accuracy_records():
         assert again.height == out.height == 1
         assert again[0, "predicted"] == 4.13
     print("ok test_fixed_horizon_accuracy_records")
+
+
+def test_fixed_horizon_accuracy_bundle_block():
+    """The site bundle's fixed-horizon accuracy block: totals and span
+    from the records frame, per-(family, horizon) summaries carried
+    through, and the pending-never-zero convention — an unscored
+    family's mae is None while a scored one reports its error."""
+    fam = fh_accuracy_mod
+    fed_frame = pl.DataFrame(
+        [{"vintage_date": "2026-11-08", "horizon_months": 3,
+          "target_date": "2027-02-08", "implied_rate": 4.13,
+          "source_event": "KXFED-27JAN", "source_meeting_date": "2027-01-27"}],
+        schema=fixed_horizon_mod.FRAME_SCHEMA)
+    gdp_frame = pl.DataFrame(
+        [{"vintage_date": "2026-11-08", "horizon_months": 3,
+          "target_date": "2027-02-08", "implied_value": 2.43,
+          "source_event": "KXGDP-27APR29", "reference_period": "2027Q1"}],
+        schema=fixed_horizon_mod.PRINT_FRAME_SCHEMA)
+    rz = _rz_frame([{"indicator": "gdp_quarterly", "period": "2027Q1",
+                     "event": "KXGDP-27APR29", "kind": "print",
+                     "value": 2.0, "source": "s", "first_seen": "d",
+                     "last_checked": "d", "note": "print"}])
+    merged = fam.merge_records(
+        pl.DataFrame(schema=fam.SCHEMA_OVERRIDES),
+        {"fed_funds": fed_frame, "gdp_quarterly": gdp_frame},
+        rz, today="2027-04-29")
+    block = fixed_horizon_accuracy_block(merged)
+    assert block["n_readings"] == 2 and block["n_scored"] == 1
+    assert block["first_vintage"] == "2026-11-08"
+    assert block["last_vintage"] == "2026-11-08"
+    assert block["first_target"] == "2027-02-08"
+    assert block["note"]
+    gdp_h = block["families"]["gdp_quarterly"]["horizons"][0]
+    assert gdp_h["n_scored"] == 1 and abs(gdp_h["mae"] - 0.43) < 1e-9
+    fed_h = block["families"]["fed_funds"]["horizons"][0]
+    assert fed_h["n_scored"] == 0 and fed_h["mae"] is None
+    # Empty records: an honest empty block, no fabricated span.
+    empty = fixed_horizon_accuracy_block(
+        pl.DataFrame(schema=fam.SCHEMA_OVERRIDES))
+    assert empty["n_readings"] == 0 and empty["n_scored"] == 0
+    assert empty["families"] == {} and empty["first_vintage"] is None
+    print("ok test_fixed_horizon_accuracy_bundle_block")
 
 
 def _acc_frame(rows):
