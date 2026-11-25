@@ -18,7 +18,9 @@ the pulse indicator/segment/live counts from data/pulse/_meta.json, and
 the pulse-of-the-market series/group/live counts from
 data/momentum/_meta.json (when that layer has been built).
 Those lines are generated, not maintained by hand; the rest of the page
-is hand-written and is left byte-identical.
+is hand-written and is left byte-identical. The hero heading's view
+count is likewise generated, from the number of product cards present
+on the page.
 
 The same landing rewrite fills the page's "What is happening now" block
 (between the NOW-BLOCK markers): the headline index level and change,
@@ -220,6 +222,30 @@ def landing_spec_lines(heat_meta: dict, pulse_meta: dict,
     return lines
 
 
+_COUNT_WORDS = (
+    "One", "Two", "Three", "Four", "Five", "Six",
+    "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve",
+)
+
+
+def _sync_view_count(text: str) -> str:
+    """Sync the hero heading's "<N> views" count with the page itself.
+
+    The heading is hand-written, but its count is generated: it must
+    equal the number of product cards on the page, counted from the
+    page, not from LANDING_SECTIONS (a card whose spec lines are
+    hand-written, like Prediction Markets, is still a view). Pages
+    without the heading (test fixtures) are returned unchanged.
+    """
+    n = text.count('<section class="card product-card">')
+    if not 1 <= n <= len(_COUNT_WORDS):
+        return text
+    return re.sub(
+        r"(<h1>)[A-Za-z]+( views of)",
+        lambda m: m.group(1) + _COUNT_WORDS[n - 1] + m.group(2),
+        text, count=1)
+
+
 # (card heading, {spec label: line key}) for the landing-page cards whose
 # spec lines are generated. Cards and labels not listed here are
 # hand-written and are never touched.
@@ -238,6 +264,8 @@ def update_landing_page(path: Path, lines: dict[str, str]) -> bool:
     sections, is replaced; everything else stays byte-identical. A missing
     card or label raises ValueError -- a page whose structure has moved
     away from the generator must fail the build loudly, not drift.
+    The hero heading's view count is also synced to the number of
+    product cards present (see _sync_view_count).
     Returns True when the file changed.
     """
     text = path.read_text()
@@ -266,6 +294,7 @@ def update_landing_page(path: Path, lines: dict[str, str]) -> bool:
                 raise ValueError(
                     f"{path}: spec {label!r} not found in card {heading!r}")
         new = new[:start] + section + new[end:]
+    new = _sync_view_count(new)
     if new == text:
         return False
     path.write_text(new)
