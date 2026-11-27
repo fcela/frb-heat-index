@@ -79,6 +79,26 @@ def test_component_heatmap_matches_bundle():
             _check_row(row, series)
 
 
+def test_component_heatmap_uses_clustered_order():
+    """The component map's rows follow the build's clustered order
+    (hierarchical clustering of the component series), not the
+    framework order; the parser records rows in document order."""
+    from src.spain.build_spain import clustered_component_order
+    rows = _maps()["sp-heatmap-components"]
+    assert list(rows) == clustered_component_order(BUNDLE["components"])
+
+
+def test_clustered_order_is_deterministic_permutation():
+    from src.spain.build_spain import clustered_component_order
+    from src.spain.series import COMPONENTS
+    order = clustered_component_order(BUNDLE["components"])
+    assert sorted(order) == sorted(COMPONENTS)
+    assert clustered_component_order(BUNDLE["components"]) == order
+    nodata = [c for c in COMPONENTS
+              if all(v is None for v in BUNDLE["components"][c])]
+    assert order[len(order) - len(nodata):] == nodata
+
+
 def test_indicator_heatmap_matches_bundle():
     rows = _maps()["sp-heatmap-indicators"]
     by_id = {i["id"]: i for i in META["indicators"]}
