@@ -1,6 +1,6 @@
 {
  "section": "spain",
- "built_at_utc": "2026-11-27T13:13:14Z",
+ "built_at_utc": "2026-11-27T14:07:05Z",
  "panel_first_quarter": "1999Q1",
  "panel_last_quarter": "2026Q2",
  "fetch_log": [
@@ -11,6 +11,9 @@
   "hh_net_saving: 126 obs (1995Q1..2026Q2)",
   "rpp_yoy: 222 obs (1971Q1..2026Q2)",
   "ipv_yoy: 76 obs (2007Q1..2025Q4)",
+  "bls_standards: 96 obs (2003Q1..2026Q4)",
+  "gov_debt_gdp: 126 obs (1995Q1..2026Q2)",
+  "regional_debt_gdp: 126 obs (1995Q1..2026Q2)",
   "ciss: 9150 obs (1991-11-12..2026-11-25)"
  ]
 }

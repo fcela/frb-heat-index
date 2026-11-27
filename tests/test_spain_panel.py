@@ -102,11 +102,29 @@ def test_anchor_headline_peaks_at_boom_top():
 
 def test_anchor_crisis_components_peak_2010_2013():
     qs = BUNDLE["quarters"]
-    for comp in ("Sovereign–bank nexus", "Short-term wholesale funding"):
-        s = BUNDLE["components"][comp]
-        peak_q = qs[max((i for i, v in enumerate(s) if v is not None),
-                        key=lambda i: s[i])]
-        assert "2010Q1" <= peak_q <= "2013Q4", (comp, peak_q)
+    s = BUNDLE["components"]["Short-term wholesale funding"]
+    peak_q = qs[max((i for i, v in enumerate(s) if v is not None),
+                    key=lambda i: s[i])]
+    assert "2010Q1" <= peak_q <= "2013Q4", peak_q
+
+
+def test_anchor_nexus_component_peaks_with_the_debt_stock():
+    # The nexus component gained stock and burden legs in the second
+    # build (public debt/GDP, regional debt/GDP, interest burden,
+    # holdings over capital). Its peak is no longer the 2012 spread
+    # event: in 2012-13 the spread leg is at its maximum but the debt
+    # stock was still mid-range against a history that runs to 124%
+    # of GDP in 2021, so the component reads elevated (above 0.6)
+    # rather than maximal, and it crests in 2016Q2, where the stocks
+    # and the burden jointly peak. The spread leg itself still peaks
+    # in 2012 (test_anchor_bono_bund_spread_2012).
+    qs = BUNDLE["quarters"]
+    s = dict(zip(qs, BUNDLE["components"]["Sovereign–bank nexus"]))
+    peak_q = max((q for q, v in s.items() if v is not None),
+                 key=lambda q: s[q])
+    assert "2014Q1" <= peak_q <= "2017Q4", peak_q
+    assert s["2012Q3"] > 0.55, s["2012Q3"]
+    assert s["2013Q3"] > s["2012Q3"]
 
 
 def test_anchor_bono_bund_spread_2012():
@@ -128,3 +146,79 @@ def test_anchor_loans_deposits_peak():
     peak_q = max(vals, key=vals.get)
     assert "2006Q1" <= peak_q <= "2008Q4", peak_q
     assert vals[peak_q] > 130.0, vals[peak_q]
+
+
+def _vals(rows, col):
+    return {r["quarter"]: float(r[col]) for r in rows if r[col] != ""}
+
+
+def test_anchor_public_debt_gdp():
+    vals = _vals(_panel(), "gov_debt_gdp")
+    # Crosses 100% of GDP in 2014 and peaks with the COVID borrowing
+    # of 2020-21, above the 2012-13 crisis levels.
+    assert vals["2014Q4"] > 100.0, vals["2014Q4"]
+    peak_q = max(vals, key=vals.get)
+    assert "2020Q1" <= peak_q <= "2021Q4", peak_q
+    assert vals[peak_q] > 115.0, vals[peak_q]
+
+
+def test_anchor_regional_debt_gdp():
+    vals = _vals(_panel(), "regional_debt_gdp")
+    # The regional stock crested in the mid-20s percent of GDP in
+    # 2015-17; the ratio's global peak is 2021Q1, where the GDP
+    # denominator collapsed and the regions borrowed through COVID.
+    mid = max(v for q, v in vals.items() if "2015Q1" <= q <= "2017Q4")
+    assert 23.0 <= mid <= 27.0, mid
+    assert 25.0 <= vals[max(vals, key=vals.get)] <= 30.0
+
+
+def test_anchor_interest_burden():
+    vals = _vals(_panel(), "interest_burden")
+    # Crisis-window peak in 2014Q1 at about 9.2% of revenue. The
+    # panel's first year reads higher still (about 10%): Spain
+    # entered the euro with pre-convergence interest rates, and the
+    # burden fell for a decade before the crisis raised it again.
+    local = max((v, q) for q, v in vals.items()
+                if "2012Q1" <= q <= "2015Q4")
+    assert local[1] == "2014Q1", local
+    assert 8.5 <= local[0] <= 10.0, local
+    assert vals["1999Q1"] > local[0]
+    assert vals["2019Q4"] < 6.5, vals["2019Q4"]
+
+
+def test_anchor_tourism_covid_collapse_and_record():
+    vals = _vals(_panel(), "tourism_gdp")
+    # Trailing-four-quarter receipts: about 5.7% of GDP in 2019,
+    # a collapse to about a quarter of that through the COVID
+    # quarters, then record shares in 2023-25.
+    assert 5.0 <= vals["2019Q4"] <= 6.5, vals["2019Q4"]
+    assert vals["2020Q4"] < 0.4 * vals["2019Q4"], vals["2020Q4"]
+    trough_q = min(vals, key=vals.get)
+    assert "2020Q1" <= trough_q <= "2021Q4", trough_q
+    assert vals["2024Q4"] > vals["2019Q4"], vals["2024Q4"]
+
+
+def test_anchor_var_rate_share():
+    vals = _vals(_panel(), "var_rate_share")
+    # Near-total variable-rate share of new mortgages at the boom
+    # (94% at 2006Q1); by the panel's end the fixed-rate share of
+    # new lending dominates and the variable share is under 20%.
+    assert vals["2006Q1"] > 85.0, vals["2006Q1"]
+    last_q = max(vals)
+    assert vals[last_q] < 20.0, vals[last_q]
+
+
+def test_anchor_bls_standards_peak():
+    vals = _vals(_panel(), "bls_standards")
+    peak_q = max(vals, key=vals.get)
+    assert "2008Q1" <= peak_q <= "2009Q4", peak_q
+    assert vals[peak_q] >= 60.0, vals[peak_q]
+
+
+def test_anchor_nexus_holdings_over_capital():
+    vals = _vals(_panel(), "nexus_holdings")
+    # Holdings over capital: about 145% at the panel start (pre-euro
+    # sovereign-heavy portfolios against thin capital), 37% at the
+    # boom top in 2007Q4, back above 75% by 2014Q4.
+    assert vals["1999Q1"] > vals["2014Q4"] > 75.0
+    assert vals["2007Q4"] < 50.0, vals["2007Q4"]
