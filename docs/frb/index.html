@@ -192,19 +192,10 @@
           Nonbank leverage, and the BIS credit-to-GDP gap and private-sector debt
           service ratio in a new Credit cycle component; in the replication paper the public-proxy panel tracks the paper's
           published aggregate index at correlation 0.93.</li>
-        <li><strong>Recent quarters are nowcast.</strong> Source-release lags leave 30 series
-          ending at 2025Q4; 2026Q1–Q3 values are filled by tested nowcast models or documented
-          assumptions — every filled value is flagged in
-          <code>data/nowcast_provenance.csv</code> (per-cell flags in
-          <code>data/panel_complete_flags.csv</code>), and the panel of observed values alone
-          remains available as <code>data/panel_quarterly.csv</code>. The 2026Q3 column is
-          entirely nowcast — direct horizon 1 for the 18 series observed through 2026Q2,
-          horizon 3 for the rest — except the weighted average maturity gap, which is
-          unextended for 2026Q3: its regression inputs are not observed for that quarter,
-          so the cell is empty rather than estimated. The private-credit pair added in
-          2026 is carried observed-only through 2026Q2, so its 2026Q3 cells are empty
-          rather than filled; the BIS pair is observed through 2026Q1 with a flagged
-          one-quarter carry at 2026Q2 and is not extended to 2026Q3.</li>
+        <li><strong>Recent quarters can include estimates.</strong> The charts mark quarters
+          with model nowcasts, assumptions, or regression extensions. The provenance file
+          records the method and decision for each estimate. When a new observation arrives,
+          it replaces the estimate for that cell. Empty cells indicate missing inputs.</li>
       </ul>
     </div>
   </section>
@@ -226,16 +217,19 @@
         <span class="fdesc">quarter × aggregate vulnerability index (0–1)</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/indicators_standardized.csv">
         <span class="fname">indicators_standardized.csv</span>
-        <span class="fdesc">quarter × 48 oriented standardized indicators (z-scores)</span></a></li>
+        <span class="fdesc">quarter × 52 oriented standardized indicators (z-scores)</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/proxy_catalog.csv">
         <span class="fname">proxy_catalog.csv</span>
         <span class="fdesc">per-indicator source, construction, and fidelity notes</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/panel_complete.csv">
         <span class="fname">panel_complete.csv</span>
-        <span class="fdesc">quarter × 52 indicators with 2026Q1–Q3 nowcast fills (maturity gap unextended at 2026Q3; the private-credit pair added in 2026 is observed-only, the BIS pair carries one flagged quarter at 2026Q2)</span></a></li>
+        <span class="fdesc">scoring inputs, including documented estimates</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/nowcast_provenance.csv">
         <span class="fname">nowcast_provenance.csv</span>
         <span class="fdesc">per-value nowcast method, backtest scores, and assumptions</span></a></li>
+      <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/data/release_manifest.json">
+        <span class="fname">release manifest</span>
+        <span class="fdesc">replay command and input checksums</span></a></li>
       <li><a href="https://raw.githubusercontent.com/fcela/frb-heat-index/main/paper/fed_heat_map-replication.pdf">
         <span class="fname">fed_heat_map-replication.pdf</span>
         <span class="fdesc">the full replication paper</span></a></li>

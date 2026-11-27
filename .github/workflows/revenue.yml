@@ -1,6 +1,6 @@
 # Annual refresh of the bank revenue tracker (third report section).
 #
-# Schedule: 06:00 UTC on the first Monday of March (after 10-K season).
+# Schedule: 09:00 UTC on the first Monday of March (after 10-K season).
 # Incremental by design: download.py skips already-fetched filings;
 # build_revenue.py dedupes overlapping years preferring restated values.
 #
@@ -11,25 +11,32 @@ name: Annual bank-revenue update
 
 on:
   schedule:
-    - cron: "0 6 1-7 3 1"
+    - cron: "0 9 1-7 3 1"
   workflow_dispatch:
 
 permissions:
   contents: write
   issues: write
 
+concurrency:
+  group: data-publish-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   update-revenue:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
 
       - name: Install dependencies
-        run: pip install polars
+        run: python -m pip install -r requirements.txt
 
       - name: Refresh revenue panel (incremental)
         run: |

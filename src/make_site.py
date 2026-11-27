@@ -423,21 +423,20 @@ def now_block_html(meta: dict, agg_rows: list[dict],
 
     caveat = [f"Quarterly panel built {_long_date(meta['built_at_utc'])}."]
     last_built = meta["last_built_quarter"]
-    nowcast = meta.get("nowcast_through")
-    if nowcast and quarter_key(nowcast) > quarter_key(last_built):
-        nc = meta.get("nowcast") or {}
-        counts = (nc.get("counts_by_quarter") or {}).get(nowcast) or {}
-        fills = sum(counts.values())
-        unext = sum(1 for u in nc.get("unextended", [])
-                    if u["quarter"] == nowcast)
+    latest = last["q"]
+    nc = meta.get("nowcast") or {}
+    counts = (nc.get("counts_by_quarter") or {}).get(latest) or {}
+    fills = sum(counts.values())
+    if fills:
+        unext = sum(u["quarter"] == latest for u in nc.get("unextended", []))
         if fills + unext >= meta["n_indicators"]:
             caveat.append(
-                f"The {nowcast} column is entirely nowcast — no indicator "
-                f"has an observed {nowcast} value; observations run "
+                f"The {latest} column is entirely nowcast — no indicator "
+                f"has an observed {latest} value; observations run "
                 f"through {last_built}.")
-        elif fills:
+        else:
             caveat.append(
-                f"The {nowcast} column carries nowcast fills for {fills} "
+                f"The {latest} column carries nowcast fills for {fills} "
                 f"of {meta['n_indicators']} series; observations run "
                 f"through {last_built}.")
         fresh = meta.get("freshness")

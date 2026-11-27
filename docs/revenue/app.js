@@ -495,19 +495,22 @@ function freshnessBanner() {
 
 async function main() {
   const el = document.getElementById("revenue");
+  const requested = freq;
   try {
-    if (!bundleCache[freq]) bundleCache[freq] = await loadJSON(BUNDLE_FOR[freq]);
-    const bundle = bundleCache[freq];
-    const other = freq === "a" ? "q" : "a";
+    if (!bundleCache[requested]) bundleCache[requested] = await loadJSON(BUNDLE_FOR[requested]);
+    const bundle = bundleCache[requested];
+    const other = requested === "a" ? "q" : "a";
     if (!bundleCache[other]) {
       try { bundleCache[other] = await loadJSON(BUNDLE_FOR[other]); } catch (e) { /* banner degrades to one bundle */ }
     }
+    if (freq !== requested) return;
     const unit = bundle.meta.unit || "USD millions";
     document.getElementById("revenue-toc").innerHTML = tocHTML(bundle.lines);
-    const sections = bundle.lines.map(l => lineSection(l, unit, freq));
+    const sections = bundle.lines.map(l => lineSection(l, unit, requested));
     el.innerHTML = freshnessBanner();
     for (const s of sections) el.appendChild(s);
   } catch (err) {
+    if (freq !== requested) return;
     el.innerHTML = `<p class="pulse-stamp">failed to load revenue data: ${esc(err.message)}</p>`;
   }
 }
@@ -534,4 +537,4 @@ document.getElementById("theme-toggle").addEventListener("click", () => {
   main(); // re-render with new theme tokens
 });
 
-main();
+export const ready = main();

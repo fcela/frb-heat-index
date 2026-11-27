@@ -862,8 +862,7 @@ function renderMeta() {
       fb.innerHTML =
         `Page last updated: <strong>${esc(builtD)}</strong> · Data through: ` +
         `<strong>${esc(f.observed_through)}</strong> observed — least recent series: ` +
-        `${esc(f.least_series)}${others}. Nowcast extensions carry the displayed ` +
-        `panel to ${esc(q)} (see Methodology).${ncNote}`;
+        `${esc(f.least_series)}${others}. The displayed panel runs through ${esc(q)}.${ncNote}`;
     } else {
       fb.innerHTML =
         `Page last updated: <strong>${esc(builtD)}</strong> · Data through: <strong>${esc(q)}</strong>.${ncNote}`;

@@ -17,15 +17,50 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import os
+import csv
+import io
+import math
 import subprocess
 import sys
 import time
+import zipfile
 from pathlib import Path
 
 UA = "frb-heat-index/1.0 (replication build; contact via repo issues)"
 HERE = Path(__file__).resolve().parent.parent
 DEFAULT_RAW = HERE / "work" / "raw"
+Z1_URL = "https://www.federalreserve.gov/releases/z1/data/FRB_Z1_csv.zip"
+Z1_BULK_IDS = {f"BOGZ1{code}Q" for code in (
+    "FL794141005", "FL793169175", "FL793069175", "FL634090005",
+    "FL793063005", "FL794035005", "FL794090005", "FL104090103",
+)}
+
+
+def extract_z1(archive: Path, raw: Path) -> None:
+    """Write the discontinued FRED lines from their original Z.1 mnemonics."""
+    values = {sid: {} for sid in Z1_BULK_IDS}
+    with zipfile.ZipFile(archive) as z, z.open("Z1.csv") as data:
+        rows = csv.DictReader(io.TextIOWrapper(data, encoding="utf-8-sig"))
+        date = next(k for k in rows.fieldnames if "date" in k.lower())
+        value = next(k for k in rows.fieldnames if "value" in k.lower() and "unit" not in k.lower())
+        for row in rows:
+            code = row["series_name"].rsplit("/", 1)[-1]
+            if not code.endswith(".Q"):
+                continue
+            sid = f"BOGZ1{code[:-2]}Q"
+            if sid not in values or row[value].strip() in {"", "."}:
+                continue
+            amount = float(row[value])
+            if math.isfinite(amount):
+                values[sid][row[date]] = amount
+    for sid, series in values.items():
+        if not series:
+            raise ValueError(f"missing {sid} from Z.1 archive")
+    for sid, series in values.items():
+        with (raw / f"fred_{sid}.csv").open("w", newline="") as out:
+            writer = csv.writer(out)
+            writer.writerow(("observation_date", sid))
+            writer.writerows(sorted(series.items()))
 
 
 def _curl_dl(url: str, dest: Path, tries: int = 4, min_bytes: int = 1) -> None:
@@ -33,7 +68,7 @@ def _curl_dl(url: str, dest: Path, tries: int = 4, min_bytes: int = 1) -> None:
     for k in range(tries):
         try:
             subprocess.run(
-                ["curl", "-sSL", "--max-time", "600", "--retry", "2",
+                ["curl", "--fail", "-sSL", "--max-time", "600", "--retry", "2",
                  "-A", UA, "-o", str(dest), url],
                 check=True, timeout=660,
             )
@@ -56,7 +91,7 @@ FRED_IDS = [
     # equity / spreads / volatility
     "DGS10", "BAA", "VIXCLS",
     # SLOOS (Senior Loan Officer Opinion Survey)
-    "DRTSCILM", "DRTSPM",
+    "DRTSCILM", "DRTSPM", "SUBLPDHMSGLGNQ",
     # SCOOS (Senior Credit Officer Opinion Survey): net percent of
     # respondents reporting increased use of leverage by hedge funds.
     "EXHE2C1Q8NP",
@@ -71,7 +106,7 @@ FRED_IDS = [
     # macro denominators
     "GDP", "GDPDEF",
     # Z.1 financial accounts via FRED (levels; $M or $B as documented)
-    "NCBDBIQ027S",      # nonfinancial corporate business debt securities+loans ($M)
+    "BCNSDODNS",       # nonfinancial corporate business debt securities+loans ($M)
     "TCMILBSNNB",       # nonfinancial noncorporate business debt securities+loans ($M)
     "BOGZ1FL794190005Q",  # domestic financial sectors, total liabilities
     "BOGZ1FA674190005Q",  # issuers of asset-backed securities, liability transactions
@@ -107,7 +142,7 @@ FRED_IDS = [
 SOURCES: list[tuple[str, str, str]] = (
     [("fred_%s.csv" % sid,
        f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}",
-       "auto") for sid in FRED_IDS]
+       "auto") for sid in FRED_IDS if sid not in Z1_BULK_IDS]
     + [
         # OFR Hedge Fund Monitor (SEC Form PF aggregates), public API,
         # no key: qualifying hedge funds' gross / net assets. The CSV
@@ -212,6 +247,17 @@ def main() -> int:
         except Exception as e:  # noqa: BLE001 - report and continue
             failed.append((fn, str(e)))
             print(f"FAILED  {fn}: {e}")
+
+    if args.force or any(not (raw / f"fred_{sid}.csv").exists() for sid in Z1_BULK_IDS):
+        try:
+            archive = raw / "z1_csv.zip"
+            if args.force or not archive.exists():
+                _curl_dl(Z1_URL, archive, min_bytes=100)
+            extract_z1(archive, raw)
+            ok.append("Z.1 bulk series")
+        except (OSError, RuntimeError, ValueError, KeyError, StopIteration, zipfile.BadZipFile) as e:
+            failed.append(("Z.1 bulk series", str(e)))
+            print(f"FAILED  Z.1 bulk series: {e}")
 
     print(f"\n{len(ok)} present, {len(failed)} failed, {len(manual)} manual")
     for fn, e in failed:

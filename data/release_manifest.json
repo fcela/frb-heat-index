@@ -1,0 +1,13 @@
+{
+  "build_command": "python -m src.quarterly_release",
+  "built_at_utc": "2026-11-21T00:00:00Z",
+  "through_quarter": "2026Q3",
+  "inputs_sha256": {
+    "data/_meta.json": "4c3d42fc018b547205a85082cf3f0ab862171c9bbbf0616c4c5962af4517a3e0",
+    "data/nowcast_provenance.csv": "781f119b405ac7b62d83c834ee08c9e0703250cb8d2861fda2146158c6449710",
+    "data/panel_complete.csv": "921ea60f2991366cbff4ce03c2017227741b11c3eecec926694981da1118846f",
+    "data/panel_complete_flags.csv": "118ab6c6e4648bf924768b9777a2a7b1bfb572547ea541198ce610b48fb765d7",
+    "data/panel_quarterly.csv": "22b2cf9cce506f3ff062bcff7b3473a91690e5016166b9fc5d03a33c64049d48",
+    "data/proxy_catalog.csv": "0617f4bcfd29eb429ca37f5742d86620b4fec6863df0353f671ef7b8adecd78f"
+  }
+}

@@ -1840,15 +1840,19 @@ def filing_fiscal_year(soup: BeautifulSoup, cik: str = "",
     10-K; "For the quarterly period ended March 31, 2026" for a 10-Q).
     The 10-K phrase is matched in the first 6,000 characters (its cover
     is near the top); 10-Q covers are matched over the whole document
-    because front-loaded TOC/XBRL blocks can push them far down (GS's
-    2020-2022 10-Q cover pages start ~200k characters in). Falls back to
-    the accession's dei:DocumentPeriodEndDate year, then to the XBRL
-    instance filename. Returns None when none yields a year.
+    because front-loaded TOC/XBRL blocks can push them far down. Inline
+    XBRL can supply the fiscal year directly. Other fallbacks are the
+    accession's period-end fact and the XBRL instance filename.
     """
     text = soup.get_text(" ", strip=True)
     m = _FY_RE.search(text[:6000])
     if m:
         return int(m.group(1) or m.group(2))
+    fact = soup.find(attrs={"name": "dei:DocumentFiscalYearFocus"})
+    if fact:
+        year = fact.get_text(strip=True)
+        if re.fullmatch(r"[0-9]{4}", year):
+            return int(year)
     m = _FQ_RE.search(text)
     if m:
         return int(m.group(1))
