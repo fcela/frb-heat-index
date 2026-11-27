@@ -77,6 +77,29 @@ def fetch_bis_tc(url: str) -> dict:
     return out
 
 
+def fetch_bis_cpp(url: str) -> dict:
+    """BIS commercial property prices (WS_CPP) for Spain.
+
+    The response carries several property-type / collection pairs;
+    keep only the headline national series — all property types
+    (RE_TYPE 'A'), whole-country collection ('V') — and return the
+    nominal index {'YYYYQn': value}. The build computes the
+    four-quarter change from the index.
+    """
+    rows = _sdmx_csv(_get(url).decode("utf-8"))
+    out = {}
+    for r in rows:
+        if r.get("RE_TYPE") != "A" or r.get("COLLECTION") != "V":
+            continue
+        tp = r["TIME_PERIOD"].strip()
+        y, q = tp.split("-Q")
+        try:
+            out[f"{y}Q{q}"] = float(r["OBS_VALUE"])
+        except (TypeError, ValueError):
+            continue
+    return out
+
+
 def fetch_fred(url: str) -> dict:
     """fredgraph CSV -> native frequency keyed by observation date."""
     rows = list(csv.reader(io.StringIO(_get(url).decode("utf-8"))))
@@ -186,6 +209,32 @@ def fetch_eurostat(url: str) -> dict:
         if v is not None:
             y, q = t.split("-Q")
             out[f"{y}Q{q}"] = float(v)
+    return out
+
+
+def fetch_eurostat_m(url: str) -> dict:
+    """Eurostat statistics API (JSON-stat) -> {'YYYY-MM': value}.
+
+    Monthly counterpart of fetch_eurostat: the query URL must pin
+    every dimension except time to a single value.
+    """
+    data = json.loads(_get(url).decode("utf-8"))
+    ids, size = data["id"], data["size"]
+    strides, acc = [], 1
+    for s in reversed(size):
+        strides.insert(0, acc)
+        acc *= s
+    tidx = data["dimension"]["time"]["category"]["index"]
+    out = {}
+    for t, ti in tidx.items():
+        if "-Q" in t or len(t) != 7:
+            continue
+        coords = [0] * len(ids)
+        coords[ids.index("time")] = ti
+        flat = sum(c * s for c, s in zip(coords, strides))
+        v = data["value"].get(str(flat))
+        if v is not None:
+            out[t] = float(v)
     return out
 
 

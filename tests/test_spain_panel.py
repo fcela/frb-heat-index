@@ -111,19 +111,23 @@ def test_anchor_crisis_components_peak_2010_2013():
 def test_anchor_nexus_component_peaks_with_the_debt_stock():
     # The nexus component gained stock and burden legs in the second
     # build (public debt/GDP, regional debt/GDP, interest burden,
-    # holdings over capital). Its peak is no longer the 2012 spread
-    # event: in 2012-13 the spread leg is at its maximum but the debt
-    # stock was still mid-range against a history that runs to 124%
-    # of GDP in 2021, so the component reads elevated (above 0.6)
-    # rather than maximal, and it crests in 2016Q2, where the stocks
-    # and the burden jointly peak. The spread leg itself still peaks
-    # in 2012 (test_anchor_bono_bund_spread_2012).
+    # holdings over capital) and five more legs in the fourth build
+    # (non-resident holdings share, Banco de España holdings share,
+    # residual-maturity share, NIIP/GDP, FLA share of regional debt).
+    # Its peak is still not the 2012 spread event: it crests in
+    # 2016Q1, where the debt stocks and the burden jointly peak. The
+    # 2012-13 window reads lower than in the second build (0.52-0.55
+    # against 0.60-0.67) because two of the new legs — the BdE
+    # holdings share and the FLA share — are near zero before the
+    # official-sector rescues they measure, so they read cold in
+    # 2012 by construction and dilute the quarter. The spread leg
+    # itself still peaks in 2012 (test_anchor_bono_bund_spread_2012).
     qs = BUNDLE["quarters"]
     s = dict(zip(qs, BUNDLE["components"]["Sovereign–bank nexus"]))
     peak_q = max((q for q, v in s.items() if v is not None),
                  key=lambda q: s[q])
     assert "2014Q1" <= peak_q <= "2017Q4", peak_q
-    assert s["2012Q3"] > 0.55, s["2012Q3"]
+    assert s["2012Q3"] > 0.50, s["2012Q3"]
     assert s["2013Q3"] > s["2012Q3"]
 
 
@@ -222,3 +226,133 @@ def test_anchor_nexus_holdings_over_capital():
     # boom top in 2007Q4, back above 75% by 2014Q4.
     assert vals["1999Q1"] > vals["2014Q4"] > 75.0
     assert vals["2007Q4"] < 50.0, vals["2007Q4"]
+
+
+# ------------------------------------------------ fourth build anchors
+
+def test_anchor_permits_proxy_peaks_at_boom_and_collapses():
+    vals = _vals(_panel(), "construction_credit")
+    # The activity proxy for construction credit: the permits floor-
+    # area index peaks at the boom top and loses over 95% to 2013.
+    peak_q = max(vals, key=vals.get)
+    assert "2006Q1" <= peak_q <= "2007Q4", peak_q
+    assert vals["2013Q4"] < 0.06 * vals[peak_q], vals["2013Q4"]
+
+
+def test_anchor_cet1_proxy_range():
+    vals = _vals(_panel(), "cet1")
+    # Significant-institution CET1: a narrow 11.5-13.7 band over its
+    # published history (from 2015Q2), latest above 13.
+    assert min(vals) == "2015Q2"
+    assert all(11.0 <= v <= 14.5 for v in vals.values())
+    assert vals[max(vals)] > 13.0, vals[max(vals)]
+
+
+def test_anchor_cre_prices_covid_trough():
+    vals = _vals(_panel(), "cre_prices")
+    # BIS commercial property prices, y/y: published index from
+    # 2014Q1, so the change enters in 2015Q1; the COVID trough is
+    # deeply negative and the post-2023 recovery peaks in 2025.
+    assert min(vals) == "2015Q1"
+    assert vals["2020Q3"] < -8.0, vals["2020Q3"]
+    peak_q = max(vals, key=vals.get)
+    assert peak_q.startswith("2025"), peak_q
+
+
+def test_anchor_nonres_share_flight_and_return():
+    vals = _vals(_panel(), "nonres_share")
+    # Non-resident share of government debt: about 51% at the 2007
+    # peak, a flight trough around 2012 at roughly a third, then a
+    # recovery above 45% by 2019.
+    assert vals["2007Q1"] > 50.0, vals["2007Q1"]
+    trough = min(v for q, v in vals.items() if "2010Q1" <= q <= "2013Q4")
+    assert trough < 38.0, trough
+    assert vals["2019Q4"] > 45.0, vals["2019Q4"]
+
+
+def test_anchor_bde_share_qe_era():
+    vals = _vals(_panel(), "bde_share")
+    # Banco de España holdings share: under 5% before the purchase
+    # programmes, above 25% at the 2022 peak, lower at the panel end
+    # as the portfolio runs off.
+    assert vals["2014Q2"] < 5.0, vals["2014Q2"]
+    peak_q = max(vals, key=vals.get)
+    assert "2021Q1" <= peak_q <= "2023Q4", peak_q
+    assert vals[peak_q] > 25.0, vals[peak_q]
+    assert vals[max(vals)] < vals[peak_q]
+
+
+def test_anchor_refi_short_share():
+    vals = _vals(_panel(), "refi_short_share")
+    # Debt with residual maturity up to one year: a fifth to a
+    # quarter of the stock at the panel start, trending down to
+    # the low teens — the Tesoro's maturity-lengthening, read from
+    # the residual-maturity table.
+    assert all(10.0 <= v <= 30.0 for v in vals.values())
+    early = max(v for q, v in vals.items() if q <= "2000Q4")
+    assert early > 24.0, early
+    assert vals[max(vals)] < 16.0, vals[max(vals)]
+
+
+def test_anchor_niip_gdp():
+    vals = _vals(_panel(), "niip_gdp")
+    # NIIP: -85% of GDP at the boom top, a trough below -90% around
+    # the crisis (end-2009 on the fallen denominator), improving to
+    # about -40% at the panel end.
+    assert vals["2007Q4"] < -75.0, vals["2007Q4"]
+    trough_q = min(vals, key=vals.get)
+    assert "2009Q1" <= trough_q <= "2010Q4", trough_q
+    assert vals[trough_q] < -90.0, vals[trough_q]
+    assert vals[max(vals)] > -50.0, vals[max(vals)]
+
+
+def test_anchor_fla_share():
+    vals = _vals(_panel(), "fla_share")
+    # State-fund share of regional debt: published as zero before
+    # the funds' creation in 2012, above half by 2016, peaking
+    # above 60% in 2024.
+    assert vals["2011Q4"] == 0.0, vals["2011Q4"]
+    assert vals["2016Q4"] > 50.0, vals["2016Q4"]
+    assert max(vals.values()) > 60.0, max(vals.values())
+
+
+def test_anchor_temp_share():
+    vals = _vals(_panel(), "temp_share")
+    # Temporary employment share: near a third of employees at the
+    # boom, about a quarter in 2019, and a step down after the 2021
+    # labour reform to the mid-teens at the panel end.
+    assert vals["2007Q4"] > 28.0, vals["2007Q4"]
+    assert 24.0 <= vals["2019Q4"] <= 28.0, vals["2019Q4"]
+    assert vals[max(vals)] < 17.0, vals[max(vals)]
+
+
+def test_anchor_tourism_emp_share():
+    vals = _vals(_panel(), "tourism_emp_share")
+    # Hospitality employment share: 6-10% throughout, with the
+    # COVID dip in 2020 against 2019.
+    assert all(6.0 <= v <= 10.0 for v in vals.values())
+    assert vals["2020Q2"] < vals["2019Q4"]
+
+
+def test_anchor_tedr_spread():
+    vals = _vals(_panel(), "tedr_spread")
+    # TEDR new-lending margin over the interbank rate: the TEDR
+    # statistics begin in June 2010, the margin peaks with the
+    # crisis repricing in 2013-14 above 300 bp, and compresses to
+    # about 110 bp by 2024.
+    assert min(vals) == "2010Q2"
+    peak_q = max(vals, key=vals.get)
+    assert "2013Q1" <= peak_q <= "2014Q4", peak_q
+    assert vals[peak_q] > 300.0, vals[peak_q]
+    assert vals["2024Q1"] < 150.0, vals["2024Q1"]
+
+
+def test_anchor_price_income():
+    vals = _vals(_panel(), "price_income")
+    # Constructed price-to-income: highest at its first observation
+    # (2008Q1, the boom's tail), a trough below 10 in 2013, and a
+    # renewed rise after 2021 past the 2019 reading.
+    peak_q = max(vals, key=vals.get)
+    assert peak_q == "2008Q1", peak_q
+    assert min(vals.values()) < 10.0, min(vals.values())
+    assert vals[max(vals)] > vals["2019Q4"]

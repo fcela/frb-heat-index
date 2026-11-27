@@ -36,6 +36,14 @@ def test_every_indicator_has_provenance():
             assert ind["last_value"] is not None, ind["id"]
 
 
+def test_proxies_are_labelled_in_their_definitions():
+    # The site's proxy standard: a series with status "proxy" must
+    # say so in its own definition, where a reader meets it.
+    for ind in META["indicators"]:
+        if ind["status"] == "proxy":
+            assert "proxy" in ind["definition"].lower(), ind["id"]
+
+
 def test_pending_components_do_not_enter_headline():
     live_comps = {i["component"] for i in META["indicators"]
                   if i["status"] != "source-pending"}
