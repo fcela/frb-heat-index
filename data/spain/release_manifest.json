@@ -1,9 +1,9 @@
 {
   "build_command": "python -m src.spain.build_spain --no-fetch",
-  "built_at_utc": "2026-11-27T15:19:28Z",
+  "built_at_utc": "2026-11-27T22:07:10Z",
   "through_quarter": "2026Q2",
   "inputs_sha256": {
-    "data/spain/_meta.json": "412c7ec9eef31b7abc40ae90569d592bf644e92140d1df777be8cc4a3f400eec",
+    "data/spain/_meta.json": "397d3228426f9d24e06e20b5050bf45fce92e72cc4cb3ceed279ed7003015ef0",
     "data/spain/bde_be0201_gdp.csv": "ed03a2078f6fc7fd23e3ce8ef2c2a76a4198cfafb4d7e03032dff36537266a50",
     "data/spain/bde_be0205_fin_liabilities.csv": "eab3a4f5db6b36db1a14c20b2e46e3ce5f4b8af93fca2bf577ac1e128bd4c4bc",
     "data/spain/bde_be0207_hh_net_fin.csv": "9365b7ec35c31f37a3dbaa0a3dec2d598adc98fea10c2b9cd92635389439e504",

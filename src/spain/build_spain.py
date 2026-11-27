@@ -433,6 +433,72 @@ def headline_coverage(components: dict, quarters: list) -> tuple[list, dict | No
     }
 
 
+def _corr(xs: list, ys: list):
+    """Pearson correlation over quarters where both series have a
+    value; None when the overlap is too short (< 20 quarters) or
+    either side is constant over it."""
+    pairs = [(x, y) for x, y in zip(xs, ys)
+             if x is not None and y is not None]
+    if len(pairs) < 20:
+        return None
+    n = len(pairs)
+    mx = sum(p[0] for p in pairs) / n
+    my = sum(p[1] for p in pairs) / n
+    sxx = sum((p[0] - mx) ** 2 for p in pairs)
+    syy = sum((p[1] - my) ** 2 for p in pairs)
+    if sxx == 0 or syy == 0:
+        return None
+    sxy = sum((p[0] - mx) * (p[1] - my) for p in pairs)
+    return sxy / math.sqrt(sxx * syy)
+
+
+def clustered_component_order(components: dict) -> list:
+    """Row order for the component heat map: agglomerative
+    hierarchical clustering (average linkage) of the component
+    percentile series on their pairwise correlations, so components
+    that heat and cool together sit in adjacent rows. Pairs with
+    too little overlap to correlate count as uncorrelated
+    (distance 1). Deterministic: linkage ties break by framework
+    position, and a merged cluster keeps the child with the earlier
+    framework position first. Components with no data cannot be
+    correlated; they keep framework order after the clustered rows
+    and render as no-data rows."""
+    live = [c for c in COMPONENTS
+            if any(v is not None for v in components[c])]
+    nodata = [c for c in COMPONENTS if c not in live]
+    if len(live) < 3:
+        return live + nodata
+    pos = {c: i for i, c in enumerate(COMPONENTS)}
+    dist = {}
+    for i, a in enumerate(live):
+        for b in live[i + 1:]:
+            r = _corr(components[a], components[b])
+            dist[(a, b)] = 1.0 - r if r is not None else 1.0
+
+    def d(a, b):
+        return dist[(a, b)] if (a, b) in dist else dist[(b, a)]
+
+    clusters = [[c] for c in live]
+    while len(clusters) > 1:
+        best = None
+        for i in range(len(clusters)):
+            for j in range(i + 1, len(clusters)):
+                link = (sum(d(a, b) for a in clusters[i]
+                            for b in clusters[j])
+                        / (len(clusters[i]) * len(clusters[j])))
+                key = (link, min(pos[c] for c in clusters[i]),
+                       min(pos[c] for c in clusters[j]))
+                if best is None or key < best[0]:
+                    best = (key, i, j)
+        _, i, j = best
+        a, b = clusters[i], clusters[j]
+        if min(pos[c] for c in a) > min(pos[c] for c in b):
+            a, b = b, a
+        clusters[i] = a + b
+        del clusters[j]
+    return clusters[0] + nodata
+
+
 # ------------------------------------------------------------ svg
 
 def svg_chart(series: list, quarters: list, w=330, h=110,
@@ -785,7 +851,7 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
 
     # ---- heat maps (the U.S. page's signature visual, Spain data) ----
     comp_rows = []
-    for comp in COMPONENTS:
+    for comp in clustered_component_order(bundle["components"]):
         s = bundle["components"][comp]
         if all(v is None for v in s):
             comp_rows.append({"label": comp, "key": comp,
@@ -813,7 +879,11 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
         value. Components whose indicators are all source-pending are
         shown as no-data rows: they exist in the framework, they are
         listed below with the reasons, and they do not enter the
-        headline.</p>
+        headline. Rows are ordered by hierarchical clustering of
+        the component series (average linkage on pairwise
+        correlations), so components that heat and cool together
+        sit together; the cards above, the glance table and the
+        indicator map keep framework order.</p>
       <div class="heatmap-scroll"><figure class="sp-hm" id="sp-heatmap-components">{svg_heatmap(comp_rows, quarters, row_h=23)}</figure></div>
       {svg_heat_legend()}
       <p class="legend-note"><strong>Reading the scale:</strong> 0.00

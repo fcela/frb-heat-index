@@ -70,6 +70,20 @@ into labelled proxies under the standard stated in "Partial, and
 labelled as proxies" below. Three indicators remain
 source-pending, each with a sharpened reason.
 
+The fifth build was a refresh and retry pass. Every route was
+re-exercised live; no source had advanced beyond the archived
+snapshots, and the panel still ends at 2026Q2 — only 10 of the 35
+live indicators had a 2026Q3 observation, short of the 60% rule —
+so the panel and the headline are unchanged. The blocked routes
+were retried with fresh evidence: the ECB yield-curve endpoint
+now answers, and the corporate-spread, equity-yield and
+contributors-per-pensioner outcomes are stated in their sections
+below. The component heat map's rows are ordered by hierarchical
+clustering of the component series (average linkage on pairwise
+correlations), so components that heat and cool together sit
+together; every other presentation of the components keeps
+framework order.
+
 One consequence is worth stating plainly, because it decides how
 the headline should be read. The headline is a **vulnerability**
 gauge, and vulnerability crests at the boom top: the headline peaks
@@ -205,8 +219,9 @@ as the U.S. one:
   peak and about 110 at its 2024 trough. It is labelled because
   the benchmark is a 3-month money-market rate, not the
   matched-maturity swap of the reference concept (no free swap
-  route was resolved, and the ECB yield-curve data endpoint could
-  not be exercised from the build network), so the margin carries
+  route was resolved; the ECB yield-curve dataflow, exercised
+  directly in the fifth build, publishes government par yields,
+  not swap rates), so the margin carries
   a term-premium component, as its definition states. It is a
   bank-lending margin, not a corporate bond spread.
 - **Short-term wholesale funding** — debt securities issued by MFIs
@@ -353,7 +368,12 @@ separate monetary story.
   FM dataflow is a security-level feed whose data-type codelist
   carries no aggregate dividend- or earnings-yield series for a
   Spanish or euro-area index, and the SEC accounts carry dividend
-  transactions, not yields. The component stays empty rather than
+  transactions, not yields. The fifth build re-checked BME: its
+  published IBEX factsheet carries returns, not a valuation
+  yield, and BME supplies historical information and other
+  formats through its paid Market Data service, with
+  redistribution of its website information requiring prior
+  permission. The component stays empty rather than
   substituting a price level for a valuation yield.
 - **Corporate spreads** — source-pending, and when sourced it will
   be a **labelled euro-area proxy**: Spain's corporate bond market
@@ -365,7 +385,16 @@ separate monetary story.
   series, and a spread constructed against the ECB yield curve
   failed at the YC data endpoint, which returned errors and
   dropped connections on every data query from the build network
-  while its catalogue endpoints answered normally.
+  while its catalogue endpoints answered normally. The fifth build
+  retried the construction: the YC data endpoint now answers
+  (SDMX 2.1; the par-yield tenors were exercised directly), so a
+  benchmark leg exists, but the corporate leg still has none —
+  FRED carries euro members of the ICE BofA family (the Euro High
+  Yield OAS), but ICE's terms as published on FRED prohibit
+  reproduction of the data and this section republishes its
+  values, and the ECB publishes no aggregate corporate yield (the
+  FM feed is security-level; the YC curve is government par
+  yields only).
 - **Commercial real estate prices** — live from the fourth build.
   Earlier builds recorded the BIS commercial property price
   statistics as portal downloads only; the SDMX route (WS_CPP)
@@ -449,9 +478,16 @@ each for a stated route or frequency reason:
   pensions in payment). A defining Spanish fiscal idiosyncrasy,
   but neither leg has a stable machine-readable series route: both
   are disseminated as monthly workbooks with rotating file names
-  behind the ministry's web portal, plus a query tool. A ratio of
-  two unroutable series cannot ship; it is recorded here as the
-  first candidate if a series route appears.
+  behind the ministry's web portal, plus a query tool. The fifth
+  build retried through the national open-data catalog
+  (datos.gob.es): the catalog exposes the Tesorería's affiliation
+  datasets, but their distributions are PXWeb saved queries
+  published as bounded period chunks (2008–2025, with successor
+  chunks under new identifiers), and the PXWeb server's REST API
+  is not enabled — so the route's identity still rotates as time
+  passes, the same disqualifying property as the workbook names.
+  A ratio of two unroutable series cannot ship; it is recorded
+  here as the first candidate if a series route appears.
 - **Energy trade deficit to GDP.** Spain's energy-import
   dependence has no measurable route in the panel's sources: the
   Banco de España's balance-of-payments CSV tables carry no energy
