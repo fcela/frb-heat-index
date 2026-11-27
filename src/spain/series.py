@@ -26,6 +26,7 @@ BIS_GAP_URL = ("https://stats.bis.org/api/v1/data/WS_CREDIT_GAP/"
                "Q.ES.P.A.C?format=csv")
 BIS_DSR_URL = "https://stats.bis.org/api/v1/data/WS_DSR/Q.ES.P?format=csv"
 BIS_TC_URL = "https://stats.bis.org/api/v1/data/WS_TC/Q.ES.{sector}.A?format=csv"
+BIS_CPP_URL = "https://stats.bis.org/api/v1/data/WS_CPP/Q.ES?format=csv"
 
 # ---------------------------------------------------------------- FRED
 
@@ -44,15 +45,34 @@ ECB_CISS_URL = ("https://data-api.ecb.europa.eu/service/data/CISS/"
                 "D.ES.Z0Z.4F.EC.SS_CIN.IDX?format=csvdata")
 ECB_BLS_URL = ("https://data-api.ecb.europa.eu/service/data/BLS/"
                "Q.ES.ALL.O.E.Z.B3.ST.S.FNET?format=csvdata")
+ECB_SUP_CET1_URL = ("https://data-api.ecb.europa.eu/service/data/SUP/"
+                    "Q.ES.W0._Z.I4008._T.SII._Z._Z._Z.PCT.C?format=csvdata")
 EUROSTAT_GOV_URL = (
     "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/"
     "gov_10q_ggnfa?format=JSON&lang=EN&geo=ES&sector=S13&s_adj=NSA"
     "&unit=MIO_EUR&na_item={item}")
+EUROSTAT_PERMITS_URL = (
+    "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/"
+    "sts_cobp_m?format=JSON&lang=EN&geo=ES&indic_bt=BPRM_SQM"
+    "&cpa2_1=CPA_F41001&s_adj=NSA&unit=I21")
+EUROSTAT_B6G_URL = (
+    "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/"
+    "nasq_10_nf_tr?format=JSON&lang=EN&geo=ES&sector=S14_S15"
+    "&na_item=B6G&unit=CP_MEUR&direct=PAID&s_adj=NSA")
+EUROSTAT_EMP_URL = (
+    "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/"
+    "lfsq_egan2?format=JSON&lang=EN&geo=ES&sex=T&age=Y_GE15"
+    "&nace_r2={nace}&unit=THS_PER")
+EUROSTAT_TEMP_URL = (
+    "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/"
+    "lfsq_etpga?format=JSON&lang=EN&geo=ES&sex=T&age=Y_GE15&unit=PC")
 
 # ---------------------------------------------------------------- INE
 
 INE_IPV_URL = ("https://servicios.ine.es/wstempus/js/ES/"
                "DATOS_SERIE/IPV948?tip=AM&date=19990101:20990101")
+INE_SERIES_URL = ("https://servicios.ine.es/wstempus/js/ES/"
+                  "DATOS_SERIE/{code}?tip=AM&date=19990101:20990101")
 
 INDICATORS = [
     # ---------------------------------------------------------- Credit cycle
@@ -104,17 +124,18 @@ INDICATORS = [
     },
     {
         "id": "cet1",
-        "title": "CET1 Ratio of Spanish Deposit Institutions",
-        "short": "CET1 ratio",
+        "title": "CET1 Ratio of Spanish Significant Institutions (ECB supervisory statistics, proxy)",
+        "short": "CET1 ratio (SI proxy)",
         "component": "Bank leverage",
-        "status": "source-pending",
+        "status": "proxy",
         "sign": -1,
-        "source": "Banco de España / ECB supervisory statistics",
-        "source_url": None,
-        "series_id": [],
-        "definition": "Common Equity Tier 1 capital as a percent of risk-weighted assets for Spanish deposit institutions.",
+        "source": "European Central Bank, Supervisory Banking Statistics (SUP dataset), ECB Data Portal",
+        "source_url": ECB_SUP_CET1_URL,
+        "series_id": ["SUP.Q.ES.W0._Z.I4008._T.SII._Z._Z._Z.PCT.C"],
+        "definition": "Common Equity Tier 1 capital as a percent of risk-weighted assets, percent. Labelled a proxy: the series covers the significant institutions supervised directly by the ECB (SSM) with home country Spain — the large banking groups that hold the overwhelming majority of Spanish banking-system assets — not every deposit institution, and the sample changes as institutions enter or leave significant status. The ECB's consolidated banking data (CBD2) carry the same concept for the full reporting population but the portal series resolved for Spain is this supervisory one; the balance-sheet capital share above remains the full-population leg. Published from 2015Q2, so the gauge is silent on the crisis-era capital build-up it postdates.",
         "frequency": "Quarterly",
-        "pending_reason": "Published in the Banco de España and ECB supervisory statistics portals as report tables; no stable machine-readable public series route was resolved for this build. The balance-sheet capital share above carries the leverage component meanwhile.",
+        "route": {"type": "ecb_sdmx_q", "url": ECB_SUP_CET1_URL,
+                  "archive": "ecb_sup_cet1_es.csv"},
     },
     # ---------------------------------------------------------- Maturity transformation
     {
@@ -170,6 +191,23 @@ INDICATORS = [
                   "formula": "100 * sum4(tourism_receipts) / sum4(gdp)"},
     },
     {
+        "id": "tourism_emp_share",
+        "title": "Employment in Hospitality (NACE I) to Total Employment (Eurostat LFS, proxy)",
+        "short": "Hospitality employment share",
+        "component": "Size/concentration",
+        "status": "proxy",
+        "sign": 1,
+        "source": "Eurostat, Labour Force Survey quarterly employment by NACE Rev. 2 (lfsq_egan2)",
+        "source_url": EUROSTAT_EMP_URL.format(nace="I"),
+        "series_id": ["lfsq_egan2: ES, sex=T, age=Y_GE15, nace_r2=I / TOTAL, unit=THS_PER"],
+        "definition": "100 x (employment in NACE Rev. 2 section I — accommodation and food service activities) / (total employment), percent, Eurostat Labour Force Survey. Labelled a proxy, and the employment leg of the tourism exposure above: hospitality is the measurable core of the tourism industries, but it is not the whole of them (it excludes passenger transport, travel services and the tourism share of retail) and it also serves residents, so the share understates the breadth of tourism employment while tracking its cycle. A Spain-specific exposure: no U.S. component concentrates this much of national employment in one visitor-facing industry. Published from 2008Q1 (NACE Rev. 2 back-series).",
+        "frequency": "Quarterly",
+        "route": {"type": "derived", "archive": "tourism_emp_share.csv",
+                  "inputs": [{"eurostat_url": EUROSTAT_EMP_URL.format(nace="I"), "archive": "eurostat_employment_hospitality.csv"},
+                             {"eurostat_url": EUROSTAT_EMP_URL.format(nace="TOTAL"), "archive": "eurostat_employment_total.csv"}],
+                  "formula": "100 * hospitality_employment / total_employment"},
+    },
+    {
         "id": "top5_share",
         "title": "Top-5 Banking Groups' Share of System Assets",
         "short": "Top-5 asset share",
@@ -181,7 +219,7 @@ INDICATORS = [
         "series_id": [],
         "definition": "100 x (total assets of the five largest Spanish banking groups) / (total assets of the banking system), percent.",
         "frequency": "Annual",
-        "pending_reason": "Published in Banco de España supervision and financial stability reports as report tables, not as a downloadable time series; no stable machine-readable public route was resolved for this build.",
+        "pending_reason": "The concept is published as a clean machine-readable series — the ECB's Structural Financial Indicators (SSI.A.ES.122C.S10.X.A1.Z0Z.Z, share of the five largest credit institutions in total assets: 40.3% in 1999, 67.4% in 2025, verified against the ECB Data Portal for this build) — but only at annual frequency. The panel's no-fill rule admits no annual series (an annual value carried across four quarters would be filling), so the indicator stays source-pending as a stated decision point: sourcing it is a frequency decision, not a data problem.",
     },
     # ---------------------------------------------------------- Home mortgages
     {
@@ -250,6 +288,21 @@ INDICATORS = [
                              {"table": "be0201", "alias": "BE_2_1.28", "archive": "bde_be0201_gdp.csv"}],
                   "formula": "100 * consumer_loans / sum4(gdp)"},
     },
+    {
+        "id": "temp_share",
+        "title": "Employees on Temporary Contracts, Share of All Employees (Eurostat LFS)",
+        "short": "Temporary employment share",
+        "component": "Consumer credit",
+        "status": "live",
+        "sign": 1,
+        "source": "Eurostat, Labour Force Survey (lfsq_etpga)",
+        "source_url": EUROSTAT_TEMP_URL,
+        "series_id": ["lfsq_etpga: ES, sex=T, age=Y_GE15, unit=PC"],
+        "definition": "Employees with a contract of limited duration as a percent of all employees, Eurostat Labour Force Survey, as published. A labour-market series inside a financial index, placed here on a stated channel: consumer credit is repaid out of household income, and Spain's dual labour market — a temporary share near a third of employees for most of the sample, against roughly a seventh in the euro area — is the structural reason Spanish household income is unusually fragile to a downturn: temporary workers are dismissed first, so an employment shock reaches household debt service faster and harder than the unemployment rate alone suggests. The series is the fragility of the income stream behind the consumer-credit stock measured above, not a credit quantity itself.",
+        "frequency": "Quarterly",
+        "route": {"type": "eurostat_q", "url": EUROSTAT_TEMP_URL,
+                  "archive": "eurostat_temp_share.csv"},
+    },
     # ---------------------------------------------------------- Nonfinancial business debt
     {
         "id": "nfc_credit_gdp",
@@ -312,31 +365,37 @@ INDICATORS = [
     },
     {
         "id": "price_income",
-        "title": "House Price to Household Income Ratio (Banco de España)",
-        "short": "Price-to-income",
+        "title": "House Price Index to Household Disposable Income per Employed Person (constructed proxy)",
+        "short": "Price-to-income (constructed)",
         "component": "Residential real estate",
-        "status": "source-pending",
+        "status": "proxy",
         "sign": 1,
-        "source": "Banco de España, housing market indicators",
-        "source_url": None,
-        "series_id": [],
-        "definition": "Price of a standard dwelling as a multiple of gross annual household income, as published in the Banco de España housing market indicators.",
+        "source": "Constructed from INE (house price index) and Eurostat (quarterly sector accounts; Labour Force Survey)",
+        "source_url": INE_SERIES_URL.format(code="IPV769"),
+        "series_id": ["IPV769", "B6G (nasq_10_nf_tr, S14_S15)", "lfsq_egan2 employment, ES"],
+        "definition": "The INE house price index (national, all dwellings, level; IPV769) divided by household gross disposable income per employed person (Eurostat quarterly sector accounts, item B6G for households and NPISH, divided by total LFS employment): IPV index points per 1,000 euro of quarterly disposable income per employed person. Labelled a constructed proxy. The reference concept remains the Banco de España's published effort rate (price of a standard dwelling over gross household income, in its housing-market indicators workbook, which has no machine-readable series route); this construction differs from it in three stated ways: the numerator is a price index, not the price of a standard dwelling; the denominator is income per employed person, not per household, so it also moves with the employment rate; and the IPV starts in 2007Q1 and the employment back-series in 2008Q1, so the ratio enters in 2008Q1, after the boom's peak quarters.",
         "frequency": "Quarterly",
-        "pending_reason": "Published in the Banco de España housing-market indicators workbook; no stable machine-readable public series route was resolved for this build. The two price-growth gauges above carry the component meanwhile.",
+        "route": {"type": "derived", "archive": "price_income.csv",
+                  "inputs": [{"ine": "IPV769", "archive": "ine_ipv_level.csv"},
+                             {"eurostat_url": EUROSTAT_B6G_URL, "archive": "eurostat_hh_disposable_income.csv"},
+                             {"eurostat_url": EUROSTAT_EMP_URL.format(nace="TOTAL"), "archive": "eurostat_employment_total.csv"}],
+                  "formula": "ipv_level / (gross_disposable_income / total_employment)"},
     },
     {
         "id": "construction_credit",
-        "title": "Credit to the Construction Sector (Banco de España)",
-        "short": "Construction credit",
+        "title": "Residential Building Permits, Floor Area (activity proxy for construction credit)",
+        "short": "Building permits (activity proxy)",
         "component": "Residential real estate",
-        "status": "source-pending",
+        "status": "proxy",
         "sign": 1,
-        "source": "Banco de España, lending by economic activity (supervisory returns)",
-        "source_url": None,
-        "series_id": [],
-        "definition": "Loans to construction firms (CNAE section F) by resident credit institutions, as a percent of GDP. Construction and real-estate development lending was the epicentre of the Spanish bust; it is the activity split of the credit stock, which the household-purpose tables used elsewhere in this section cannot see.",
-        "frequency": "Quarterly",
-        "pending_reason": "The Banco de España compiles lending by economic activity from supervisory returns and publishes it in Financial Stability Report tables; the Boletín Estadístico CSV service (chapters 4 and 8, checked table by table for this build) carries no activity-breakdown series, and no stable machine-readable public route was resolved. The indicator ships pending rather than substituting a purpose-based household series for an activity-based business one.",
+        "source": "Eurostat, short-term business statistics — building permits (sts_cobp_m); source statistic: Ministerio de Transportes, Estadística de Obras en Edificación (visados de dirección de obra)",
+        "source_url": EUROSTAT_PERMITS_URL,
+        "series_id": ["sts_cobp_m: ES, BPRM_SQM, CPA_F41001, NSA, I21"],
+        "definition": "Index of useful floor area in approved residential building permits (visados de dirección de obra), 2021 = 100, quarterly mean of monthly values. Labelled an ACTIVITY proxy, and the label is the point: the concept this slot exists for is credit to the construction sector (loans to CNAE-F firms), and no machine-readable route to that stock was resolved — the Banco de España's Boletín CSV service carries no activity breakdown, and the ECB's BSI branch estimates (loans by NACE) are published only as euro-area aggregates, with no Spain series (verified against the ECB Data Portal for this build). Permits measure the construction pipeline the credit financed: they led the boom (the index peaks in October 2006 at nearly ten times its 2021 base) and collapsed by more than 95% to the 2013 trough. Where the proxy can mislead: it is a flow of approvals, not a stock of loans — it says nothing about the legacy construction debt overhang after 2008, and it can rise on public or self-financed building that bank credit did not fund.",
+        "frequency": "Monthly (quarterly mean)",
+        "route": {"type": "derived", "archive": "construction_permits.csv",
+                  "inputs": [{"eurostat_m_url": EUROSTAT_PERMITS_URL, "archive": "eurostat_permits_residential.csv"}],
+                  "formula": "quarterly mean of monthly permits index"},
     },
     # ---------------------------------------------------------- Business credit
     {
@@ -355,17 +414,20 @@ INDICATORS = [
     },
     {
         "id": "tedr_spread",
-        "title": "New-Lending Rate Spread on Loans to Non-Financial Corporations (Banco de España, TEDR)",
-        "short": "New-lending spread (NFC)",
+        "title": "New-Lending Margin on Loans to Non-Financial Corporations over the Interbank Rate (Banco de España TEDR, proxy spread)",
+        "short": "New-lending margin (NFC, proxy)",
         "component": "Business credit",
-        "status": "source-pending",
+        "status": "proxy",
         "sign": 1,
-        "source": "Banco de España, TEDR interest rate statistics (Boletín Estadístico, chapter 19)",
-        "source_url": None,
-        "series_id": [],
-        "definition": "Average rate on new loans to non-financial corporations (TEDR) minus the matched-maturity euro swap rate, basis points: the price of new business credit.",
-        "frequency": "Monthly",
-        "pending_reason": "The TEDR new-business rate for non-financial corporations is published (Boletín Estadístico, table 19.3), and the standards leg of this component is now sourced from the Bank Lending Survey; a spread still needs a matched-maturity market benchmark, and no free machine-readable euro swap benchmark route was resolved for this build.",
+        "source": "Banco de España, TEDR interest rate statistics (Boletín Estadístico, table 19.3); OECD interbank rate via FRED",
+        "source_url": BDE_TABLE_URL.format(table="be1903"),
+        "series_id": ["BE_19_3.11", "IR3TIB01EZM156N"],
+        "definition": "Average TEDR rate on new loans to non-financial corporations (total credit, BE_19_3.11) minus the euro-area 3-month interbank rate (OECD via FRED), basis points, quarterly mean of monthly values: the margin banks charge firms over the money-market benchmark. Labelled a proxy spread: the reference concept is the margin over a matched-maturity euro swap rate, and no free machine-readable swap curve route was resolved (the ECB yield-curve dataflow's data endpoint could not be exercised from the build network for this build). The 3-month benchmark is shorter than the average new loan, so the margin also carries a term-premium component that widens when the curve steepens; it is a price-of-credit gauge, not a pure credit spread. It is a bank-lending margin, not a corporate bond spread — the bond-market concept remains source-pending in its own component. The TEDR statistics begin in June 2010, so the margin enters in 2010Q2: it covers the crisis repricing (its peak, about 350 basis points, is 2013Q4) but not the boom.",
+        "frequency": "Monthly (quarterly mean)",
+        "route": {"type": "derived", "archive": "tedr_spread.csv",
+                  "inputs": [{"table": "be1903", "alias": "BE_19_3.11", "archive": "bde_be1903_tedr_nfc.csv"},
+                             {"fred": "IR3TIB01EZM156N", "archive": "fred_ea_interbank_3m.csv"}],
+                  "formula": "100 * (tedr_nfc - interbank_3m), quarterly mean of monthly"},
     },
     # ---------------------------------------------------------- Short-term wholesale funding
     {
@@ -482,6 +544,92 @@ INDICATORS = [
                              {"eurostat": "TR", "archive": "eurostat_gov_revenue.csv"}],
                   "formula": "100 * trailing-4Q interest (D41PAY) / trailing-4Q revenue (TR)"},
     },
+    {
+        "id": "nonres_share",
+        "title": "General Government Debt (EDP) Held by Non-Residents, Share of Total (Banco de España)",
+        "short": "Non-resident share of govt debt",
+        "component": "Sovereign–bank nexus",
+        "status": "live",
+        "sign": 1,
+        "source": "Banco de España, Boletín Estadístico, table 11.13 (EDP debt by holder)",
+        "source_url": BDE_TABLE_URL.format(table="be1113"),
+        "series_id": ["BE_11_13.6", "BE_11_13.1"],
+        "definition": "100 x (general government EDP debt held by the rest of the world, BE_11_13.6) / (total general government EDP debt, BE_11_13.1), percent, quarter-end stocks. The external-dependence leg of the nexus, and the holder-side counterpart of the spread: a sovereign funded by non-residents is exposed to holders with no domestic reason to stay. The measured shape is the flight channel itself: the share was at its highest, about 51%, in 2007; foreign holders then sold through the spread crisis and the share troughed at roughly a third around 2012, with domestic banks and later the Eurosystem absorbing the stock; it recovered as foreign demand returned and stands near its 2007 level again — the dependence the crisis exposed was rebuilt, not retired. Its sign is not ambiguous in this slot: it measures who must be persuaded to roll the stock over, not whether the price is fair.",
+        "frequency": "Quarterly",
+        "route": {"type": "derived", "archive": "nonres_share.csv",
+                  "inputs": [{"table": "be1113", "alias": "BE_11_13.6", "archive": "bde_be1113_gov_debt_nonres.csv"},
+                             {"table": "be1113", "alias": "BE_11_13.1", "archive": "bde_be1113_gov_debt_total.csv"}],
+                  "formula": "100 * nonresident_holdings / total_edp_debt"},
+    },
+    {
+        "id": "bde_share",
+        "title": "General Government Debt (EDP) Held by the Banco de España, Share of Total (Banco de España)",
+        "short": "BdE share of govt debt",
+        "component": "Sovereign–bank nexus",
+        "status": "live",
+        "sign": 1,
+        "source": "Banco de España, Boletín Estadístico, table 11.13 (EDP debt by holder)",
+        "source_url": BDE_TABLE_URL.format(table="be1113"),
+        "series_id": ["BE_11_13.4", "BE_11_13.1"],
+        "definition": "100 x (general government EDP debt held by the Banco de España, BE_11_13.4) / (total general government EDP debt, BE_11_13.1), percent, quarter-end stocks. The Banco de España holds the Eurosystem's asset-purchase portfolio of Spanish sovereign debt (APP/PEPP), so this share is Spain's dependence on official European financing made visible as a stock: negligible before 2015, it rose through the purchase programmes to over a quarter of the debt at the 2022 peak (28%). It is oriented as dependence, consistent with this index's treatment of Eurosystem borrowing in the funding component — with the offset stated plainly: a captive official holder also stabilises the market it dominates, and the gauge reads the dependence, not the net of the two. The two readings diverge exactly when purchases stop and the share must be re-absorbed by price-sensitive holders.",
+        "frequency": "Quarterly",
+        "route": {"type": "derived", "archive": "bde_share.csv",
+                  "inputs": [{"table": "be1113", "alias": "BE_11_13.4", "archive": "bde_be1113_gov_debt_bde.csv"},
+                             {"table": "be1113", "alias": "BE_11_13.1", "archive": "bde_be1113_gov_debt_total.csv"}],
+                  "formula": "100 * bde_holdings / total_edp_debt"},
+    },
+    {
+        "id": "refi_short_share",
+        "title": "General Government Debt (EDP) with Residual Maturity up to One Year, Share of Total (Banco de España)",
+        "short": "Debt due within a year",
+        "component": "Sovereign–bank nexus",
+        "status": "live",
+        "sign": 1,
+        "source": "Banco de España, Boletín Estadístico, table 11.13 (EDP debt by instrument and residual maturity)",
+        "source_url": BDE_TABLE_URL.format(table="be1113"),
+        "series_id": ["BE_11_13.9", "BE_11_13.10", "BE_11_13.1"],
+        "definition": "100 x (EDP debt in securities with residual maturity up to one year, BE_11_13.9, plus EDP loans with residual maturity up to one year, BE_11_13.10) / (total EDP debt, BE_11_13.1), percent, quarter-end stocks. The refinancing-structure leg: the share of the stock that must be rolled within a year is the speed at which a funding strike reaches the sovereign, whatever the average maturity of the whole stock. The Tesoro Público publishes the average life of state debt monthly, but as dated report files with no stable series route; this residual-maturity share is the same risk read from the Banco de España's holder-and-maturity table, on the panel's quarterly convention.",
+        "frequency": "Quarterly",
+        "route": {"type": "derived", "archive": "refi_short_share.csv",
+                  "inputs": [{"table": "be1113", "alias": "BE_11_13.9", "archive": "bde_be1113_gov_debt_sec_1y.csv"},
+                             {"table": "be1113", "alias": "BE_11_13.10", "archive": "bde_be1113_gov_debt_loans_1y.csv"},
+                             {"table": "be1113", "alias": "BE_11_13.1", "archive": "bde_be1113_gov_debt_total.csv"}],
+                  "formula": "100 * (securities_<=1y + loans_<=1y) / total_edp_debt"},
+    },
+    {
+        "id": "niip_gdp",
+        "title": "Net International Investment Position to GDP (Banco de España)",
+        "short": "NIIP / GDP",
+        "component": "Sovereign–bank nexus",
+        "status": "live",
+        "sign": -1,
+        "source": "Banco de España, Boletín Estadístico, tables 17.21 (international investment position) and 2.1",
+        "source_url": BDE_TABLE_URL.format(table="be1721"),
+        "series_id": ["BE_17_21.1", "BE_2_1.28"],
+        "definition": "100 x (net international investment position — Spanish residents' financial assets abroad minus foreign holdings of Spanish liabilities, all sectors, BE_17_21.1, quarter-end stock) / (nominal GDP, trailing four quarters, BE_2_1.28), percent; oriented so that a more negative position reads as more vulnerable. A first-order Spain gauge with no counterpart in the U.S. panel: Spain ran persistent current-account deficits through the boom and financed them abroad, so the whole economy — not only the sovereign — entered the crisis owing the rest of the world close to a year's GDP: the position sat between -85% and -97% of GDP from 2007 to the mid-2010s (the trough, -97%, is end-2009, where the fallen GDP denominator compounds the stock) and has since improved to about -40%. It sits in the nexus component because that is where this index keeps the external-funding legs: the sovereign's holder structure above is the same dependence read on one issuer.",
+        "frequency": "Quarterly",
+        "route": {"type": "derived", "archive": "niip_gdp.csv",
+                  "inputs": [{"table": "be1721", "alias": "BE_17_21.1", "archive": "bde_be1721_niip_net.csv"},
+                             {"table": "be0201", "alias": "BE_2_1.28", "archive": "bde_be0201_gdp.csv"}],
+                  "formula": "100 * niip / sum4(gdp)"},
+    },
+    {
+        "id": "fla_share",
+        "title": "Regional Government Debt Financed by the State Financing Funds, Share of Regional Debt (Banco de España)",
+        "short": "Regions financed by the state (FLA)",
+        "component": "Sovereign–bank nexus",
+        "status": "live",
+        "sign": 1,
+        "source": "Banco de España, Boletín Estadístico, table 13.7 (regional government EDP debt by instrument)",
+        "source_url": BDE_TABLE_URL.format(table="be1307"),
+        "series_id": ["BE_13_7.11", "BE_13_7.1"],
+        "definition": "100 x (regional governments' EDP debt in loans from the state financing funds — the Fondo de Liquidez Autonómica (FLA) and its successor financing funds, BE_13_7.11) / (total regional government EDP debt, BE_13_7.1), percent, quarter-end stocks. The sharp form of the regional leg: the regional debt stock above says how much the regions owe; this share says who funds them. The funds were created in 2012 when markets closed to the regions; the share passed half of all regional debt in the mid-2010s and peaks above 60% in 2024 — the regions had not stopped borrowing, they had stopped borrowing from anyone but Madrid, which converts regional credit risk into a direct claim on the sovereign inside the nexus. The Banco de España publishes the loans as zero before the funds' creation in 2012 — the instrument did not exist — so the gauge enters at zero rather than missing.",
+        "frequency": "Quarterly",
+        "route": {"type": "derived", "archive": "fla_share.csv",
+                  "inputs": [{"table": "be1307", "alias": "BE_13_7.11", "archive": "bde_be1307_ccaa_fund_loans.csv"},
+                             {"table": "be1307", "alias": "BE_13_7.1", "archive": "bde_be1307_ccaa_debt_total.csv"}],
+                  "formula": "100 * fund_loans / total_ccaa_debt"},
+    },
     # ---------------------------------------------------------- Price volatility
     {
         "id": "ciss",
@@ -510,7 +658,7 @@ INDICATORS = [
         "series_id": [],
         "definition": "Earnings (or dividend) yield of the IBEX 35, percent. No Shiller CAPE exists for Spain; a yield is the available valuation gauge, oriented so that a lower yield (richer pricing) reads as more vulnerable.",
         "frequency": "Monthly",
-        "pending_reason": "No stable free machine-readable series for an IBEX earnings or dividend yield was resolved at build time (BME publishes index statistics as report files; the ECB does not carry a Spanish earnings yield).",
+        "pending_reason": "No stable free machine-readable series for an IBEX or euro-area earnings/dividend yield was resolved. BME publishes index statistics as report files, not series. The ECB route was checked dataset by dataset for this build: the FM dataflow is a security-level market feed (its data-type codelist carries no aggregate dividend- or earnings-yield series for a Spanish or euro-area index), and the SEC accounts carry ESA dividend transactions (D.421), which are flows of dividends paid, not yields. The component stays empty rather than substituting a price level for a valuation yield.",
     },
     # ---------------------------------------------------------- Corporate spreads
     {
@@ -525,22 +673,23 @@ INDICATORS = [
         "series_id": [],
         "definition": "Option-adjusted spread on euro-area corporate bonds, basis points, to be labelled a euro-area proxy on the page: Spain's corporate bond market is too thin for a clean domestic OAS, and Spanish issuers fund at euro-area spreads plus a sovereign-linked premium already measured by the Bono–Bund leg.",
         "frequency": "Daily",
-        "pending_reason": "No free machine-readable route for an ICE BofA euro-area OAS was resolved at build time; the series ships pending rather than substituting a U.S. spread.",
+        "pending_reason": "No free machine-readable route for an ICE BofA euro-area OAS exists (the index family is licensed), and no public substitute was resolved for this build: the ECB's FM dataflow is a security-level feed with no published aggregate euro-area corporate OAS series, and constructing a spread against the ECB yield curve (YC dataflow) failed at the data endpoint, which returned errors and dropped connections on every data query from the build network while its catalogue endpoints answered normally. The bank-lending margin in Business credit (TEDR over the interbank rate) is a different price and is not substituted for a bond spread; the series ships pending rather than substituting a U.S. spread.",
     },
     # ---------------------------------------------------------- Commercial real estate
     {
         "id": "cre_prices",
-        "title": "Commercial Property Prices, Spain (BIS)",
-        "short": "Commercial property prices",
+        "title": "Commercial Property Prices, Annual Change (BIS)",
+        "short": "Commercial property prices, y/y",
         "component": "Commercial real estate",
-        "status": "source-pending",
+        "status": "live",
         "sign": 1,
-        "source": "Bank for International Settlements (BIS), commercial property price statistics",
-        "source_url": None,
-        "series_id": [],
-        "definition": "Four-quarter percent change of the BIS commercial property price index for Spain.",
+        "source": "Bank for International Settlements (BIS), commercial property price statistics (BIS Data Portal, SDMX)",
+        "source_url": BIS_CPP_URL,
+        "series_id": ["WS_CPP: Q.ES, RE_TYPE=A, COLLECTION=V"],
+        "definition": "Four-quarter percent change of the BIS commercial property price index for Spain (all property types, whole country). Earlier builds recorded this dataset as portal-download only; the SDMX route (WS_CPP) resolves and is exercised here. Two limits are stated on the series itself: the BIS Spain index starts in 2014Q1, so the gauge reads commercial-price momentum only in the post-bust regime — it is silent on the 2007-13 commercial collapse, and its percentile is computed against that shorter history; and the ECB's own commercial property datasets (CPP, migrated to RESC) carry no Spain series — the candidate keys return no observations — so the BIS compilation is the only public route.",
         "frequency": "Quarterly",
-        "pending_reason": "The BIS commercial property price dataset is distributed as portal downloads rather than a stable SDMX series for Spain; no free machine-readable route was resolved at build time.",
+        "route": {"type": "bis_cpp", "url": BIS_CPP_URL,
+                  "archive": "bis_cpp_es.csv"},
     },
 ]
 

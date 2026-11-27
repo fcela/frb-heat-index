@@ -104,8 +104,12 @@ def fetch_primary(route: dict) -> dict:
         return fetch.fetch_bis_sdmx(route["url"])
     if t == "bis_tc":
         return fetch.fetch_bis_tc(route["url"])
+    if t == "bis_cpp":
+        return fetch.fetch_bis_cpp(route["url"])
     if t == "fred_yoy":
         return fetch.fetch_fred(route["url"])
+    if t == "eurostat_q":
+        return fetch.fetch_eurostat(route["url"])
     if t == "ecb_ciss":
         return fetch.fetch_ecb_ciss(route["url"])
     if t == "ecb_sdmx_q":
@@ -128,6 +132,13 @@ def fetch_input(inp: dict) -> dict:
         from src.spain.series import EUROSTAT_GOV_URL
         return fetch.fetch_eurostat(
             EUROSTAT_GOV_URL.format(item=inp["eurostat"]))
+    if "eurostat_url" in inp:
+        return fetch.fetch_eurostat(inp["eurostat_url"])
+    if "eurostat_m_url" in inp:
+        return fetch.fetch_eurostat_m(inp["eurostat_m_url"])
+    if "ine" in inp:
+        from src.spain.series import INE_SERIES_URL
+        return fetch.fetch_ine(INE_SERIES_URL.format(code=inp["ine"]))
     from src.spain.series import FRED_URL
     return fetch.fetch_fred(FRED_URL.format(sid=inp["fred"]))
 
@@ -151,7 +162,7 @@ def build_indicator_series(ind: dict, archive_dir: Path, log: list) -> dict:
         fetch.write_archive(archive_dir, route["archive"], raw)
         log.append(f"{ind['id']}: {len(raw)} obs "
                    f"({min(raw) if raw else '-'}..{max(raw) if raw else '-'})")
-        if route["type"] == "fred_yoy":
+        if route["type"] in ("fred_yoy", "bis_cpp"):
             out = {}
             for q, v in raw.items():
                 prev = raw.get(qlabel(qidx(q) - 4))
@@ -268,6 +279,69 @@ def _d_var_rate_share(inp):
     return _ratio_pct(le1y, total)
 
 
+def _d_construction_permits(inp):
+    # Monthly permits index -> quarterly mean (the panel's monthly
+    # flow/price convention).
+    return quarter_mean(inp["eurostat_permits_residential.csv"])
+
+
+def _d_price_income(inp):
+    ipv = inp["ine_ipv_level.csv"]
+    b6g = inp["eurostat_hh_disposable_income.csv"]
+    emp = inp["eurostat_employment_total.csv"]
+    out = {}
+    for q in ipv.keys() & b6g.keys() & emp.keys():
+        if emp[q]:
+            # B6G is in millions of euro, employment in thousands of
+            # persons: their ratio is thousands of euro of quarterly
+            # disposable income per employed person.
+            out[q] = ipv[q] / (b6g[q] / emp[q])
+    return out
+
+
+def _d_tedr_spread(inp):
+    tedr = inp["bde_be1903_tedr_nfc.csv"]
+    bench = inp["fred_ea_interbank_3m.csv"]
+    spread_m = {p: 100.0 * (tedr[p] - bench[p])
+                for p in tedr.keys() & bench.keys()}
+    return quarter_mean(spread_m)
+
+
+def _d_nonres_share(inp):
+    return _ratio_pct(inp["bde_be1113_gov_debt_nonres.csv"],
+                      inp["bde_be1113_gov_debt_total.csv"])
+
+
+def _d_bde_share(inp):
+    return _ratio_pct(inp["bde_be1113_gov_debt_bde.csv"],
+                      inp["bde_be1113_gov_debt_total.csv"])
+
+
+def _d_refi_short_share(inp):
+    sec = inp["bde_be1113_gov_debt_sec_1y.csv"]
+    loans = inp["bde_be1113_gov_debt_loans_1y.csv"]
+    total = inp["bde_be1113_gov_debt_total.csv"]
+    due = {q: sec[q] + loans[q] for q in sec.keys() & loans.keys()}
+    return _ratio_pct(due, total)
+
+
+def _d_niip_gdp(inp):
+    niip = inp["bde_be1721_niip_net.csv"]
+    gdp = inp["bde_be0201_gdp.csv"]
+    return {q: 100.0 * niip[q] / sum4(gdp, q)
+            for q in niip if sum4(gdp, q)}
+
+
+def _d_fla_share(inp):
+    return _ratio_pct(inp["bde_be1307_ccaa_fund_loans.csv"],
+                      inp["bde_be1307_ccaa_debt_total.csv"])
+
+
+def _d_tourism_emp_share(inp):
+    return _ratio_pct(inp["eurostat_employment_hospitality.csv"],
+                      inp["eurostat_employment_total.csv"])
+
+
 DERIVED = {
     "equity_ratio": _d_equity_ratio,
     "loans_deposits": _d_loans_deposits,
@@ -281,6 +355,15 @@ DERIVED = {
     "interest_burden": _d_interest_burden,
     "tourism_gdp": _d_tourism_gdp,
     "var_rate_share": _d_var_rate_share,
+    "construction_credit": _d_construction_permits,
+    "price_income": _d_price_income,
+    "tedr_spread": _d_tedr_spread,
+    "nonres_share": _d_nonres_share,
+    "bde_share": _d_bde_share,
+    "refi_short_share": _d_refi_short_share,
+    "niip_gdp": _d_niip_gdp,
+    "fla_share": _d_fla_share,
+    "tourism_emp_share": _d_tourism_emp_share,
 }
 
 
