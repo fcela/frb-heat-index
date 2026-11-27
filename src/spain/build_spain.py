@@ -16,7 +16,9 @@ the raw series are re-archived under data/spain/.
 """
 import argparse
 import datetime as dt
+import html as _html
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -311,9 +313,12 @@ def mean_available(rows: list) -> list:
 
 # ------------------------------------------------------------ svg
 
-def svg_chart(series: list, quarters: list, w=330, h=110) -> str:
+def svg_chart(series: list, quarters: list, w=330, h=110,
+              shade=None) -> str:
     """Small multiple on a shared 0-1 axis: area fill, straight line
-    segments, square corners. Gaps break the path (never bridged)."""
+    segments, square corners. Gaps break the path (never bridged).
+    shade=(first_i, last_i, label) shades a quarter span behind the
+    line (the headline chart's crisis window)."""
     pad_l, pad_b, pad_t = 26, 14, 4
     iw, ih = w - pad_l - 4, h - pad_b - pad_t
     n = len(quarters)
@@ -336,6 +341,15 @@ def svg_chart(series: list, quarters: list, w=330, h=110) -> str:
         runs.append(cur)
     parts = [f'<svg viewBox="0 0 {w} {h}" width="100%" role="img" '
              f'aria-label="chart, values 0 to 1">']
+    if shade:
+        i1, i2, label = shade
+        step = iw / (n - 1) if n > 1 else 0
+        sx, sw = x(i1) - step / 2, step * (i2 - i1 + 1)
+        parts.append(f'<rect x="{sx:.1f}" y="{pad_t}" width="{sw:.1f}" '
+                     f'height="{ih}" fill="#b2182b" fill-opacity="0.06"/>')
+        parts.append(f'<text x="{sx + sw / 2:.1f}" y="{pad_t + 10}" '
+                     f'font-size="8" text-anchor="middle" '
+                     f'fill="var(--muted,#777)">{label}</text>')
     for gy in (0.0, 0.5, 1.0):
         parts.append(f'<line x1="{pad_l}" y1="{y(gy):.1f}" x2="{w - 4}" '
                      f'y2="{y(gy):.1f}" stroke="var(--grid,#ddd)" '
@@ -361,6 +375,141 @@ def svg_chart(series: list, quarters: list, w=330, h=110) -> str:
     return "".join(parts)
 
 
+# ------------------------------------------------------------ heat maps
+
+# The U.S. page's heat scale (docs/assets/app.js, HEAT): the paper's
+# blue -> red stops, one colour story in both themes. heat_color is a
+# line-for-line port of app.js heatColor (linear interpolation across
+# the nine stops), so the Spain grids read identically to the U.S. map.
+HEAT = ["#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#f7f7f7",
+        "#fddbc7", "#f4a582", "#d6604d", "#b2182b"]
+
+
+def _hex_rgb(h: str) -> tuple:
+    n = int(h[1:], 16)
+    return (n >> 16 & 255, n >> 8 & 255, n & 255)
+
+
+def heat_color(v: float) -> str:
+    t = max(0.0, min(1.0, v)) * (len(HEAT) - 1)
+    i = min(int(math.floor(t)), len(HEAT) - 2)
+    f = t - i
+    a, b = _hex_rgb(HEAT[i]), _hex_rgb(HEAT[i + 1])
+    return "#" + "".join(
+        f"{int(math.floor(x + (y - x) * f + 0.5)):02x}"
+        for x, y in zip(a, b))
+
+
+def heat_fg(v: float) -> str:
+    """Readable text colour on a heat_color background (app.js rule)."""
+    def lin(c: float) -> float:
+        return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+    r, g, b = (c / 255 for c in _hex_rgb(heat_color(v)))
+    lum = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+    return "#1b1a16" if lum > 0.5 else "#ffffff"
+
+
+def _esc(s) -> str:
+    return _html.escape(str(s), quote=True)
+
+
+def svg_heatmap(rows: list, quarters: list, row_h=23) -> str:
+    """Rows x quarters heat grid. Row dicts: {"label", "key",
+    "values"} for data rows (values aligned to quarters; None renders
+    as a no-observation gray cell), {"label", "key", "nodata"} for
+    all-pending rows (one wide gray cell stating the reason — the row
+    is shown, never dropped), {"group"} for a component header row
+    (indicator map only). Data cells carry data-q / data-v attributes
+    so tests can verify the grid against the bundle cell by cell."""
+    W, label_w, pad_r, top = 1060, 180, 6, 18
+    n = len(quarters)
+    cw = (W - label_w - pad_r) / n
+    total = top + 4 + sum(17 if "group" in r else row_h for r in rows)
+    parts = [f'<svg viewBox="0 0 {W} {total}" width="{W}" '
+             f'height="{total}" role="img" aria-label="heat map">']
+    for i, q in enumerate(quarters):
+        if q.endswith("Q1") and i % 20 == 0:
+            parts.append(
+                f'<text x="{label_w + cw * i:.1f}" y="11" font-size="8.5" '
+                f'fill="var(--muted,#777)">{q[:4]}</text>')
+    y = top
+    for r in rows:
+        if "group" in r:
+            hh = 17
+            parts.append(
+                f'<g class="hm-row" data-kind="group" '
+                f'data-row="{_esc(r["group"])}">'
+                f'<text x="{label_w - 8}" y="{y + hh - 5}" font-size="10" '
+                f'font-weight="700" text-anchor="end" '
+                f'fill="var(--ink,#222)">{_esc(r["group"])}</text>'
+                f'<line x1="0" y1="{y + hh - 1}" x2="{W}" '
+                f'y2="{y + hh - 1}" stroke="var(--line,#e9e4d6)" '
+                f'stroke-width="0.7"/></g>')
+            y += hh
+            continue
+        kind = "nodata" if "nodata" in r else "data"
+        fs = "10.5" if row_h >= 20 else "9.5"
+        parts.append(f'<g class="hm-row" data-kind="{kind}" '
+                     f'data-row="{_esc(r["key"])}">')
+        parts.append(
+            f'<text x="{label_w - 8}" y="{y + row_h / 2 + 3.5:.1f}" '
+            f'font-size="{fs}" text-anchor="end" '
+            f'fill="var(--ink,#222)">{_esc(r["label"])}</text>')
+        if kind == "nodata":
+            parts.append(
+                f'<rect x="{label_w}" y="{y + 1}" width="{cw * n:.1f}" '
+                f'height="{row_h - 2}" style="fill:var(--missing,#ece7d9)"/>')
+            parts.append(
+                f'<text x="{label_w + cw * n / 2:.1f}" '
+                f'y="{y + row_h / 2 + 3.5:.1f}" font-size="9.5" '
+                f'text-anchor="middle" fill="var(--muted,#777)">'
+                f'{_esc(r["nodata"])}</text>')
+        else:
+            for i, v in enumerate(r["values"]):
+                cx = label_w + cw * i
+                if v is None:
+                    parts.append(
+                        f'<rect class="miss" data-q="{quarters[i]}" '
+                        f'x="{cx:.1f}" y="{y + 1}" width="{cw - 0.6:.2f}" '
+                        f'height="{row_h - 2}" '
+                        f'style="fill:var(--missing,#ece7d9)"/>')
+                else:
+                    parts.append(
+                        f'<rect data-q="{quarters[i]}" data-v="{v:.6f}" '
+                        f'x="{cx:.1f}" y="{y + 1}" width="{cw - 0.6:.2f}" '
+                        f'height="{row_h - 2}" fill="{heat_color(v)}">'
+                        f'<title>{_esc(r["label"])} · {quarters[i]} · '
+                        f'{v:.3f} — hotter than {round(v * 100)}% of its '
+                        f'own history</title></rect>')
+        parts.append("</g>")
+        y += row_h
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def svg_heat_legend() -> str:
+    stops = "".join(
+        f'<stop offset="{i / (len(HEAT) - 1):.3f}" stop-color="{c}"/>'
+        for i, c in enumerate(HEAT))
+    ticks = "".join(
+        f'<text x="{180 + 300 * t:.0f}" y="30" font-size="8.5" '
+        f'text-anchor="middle" fill="var(--muted,#777)">{t:.2f}</text>'
+        for t in (0, 0.25, 0.5, 0.75, 1))
+    return (
+        f'<svg viewBox="0 0 1060 34" width="100%" role="img" '
+        f'aria-label="heat scale legend">'
+        f'<defs><linearGradient id="sp-heat-grad" x1="0" y1="0" x2="1" '
+        f'y2="0">{stops}</linearGradient></defs>'
+        f'<text x="172" y="13" font-size="9.5" text-anchor="end" '
+        f'fill="var(--muted,#777)">Quantile in own history</text>'
+        f'<rect x="180" y="3" width="300" height="10" '
+        f'fill="url(#sp-heat-grad)"/>{ticks}'
+        f'<rect x="520" y="3" width="14" height="10" '
+        f'style="fill:var(--missing,#ece7d9)"/>'
+        f'<text x="540" y="13" font-size="9.5" '
+        f'fill="var(--muted,#777)">no observation</text></svg>')
+
+
 # ------------------------------------------------------------ page
 
 PAGE_CSS = """
@@ -372,6 +521,10 @@ PAGE_CSS = """
 .sp-prov a { color: inherit; }
 .sp-latest { font-size: 0.85rem; margin: 0.15rem 0 0.3rem; }
 .sp-pending { font-size: 0.85rem; line-height: 1.5; }
+.sp-hm { margin: 0; }
+.sp-hm svg { display: block; }
+.sp-chip { display: inline-block; min-width: 2.6rem; text-align: center; padding: 0.08rem 0.3rem; font-weight: 600; font-size: 0.82rem; }
+.sp-glance td, .sp-glance th { white-space: nowrap; }
 """
 
 
@@ -442,6 +595,11 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
       source-pending, {len(comp_live)} of {len(COMPONENTS)} components
       in the headline. Construction, the analogy and its limits:
       <a href="methodology.md">methodology</a>.</p>
+    <ul class="stats">
+      <li><span class="stat-num">{len(quarters)}</span><span class="stat-label">quarters</span></li>
+      <li><span class="stat-num">{live_n}</span><span class="stat-label">indicators live (of {len(meta_indicators)})</span></li>
+      <li><span class="stat-num">{len(comp_live)}</span><span class="stat-label">components in the headline (of {len(COMPONENTS)})</span></li>
+    </ul>
   </header>
 </div>
 <main>
@@ -452,7 +610,9 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
         sample contains a full systemic crisis (2010–13), so the scale
         is calibrated by a real event.</p>
       <div class="sp-card">
-        {svg_chart(bundle['headline'], quarters, w=1060, h=220)}
+        {svg_chart(bundle['headline'], quarters, w=1060, h=220,
+                   shade=(quarters.index("2010Q1"),
+                          quarters.index("2013Q4"), "2010–13 crisis"))}
         <p class="sp-prov">Source: computed from the component series
           below; per-indicator provenance is on each panel. Method:
           <a href="methodology.md">methodology</a>. Data:
@@ -482,6 +642,95 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
         percentiles (0–1, own history). Indicators below.</p></div>""")
     out.append("""
       </div>
+    </section>""")
+
+    # ---- heat maps (the U.S. page's signature visual, Spain data) ----
+    comp_rows = []
+    for comp in COMPONENTS:
+        s = bundle["components"][comp]
+        if all(v is None for v in s):
+            comp_rows.append({"label": comp, "key": comp,
+                              "nodata": "no live indicator — "
+                                        "source-pending (see below)"})
+        else:
+            comp_rows.append({"label": comp, "key": comp, "values": s})
+    ind_rows = []
+    for comp in COMPONENTS:
+        ind_rows.append({"group": comp})
+        for ind in by_comp.get(comp, []):
+            if ind["status"] == "source-pending":
+                ind_rows.append({"label": ind["short"], "key": ind["id"],
+                                 "nodata": "source-pending"})
+            else:
+                ind_rows.append({"label": ind["short"], "key": ind["id"],
+                                 "values": pct[ind["id"]]["percentile"]})
+    out.append(f"""
+    <section id="sp-heatmap">
+      <h3>The heat map</h3>
+      <p class="blurb">Sixteen components × quarters. Colours are
+        percentiles of each component's own historical distribution —
+        a red cell means "hotter than most of this component's
+        history," not an absolute level. Hover any cell for the exact
+        value. Components whose indicators are all source-pending are
+        shown as no-data rows: they exist in the framework, they are
+        listed below with the reasons, and they do not enter the
+        headline.</p>
+      <div class="heatmap-scroll"><figure class="sp-hm" id="sp-heatmap-components">{svg_heatmap(comp_rows, quarters, row_h=23)}</figure></div>
+      {svg_heat_legend()}
+      <p class="legend-note"><strong>Reading the scale:</strong> 0.00
+        is the lowest vulnerability reading on record for that
+        component (deep blue); 1.00 is the highest (deep red). Low
+        values are information, not errors — gray cells are the ones
+        with no observation.</p>
+    </section>
+    <section id="sp-indmap">
+      <h3>The heat map, by indicator</h3>
+      <p class="blurb">The same heat, resolved to all
+        {len(meta_indicators)} indicators in component order. Each
+        cell is the indicator's percentile in its own history — the
+        same scores the indicator panels below show. Gray cells are
+        quarters before a series begins; source-pending indicators
+        are no-data rows. Hover any cell for the exact value.</p>
+      <div class="heatmap-scroll"><figure class="sp-hm" id="sp-heatmap-indicators">{svg_heatmap(ind_rows, quarters, row_h=16)}</figure></div>
+      <p class="legend-note"><strong>Method:</strong> rows are in
+        framework order and are never re-ordered; the values are the
+        build's empirical-CDF percentiles, identical to the panel
+        charts below and to <code>panel_percentiles.csv</code> in the
+        data downloads.</p>
+    </section>""")
+
+    # ---- components at a glance ----
+    glance = []
+    for comp in COMPONENTS:
+        s = bundle["components"][comp]
+        inds = by_comp.get(comp, [])
+        n_live = sum(1 for i in inds if i["status"] != "source-pending")
+        if all(v is None for v in s):
+            glance.append(
+                f'<tr><td>{comp}</td><td colspan="4">source-pending — '
+                f'no live indicator</td><td>0 of {len(inds)}</td></tr>')
+            continue
+        li = max(i for i, v in enumerate(s) if v is not None)
+        pi = max((i for i, v in enumerate(s) if v is not None),
+                 key=lambda i: s[i])
+        glance.append(
+            f'<tr><td>{comp}</td>'
+            f'<td><span class="sp-chip" style="background:'
+            f'{heat_color(s[li])};color:{heat_fg(s[li])}">'
+            f'{s[li]:.2f}</span></td>'
+            f'<td>{quarters[li]}</td><td>{s[pi]:.3f}</td>'
+            f'<td>{quarters[pi]}</td><td>{n_live} of {len(inds)}</td></tr>')
+    out.append(f"""
+    <section id="sp-glance">
+      <h3>Components at a glance</h3>
+      <p class="blurb">Latest reading and sample peak for every
+        component, from the same series as the heat map above.</p>
+      <table class="pulse-table sp-glance">
+        <thead><tr><th>Component</th><th>Latest</th><th>Quarter</th>
+        <th>Peak</th><th>Peak quarter</th><th>Indicators live</th></tr>
+        </thead>
+        <tbody>{''.join(glance)}</tbody>
+      </table>
     </section>""")
 
     for comp in COMPONENTS:
@@ -523,6 +772,108 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
       </div>
     </section>""")
 
+    # ---- how it is built (compact on-page method; full text in
+    #      methodology.md) ----
+    nodata_comps = [c for c in COMPONENTS
+                    if all(v is None for v in bundle["components"][c])]
+    out.append(f"""
+    <section id="sp-method">
+      <h3>How this index is built</h3>
+      <p class="blurb">The U.S. index's construction applied to
+        Spanish sources. The complete methodology — the analogy
+        component by component, what does not transfer and why, and
+        every source route — is in the
+        <a href="methodology.md">methodology</a>.</p>
+      <ol class="steps">
+        <li><div class="step-body"><strong>Sign orientation.</strong>
+          <p>Each series is flipped as needed so that higher values
+            always mean greater vulnerability: a thinner capital
+            share, a wider Bono–Bund spread, and tighter lending
+            standards all read as hotter.</p></div></li>
+        <li><div class="step-body"><strong>Percentile transform.</strong>
+          <p>Each indicator is mapped through the empirical CDF
+            (midrank) of its own Spanish history, so every value is a
+            0–1 percentile: 0.9 means "higher than 90% of Spain's own
+            past."</p></div></li>
+        <li><div class="step-body"><strong>Component index.</strong>
+          <p>The mean of a component's available indicator
+            percentiles that quarter. Components whose indicators are
+            all source-pending ({", ".join(nodata_comps)}) never
+            enter.</p></div></li>
+        <li><div class="step-body"><strong>Headline index.</strong>
+          <p>The mean of the components that have data — currently
+            {len(comp_live)} of {len(COMPONENTS)}.</p></div></li>
+      </ol>
+      <div class="caveats">
+        <h3>Honest caveats</h3>
+        <ul>
+          <li><strong>Observed only — no nowcasts.</strong> A quarter
+            a source has not published is a missing value, never
+            filled, interpolated or spliced. The panel ends at the
+            latest quarter in which at least 60% of live indicators
+            are observed.</li>
+          <li><strong>Percentiles are Spain-relative.</strong> The
+            scale is each series' own Spanish history, so readings
+            are not level-comparable with the U.S. index — and there
+            is no official Spanish counterpart series to validate
+            against.</li>
+          <li><strong>Coverage: {live_n} of {len(meta_indicators)}
+            indicators live.</strong> {pend_n} are source-pending
+            and are shown as explicit no-data rows and cards, with
+            the reason, rather than being silently dropped or
+            proxied.</li>
+          <li><strong>The sample starts in 1999.</strong> Nothing is
+            spliced across the peseta/euro changeover; Spain's sample
+            contains a full systemic crisis (2010–13), so the scale
+            is calibrated by a real event.</li>
+        </ul>
+      </div>
+    </section>""")
+
+    # ---- data downloads ----
+    lagging = [i for i in meta_indicators
+               if i["status"] != "source-pending"
+               and i["last_observation"] < quarters[-1]]
+    lag_note = ""
+    if lagging:
+        lag_note = (" Indicators ending before the panel end: " +
+                    ", ".join(f'{i["short"]} (through '
+                              f'{i["last_observation"]})'
+                              for i in lagging) + ".")
+    raw_base = ("https://raw.githubusercontent.com/fcela/"
+                "frb-heat-index/main/data/spain")
+    out.append(f"""
+    <section id="sp-data">
+      <h3>Data downloads</h3>
+      <p class="blurb">The full quarterly panel behind this page.
+        Raw values are the source series as published; percentiles
+        are the build's empirical-CDF transform of the oriented
+        series. Every chart and cell on this page is drawn from
+        these files — no values are hardcoded.</p>
+      <ul class="dl-list">
+        <li><a href="{raw_base}/panel_quarterly.csv">
+          <span class="fname">panel_quarterly.csv</span>
+          <span class="fdesc">quarter × {len(meta_indicators)} indicators, raw values</span></a></li>
+        <li><a href="{raw_base}/panel_percentiles.csv">
+          <span class="fname">panel_percentiles.csv</span>
+          <span class="fdesc">quarter × {len(meta_indicators)} indicators, percentiles (0–1)</span></a></li>
+        <li><a href="{raw_base}/components.csv">
+          <span class="fname">components.csv</span>
+          <span class="fdesc">quarter × {len(COMPONENTS)} component percentiles</span></a></li>
+        <li><a href="{raw_base}/headline.csv">
+          <span class="fname">headline.csv</span>
+          <span class="fdesc">quarter × headline index (0–1)</span></a></li>
+        <li><a href="../data/spain.json">
+          <span class="fname">spain.json</span>
+          <span class="fdesc">the site data bundle this page is rendered from</span></a></li>
+        <li><a href="../data/spain_meta.json">
+          <span class="fname">spain_meta.json</span>
+          <span class="fdesc">per-indicator source, series, definition and status — the catalog</span></a></li>
+      </ul>
+      <p class="stamp">Panel: {quarters[0]}–{quarters[-1]} · Built
+        {bundle['built_at_utc']}.{lag_note}</p>
+    </section>""")
+
     out.append(f"""
     <div class="pulse-foot">
       <p>Experimental section; not linked from the site index.
@@ -542,6 +893,44 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
 </body>
 </html>""")
     return "".join(out)
+
+
+# ------------------------------------------------------------ downloads
+
+def write_extra_downloads(data_dir: Path, quarters: list, ids: list,
+                          pct_by_id: dict, components: dict,
+                          headline: list) -> None:
+    """The download CSVs beside panel_quarterly.csv: component
+    percentiles, the headline, and the indicator percentile panel —
+    the Spain analogues of the U.S. components / aggregate /
+    standardized downloads. Values are written exactly as computed;
+    missing quarters are empty cells, never filled."""
+    import csv as _csv
+    import io as _io
+
+    def dump(header, rows):
+        buf = _io.StringIO()
+        w = _csv.writer(buf)
+        w.writerow(header)
+        w.writerows(rows)
+        return buf.getvalue()
+
+    def cell(series, r):
+        return "" if series is None or series[r] is None else series[r]
+
+    comp_names = list(components)
+    (data_dir / "components.csv").write_text(dump(
+        ["quarter"] + comp_names,
+        [[q] + [cell(components[c], r) for c in comp_names]
+         for r, q in enumerate(quarters)]), encoding="utf-8")
+    (data_dir / "headline.csv").write_text(dump(
+        ["quarter", "headline"],
+        [[q, cell(headline, r)] for r, q in enumerate(quarters)]),
+        encoding="utf-8")
+    (data_dir / "panel_percentiles.csv").write_text(dump(
+        ["quarter"] + ids,
+        [[q] + [cell(pct_by_id.get(i), r) for i in ids]
+         for r, q in enumerate(quarters)]), encoding="utf-8")
 
 
 # ------------------------------------------------------------ main
@@ -655,6 +1044,8 @@ def main() -> int:
                            for i in ids])
     (DATA_DIR / "panel_quarterly.csv").write_text(
         buf.getvalue(), encoding="utf-8")
+    write_extra_downloads(DATA_DIR, quarters, ids, pct_by_id,
+                          components, headline)
     (DATA_DIR / "_meta.json").write_text(json.dumps({
         "section": "spain",
         "built_at_utc": built_at,
