@@ -143,6 +143,52 @@ def fetch_ecb_ciss(url: str) -> dict:
     return out
 
 
+def fetch_ecb_sdmx_q(url: str) -> dict:
+    """ECB SDMX CSV with TIME_PERIOD 'YYYY-Qn' -> {'YYYYQn': value}.
+
+    Used for the Bank Lending Survey; the CISS fetcher above keys by
+    the raw daily period instead.
+    """
+    rows = _sdmx_csv(_get(url).decode("utf-8"))
+    out = {}
+    for r in rows:
+        tp = r["TIME_PERIOD"].strip()
+        y, q = tp.split("-Q")
+        try:
+            out[f"{y}Q{q}"] = float(r["OBS_VALUE"])
+        except (TypeError, ValueError):
+            continue
+    return out
+
+
+def fetch_eurostat(url: str) -> dict:
+    """Eurostat statistics API (JSON-stat) -> {'YYYYQn': value}.
+
+    The query URL must pin every dimension except time to a single
+    value (the gov_10q_ggnfa queries in series.py pin freq, unit,
+    s_adj, sector, na_item and geo), so the flat JSON-stat index is
+    the time index plus a constant offset this resolves from the
+    dimension sizes.
+    """
+    data = json.loads(_get(url).decode("utf-8"))
+    ids, size = data["id"], data["size"]
+    strides, acc = [], 1
+    for s in reversed(size):
+        strides.insert(0, acc)
+        acc *= s
+    tidx = data["dimension"]["time"]["category"]["index"]
+    out = {}
+    for t, ti in tidx.items():
+        coords = [0] * len(ids)
+        coords[ids.index("time")] = ti
+        flat = sum(c * s for c, s in zip(coords, strides))
+        v = data["value"].get(str(flat))
+        if v is not None:
+            y, q = t.split("-Q")
+            out[f"{y}Q{q}"] = float(v)
+    return out
+
+
 def fetch_ine(url: str) -> dict:
     """INE tempus DATOS_SERIE JSON -> {'YYYYQn': value}."""
     data = json.loads(_get(url).decode("utf-8"))

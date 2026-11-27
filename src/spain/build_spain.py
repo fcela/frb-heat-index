@@ -70,6 +70,21 @@ def quarter_mean(periods: dict) -> dict:
     return {q: sum(vs) / len(vs) for q, vs in acc.items()}
 
 
+def quarter_sum(monthly: dict) -> dict:
+    """Monthly {'YYYY-MM': v} -> quarterly sums of available months.
+
+    Used for new-business volume shares: numerator and denominator
+    are published with the same lag, so a partial final quarter
+    understates both and the share is unaffected.
+    """
+    acc = {}
+    for p, v in monthly.items():
+        y, m = p.split("-")
+        q = f"{y}Q{(int(m) - 1) // 3 + 1}"
+        acc[q] = acc.get(q, 0.0) + v
+    return acc
+
+
 def sum4(qseries: dict, q: str):
     """Trailing four-quarter sum ending at q; None if any is missing."""
     i = qidx(q)
@@ -91,6 +106,8 @@ def fetch_primary(route: dict) -> dict:
         return fetch.fetch_fred(route["url"])
     if t == "ecb_ciss":
         return fetch.fetch_ecb_ciss(route["url"])
+    if t == "ecb_sdmx_q":
+        return fetch.fetch_ecb_sdmx_q(route["url"])
     if t == "ine":
         return fetch.fetch_ine(route["url"])
     if t == "bde_column":
@@ -105,6 +122,10 @@ def fetch_input(inp: dict) -> dict:
         from src.spain.series import BDE_TABLE_URL
         return fetch.fetch_bde_column(
             BDE_TABLE_URL.format(table=inp["table"]), inp["alias"])
+    if "eurostat" in inp:
+        from src.spain.series import EUROSTAT_GOV_URL
+        return fetch.fetch_eurostat(
+            EUROSTAT_GOV_URL.format(item=inp["eurostat"]))
     from src.spain.series import FRED_URL
     return fetch.fetch_fred(FRED_URL.format(sid=inp["fred"]))
 
@@ -211,8 +232,38 @@ def _d_bono_bund(inp):
 
 def _d_nexus_holdings(inp):
     gov = quarter_end(inp["bde_be0805_gov_securities.csv"])
-    tot = quarter_end(inp["bde_be0803_total_liabilities.csv"])
-    return _ratio_pct(gov, tot)
+    cap = quarter_end(inp["bde_be0803_capital_reserves.csv"])
+    return _ratio_pct(gov, cap)
+
+
+def _d_interest_burden(inp):
+    interest = inp["eurostat_gov_interest.csv"]
+    revenue = inp["eurostat_gov_revenue.csv"]
+    out = {}
+    for q in interest:
+        si, sr = sum4(interest, q), sum4(revenue, q)
+        if si is not None and sr:
+            out[q] = 100.0 * si / sr
+    return out
+
+
+def _d_tourism_gdp(inp):
+    # Both numerator and denominator are flows: trailing four
+    # quarters of receipts over trailing four quarters of GDP.
+    receipts = inp["bde_be1704_tourism_receipts.csv"]
+    gdp = inp["bde_be0201_gdp.csv"]
+    out = {}
+    for q in receipts:
+        sr, sg = sum4(receipts, q), sum4(gdp, q)
+        if sr is not None and sg:
+            out[q] = 100.0 * sr / sg
+    return out
+
+
+def _d_var_rate_share(inp):
+    le1y = quarter_sum(inp["bde_be1912_mortgage_vol_le1y.csv"])
+    total = quarter_sum(inp["bde_be1912_mortgage_vol_total.csv"])
+    return _ratio_pct(le1y, total)
 
 
 DERIVED = {
@@ -225,6 +276,9 @@ DERIVED = {
     "eurosystem_share": _d_eurosystem_share,
     "bono_bund_spread": _d_bono_bund,
     "nexus_holdings": _d_nexus_holdings,
+    "interest_burden": _d_interest_burden,
+    "tourism_gdp": _d_tourism_gdp,
+    "var_rate_share": _d_var_rate_share,
 }
 
 
@@ -344,7 +398,7 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Spain Heat Index (experimental) — frb-heat-index</title>
-<meta name="description" content="Experimental financial-system heat index for Spain: quarterly vulnerability percentiles by component, built from free public data (BIS, Banco de España, INE, ECB, FRED). Not linked from the site index; reachable by direct URL only.">
+<meta name="description" content="Experimental financial-system heat index for Spain: quarterly vulnerability percentiles by component, built from free public data (BIS, Banco de España, INE, ECB, Eurostat, FRED). Not linked from the site index; reachable by direct URL only.">
 <link rel="stylesheet" href="../assets/style.css">
 <link rel="stylesheet" href="../assets/pulse.css">
 <style>{PAGE_CSS}</style>
@@ -480,7 +534,7 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
       <code>../data/spain_meta.json</code>; archived series under
       <code>data/spain/</code>; build:
       <code>src/spain/build_spain.py</code>. Free public sources only:
-      BIS, Banco de España, INE, ECB, FRED. Built
+      BIS, Banco de España, INE, ECB, Eurostat, FRED. Built
       {bundle['built_at_utc']}.</p>
     </div>
   </div>

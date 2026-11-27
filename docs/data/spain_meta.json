@@ -118,6 +118,25 @@
    "n_observations": 110
   },
   {
+   "id": "tourism_gdp",
+   "title": "Tourism (Travel) Receipts to GDP (Banco de España, balance of payments)",
+   "short": "Tourism receipts / GDP",
+   "component": "Size/concentration",
+   "status": "live",
+   "source": "Banco de España, Boletín Estadístico, tables 17.4 and 2.1",
+   "source_url": "https://www.bde.es/webbe/es/estadisticas/compartido/datos/csv/be1704.csv",
+   "series_id": [
+    "BE_17_4.8",
+    "BE_2_1.28"
+   ],
+   "definition": "100 x (balance-of-payments travel receipts — spending by non-resident visitors in Spain, BE_17_4.8, quarterly) / (nominal GDP, trailing four quarters, BE_2_1.28), percent. A structural single-sector exposure, not a cyclical heat gauge: tourism is the largest single export sector of the Spanish economy — about 12% of GDP on the INE tourism satellite account including indirect effects, of which this balance-of-payments series is the directly measurable part. It sits in Size/concentration as the concentration measure of the economy's external earnings base. No counterpart exists in the U.S. framework.",
+   "frequency": "Quarterly",
+   "first_observation": "1999Q1",
+   "last_observation": "2026Q2",
+   "last_value": 6.233123597108563,
+   "n_observations": 110
+  },
+  {
    "id": "top5_share",
    "title": "Top-5 Banking Groups' Share of System Assets",
    "short": "Top-5 asset share",
@@ -173,20 +192,22 @@
   },
   {
    "id": "var_rate_share",
-   "title": "Variable-Rate Share of New Housing Loans",
+   "title": "Variable-Rate Share of New Housing Loans (Banco de España, TEDR new-business volumes)",
    "short": "Variable-rate share, new mortgages",
    "component": "Home mortgages",
-   "status": "source-pending",
-   "source": "ECB MFI interest rate (MIR) statistics / Banco de España",
-   "source_url": null,
-   "series_id": [],
-   "definition": "100 x (new housing loans with an initial rate fixation of up to one year) / (all new housing loans), percent. The Spanish mortgage-risk gauge that replaces the U.S. GSE/FICO block: most Spanish mortgages reset off 12-month Euribor, so the fixation share measures how much of the stock reprices within a year of a rate rise.",
-   "frequency": "Monthly",
-   "pending_reason": "The fixation breakdown is published in the ECB MIR statistics and Banco de España new-business volumes; the SDMX key for the Spanish fixation split was not resolved at build time.",
-   "first_observation": null,
-   "last_observation": null,
-   "last_value": null,
-   "n_observations": 0
+   "status": "live",
+   "source": "Banco de España, Boletín Estadístico, table 19.12 (TEDR new business by initial rate fixation)",
+   "source_url": "https://www.bde.es/webbe/es/estadisticas/compartido/datos/csv/be1912.csv",
+   "series_id": [
+    "BE_19_12.3",
+    "BE_19_12.2"
+   ],
+   "definition": "100 x (new housing-loan volume with an initial rate fixation of up to one year, BE_19_12.3) / (total new housing-loan volume, BE_19_12.2), percent, quarterly sums of monthly new business. The Spanish mortgage-risk gauge that replaces the U.S. GSE/FICO block: most Spanish mortgages reset off 12-month Euribor, so the fixation share measures how much of the new stock reprices within a year of a rate rise. The ECB MIR dataset publishes Spain's new-business rates by fixation period but not the volumes by fixation period; the Banco de España TEDR volume table is the route for the share.",
+   "frequency": "Monthly (quarterly share)",
+   "first_observation": "2003Q1",
+   "last_observation": "2026Q2",
+   "last_value": 7.696808750056263,
+   "n_observations": 94
   },
   {
    "id": "consumer_gdp",
@@ -297,21 +318,39 @@
    "n_observations": 0
   },
   {
-   "id": "bls_standards",
-   "title": "Bank Lending Survey: Credit Standards for Enterprises, Spain (ECB)",
-   "short": "BLS credit standards (enterprises)",
-   "component": "Business credit",
+   "id": "construction_credit",
+   "title": "Credit to the Construction Sector (Banco de España)",
+   "short": "Construction credit",
+   "component": "Residential real estate",
    "status": "source-pending",
-   "source": "European Central Bank, Bank Lending Survey (Spain breakdown)",
+   "source": "Banco de España, lending by economic activity (supervisory returns)",
    "source_url": null,
    "series_id": [],
-   "definition": "Net percentage of banks reporting a tightening of credit standards on loans to enterprises in Spain, ECB Bank Lending Survey — the SLOOS counterpart in the U.S. panel.",
+   "definition": "Loans to construction firms (CNAE section F) by resident credit institutions, as a percent of GDP. Construction and real-estate development lending was the epicentre of the Spanish bust; it is the activity split of the credit stock, which the household-purpose tables used elsewhere in this section cannot see.",
    "frequency": "Quarterly",
-   "pending_reason": "The ECB Data Portal serves the Bank Lending Survey under the BLS dataflow; the key for the Spain enterprise-standards question was not resolved at build time. The component ships empty rather than substituting a U.S. or euro-area aggregate.",
+   "pending_reason": "The Banco de España compiles lending by economic activity from supervisory returns and publishes it in Financial Stability Report tables; the Boletín Estadístico CSV service (chapters 4 and 8, checked table by table for this build) carries no activity-breakdown series, and no stable machine-readable public route was resolved. The indicator ships pending rather than substituting a purpose-based household series for an activity-based business one.",
    "first_observation": null,
    "last_observation": null,
    "last_value": null,
    "n_observations": 0
+  },
+  {
+   "id": "bls_standards",
+   "title": "Bank Lending Survey: Credit Standards for Enterprises, Spain (ECB)",
+   "short": "BLS credit standards (enterprises)",
+   "component": "Business credit",
+   "status": "live",
+   "source": "European Central Bank, Bank Lending Survey (Spain breakdown), ECB Data Portal",
+   "source_url": "https://data-api.ecb.europa.eu/service/data/BLS/Q.ES.ALL.O.E.Z.B3.ST.S.FNET?format=csvdata",
+   "series_id": [
+    "BLS.Q.ES.ALL.O.E.Z.B3.ST.S.FNET"
+   ],
+   "definition": "Net percentage of banks reporting a tightening of credit standards on loans to enterprises in Spain over the previous three months (tightened minus eased), ECB Bank Lending Survey — the SLOOS counterpart in the U.S. panel. Published from 2003Q1.",
+   "frequency": "Quarterly",
+   "first_observation": "2003Q1",
+   "last_observation": "2026Q2",
+   "last_value": 25.0,
+   "n_observations": 94
   },
   {
    "id": "tedr_spread",
@@ -324,7 +363,7 @@
    "series_id": [],
    "definition": "Average rate on new loans to non-financial corporations (TEDR) minus the matched-maturity euro swap rate, basis points: the price of new business credit.",
    "frequency": "Monthly",
-   "pending_reason": "The TEDR tables are published in chapter 19 of the Boletín Estadístico; the new-business series codes and a free matched swap benchmark were not both resolved at build time.",
+   "pending_reason": "The TEDR new-business rate for non-financial corporations is published (Boletín Estadístico, table 19.3), and the standards leg of this component is now sourced from the Bank Lending Survey; a spread still needs a matched-maturity market benchmark, and no free machine-readable euro swap benchmark route was resolved for this build.",
    "first_observation": null,
    "last_observation": null,
    "last_value": null,
@@ -389,21 +428,76 @@
   },
   {
    "id": "nexus_holdings",
-   "title": "MFIs' Holdings of Spanish General Government Debt Securities to Total Assets (Banco de España)",
-   "short": "Banks' sovereign holdings share",
+   "title": "Credit Institutions' Holdings of Spanish General Government Debt Securities to Capital and Reserves (Banco de España)",
+   "short": "Sovereign holdings / bank capital",
    "component": "Sovereign–bank nexus",
    "status": "live",
    "source": "Banco de España, Boletín Estadístico, tables 8.5 and 8.3",
    "source_url": "https://www.bde.es/webbe/es/estadisticas/compartido/datos/csv/be0805.csv",
    "series_id": [
     "BE_8_5.6",
-    "BE_8_3.1"
+    "BE_8_3.9"
    ],
-   "definition": "100 x (debt securities issued by Spanish general government held by MFIs resident in Spain, BE_8_5.6) / (total MFI balance sheet, BE_8_3.1), percent, quarter-end month. The quantity leg of the nexus: how much of the banking system's balance sheet is the sovereign's paper. Loans to government are excluded; this is the securities book that marks to market.",
+   "definition": "100 x (debt securities issued by Spanish general government held by MFIs other than the Banco de España — the OIFM aggregate of credit institutions, BE_8_5.6) / (capital and reserves of the same institutions, BE_8_3.9), percent, quarter-end month. The quantity leg of the nexus, measured against loss-absorbing capacity: this is the form in which the loop bites, because a mark-to-market loss on the sovereign book falls on the capital that must absorb it. The first build of this section divided by the total balance sheet instead; the capital-relative form replaces it, for the reason just stated. Loans to government are excluded; this is the securities book that marks to market.",
    "frequency": "Monthly (quarter-end)",
    "first_observation": "1999Q1",
    "last_observation": "2026Q2",
-   "last_value": 7.791471974880386,
+   "last_value": 95.69921742089146,
+   "n_observations": 110
+  },
+  {
+   "id": "gov_debt_gdp",
+   "title": "General Government Gross Debt (EDP) to GDP (Banco de España)",
+   "short": "Public debt / GDP",
+   "component": "Sovereign–bank nexus",
+   "status": "live",
+   "source": "Banco de España, Boletín Estadístico, table 11.5 (EDP debt by subsector)",
+   "source_url": "https://www.bde.es/webbe/es/estadisticas/compartido/datos/csv/be1105.csv",
+   "series_id": [
+    "BE_11_5.11"
+   ],
+   "definition": "EDP (Excessive Deficit Protocol) gross debt of Spanish general government as a percent of GDP, as published by the Banco de España (BE_11_5.11), percent. The stock leg of the nexus: the U.S. index carries no sovereign-debt component because U.S. vulnerability does not run through the sovereign's own balance sheet; in Spain it does, and the debt stock is what the spread is pricing.",
+   "frequency": "Quarterly",
+   "first_observation": "1999Q1",
+   "last_observation": "2026Q2",
+   "last_value": 101.4,
+   "n_observations": 110
+  },
+  {
+   "id": "regional_debt_gdp",
+   "title": "Regional Government (Comunidades Autónomas) Debt (EDP) to GDP (Banco de España)",
+   "short": "Regional govt debt / GDP",
+   "component": "Sovereign–bank nexus",
+   "status": "live",
+   "source": "Banco de España, Boletín Estadístico, table 11.5 (EDP debt by subsector)",
+   "source_url": "https://www.bde.es/webbe/es/estadisticas/compartido/datos/csv/be1105.csv",
+   "series_id": [
+    "BE_11_5.13"
+   ],
+   "definition": "EDP gross debt of the Spanish regional governments (Comunidades Autónomas) as a percent of national GDP, as published by the Banco de España (BE_11_5.13), percent. A Spain singularity with no counterpart in the U.S. panel in this form: the regions deliver health and education, borrow in their own name, and when markets closed to them in 2012-13 were refinanced through the central government's regional liquidity fund (FLA), which moved the risk rather than removing it.",
+   "frequency": "Quarterly",
+   "first_observation": "1999Q1",
+   "last_observation": "2026Q2",
+   "last_value": 20.4,
+   "n_observations": 110
+  },
+  {
+   "id": "interest_burden",
+   "title": "General Government Interest Payments to Total Revenue (Eurostat, quarterly government accounts)",
+   "short": "Interest / govt revenue",
+   "component": "Sovereign–bank nexus",
+   "status": "live",
+   "source": "Eurostat, quarterly non-financial accounts for general government (gov_10q_ggnfa)",
+   "source_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10q_ggnfa?format=JSON&lang=EN&geo=ES&sector=S13&s_adj=NSA&unit=MIO_EUR&na_item=D41PAY",
+   "series_id": [
+    "D41PAY (gov_10q_ggnfa)",
+    "TR (gov_10q_ggnfa)"
+   ],
+   "definition": "100 x (general government interest expenditure, ESA 2010 item D.41, trailing four quarters) / (total general government revenue, item TR, trailing four quarters), percent. The flow cost of the debt stock: the share of each year's revenue committed to creditors before any policy is funded. Debt can be rolled while revenue covers the interest; this ratio is where that stops being true.",
+   "frequency": "Quarterly",
+   "first_observation": "1999Q1",
+   "last_observation": "2026Q2",
+   "last_value": 5.676568271574712,
    "n_observations": 110
   },
   {
