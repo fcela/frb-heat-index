@@ -1,704 +1,297 @@
 #!/usr/bin/env python3
-"""Quarterly incremental updater for the FRB financial-heat index dataset.
-
-Pipeline (all Polars; no pandas):
-  1. Read data/_meta.json -> last_built_quarter.
-  2. Target quarters: every quarter after last_built_quarter up to the latest
-     COMPLETE quarter. Complete means
-       (a) the quarter ended more than LAG_DAYS (75) ago -- covers the ~40-45
-           day Y-9C filing lag plus margin, and
-       (b) RAGGED-EDGE GUARD: every required source has full-quarter data --
-           each FRED series (frequency inferred from the data itself) has an
-           observation covering the quarter (D/M: within 7 days of quarter
-           end; Q: dated inside the quarter), and the quarter's Y-9C bulk file
-           is downloadable.
-     The first quarter failing any check TRUNCATES the update: a partial
-     quarter is never published. (A partial-quarter value once treated as a
-     full quarter produced a 7.6-sigma end-of-sample artifact.)
-  3. Fetch ONLY new data into work/raw/ (the base build's raw dir; never
-     re-downloads history):
-       - FRED: keyless https://fred.stlouisfed.org/graph/fredgraph.csv?id=<id>
-         (verified keyless; no API key anywhere) for every id in
-         fetch_series.FRED_IDS, via the base's own curl downloader;
-       - Y-9C: the quarter's bulk file only. NOTE: the Chicago Fed stopped
-         publishing recent quarters in 2021; current bulk files come from the
-         NIC Financial Data Download
-         (https://www.ffiec.gov/npw/FinancialReport/ReturnBHCFZipFiles
-          ?zipfilename=BHCF<yyyymmdd>.ZIP -- verified 200 from CI-like
-         egress), converted from caret- to comma-delimited and stored as
-         work/raw/y9c/bhcf<yy><mm>.csv, the name build_panel.read_y9c
-         expects. Pre-2021Q2 quarters still use the Chicago Fed URL.
-       - Other fetch_series.SOURCES entries with kind="auto" (small).
-  4. Rebuild through the base build's own code path (no duplicated logic):
-       - build_panel.build(raw, start, end) -> new-quarter fragment, appended
-         to data/panel_quarterly.csv with Polars (new quarters only; history
-         is never rewritten, so FRED vintages can't revise the past);
-       - run_pipeline.main() -> data/components.csv, data/aggregate.csv;
-       - make_site.main()   -> docs/data/*.json (meta.json copies _meta.json,
-         so staleness flags reach the site banner automatically).
-  5. Tail-spike check on the rebuilt panel (|new - trailing mean| > 3 *
-     trailing std flags an advisory warning).
-  6. Update data/_meta.json (last_built_quarter, built_at_utc, per-source
-     status incl. staleness flags) and write a markdown run report.
-
-Failure policy (graceful degradation): any source unreachable -> keep last
-good data, record staleness in data/_meta.json, exit 0. The run never fails
-on fetch problems; the GitHub issue log shows what was skipped.
-
-Usage:
-  python .github/scripts/update.py [--dry-run] [--repo PATH] [--report PATH]
-      [--github-output PATH] [--today YYYY-MM-DD]
-  --dry-run: simulate one new quarter with every fetch mocked (no network at
-      all, nothing written) and print what WOULD happen.
-"""
+"""Check for eligible U.S. quarters and publish a validated index release."""
 
 from __future__ import annotations
 
 import argparse
 import calendar
-import csv
 import datetime as dt
-import io
 import json
-import re
+import math
 import shutil
 import subprocess
 import sys
-import tempfile
 import zipfile
 from pathlib import Path
 
-try:
-    import polars as pl
-except ImportError:  # pragma: no cover
-    print("update.py requires polars (`pip install polars`)", file=sys.stderr)
-    sys.exit(2)
+import polars as pl
 
-# --------------------------------------------------------------------------
-# Constants
-# --------------------------------------------------------------------------
+REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO))
+
+from src import build_panel, fetch_series, quarterly_release  # noqa: E402
+from src.systemic.fetch_y9c import NIC_URL, nic_text_to_csv  # noqa: E402
 
 LAG_DAYS = 75
 FRED_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv"
-CHICAGO_FED_URL = (
-    "https://www.chicagofed.org/~/media/others/banking/"
-    "financial-institution-reports/bhc-data/bhcf{yy}{mm}.csv"
-)
-NIC_URL = (
-    "https://www.ffiec.gov/npw/FinancialReport/ReturnBHCFZipFiles"
-    "?zipfilename=BHCF{yyyymmdd}.ZIP"
-)
-Q_END_MONTH = {1: 3, 2: 6, 3: 9, 4: 12}
-
-# Indicator columns derived from Y-9C (must be non-null for a new quarter
-# to be accepted; they are the binding incremental constraint).
-Y9C_INDICATORS = [
+REQUIRED_FRED = {
+    "D": ("DGS10", "VIXCLS"),
+    "M": ("BAA", "CSUSHPISA", "CUSR0000SEHA", "DPI", "DSPI", "PSAVERT",
+          "REVOLSL", "TOTALSL"),
+    "Q": ("BCNSDODNS", "DRTSCILM", "SUBLPDHMSGLGNQ", "EXHE2C1Q8NP", "GDP",
+          "GDPDEF", "HHMSDODNS", "MDSP", "TCMILBSNNB", "TDSP"),
+}
+Y9C_REQUIRED = (
     "Bank Leverage (Total common equity to total assets)",
     "Maturity Mismatch (Loans as a percent of deposits)",
     "Ratio of Total Assets Held by Top 5 Holding Companies to Total Bank Holding Company Assets",
     "Bank Leverage (Tier 1 common equity ratio)",
+    "Bank Leverage (Total Capital Ratio)",
     "Short-Term Wholesale Funding (Short-term money as a share of assets at BHCs)",
-]
-
-# --------------------------------------------------------------------------
-# Quarter helpers
-# --------------------------------------------------------------------------
-
-_Q_RE = re.compile(r"^(\d{4})Q([1-4])$")
+)
+SYSTEMIC_NAMES = ("srisk", "granger")
 
 
-def parse_quarter(s: str) -> tuple[int, int]:
-    m = _Q_RE.match(s.strip())
-    if not m:
-        raise ValueError(f"bad quarter string: {s!r} (expected YYYYQN)")
-    return int(m.group(1)), int(m.group(2))
-
-
-def fmt_quarter(year: int, q: int) -> str:
-    return f"{year}Q{q}"
-
-
-def next_quarter(year: int, q: int) -> tuple[int, int]:
-    return (year + 1, 1) if q == 4 else (year, q + 1)
+class SourceUnavailable(Exception):
+    """A required source has yet to provide usable data for the quarter."""
 
 
 def quarter_end(year: int, q: int) -> dt.date:
-    m = Q_END_MONTH[q]
-    return dt.date(year, m, calendar.monthrange(year, m)[1])
+    month = 3 * q
+    return dt.date(year, month, calendar.monthrange(year, month)[1])
 
 
-def quarter_start(year: int, q: int) -> dt.date:
-    return dt.date(year, Q_END_MONTH[q] - 2, 1)
-
-
-def latest_complete_quarter(today: dt.date) -> tuple[int, int]:
-    y, q = today.year, (today.month - 1) // 3 + 1
-    while (today - quarter_end(y, q)).days <= LAG_DAYS:
-        y, q = (y - 1, 4) if q == 1 else (y, q - 1)
-    return y, q
+def quarter_bounds(quarter: str) -> tuple[dt.date, dt.date]:
+    year, q = build_panel.parse_q(quarter)
+    return dt.date(year, 3 * q - 2, 1), quarter_end(year, q)
 
 
 def target_quarters(last_built: str, today: dt.date) -> list[str]:
-    y, q = next_quarter(*parse_quarter(last_built))
-    ey, eq = latest_complete_quarter(today)
-    out = []
-    while (y, q) <= (ey, eq):
-        out.append(fmt_quarter(y, q))
-        y, q = next_quarter(y, q)
-    return out
+    last = build_panel.last_full_quarter(today)
+    if last <= last_built:
+        return []
+    return [q for q in build_panel.quarter_range(last_built, last)[1:]
+            if (today - quarter_bounds(q)[1]).days > LAG_DAYS]
 
 
-def y9c_report_date(year: int, q: int) -> str:
-    return quarter_end(year, q).strftime("%Y%m%d")
+def check_fred_coverage(quarter: str, frequency: str, dates: list[dt.date]) -> bool:
+    start, end = quarter_bounds(quarter)
+    inside = [d for d in dates if start <= d <= end]
+    if not inside:
+        return False
+    if frequency == "Q":
+        return True
+    if frequency == "M":
+        return {d.month for d in inside} == set(range(start.month, end.month + 1))
+    allowance = dt.timedelta(days=7)
+    weekdays = sum((start + dt.timedelta(days=i)).weekday() < 5
+                   for i in range((end - start).days + 1))
+    observed = {d for d in inside if d.weekday() < 5}
+    return (len(observed) >= 0.8 * weekdays and
+            min(inside) <= start + allowance and max(inside) >= end - allowance)
 
 
-# --------------------------------------------------------------------------
-# Network layer (curl, like the base build; mockable for --dry-run)
-# --------------------------------------------------------------------------
-
-class Net:
-    """Fetch primitives. dry_run=True mocks every byte (no network)."""
-
-    def __init__(self, dry_run: bool = False):
-        self.dry_run = dry_run
-        self.calls: list[str] = []
-        # dry-run canned state: the simulated quarter is fully present
-        self._mock_tail: dict[str, tuple[str, str]] = {}
-
-    def mock_fred(self, sid: str, last_obs: str, freq: str) -> None:
-        self._mock_tail[sid] = (last_obs, freq)
-
-    # -- generic ------------------------------------------------------
-    def curl_dl(self, url: str, dest: Path, min_bytes: int = 100) -> None:
-        self.calls.append(f"GET {url} -> {dest}")
-        if self.dry_run:
-            return
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        from fetch_series import _curl_dl  # base build's own downloader
-
-        _curl_dl(url, dest, min_bytes=min_bytes)
-
-    # -- FRED ----------------------------------------------------------
-    def fred_csv_path(self, raw: Path, sid: str) -> Path:
-        return raw / f"fred_{sid}.csv"
-
-    def ensure_fred(self, raw: Path, sid: str) -> None:
-        """Download (or refresh) the full-history CSV for one FRED series."""
-        self.curl_dl(f"{FRED_URL}?id={sid}", self.fred_csv_path(raw, sid))
-
-    def fred_tail(self, raw: Path, sid: str) -> tuple[dt.date | None, str]:
-        """(last observation date, inferred frequency D/M/Q) from the CSV."""
-        if self.dry_run:
-            last, freq = self._mock_tail.get(sid, ("2026-03-31", "D"))
-            return dt.date.fromisoformat(last), freq
-        p = self.fred_csv_path(raw, sid)
-        df = pl.read_csv(p, null_values=[".", ""])
-        date_col = "observation_date" if "observation_date" in df.columns else df.columns[0]
-        dates = (
-            df.select(pl.col(date_col).str.to_date().alias("d"))
-            .drop_nulls().sort("d").tail(15)["d"].to_list()
-        )
-        if not dates:
-            return None, "?"
-        diffs = [(b - a).days for a, b in zip(dates, dates[1:])]
-        med = sorted(diffs)[len(diffs) // 2] if diffs else 1
-        freq = "D" if med <= 10 else ("M" if med <= 45 else "Q")
-        return dates[-1], freq
-
-    # -- Y-9C -----------------------------------------------------------
-    def y9c_source(self, year: int, q: int) -> tuple[str, str]:
-        """(download url, kind) for a quarter's Y-9C bulk file."""
-        if year > 2021 or (year == 2021 and q > 1):
-            # Chicago Fed stopped publishing recent quarters in 2021; the NIC
-            # Financial Data Download is the current bulk source.
-            return NIC_URL.format(yyyymmdd=y9c_report_date(year, q)), "nic-zip"
-        yy, mm = f"{year % 100:02d}", f"{q * 3:02d}"
-        return CHICAGO_FED_URL.format(yy=yy, mm=mm), "chicago-csv"
-
-    def y9c_available(self, year: int, q: int) -> bool:
-        if self.dry_run:
-            return True
-        url, _ = self.y9c_source(year, q)
-        tmp = Path(tempfile.mkdtemp()) / "probe"
-        try:
-            from fetch_series import _curl_dl
-
-            _curl_dl(url, tmp, tries=2, min_bytes=100)
-            return True
-        except Exception:
-            return False
-        finally:
-            shutil.rmtree(tmp.parent, ignore_errors=True)
-
-    def y9c_fetch(self, year: int, q: int, dest: Path) -> None:
-        """Fetch one quarter's Y-9C bulk file, stored comma-delimited as
-        build_panel.read_y9c expects (work/raw/y9c/bhcf<yy><mm>.csv)."""
-        self.calls.append(f"Y9C {fmt_quarter(year, q)} -> {dest}")
-        if self.dry_run:
-            return
-        url, kind = self.y9c_source(year, q)
-        tmp = Path(tempfile.mkdtemp())
-        try:
-            from fetch_series import _curl_dl
-            from systemic.fetch_y9c import nic_text_to_csv
-
-            if kind == "nic-zip":
-                zp = tmp / "bhcf.zip"
-                _curl_dl(url, zp, min_bytes=100_000)
-                with zipfile.ZipFile(zp) as z:
-                    raw_text = z.read(z.namelist()[0]).decode("utf-8", errors="replace")
-                # Shared caret->comma converter (quote processing OFF: NIC
-                # files have no quoting convention; see its docstring for the
-                # 2023Q4 incident).
-                dest.parent.mkdir(parents=True, exist_ok=True)
-                dest.write_text(nic_text_to_csv(raw_text), newline="")
-            else:
-                _curl_dl(url, dest, min_bytes=100_000)
-        finally:
-            shutil.rmtree(tmp, ignore_errors=True)
+def fetch_fred(raw: Path, series_id: str) -> list[dt.date]:
+    try:
+        fetch_series._curl_dl(f"{FRED_URL}?id={series_id}", raw / f"fred_{series_id}.csv",
+                              tries=2)
+        return build_panel.read_fred_monthly(raw, series_id).filter(
+            pl.col("value").is_finite())["date"].to_list()
+    except (RuntimeError, OSError, ValueError, pl.exceptions.PolarsError) as exc:
+        raise SourceUnavailable(f"FRED {series_id}: {exc}") from exc
 
 
-# --------------------------------------------------------------------------
-# Ragged-edge guard
-# --------------------------------------------------------------------------
-
-def check_quarter_complete(
-    year: int, q: int, raw: Path, fred_ids: list[str], net: Net
-) -> tuple[bool, list[str]]:
-    """True only if every required source has full-quarter data for (y, q)."""
-    notes: list[str] = []
-    qend = quarter_end(year, q)
-    qstart = quarter_start(year, q)
-    for sid in fred_ids:
-        try:
-            last, freq = net.fred_tail(raw, sid)
-        except Exception as e:
-            notes.append(f"FRED {sid}: unreadable ({e}); quarter not verifiable")
-            return False, notes
-        if last is None:
-            notes.append(f"FRED {sid}: no observations at all")
-            return False, notes
-        if freq == "Q":
-            ok = qstart <= last <= qend
-        else:  # D/M: allow a trading-day gap at quarter end
-            ok = last >= qend - dt.timedelta(days=7)
-        if not ok:
-            notes.append(
-                f"FRED {sid} (~{freq}): last obs {last} does not cover "
-                f"{fmt_quarter(year, q)} (ends {qend})"
-            )
-            return False, notes
-    if not net.y9c_available(year, q):
-        notes.append(f"Y-9C: bulk file for {fmt_quarter(year, q)} not downloadable")
-        return False, notes
-    notes.append(f"{fmt_quarter(year, q)}: complete in all required sources")
-    return True, notes
+def fetch_y9c(raw: Path, quarter: str) -> None:
+    year, q = build_panel.parse_q(quarter)
+    dest = raw / "y9c" / y9c_filename(quarter)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        if (year, q) <= (2021, 1):
+            fetch_series._curl_dl(f"{fetch_series.Y9C_BASE}/{dest.name}", dest,
+                                  tries=2, min_bytes=100_000)
+        else:
+            date = quarter_end(year, q).strftime("%Y%m%d")
+            url = NIC_URL.format(yyyymmdd=date)
+            archive = dest.with_suffix(".zip")
+            fetch_series._curl_dl(url, archive, tries=2, min_bytes=100_000)
+            with zipfile.ZipFile(archive) as z:
+                members = [name for name in z.namelist() if not name.endswith("/")]
+                if len(members) != 1:
+                    raise ValueError(f"expected one report, received {members}")
+                report = z.read(members[0]).decode("utf-8", errors="replace")
+            dest.write_text(nic_text_to_csv(report), newline="")
+    except (RuntimeError, OSError, ValueError, zipfile.BadZipFile) as exc:
+        raise SourceUnavailable(f"Y-9C {quarter}: {exc}") from exc
 
 
-def truncate_at_ragged_edge(
-    targets: list[str], raw: Path, fred_ids: list[str], net: Net
-) -> tuple[list[str], list[str]]:
-    ok: list[str] = []
-    log: list[str] = []
-    for t in targets:
-        y, q = parse_quarter(t)
-        complete, notes = check_quarter_complete(y, q, raw, fred_ids, net)
-        log.extend(notes)
-        if not complete:
-            log.append(f"RAGGED-EDGE TRUNCATION: stopping before {t} (partial quarter)")
+def y9c_filename(quarter: str) -> str:
+    year, q = build_panel.parse_q(quarter)
+    return f"bhcf{year % 100:02d}{3 * q:02d}.csv"
+
+
+def ready_quarters(raw: Path, targets: list[str], notes: list[str],
+                   local_raw: Path) -> list[str]:
+    dates = {}
+    for ids in REQUIRED_FRED.values():
+        for sid in ids:
+            try:
+                dates[sid] = fetch_fred(raw, sid)
+            except SourceUnavailable as exc:
+                notes.append(str(exc))
+    ready = []
+    for quarter in targets:
+        missing = [sid for freq, ids in REQUIRED_FRED.items() for sid in ids
+                   if not check_fred_coverage(quarter, freq, dates.get(sid, []))]
+        if missing:
+            notes.append(f"{quarter} deferred: incomplete FRED inputs {', '.join(missing)}")
             break
-        ok.append(t)
-    return ok, log
-
-
-# --------------------------------------------------------------------------
-# Fetch stage
-# --------------------------------------------------------------------------
-
-def fetch_new_data(
-    quarters: list[str],
-    raw: Path,
-    fred_ids: list[str],
-    auto_sources: list[tuple[str, str]],
-    net: Net,
-    log: list[str],
-) -> dict[str, str]:
-    """Fetch raw inputs for the new quarters. Returns {group: status}."""
-    status: dict[str, str] = {}
-    # FRED full histories (small; builders need history for y/y shifts).
-    fred_ok, fred_bad = 0, []
-    for sid in fred_ids:
         try:
-            net.ensure_fred(raw, sid)
-            fred_ok += 1
-        except Exception as e:
-            fred_bad.append(f"{sid}: {e}")
-    status["fred"] = (
-        f"ok ({fred_ok}/{len(fred_ids)} series)"
-        if not fred_bad else f"PARTIAL ({fred_ok}/{len(fred_ids)}): {fred_bad[:3]}"
-    )
-    log.append(f"FRED: {status['fred']}")
-    # Other small auto sources (NIPA etc.).
-    other_bad = []
-    for fn, url in auto_sources:
-        try:
-            net.curl_dl(url, raw / fn)
-        except Exception as e:
-            other_bad.append(f"{fn}: {e}")
-    status["other_auto"] = "ok" if not other_bad else f"PARTIAL: {other_bad[:3]}"
-    # Y-9C: new quarters only -- never the full history.
-    y9c_bad = []
-    for t in quarters:
-        y, q = parse_quarter(t)
-        dest = raw / "y9c" / f"bhcf{y % 100:02d}{q * 3:02d}.csv"
-        try:
-            net.y9c_fetch(y, q, dest)
-        except Exception as e:
-            y9c_bad.append(f"{t}: {e}")
-    status["y9c"] = (
-        f"ok ({len(quarters)} quarters)"
-        if not y9c_bad else f"PARTIAL: {y9c_bad}"
-    )
-    log.append(f"Y-9C: {status['y9c']}")
-    return status
-
-
-# --------------------------------------------------------------------------
-# Rebuild through the base pipeline (imported; no duplicated logic)
-# --------------------------------------------------------------------------
-
-def _call_main(mod, argv: list[str]):
-    """Call an imported base module's main(), shielding it from our argv
-    (the base mains parse sys.argv with argparse)."""
-    saved = sys.argv
-    sys.argv = argv
-    try:
-        return mod.main()
-    finally:
-        sys.argv = saved
-
-
-def refresh_systemic(repo: Path, raw: Path, dry_run: bool, log: list[str]) -> None:
-    """Rebuild the two journal-publication systemic series (SRISK, Granger)
-    from public inputs, then publish them to data/systemic/.
-
-    build_panel reads the committed data/systemic/*.csv (via _systemic_frame),
-    so without this refresh any new quarter would join to nulls. Fail-soft:
-    on any error the previously committed series are kept and the new
-    quarter simply has nulls for these two indicators (honest missingness,
-    never fabricated values).
-    """
-    if dry_run:
-        log.append("DRY-RUN: would rebuild data/systemic/*.csv "
-                   "(src/systemic/build_srisk.py, build_granger.py)")
-        return
-    sys.path.insert(0, str(repo / "src"))
-    import shutil
-    try:
-        import importlib
-        srisk_mod = importlib.import_module("systemic.build_srisk")
-        granger_mod = importlib.import_module("systemic.build_granger")
-        log.append("rebuilding systemic series (SRISK, Granger) ...")
-        _call_main(srisk_mod, ["build_srisk.py"])
-        _call_main(granger_mod, ["build_granger.py"])
-        staged = raw / "systemic"
-        dest = repo / "data" / "systemic"
-        dest.mkdir(parents=True, exist_ok=True)
-        for name in ("srisk_quarterly.csv", "granger_quarterly.csv"):
-            src = staged / name
-            if src.exists():
-                shutil.copy2(src, dest / name)
-                log.append(f"published {dest / name}")
+            file = y9c_filename(quarter)
+            cached = local_raw / "y9c" / file
+            if cached.is_file():
+                (raw / "y9c").mkdir(exist_ok=True)
+                shutil.copyfile(cached, raw / "y9c" / file)
+                notes.append(f"Y-9C {quarter}: using local report {file}")
             else:
-                log.append(f"WARNING: systemic builder did not stage {src}; "
-                           f"keeping previously committed {dest / name}")
-    except Exception as e:  # noqa: BLE001 - fail-soft per workflow policy
-        log.append(f"WARNING: systemic refresh failed ({type(e).__name__}: {e}); "
-                   "keeping previously committed data/systemic/*.csv")
+                fetch_y9c(raw, quarter)
+        except SourceUnavailable as exc:
+            notes.append(str(exc))
+            break
+        ready.append(quarter)
+    return ready
 
 
-
-def rebuild(repo: Path, raw: Path, start: str, end: str,
-            dry_run: bool, log: list[str]) -> pl.DataFrame:
-    """Build the new-quarter fragment and append it to the panel."""
-    if dry_run:
-        log.append(
-            f"DRY-RUN: would build_panel.build(raw, {start}, {end}) -> fragment, "
-            "vstack onto data/panel_quarterly.csv (new quarters only)"
-        )
-        log.append("DRY-RUN: would run_pipeline.main() then make_site.main()")
-        return pl.DataFrame({"quarter": [start, end]})
-    sys.path.insert(0, str(repo / "src"))
-    import build_panel
-
-    frag = build_panel.build(raw, start, end, skip_missing=True)
-    log.append(f"fragment: {frag.height} quarters x {frag.width - 1} indicators")
-    panel_path = repo / "data" / "panel_quarterly.csv"
-    panel = pl.read_csv(panel_path)
-    have = set(panel["quarter"].to_list())
-    new_rows = frag.filter(~pl.col("quarter").is_in(have)).sort("quarter")
-    if new_rows.height == 0:
-        log.append("no new quarter rows to append (already present)")
-        return new_rows
-    # Refuse quarters whose Y-9C leg produced nothing (binding constraint).
-    bad = []
-    for t in new_rows["quarter"].to_list():
-        row = new_rows.filter(pl.col("quarter") == t)
-        if all(row[c].is_null().all() for c in Y9C_INDICATORS if c in row.columns):
-            bad.append(t)
-    if bad:
-        raise RuntimeError(
-            f"fragment has no Y-9C indicators for {bad}; refusing partial quarter"
-        )
-    panel = pl.concat([panel, new_rows], how="diagonal").sort("quarter")
-    panel.write_csv(panel_path)
-    log.append(f"appended {new_rows.height} quarters -> {panel_path} "
-               f"({panel.height} total)")
-    return new_rows
-
-
-def run_transforms(repo: Path, log: list[str]) -> None:
-    sys.path.insert(0, str(repo / "src"))
-    import run_pipeline
-    import make_site
-
-    log.append("running run_pipeline.main() ...")
-    _call_main(run_pipeline, ["run_pipeline.py"])
-    log.append("running make_site.main() ...")
-    _call_main(make_site, ["make_site.py"])
-
-
-def tail_spike_check(repo: Path, new_quarters: list[str], log: list[str]) -> list[str]:
-    """Advisory: flag |new - trailing mean| > 3 * trailing std per indicator."""
-    warnings: list[str] = []
-    p = repo / "data" / "panel_quarterly.csv"
-    df = pl.read_csv(p)
-    num_cols = [c for c in df.columns if c != "quarter" and df[c].dtype.is_numeric()]
-    hist = df.filter(~pl.col("quarter").is_in(new_quarters)).tail(8)
-    new = df.filter(pl.col("quarter").is_in(new_quarters))
-    if hist.height == 0 or new.height == 0:
-        return warnings
-    for c in num_cols:
-        mu, sd = hist[c].mean(), hist[c].std()
-        if not sd:
+def fetch_optional(repo: Path, raw: Path, notes: list[str]) -> list[str]:
+    """Bring available supplementary inputs into the candidate build."""
+    missing = []
+    fetched = {sid for ids in REQUIRED_FRED.values() for sid in ids}
+    for name, url, kind in fetch_series.SOURCES:
+        if name.startswith("fred_") and name[5:-4] in fetched:
             continue
-        for qq, v in new.select(["quarter", c]).iter_rows():
-            if v is None:
-                continue
-            z = abs(v - mu) / sd
-            if z > 3:
-                warnings.append(
-                    f"SPIKE-WARN {c} {qq}: {v:.4g} vs trailing mean {mu:.4g} (z={z:.1f})"
-                )
-    log.extend(warnings)
-    return warnings
+        if kind == "manual" or name == "ie_data.xls":
+            continue
+        try:
+            fetch_series._curl_dl(url, raw / name, tries=2, min_bytes=100)
+        except (RuntimeError, OSError) as exc:
+            missing.append(name)
+            notes.append(f"Optional input {name}: {exc}")
+
+    local_raw = repo / "work" / "raw"
+    try:
+        archive = raw / "z1_csv.zip"
+        fetch_series._curl_dl(fetch_series.Z1_URL, archive, tries=2, min_bytes=100)
+        fetch_series.extract_z1(archive, raw)
+    except (OSError, RuntimeError, ValueError, KeyError, StopIteration, zipfile.BadZipFile) as exc:
+        missing.append("Z.1 bulk series")
+        notes.append(f"Optional Z.1 bulk series: {exc}")
+
+    for name in ("ie_data_ep.csv", "ebp_raw.csv", "bis_cre_us.csv", "sloos_cre.csv",
+                 "fico_annual.csv", "yahoo", "edgar"):
+        source = local_raw / name
+        if source.exists():
+            (raw / name).symlink_to(source, target_is_directory=source.is_dir())
+        else:
+            missing.append(name)
+    return missing
 
 
-# --------------------------------------------------------------------------
-# Meta + report
-# --------------------------------------------------------------------------
-
-def update_meta(repo: Path, new_last: str, source_status: dict,
-                stale: list[str], dry_run: bool) -> dict:
-    mp = repo / "data" / "_meta.json"
-    meta = json.loads(mp.read_text()) if mp.exists() else {}
-    meta["last_built_quarter"] = new_last
-    meta["built_at_utc"] = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
-    meta["sources"] = source_status
-    meta["stale_sources"] = stale
-    if not dry_run:
-        mp.write_text(json.dumps(meta, indent=2) + "\n")
-    return meta
-
-
-def write_report(path: Path | None, **kw) -> str:
-    completed = kw["completed"]
-    last_built = kw["last_built"]
-    title = (
-        f"Quarterly update {completed[-1]}: data advanced {last_built} -> {completed[-1]}"
-        if completed else
-        f"Quarterly update {last_built}: no new complete quarters"
-    )
-    L = [f"# {title}", "",
-         f"- run_at_utc: {kw['run_at']}", f"- mode: {kw['mode']}",
-         f"- last_built_quarter (before): {last_built}",
-         f"- target quarters (>{LAG_DAYS}d old): {', '.join(kw['targets']) or 'none'}",
-         f"- quarters completed: {', '.join(completed) or 'none'}",
-         f"- stale sources: {', '.join(kw['stale']) or 'none'}",
-         "", "## Ragged-edge guard", ""]
-    L += [f"- {l}" for l in kw["guard_log"]] or ["- (no checks ran)"]
-    L += ["", "## Fetch status", ""]
-    for src, st in kw["fetch_status"].items():
-        L.append(f"- {src}: {st}")
-    if kw["manual_notes"]:
-        L += ["", "## Manual sources (not auto-fetched)", ""]
-        L += [f"- {m}" for m in kw["manual_notes"]]
-    if kw["spike_warnings"]:
-        L += ["", "## Tail spike warnings (advisory)", ""]
-        L += [f"- {w}" for w in kw["spike_warnings"]]
-    L += ["", "## Actions", ""]
-    L += [f"- {a}" for a in kw["actions"]] or ["- none"]
-    text = "\n".join(L) + "\n"
-    if path:
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text)
-    return title
+def refresh_systemic(repo: Path, stage: Path, raw: Path, notes: list[str]) -> None:
+    if not (raw / "yahoo").is_dir():
+        return
+    shutil.copytree(repo / "src", stage / "src", ignore=shutil.ignore_patterns("__pycache__"))
+    for name in SYSTEMIC_NAMES:
+        if name == "srisk" and not (raw / "edgar").is_dir():
+            continue
+        command = [sys.executable, str(stage / "src" / "systemic" / f"build_{name}.py")]
+        try:
+            subprocess.run(command, cwd=stage, check=True)
+            source = raw / "systemic" / f"{name}_quarterly.csv"
+            dest = stage / "data" / "systemic" / source.name
+            previous = pl.read_csv(dest)
+            candidate = pl.read_csv(source)
+            new = candidate.filter(~pl.col("quarter").is_in(previous["quarter"].to_list()))
+            if new.height:
+                pl.concat([previous, new], how="diagonal_relaxed").sort("quarter").write_csv(dest)
+        except (subprocess.CalledProcessError, OSError, pl.exceptions.PolarsError) as exc:
+            notes.append(f"{name} refresh deferred: {exc}")
 
 
-# --------------------------------------------------------------------------
-# Main
-# --------------------------------------------------------------------------
+def append_observed(data: Path, raw: Path, quarters: list[str]) -> None:
+    fragment = build_panel.build(raw, quarters[0], quarters[-1], skip_missing=True)
+    if fragment["quarter"].to_list() != quarters:
+        raise ValueError("observed builder returned unexpected quarters")
+    for row in fragment.iter_rows(named=True):
+        bad = [c for c in Y9C_REQUIRED if row[c] is None or not math.isfinite(row[c])]
+        if bad:
+            raise ValueError(f"{row['quarter']} is missing required Y-9C values: {bad}")
+
+    path = data / "panel_quarterly.csv"
+    previous = pl.read_csv(path)
+    if previous["quarter"][-1] >= quarters[0]:
+        raise ValueError("candidate quarters overlap the observed panel")
+    fragment = fragment.select(previous.columns).with_columns(
+        pl.col(pl.Float64).fill_nan(None))
+    pl.concat([previous, fragment], how="vertical_relaxed").write_csv(path)
+
+
+def update_release(repo: Path, targets: list[str], notes: list[str]) -> list[str]:
+    with quarterly_release.staged_checkout(repo) as stage:
+        data = stage / "data"
+        quarterly_release.validate_panel(data)
+        raw = stage / "work" / "raw"
+        raw.mkdir(parents=True)
+        ready = ready_quarters(raw, targets, notes, repo / "work" / "raw")
+        if not ready:
+            return []
+        missing = fetch_optional(repo, raw, notes)
+        refresh_systemic(REPO, stage, raw, notes)
+        append_observed(data, raw, ready)
+        quarterly_release.reconcile_observations(data)
+        meta_path = data / "_meta.json"
+        meta = json.loads(meta_path.read_text())
+        _, records = quarterly_release.read_provenance(data)
+        remaining = {q for q, _ in records}
+        meta.pop("nowcast_through", None)
+        if remaining:
+            meta["nowcast_through"] = max(remaining)
+        meta.update(last_built_quarter=ready[-1],
+                    built_at_utc=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+                    stale_sources=sorted(missing),
+                    sources={"required": {"status": "ok", "last_ok_quarter": ready[-1]}})
+        meta_path.write_text(json.dumps(meta, indent=2) + "\n")
+        quarterly_release.build_release(stage)
+        files = (*(f"data/{name}" for name in quarterly_release.PANEL_INPUTS),
+                 *(f"data/systemic/{name}_quarterly.csv" for name in SYSTEMIC_NAMES),
+                 *quarterly_release.RELEASE_OUTPUTS)
+        quarterly_release.publish(repo, stage, files)
+        return ready
+
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Quarterly incremental data updater")
-    ap.add_argument("--dry-run", action="store_true")
-    ap.add_argument("--repo", default=None)
-    ap.add_argument("--report", default=None)
-    ap.add_argument("--github-output", default=None)
-    ap.add_argument("--today", default=None)
-    args = ap.parse_args(argv)
-
-    script = Path(__file__).resolve()
-    repo = Path(args.repo).resolve() if args.repo else script.parents[2]
-    raw = repo / "work" / "raw"
-    today = dt.date.fromisoformat(args.today) if args.today else dt.date.today()
-    run_at = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
-    mode = "dry-run" if args.dry_run else "live"
-
-    sys.path.insert(0, str(repo / "src"))
-    try:
-        import fetch_series
-    except ImportError:
-        if not args.dry_run:
-            print(f"ERROR: src/fetch_series.py not found under {repo}", file=sys.stderr)
-            return 2
-        fetch_series = None  # type: ignore
-
-    meta_path = repo / "data" / "_meta.json"
-    if not meta_path.exists() and not args.dry_run:
-        print(f"ERROR: {meta_path} not found", file=sys.stderr)
-        return 2
-    meta = (json.loads(meta_path.read_text()) if meta_path.exists()
-            else {"last_built_quarter": "2025Q4", "n_indicators": 43, "n_components": 14})
-    last_built = meta["last_built_quarter"]
-
-    fred_ids = list(fetch_series.FRED_IDS) if fetch_series else ["DGS10", "VIXCLS", "GDP"]
-    auto_sources = ([(fn, url) for fn, url, kind in fetch_series.SOURCES
-                     if kind == "auto" and not fn.startswith("fred_")]
-                    if fetch_series else [])
-    manual_notes = ([f"{fn} <- {url or '(place by hand)'}"
-                     for fn, url, kind in fetch_series.SOURCES if kind != "auto"]
-                    if fetch_series else [])
-
-    net = Net(dry_run=args.dry_run)
-    targets = target_quarters(last_built, today)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--repo", type=Path, default=REPO)
+    parser.add_argument("--today", type=dt.date.fromisoformat, default=dt.date.today())
+    parser.add_argument("--dry-run", action="store_true", help="show eligible quarters without fetching")
+    parser.add_argument("--report", type=Path)
+    parser.add_argument("--github-output", type=Path)
+    args = parser.parse_args(argv)
+    repo = args.repo.resolve()
+    meta = json.loads((repo / "data" / "_meta.json").read_text())
+    last = meta["last_built_quarter"]
+    targets = target_quarters(last, args.today)
+    notes = [f"Eligible after {last} on {args.today}: {', '.join(targets) or 'none'}"]
+    published = []
+    status = "waiting"
     if args.dry_run:
-        # Simulate exactly one new quarter with fully mocked fetches.
-        sim = fmt_quarter(*next_quarter(*parse_quarter(last_built)))
-        targets = [sim]
-        for sid in fred_ids:
-            net.mock_fred(sid, quarter_end(*parse_quarter(sim)).isoformat(), "D")
-
-    guard_log = [f"LAG rule: quarter complete only if ended >{LAG_DAYS}d ago "
-                 f"(today={today.isoformat()})"]
-    # The guard reads FRED tails, so ensure the CSVs exist first (real run).
-    if not args.dry_run:
-        raw.mkdir(parents=True, exist_ok=True)
-        for sid in fred_ids:
-            try:
-                net.ensure_fred(raw, sid)
-            except Exception as e:
-                guard_log.append(f"FRED {sid}: download failed ({e})")
-    completed, trunc_log = truncate_at_ragged_edge(targets, raw, fred_ids, net)
-    if args.dry_run:
-        trunc_log = [l + " (simulated --dry-run)" for l in trunc_log]
-    guard_log += trunc_log
-
-    actions: list[str] = []
-    fetch_status: dict[str, str] = {}
-    source_status: dict = {}
-    stale: list[str] = []
-    spike_warnings: list[str] = []
-    run_status = "ok"
-    meta_backup = meta_path.read_bytes() if meta_path.exists() else None
-
-    try:
-        if not completed:
-            actions.append("no complete new quarters; data unchanged")
-            fetch_status = {"fred": "not run", "y9c": "not run"}
-        else:
-            fetch_status = fetch_new_data(completed, raw, fred_ids,
-                                          auto_sources, net, actions)
-            if args.dry_run:
-                actions.append(
-                    f"DRY-RUN: would fetch for {', '.join(completed)}: "
-                    f"{len(fred_ids)} FRED series + {len(auto_sources)} other auto "
-                    f"sources + Y-9C bulk files -> work/raw/")
-            refresh_systemic(repo, raw, args.dry_run, actions)
-            new_rows = rebuild(repo, raw, completed[0], completed[-1],
-                               args.dry_run, actions)
-            if not args.dry_run:
-                new_last = completed[-1]
-                # _meta.json BEFORE make_site so meta.json picks up staleness.
-                for src, st in fetch_status.items():
-                    source_status[src] = {
-                        "status": "ok" if st.startswith("ok") else "degraded",
-                        "last_ok_quarter": new_last if st.startswith("ok") else last_built,
-                        "detail": st,
-                    }
-                if manual_notes:
-                    source_status["manual"] = {
-                        "status": "manual", "last_ok_quarter": last_built,
-                        "detail": f"{len(manual_notes)} sources need hand placement",
-                    }
-                stale = sorted(s for s, v in source_status.items()
-                               if v["status"] != "ok")
-                update_meta(repo, new_last, source_status, stale, False)
-                actions.append(f"updated {meta_path} -> last_built_quarter={new_last}")
-                run_transforms(repo, actions)
-                spike_warnings = tail_spike_check(repo, completed, actions)
-    except Exception as e:  # graceful degradation: never fail the run
-        run_status = f"degraded: {type(e).__name__}: {e}"
-        actions.append(f"ERROR (degraded, exit 0): {e}")
-        if meta_backup is not None and not args.dry_run:
-            meta_path.write_bytes(meta_backup)
-            actions.append("restored data/_meta.json from backup")
-        stale.append("pipeline")
-
-    if args.dry_run:
-        # Dry-run bookkeeping only (nothing was written).
-        for src in ["fred", "y9c", "other_auto"]:
-            source_status[src] = {"status": "ok (simulated)",
-                                  "last_ok_quarter": completed[-1] if completed else last_built,
-                                  "detail": ""}
-        if manual_notes:
-            source_status["manual"] = {"status": "manual (simulated)",
-                                       "last_ok_quarter": last_built, "detail": ""}
-        print(f"DRY-RUN plan: would advance {last_built} -> "
-              f"{completed[-1] if completed else '(none)'}")
-        print(f"DRY-RUN plan: would fetch {len(fred_ids)} FRED series "
-              f"+ {len(auto_sources)} auto sources + Y-9C for "
-              f"{', '.join(completed) or 'none'} -> work/raw/")
-        print("DRY-RUN plan: would append fragment to data/panel_quarterly.csv, "
-              "run run_pipeline.main() + make_site.main(), update data/_meta.json")
-
-    title = write_report(Path(args.report) if args.report else None,
-                         mode=mode, run_at=run_at, last_built=last_built,
-                         targets=targets, completed=completed,
-                         guard_log=guard_log, fetch_status=fetch_status,
-                         manual_notes=manual_notes if not args.dry_run else [],
-                         source_status=source_status,
-                         stale=sorted(set(stale)),
-                         spike_warnings=spike_warnings, actions=actions)
-
+        status = "dry-run"
+    elif targets:
+        try:
+            published = update_release(repo, targets, notes)
+            if published:
+                status = "published"
+        except Exception as exc:
+            status = "failed"
+            notes.append(f"{type(exc).__name__}: {exc}")
+    title = f"U.S. heat index release {published[-1] if published else last} ({status})"
+    report = f"# {title}\n\n" + "".join(f"- {note}\n" for note in notes)
+    if args.report:
+        args.report.parent.mkdir(parents=True, exist_ok=True)
+        args.report.write_text(report)
     if args.github_output:
-        with open(args.github_output, "a") as f:
-            f.write(f"update_title={title}\n")
-            f.write(f"new_quarters={','.join(completed)}\n")
-            f.write(f"run_status={run_status}\n")
-
-    print(f"done: {title} [status={run_status}]")
-    return 0
+        with args.github_output.open("a") as out:
+            out.write(f"update_title={title}\nnew_quarters={','.join(published)}\nrun_status={status}\n")
+    print(report)
+    return int(status == "failed")
 
 
 if __name__ == "__main__":

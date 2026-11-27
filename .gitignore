@@ -6,3 +6,6 @@ __pycache__/
 # Location: data/revenue/raw/<cik>/<accession>/
 data/revenue/raw/
 data/revenue/raw
+
+.venv/
+/.frb-quarterly-*/

@@ -61,7 +61,7 @@ copyFileSync(join(FIX, "plot-stub.mjs"), join(TMP, "plot-stub.mjs"));
 
 const results = { sections: 0, errors: [] };
 const mod = await import(join(TMP, "app-test.mjs") + "?x=" + Date.now());
-// main() ran on import; inspect the revenue container.
+await mod.ready;
 const rev = byId["revenue"];
 results.sections = rev.children.length;
 // Expected migration-SVG presence per line (recomputed from the bundle).

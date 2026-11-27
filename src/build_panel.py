@@ -359,8 +359,14 @@ def b_house_price_rent(raw: Path):
 
 
 def b_sloos_mortgage(raw: Path):
-    return {'Mortage Lending and FICO Scores (Change in Lending Standards)':
-            fred_qlast(raw, "DRTSPM")}
+    parts = []
+    if (raw / "fred_DRTSPM.csv").exists():
+        parts.append(fred_qlast(raw, "DRTSPM").filter(pl.col("quarter") < "2015Q1"))
+    if (raw / "fred_SUBLPDHMSGLGNQ.csv").exists():
+        parts.append(fred_qlast(raw, "SUBLPDHMSGLGNQ").filter(pl.col("quarter") >= "2015Q1"))
+    if not parts:
+        raise FileNotFoundError("the SLOOS mortgage series were not downloaded")
+    return {'Mortage Lending and FICO Scores (Change in Lending Standards)': pl.concat(parts)}
 
 
 def natural_cubic_spline(x: np.ndarray, y: np.ndarray, xs: np.ndarray) -> np.ndarray:
@@ -573,10 +579,11 @@ def b_saving_hh(raw: Path):
 # Y-9C (Chicago Fed bulk bhcf files)
 # ---------------------------------------------------------------------------
 
-Y9C_ITEMS = ["BHCK2170", "BHCK2122", "BHCK3217", "BHCK3163", "BHCK8274",
+Y9C_ITEMS = ["BHCK2170", "BHCK2122", "BHCK3217", "BHCK3163", "BHCK8274", "BHCK8275",
              "BHCK3283", "BHCK3000", "BHCKC502", "BHCKB704", "BHCK2800",
              "BHCKB995", "BHCKB996", "BHCK2332",
              "BHDM6631", "BHDM6636", "BHFN6631", "BHFN6636"]
+Y9C_HCR_ITEMS = ("bhcap859", "bhca8274", "bhcap863", "bhcaa223")
 
 
 def read_y9c(raw: Path, start: str, end: str) -> pl.DataFrame:
@@ -595,21 +602,30 @@ def read_y9c(raw: Path, start: str, end: str) -> pl.DataFrame:
         rid, rdt = cmap.get("rssd9001"), cmap.get("rssd9999")
         if rid is None or rdt is None:
             continue
-        use = [cmap[i.lower()] for i in Y9C_ITEMS if i.lower() in cmap]
+        use = [cmap[i] for i in [*(item.lower() for item in Y9C_ITEMS), *Y9C_HCR_ITEMS]
+               if i in cmap]
         try:
             d = pl.read_csv(fn, columns=[rid, rdt] + use, encoding="utf8-lossy",
                             infer_schema_length=10000)
         except Exception:
             continue
-        d = d.filter(pl.col(rdt).cast(pl.String).str.contains(r"^\d{8}$"))
+        month = qq * 3
+        report = dt.date(y, month + 1, 1) - dt.timedelta(days=1) if month < 12 else dt.date(y, 12, 31)
+        d = d.filter(pl.col(rdt).cast(pl.String) == report.strftime("%Y%m%d"))
+        if d.is_empty():
+            continue
         rec: dict[str, float] = {"quarter": q, "n_filers": float(d.height)}
-        for item, col in zip(Y9C_ITEMS, [cmap[i.lower()] for i in Y9C_ITEMS]):
-            if col in d.columns:
-                rec[item.lower()] = float(
-                    d.select(pl.col(col).cast(pl.Float64, strict=False)
-                             .fill_null(0).sum()).item())
-            else:
-                rec[item.lower()] = float("nan")
+        for item in Y9C_ITEMS:
+            col = cmap.get(item.lower())
+            rec[item.lower()] = (float(d[col].cast(pl.Float64, strict=False).sum())
+                                 if col in d.columns else float("nan"))
+        hcr_column = cmap.get("bhcap859")
+        hcr = (d.filter(pl.col(hcr_column).cast(pl.Float64, strict=False).is_not_null())
+               if hcr_column in d.columns else d.clear())
+        for item in Y9C_HCR_ITEMS:
+            col = cmap.get(item)
+            rec[f"{item}_hcr"] = (float(hcr[col].cast(pl.Float64, strict=False).sum())
+                                  if col in hcr.columns else float("nan"))
         # top-5 share inputs (BHCK2170, $ thousands)
         a = (d.select(pl.col(cmap["bhck2170"]).cast(pl.Float64, strict=False)
                       .fill_null(0).alias("a"))["a"] if "bhck2170" in cmap else None)
@@ -634,10 +650,16 @@ def b_y9c(raw: Path, start: str, end: str):
             + pl.col("bhfn6631") + pl.col("bhfn6636"))).alias("loans_dep"),
         # top-5 BHC asset share, %
         (100.0 * pl.col("top5_assets") / pl.col("tot_assets")).alias("top5"),
-        # tier 1 common equity ratio, % (pre-2004 trust preferred treated as 0)
-        (100.0 * (pl.col("bhck8274") - pl.col("bhck3283") - pl.col("bhck3000")
-                  - pl.col("bhckc502").fill_nan(0).fill_null(0))
-         / pl.col("bhckb704")).alias("t1c"),
+        # Basel III CET1 and total capital use the same HC-R reporting subset.
+        pl.when(pl.col("quarter") < "2014Q1").then(
+            100.0 * (pl.col("bhck8274") - pl.col("bhck3283") - pl.col("bhck3000")
+                     - pl.col("bhckc502").fill_nan(0).fill_null(0)) / pl.col("bhckb704")
+        ).otherwise(100.0 * pl.col("bhcap859_hcr") / pl.col("bhcaa223_hcr")).alias("t1c"),
+        pl.when(pl.col("quarter") < "2014Q1").then(
+            100.0 * (pl.col("bhck8274") + pl.col("bhck8275")) / pl.col("bhckb704")
+        ).otherwise(
+            100.0 * (pl.col("bhca8274_hcr") + pl.col("bhcap863_hcr")) / pl.col("bhcaa223_hcr")
+        ).alias("total_cap"),
         # short-term money at BHCs / assets, % (BHCK2800 pre-2002 splice)
         (100.0 * (pl.when(pl.col("bhckb995").is_not_nan())
                   .then(pl.col("bhckb995") + pl.col("bhckb996"))
@@ -653,6 +675,8 @@ def b_y9c(raw: Path, start: str, end: str):
             y.select(["quarter", pl.col("top5").alias("value")]),
         'Bank Leverage (Tier 1 common equity ratio)':
             y.select(["quarter", pl.col("t1c").alias("value")]),
+        'Bank Leverage (Total Capital Ratio)':
+            y.select(["quarter", pl.col("total_cap").alias("value")]),
         'Short-Term Wholesale Funding (Short-term money as a share of assets at BHCs)':
             y.select(["quarter", pl.col("st_money").alias("value")]),
     }
@@ -873,7 +897,7 @@ BUILDERS = [
     b_ep_spread, b_vix, b_baa_spread, b_hy_spread, b_issuance_appetite,
     b_sloos_cni, b_house_price_rent, b_sloos_mortgage, b_fico, b_bizdebt,
     b_risky_leverage, b_nipa, b_consumer, b_consumer_risky, b_mortgage,
-    b_saving_hh, b_z1, b_bis_cre, b_sloos_cre, b_call_report,
+    b_saving_hh, b_z1, b_bis_cre, b_sloos_cre,
     b_srisk, b_granger, b_hedge_fund_leverage, b_private_credit,
     b_bis_benchmarks,
 ]

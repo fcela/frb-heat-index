@@ -267,3 +267,20 @@ def write_archive(archive_dir: Path, name: str, series: dict) -> None:
     for p in sorted(series):
         lines.append(f"{period_start(p)},{series[p]!r}")
     (archive_dir / name).write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def read_archive(path: Path, frequency: str) -> dict[str, float]:
+    """Restore the native period labels from a normalized source CSV."""
+    with path.open(encoding="utf-8", newline="") as f:
+        rows = csv.DictReader(f)
+        result = {}
+        for row in rows:
+            date = row["date"]
+            if frequency == "Q":
+                date = f"{date[:4]}Q{(int(date[5:7]) - 1) // 3 + 1}"
+            elif frequency == "M":
+                date = date[:7]
+            if date in result:
+                raise ValueError(f"duplicate period {date} in {path}")
+            result[date] = float(row["value"])
+    return result

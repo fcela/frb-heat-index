@@ -28,10 +28,10 @@ sys.path.insert(0, str(REPO))
 
 from src.spain import fetch  # noqa: E402
 from src.spain.series import COMPONENTS, INDICATORS, PANEL_START  # noqa: E402
+from src.release_manifest import write_manifest  # noqa: E402
 
-DATA_DIR = REPO / "data" / "spain"
-DOCS_DATA = REPO / "docs" / "data"
-PAGE_DIR = REPO / "docs" / "spain"
+QUARTERLY_BDE_TABLES = {"be0201", "be0205", "be1105", "be1113", "be1307",
+                        "be1704", "be1721"}
 
 
 # ------------------------------------------------------------ quarters
@@ -154,12 +154,27 @@ def _scaled(inp: dict, series: dict) -> dict:
     return {k: v * s for k, v in series.items()}
 
 
-def build_indicator_series(ind: dict, archive_dir: Path, log: list) -> dict:
+def input_frequency(inp: dict) -> str:
+    if "table" in inp:
+        return "Q" if inp["table"] in QUARTERLY_BDE_TABLES else "M"
+    return "M" if "fred" in inp or "eurostat_m_url" in inp else "Q"
+
+
+def build_indicator_series(ind: dict, archive_dir: Path, log: list, *,
+                           offline: bool = False, sources: dict | None = None) -> dict:
     """Return the indicator's quarterly raw series {'YYYYQn': value}."""
+    if sources is None:
+        sources = {}
     route = ind["route"]
+    name = route["archive"]
     if route["type"] != "derived":
-        raw = fetch_primary(route)
-        fetch.write_archive(archive_dir, route["archive"], raw)
+        if offline:
+            frequency = "D" if route["type"] == "ecb_ciss" else "Q"
+            raw = fetch.read_archive(archive_dir / name, frequency)
+        else:
+            raw = fetch_primary(route)
+            fetch.write_archive(archive_dir, name, raw)
+        sources[name] = raw
         log.append(f"{ind['id']}: {len(raw)} obs "
                    f"({min(raw) if raw else '-'}..{max(raw) if raw else '-'})")
         if route["type"] in ("fred_yoy", "bis_cpp"):
@@ -175,9 +190,14 @@ def build_indicator_series(ind: dict, archive_dir: Path, log: list) -> dict:
 
     inputs = {}
     for inp in route["inputs"]:
-        s = _scaled(inp, fetch_input(inp))
-        fetch.write_archive(archive_dir, inp["archive"], s)
-        inputs[inp["archive"]] = s
+        name = inp["archive"]
+        if name not in sources:
+            if offline:
+                sources[name] = fetch.read_archive(archive_dir / name, input_frequency(inp))
+            else:
+                sources[name] = _scaled(inp, fetch_input(inp))
+                fetch.write_archive(archive_dir, name, sources[name])
+        inputs[name] = sources[name]
     return DERIVED[ind["id"]](inputs)
 
 
@@ -394,10 +414,29 @@ def mean_available(rows: list) -> list:
     return out
 
 
+def headline_coverage(components: dict, quarters: list) -> tuple[list, dict | None]:
+    rows = list(zip(*components.values()))
+    counts = [sum(value is not None for value in row) for row in rows]
+    if len(rows) < 2:
+        return counts, None
+    common = [(a, b) for a, b in zip(rows[-2], rows[-1])
+              if a is not None and b is not None]
+    if not common:
+        return counts, None
+    n = len(common)
+    return counts, {
+        "previous_quarter": quarters[-2],
+        "current_quarter": quarters[-1],
+        "component_count": n,
+        "previous_headline": sum(a for a, _ in common) / n,
+        "current_headline": sum(b for _, b in common) / n,
+    }
+
+
 # ------------------------------------------------------------ svg
 
 def svg_chart(series: list, quarters: list, w=330, h=110,
-              shade=None) -> str:
+              shade=None, coverage=None) -> str:
     """Small multiple on a shared 0-1 axis: area fill, straight line
     segments, square corners. Gaps break the path (never bridged).
     shade=(first_i, last_i, label) shades a quarter span behind the
@@ -454,6 +493,13 @@ def svg_chart(series: list, quarters: list, w=330, h=110,
         if q.endswith("Q1") and (i % 20 == 0 or i == 0):
             parts.append(f'<text x="{x(i):.1f}" y="{h - 2}" font-size="8" '
                          f'fill="var(--muted,#777)">{q[:4]}</text>')
+    if coverage is not None:
+        step = iw / max(1, n - 1)
+        for i, (q, value, count) in enumerate(zip(quarters, series, coverage)):
+            if value is not None:
+                parts.append(f'<rect x="{x(i) - step / 2:.2f}" y="{pad_t}" '
+                             f'width="{step:.2f}" height="{ih}" fill="transparent">'
+                             f'<title>{q}: {value:.3f}, {count} components</title></rect>')
     parts.append("</svg>")
     return "".join(parts)
 
@@ -626,6 +672,14 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
     pend_n = len(meta_indicators) - live_n
     comp_live = [c for c in COMPONENTS
                  if any(v is not None for v in bundle["components"][c])]
+    coverage = bundle["headline_component_count"]
+    matched = bundle["latest_same_component_comparison"]
+    comparison = ""
+    if matched:
+        comparison = (f' Using the same {matched["component_count"]} components in '
+                      f'both quarters, the index moved from '
+                      f'{matched["previous_headline"]:.3f} in {matched["previous_quarter"]} '
+                      f'to {matched["current_headline"]:.3f} in {matched["current_quarter"]}.')
 
     out = []
     out.append(f"""<!DOCTYPE html>
@@ -675,13 +729,13 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
       {quarters[last_i]}; headline {bundle['headline'][last_i]:.3f},
       against a sample peak of {bundle['headline'][peak_i]:.3f} in
       {quarters[peak_i]}. {live_n} indicators live, {pend_n}
-      source-pending, {len(comp_live)} of {len(COMPONENTS)} components
-      in the headline. Construction, the analogy and its limits:
+      source-pending. The latest headline uses {coverage[last_i]} of
+      {len(comp_live)} sourced components. Construction, the analogy and its limits:
       <a href="methodology.md">methodology</a>.</p>
     <ul class="stats">
       <li><span class="stat-num">{len(quarters)}</span><span class="stat-label">quarters</span></li>
       <li><span class="stat-num">{live_n}</span><span class="stat-label">indicators live (of {len(meta_indicators)})</span></li>
-      <li><span class="stat-num">{len(comp_live)}</span><span class="stat-label">components in the headline (of {len(COMPONENTS)})</span></li>
+      <li><span class="stat-num">{coverage[last_i]}</span><span class="stat-label">components in {quarters[last_i]} (of {len(comp_live)} sourced)</span></li>
     </ul>
   </header>
 </div>
@@ -691,11 +745,13 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
       <h3>Headline index</h3>
       <p class="blurb">Mean of the component percentiles below. Spain's
         sample contains a full systemic crisis (2010–13), so the scale
-        is calibrated by a real event.</p>
+        is calibrated by a real event. Hover over a quarter for its reading
+        and component count.{comparison}</p>
       <div class="sp-card">
         {svg_chart(bundle['headline'], quarters, w=1060, h=220,
                    shade=(quarters.index("2010Q1"),
-                          quarters.index("2013Q4"), "2010–13 crisis"))}
+                          quarters.index("2013Q4"), "2010–13 crisis"),
+                   coverage=coverage)}
         <p class="sp-prov">Source: computed from the component series
           below; per-indicator provenance is on each panel. Method:
           <a href="methodology.md">methodology</a>. Data:
@@ -946,6 +1002,12 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
         <li><a href="{raw_base}/headline.csv">
           <span class="fname">headline.csv</span>
           <span class="fdesc">quarter × headline index (0–1)</span></a></li>
+        <li><a href="{raw_base}/coverage.csv">
+          <span class="fname">coverage.csv</span>
+          <span class="fdesc">number of components contributing each quarter</span></a></li>
+        <li><a href="{raw_base}/release_manifest.json">
+          <span class="fname">release manifest</span>
+          <span class="fdesc">replay command and source snapshot checksums</span></a></li>
         <li><a href="../data/spain.json">
           <span class="fname">spain.json</span>
           <span class="fdesc">the site data bundle this page is rendered from</span></a></li>
@@ -982,7 +1044,7 @@ def render_page(bundle: dict, meta_indicators: list) -> str:
 
 def write_extra_downloads(data_dir: Path, quarters: list, ids: list,
                           pct_by_id: dict, components: dict,
-                          headline: list) -> None:
+                          headline: list, coverage: list) -> None:
     """The download CSVs beside panel_quarterly.csv: component
     percentiles, the headline, and the indicator percentile panel —
     the Spain analogues of the U.S. components / aggregate /
@@ -991,9 +1053,9 @@ def write_extra_downloads(data_dir: Path, quarters: list, ids: list,
     import csv as _csv
     import io as _io
 
-    def dump(header, rows):
+    def dump(header, rows, *, lineterminator="\r\n"):
         buf = _io.StringIO()
-        w = _csv.writer(buf)
+        w = _csv.writer(buf, lineterminator=lineterminator)
         w.writerow(header)
         w.writerows(rows)
         return buf.getvalue()
@@ -1010,6 +1072,9 @@ def write_extra_downloads(data_dir: Path, quarters: list, ids: list,
         ["quarter", "headline"],
         [[q, cell(headline, r)] for r, q in enumerate(quarters)]),
         encoding="utf-8")
+    (data_dir / "coverage.csv").write_text(dump(
+        ["quarter", "component_count"], zip(quarters, coverage), lineterminator="\n"),
+        encoding="utf-8")
     (data_dir / "panel_percentiles.csv").write_text(dump(
         ["quarter"] + ids,
         [[q] + [cell(pct_by_id.get(i), r) for i in ids]
@@ -1018,26 +1083,34 @@ def write_extra_downloads(data_dir: Path, quarters: list, ids: list,
 
 # ------------------------------------------------------------ main
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--no-fetch", action="store_true",
-                    help="fail (archives are written by the fetch pass)")
-    args = ap.parse_args()
-    if args.no_fetch:
-        print("--no-fetch is not supported: the build always exercises "
-              "the live routes", file=sys.stderr)
-        return 2
+                    help="replay the committed source snapshots without network access")
+    ap.add_argument("--root", type=Path, default=REPO,
+                    help="tree containing data/spain and docs")
+    args = ap.parse_args(argv)
+    root = args.root.resolve()
+    data_dir = root / "data" / "spain"
+    docs_data = root / "docs" / "data"
+    page_dir = root / "docs" / "spain"
 
-    built_at = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    snapshot = data_dir / "_meta.json"
+    if args.no_fetch:
+        built_at = json.loads(snapshot.read_text())["built_at_utc"]
+    else:
+        built_at = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     log = []
+    sources = {}
     raw_by_id = {}
     for ind in INDICATORS:
         if ind["status"] == "source-pending":
             continue
-        series = build_indicator_series(ind, DATA_DIR, log)
+        series = build_indicator_series(ind, data_dir, log,
+                                        offline=args.no_fetch, sources=sources)
         raw_by_id[ind["id"]] = series
         if ind["route"]["type"] == "derived":
-            fetch.write_archive(DATA_DIR, ind["route"]["archive"], series)
+            fetch.write_archive(data_dir, ind["route"]["archive"], series)
     for line in log:
         print(" ", line)
 
@@ -1047,10 +1120,14 @@ def main() -> int:
     # financial accounts); the rule keeps the tail from resting on a
     # minority of the panel, and drops partial quarters.
     live_ids = [i["id"] for i in INDICATORS if i["status"] != "source-pending"]
-    cand = sorted({q for s in raw_by_id.values() for q in s}, reverse=True)
-    last_q = next(q for q in cand
-                  if sum(1 for i in live_ids if q in raw_by_id[i])
-                  >= 0.6 * len(live_ids))
+    vintage = dt.date.fromisoformat(built_at[:10])
+    current = qidx(f"{vintage.year}Q{(vintage.month - 1) // 3 + 1}")
+    candidates = {q for series in raw_by_id.values() for q in series if qidx(q) < current}
+    eligible = [q for q in candidates
+                if sum(q in raw_by_id[i] for i in live_ids) >= 0.6 * len(live_ids)]
+    if not eligible:
+        raise ValueError("no calendar quarter has enough source coverage")
+    last_q = max(eligible)
     quarters = qrange(PANEL_START, last_q)
 
     panel = {"quarter": quarters}
@@ -1070,10 +1147,13 @@ def main() -> int:
             s = raw_by_id[ind["id"]]
             vals = [s.get(q) for q in quarters]
             panel[ind["id"]] = vals
+            entry["sign"] = ind["sign"]
             oriented = [None if v is None else ind["sign"] * v
                         for v in vals]
             pct_by_id[ind["id"]] = empirical_cdf(oriented)
             obs = [(q, v) for q, v in zip(quarters, vals) if v is not None]
+            if not obs:
+                raise ValueError(f"{ind['id']} has no observations in the published panel")
             entry.update({
                 "first_observation": obs[0][0],
                 "last_observation": obs[-1][0],
@@ -1088,6 +1168,7 @@ def main() -> int:
         components[comp] = mean_available(rows) if rows else \
             [None] * len(quarters)
     headline = mean_available([components[c] for c in COMPONENTS])
+    coverage, matched = headline_coverage(components, quarters)
 
     bundle = {
         "generated_by": "python3 -m src.spain.build_spain",
@@ -1096,14 +1177,16 @@ def main() -> int:
         "panel_last_quarter": quarters[-1],
         "quarters": quarters,
         "headline": headline,
+        "headline_component_count": coverage,
+        "latest_same_component_comparison": matched,
         "components": components,
         "indicators": {i: {"raw": panel[i],
                            "percentile": pct_by_id.get(i)}
                        for i in panel if i != "quarter"},
     }
-    DOCS_DATA.mkdir(parents=True, exist_ok=True)
-    (DOCS_DATA / "spain.json").write_text(
-        json.dumps(bundle, indent=1), encoding="utf-8")
+    docs_data.mkdir(parents=True, exist_ok=True)
+    (docs_data / "spain.json").write_text(
+        json.dumps(bundle, indent=1, allow_nan=False), encoding="utf-8")
     meta = {
         "_comment": "GENERATED — DO NOT HAND-EDIT: python3 -m src.spain.build_spain",
         "generated_by": "python3 -m src.spain.build_spain",
@@ -1112,7 +1195,7 @@ def main() -> int:
         "panel_last_quarter": quarters[-1],
         "indicators": meta_indicators,
     }
-    (DOCS_DATA / "spain_meta.json").write_text(
+    (docs_data / "spain_meta.json").write_text(
         json.dumps(meta, indent=1, ensure_ascii=False), encoding="utf-8")
 
     # panel CSV in the repo data dir, beside the archives
@@ -1125,11 +1208,11 @@ def main() -> int:
     for r, q in enumerate(quarters):
         w.writerow([q] + ["" if panel[i][r] is None else panel[i][r]
                            for i in ids])
-    (DATA_DIR / "panel_quarterly.csv").write_text(
+    (data_dir / "panel_quarterly.csv").write_text(
         buf.getvalue(), encoding="utf-8")
-    write_extra_downloads(DATA_DIR, quarters, ids, pct_by_id,
-                          components, headline)
-    (DATA_DIR / "_meta.json").write_text(json.dumps({
+    write_extra_downloads(data_dir, quarters, ids, pct_by_id,
+                          components, headline, coverage)
+    snapshot.write_text(json.dumps({
         "section": "spain",
         "built_at_utc": built_at,
         "panel_first_quarter": quarters[0],
@@ -1137,8 +1220,11 @@ def main() -> int:
         "fetch_log": log,
     }, indent=1), encoding="utf-8")
 
-    PAGE_DIR.mkdir(parents=True, exist_ok=True)
-    (PAGE_DIR / "index.html").write_text(
+    write_manifest(root, data_dir / "release_manifest.json",
+                   "python -m src.spain.build_spain --no-fetch", built_at, last_q,
+                   [snapshot, *(data_dir / name for name in sources)])
+    page_dir.mkdir(parents=True, exist_ok=True)
+    (page_dir / "index.html").write_text(
         render_page(bundle, meta_indicators), encoding="utf-8")
 
     peak_i = max((i for i, v in enumerate(headline) if v is not None),

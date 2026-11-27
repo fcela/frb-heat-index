@@ -183,7 +183,7 @@ def test_gs_quarterly_restated_comparative_wins():
     assert by_line[("ficc", 2023, 1)] == pytest.approx(3931.0)
 
 
-def test_gs_enumerate_10q_form_type_based():
+def test_gs_enumerate_10q_form_type_based(tmp_path, monkeypatch):
     """enumerate_10q uses dei:DocumentType, not instance filenames.
 
     GS's 2019Q2-2022Q2 10-Qs use filing-agent instance names
@@ -192,19 +192,20 @@ def test_gs_enumerate_10q_form_type_based():
     fix must include those 10-Qs, keep post-2022 self-filed 10-Qs,
     and exclude every 10-K.
     """
-    from src.revenue.parse_mda import dir_form_type
-    from src.revenue.parse_mda_q import enumerate_10q
-    accs = enumerate_10q("0000886982")
-    # Filing-agent-named 10-Q previously missed by the heuristic.
-    assert "0001193125-21-148444" in accs, accs
-    # Self-filed 10-Qs.
-    assert "0000886982-23-000005" in accs, accs
-    assert "0000886982-26-000297" in accs, accs
-    # No 10-K may be classified as a 10-Q.
-    for acc in accs:
-        form = dir_form_type(RAW_ROOT / "0000886982" / acc)
-        assert form is not None and form.upper().startswith("10-Q"), \
-            (acc, form)
+    from src.revenue import parse_mda_q
+    monkeypatch.setattr(parse_mda_q, "RAW_ROOT", tmp_path)
+    cik = "0000886982"
+    filings = [
+        ("0001193125-21-148444", "d105283d10q_htm.xml", "10-Q"),
+        ("0000886982-23-000005", "gs-20230331_htm.xml", "10-Q"),
+        ("0000886982-26-000297", "gs-20260630_htm.xml", "10-Q"),
+        ("0000886982-24-000006", "filing-agent_htm.xml", "10-K"),
+    ]
+    for accession, name, form in filings:
+        folder = tmp_path / cik / accession
+        folder.mkdir(parents=True)
+        (folder / name).write_text(f"<dei:DocumentType>{form}</dei:DocumentType>")
+    assert set(parse_mda_q.enumerate_10q(cik)) == {a for a, _, f in filings if f == "10-Q"}
 
 
 def test_quarterly_dedupe_prefers_later_filing():

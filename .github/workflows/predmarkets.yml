@@ -22,18 +22,25 @@ permissions:
   contents: write
   issues: write
 
+concurrency:
+  group: data-publish-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   update-predmarkets:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
 
       - name: Install dependencies
-        run: pip install polars
+        run: python -m pip install -r requirements.txt
 
       - name: Refresh prediction-markets data (incremental)
         run: python3 -m src.predmarkets.build_predmarkets --incremental

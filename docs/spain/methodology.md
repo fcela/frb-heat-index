@@ -24,6 +24,10 @@ Same construction as the U.S. index, with two stated differences.
   that quarter. The **headline** is the mean of the components that
   have at least one available indicator. Components whose indicators
   are all source-pending do not enter the headline.
+- The headline chart and `data/spain/coverage.csv` report how many
+  components contribute each quarter. The latest same-component
+  comparison averages only the components present in both quarters.
+  The indicators available within each component can still differ.
 - Monthly stock series enter at the quarter-end month; monthly flow
   and price series enter as quarterly means; ratios to GDP use the
   trailing four quarters of nominal GDP. A quarter enters only when

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the heat-map index pipeline: data/panel_quarterly.csv -> components + aggregate
+"""Run the heat-map index pipeline: data/panel_complete.csv -> components + aggregate
 + standardized indicators.
 
 Pipeline (exactly the paper's documented construction):
@@ -20,7 +20,7 @@ final quarter is flagged on stderr before the index is written, so a bad
 input at the edge can never silently become a headline artifact.
 
 Usage:
-    python src/run_pipeline.py [--panel data/panel_quarterly.csv]
+    python src/run_pipeline.py [--panel data/panel_complete.csv]
                                 [--components data/components.csv]
                                 [--aggregate data/aggregate.csv]
                                 [--mask-csv path/to/accessible.csv]
@@ -237,7 +237,8 @@ def run_pipeline(panel: pl.DataFrame,
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--panel", default=str(HERE / "data" / "panel_quarterly.csv"))
+    ap.add_argument("--panel", default=str(HERE / "data" / "panel_complete.csv"),
+                    help="scoring input (default: the completed release panel)")
     ap.add_argument("--components", default=str(HERE / "data" / "components.csv"))
     ap.add_argument("--aggregate", default=str(HERE / "data" / "aggregate.csv"))
     ap.add_argument("--mask-csv", default=None,

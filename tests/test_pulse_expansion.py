@@ -279,10 +279,10 @@ def test_manual_feeds_fail_closed():
 
 
 def test_pipeline_reads_manual_feeds_without_network():
-    df = fetch_indicator("cmi", {"status": "live-manual"})
-    assert df.height == 4
-    df = fetch_indicator("cfo_optimism", {"status": "live-manual"})
-    assert df.height == 5
+    for key in ("cmi", "cfo_optimism"):
+        df = fetch_indicator(key, {"status": "live-manual"})
+        source = pl.read_csv(manual_feeds.MANUAL_DIR / f"{key}.csv", try_parse_dates=True)
+        assert df.equals(source.select("date", "value").sort("date"))
     print("ok test_pipeline_reads_manual_feeds_without_network")
 
 
